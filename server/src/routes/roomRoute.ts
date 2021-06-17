@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 const rooms = Router();
 import RoomObj from "../types/index";
+
 const mockRooms: RoomObj[] = [
   {
     name: "first Room",

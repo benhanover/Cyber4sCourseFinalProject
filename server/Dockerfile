@@ -3,4 +3,4 @@ WORKDIR ./server
 COPY package.json .
 RUN npm install
 COPY . .
-CMD ["ts-node", "src/server.ts"]
+CMD ["npm", "start"]
