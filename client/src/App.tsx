@@ -1,10 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ActionCreators, State } from './state';
+import { roomCountActionCreators, State } from './state';
 
 function App() {
   const dispatch = useDispatch();
-  const { increase, decrease } = bindActionCreators(ActionCreators, dispatch);
+  const { increase, decrease } = bindActionCreators(
+    roomCountActionCreators,
+    dispatch
+  );
   const roomCount = useSelector((state: State) => state.roomCount);
 
   return (

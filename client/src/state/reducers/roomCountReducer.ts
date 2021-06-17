@@ -1,4 +1,4 @@
-import { RoomCountAction } from '../actions/index';
+import { RoomCountAction } from '../actions/roomCountActions';
 
 const reducer = (state: number = 0, action: RoomCountAction) => {
   switch (action.type) {
@@ -7,6 +7,7 @@ const reducer = (state: number = 0, action: RoomCountAction) => {
       break;
     case 'decrease':
       return state - action.payload;
+      break;
     default:
       return state;
   }
