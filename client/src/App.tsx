@@ -1,22 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { roomCountActionCreators, State } from './state';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
+import Lobby from './components/Lobby/Lobby';
 
-function App() {
-  const dispatch = useDispatch();
-  const { increase, decrease } = bindActionCreators(
-    roomCountActionCreators,
-    dispatch
-  );
-  const roomCount = useSelector((state: State) => state.roomCount);
-
+const App: React.FunctionComponent<{}> = () => {
   return (
-    <div className='App'>
-      <h1>{roomCount}</h1>
-      <button onClick={() => increase(1)}>Increase</button>
-      <button onClick={() => decrease(1)}>Decrease</button>
+    <div>
+      {/* <Login /> */}
+      <Register />
+      {/* <Lobby /> */}
     </div>
   );
-}
+};
 
 export default App;

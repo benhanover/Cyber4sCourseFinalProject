@@ -1,12 +1,12 @@
-import { ActionType } from '../action-types/index';
+import { ActionEnum } from '../action-enum/index';
 
 interface IncreaseAction {
-  type: ActionType.INCREASE;
+  type: ActionEnum.INCREASE;
   payload: number;
 }
 
 interface DecreaseAction {
-  type: ActionType.DECREASE;
+  type: ActionEnum.DECREASE;
   payload: number;
 }
 
