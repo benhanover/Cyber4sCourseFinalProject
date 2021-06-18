@@ -1,5 +1,5 @@
-// enviorment
-import './env/environment';
+// environment
+require('dotenv').config();
 
 // libraries
 import express from 'express';
@@ -10,15 +10,18 @@ import cors from 'cors';
 import users from './routes/userRoute';
 import rooms from './routes/roomRoute';
 
+// declarations
 const app = express();
+const { PORT, DB } = process.env;
 
+// middlewares
+app.use(express.json());
 app.use(cors());
 app.use('/user', users);
 app.use('/room', rooms);
 
-const { PORT, DB } = process.env;
 mongoose
-  .connect(`mongodb://mongo:27017/${DB}`)
+  .connect(`mongodb://localhost:27017/${DB}`, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected To MongodDB');
     app.listen(PORT, () => console.log('Listening On Port', PORT));

@@ -10,14 +10,21 @@ const Register: React.FC = () => {
 
   const handleSubmit = (e: React.SyntheticEvent): void => {
     e.preventDefault();
-    const username: string | undefined = nameRef?.current?.value;
+    const username: string | undefined = usernameRef?.current?.value;
     const firstName: string | undefined = nameRef?.current?.value;
     const lastName: string | undefined = lastNameRef?.current?.value;
     const birthDate: string | undefined = dateRef?.current?.value;
     const email: string | undefined = emailRef?.current?.value;
     const password: string | undefined = passwordRef?.current?.value;
+    console.log( username,
+      firstName,
+      lastName,
+      birthDate,
+      email,
+      password);
+    
     axios
-      .post("/user/register", {
+      .post("http://localhost:4000/user/register", {
         username,
         firstName,
         lastName,
@@ -36,13 +43,14 @@ const Register: React.FC = () => {
       <label onClick={() => nameRef.current?.focus()}>First Name</label>
       <input ref={nameRef} />
       <label onClick={() => lastNameRef.current?.focus()}>Last Name</label>
-      <input type="date" ref={lastNameRef} />
+      <input ref={lastNameRef} />
       <label onClick={() => dateRef.current?.focus()}>BirthDate</label>
-      <input ref={dateRef} />
+      <input type="date" ref={dateRef} />
       <label onClick={() => emailRef.current?.focus()}>Email</label>
       <input type="email" ref={emailRef} />
       <label onClick={() => passwordRef.current?.focus()}>Password</label>
       <input type="text" ref={passwordRef} />
+      <input type="submit"  />
     </form>
   );
 };

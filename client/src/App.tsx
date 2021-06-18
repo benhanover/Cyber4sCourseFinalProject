@@ -6,8 +6,8 @@ const App: React.FunctionComponent<{}> = () => {
   return (
     <div>
       {/* <Login /> */}
-      {/* <Register /> */}
-      <Lobby />
+      <Register />
+      {/* <Lobby /> */}
     </div>
   );
 };
