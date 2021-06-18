@@ -1,25 +1,26 @@
-import express from "express";
-import cors from "cors";
+// enviorment
+import './env/environment';
 
-import users from "./routes/userRoute";
-import rooms from "./routes/roomRoute";
+// libraries
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+
+// routes
+import users from './routes/userRoute';
+import rooms from './routes/roomRoute';
+
 const app = express();
+
 app.use(cors());
+app.use('/user', users);
+app.use('/room', rooms);
 
-// const RoomObj = require("./types/index");
-// const { request, response } = require("./types/index.ts");
-
-//regiter users
-//
-//login users
-
-const port: number = 4000;
-app.use("/user", users);
-app.use("/room", rooms);
-
-try {
-  app.listen(port);
-  console.log("listening on port", port);
-} catch (e) {
-  console.log("error loading server:", e);
-}
+const { PORT, DB } = process.env;
+mongoose
+  .connect(`mongodb://mongo:27017/${DB}`)
+  .then(() => {
+    console.log('Connected To MongodDB');
+    app.listen(PORT, () => console.log('Listening On Port', PORT));
+  })
+  .catch((e) => console.log(e));

@@ -1,5 +1,5 @@
-const { Schema } = require("mongoose");
-const userSchema: typeof Schema = new Schema({
+import { Schema } from 'mongoose';
+const userSchema: Schema = new Schema({
   firstName: String,
   lastName: String,
   email: String,
