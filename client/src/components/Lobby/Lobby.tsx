@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { RoomObj } from "./interfaces";
+import { NewRoomObj, RoomObj } from "./interfaces";
 import axios from "axios";
 import { v1 as uuid } from "uuid";
 const Lobby: React.FC = () => {
@@ -15,8 +15,7 @@ const Lobby: React.FC = () => {
    
   }, []);
   const createRoom = (): void => {
-    const mockRoom = {
-      id: 'dsfjhnb43-32jfdsfds-fb2-ajsdbna2',
+    const mockRoom: NewRoomObj = {
       host: 'fjkednj-fafd56-324fsh-3asdsr3e',
       subject: 'Mathmatics',
       subSubject: 'Geometric',
@@ -39,8 +38,8 @@ const Lobby: React.FC = () => {
       {rooms?.map((room: RoomObj, i: number) => {
         return (
           <div className="room">
-            <p key={i}>{room.name}</p>
-            <p key={i}>{room.id}</p>
+            <p key={i}>{room.title}</p>
+            <p key={i}>{room._id}</p>
             {room.participants.map((user: string, j: number) => {
               return <p key={j}>{user}</p>;
             })}

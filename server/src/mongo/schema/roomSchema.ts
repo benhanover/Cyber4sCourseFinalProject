@@ -1,5 +1,7 @@
 import { Schema } from 'mongoose';
-const roomSchema: Schema = new Schema({
+import { Iroom } from '../../interfaces';
+
+const roomSchema = new Schema<Iroom>({
   host: String,
   subject: String,
   subSubject: String,

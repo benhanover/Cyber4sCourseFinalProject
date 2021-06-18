@@ -6,7 +6,7 @@ import { Iroom } from '../interfaces/index';
 
 // import mongo-functions
 
-import { saveRoom } from '../mongo/mongo-functions';
+import { getRooms, saveRoom } from '../mongo/mongo-functions';
 
 // export const getAll = (req: Request, res: Response) => {
 //     // return res.json(mockRooms);
@@ -21,8 +21,14 @@ export const createRoom = async (req: Request, res: Response) => {
 
   res.send("updated successfully");
 }
-export const getAllRooms = (req: Request, res: Response) => {
-    // return res.json(mockRooms);
+export const getAllRooms = async (req: Request, res: Response) => {
+    try {
+        const rooms: Array<Iroom> = await getRooms();
+        return res.json(rooms);
+    }
+    catch (e) {
+        
+    }
   }
 
 

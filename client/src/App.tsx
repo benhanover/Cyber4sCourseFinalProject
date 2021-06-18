@@ -5,9 +5,9 @@ import Lobby from "./components/Lobby/Lobby";
 const App: React.FunctionComponent<{}> = () => {
   return (
     <div>
-      {/* <Login /> */}
+      <Login />
       <Register />
-      <Lobby />
+      {/* <Lobby /> */}
     </div>
   );
 };

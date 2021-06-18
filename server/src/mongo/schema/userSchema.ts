@@ -1,11 +1,13 @@
 import { Schema } from 'mongoose';
-const userSchema: Schema = new Schema({
+import { Iuser } from '../../interfaces';
+
+const userSchema = new Schema<Iuser>({
   firstName: String,
   lastName: String,
   email: String,
   password: String,
   birthDate: Date,
-  userName: String,
+  username: String,
   peerId: String
 });
 export default userSchema;

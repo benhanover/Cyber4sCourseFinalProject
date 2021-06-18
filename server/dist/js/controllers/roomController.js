@@ -23,7 +23,12 @@ const createRoom = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     res.send("updated successfully");
 });
 exports.createRoom = createRoom;
-const getAllRooms = (req, res) => {
-    // return res.json(mockRooms);
-};
+const getAllRooms = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const rooms = yield mongo_functions_1.getRooms();
+        return res.json(rooms);
+    }
+    catch (e) {
+    }
+});
 exports.getAllRooms = getAllRooms;

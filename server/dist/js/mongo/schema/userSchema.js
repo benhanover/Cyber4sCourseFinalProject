@@ -8,5 +8,6 @@ const userSchema = new mongoose_1.Schema({
     password: String,
     birthDate: Date,
     username: String,
+    peerId: String
 });
 exports.default = userSchema;

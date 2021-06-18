@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const roomSchema = new mongoose_1.Schema({
-    id: String,
     host: String,
     subject: String,
     subSubject: String,

@@ -9,9 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveRoom = exports.registerUser = exports.canRegister = void 0;
+exports.findDocument = exports.getRooms = exports.saveRoom = exports.registerUser = exports.canRegister = void 0;
 // import models
 const models_1 = require("./models");
+const enums_1 = require("../enums");
+const assistance_functions_1 = require("./assistance-functions");
 // src/controllers/userControllers
 const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -22,7 +24,7 @@ const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, funct
                 returnObjCaseExist = { return: false, message: 'Email Already Exist' };
             }
             else if (user.username === username) {
-                returnObjCaseExist = { return: false, message: 'UserName Already Exist' };
+                returnObjCaseExist = { return: false, message: 'Username Already Exist' };
             }
         });
         if (returnObjCaseExist) {
@@ -59,3 +61,32 @@ const saveRoom = (room) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.saveRoom = saveRoom;
+const getRooms = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const rooms = yield models_1.Room.find();
+        return rooms;
+    }
+    catch (e) {
+        console.log(enums_1.errorEnums.UNREACHABLE_DB + e.message);
+        return [];
+    }
+});
+exports.getRooms = getRooms;
+// finds a document by model and fiel
+const findDocument = (modelString, field, fieldContent) => __awaiter(void 0, void 0, void 0, function* () {
+    const model = assistance_functions_1.getModel(modelString);
+    if (!model) {
+        console.log("No Model Enum Entered to findOne Function");
+        return { return: false, message: "Missing parameter line 68 ,mongo-functions" };
+    }
+    try {
+        const foundDocument = yield model.findOne({ [field]: fieldContent });
+        console.log("found Document: ", foundDocument);
+        return foundDocument ? foundDocument : { return: false, message: modelString + enums_1.errorEnums.NOT_FOUND };
+    }
+    catch (e) {
+        console.log(e, "Inside findeOne Function");
+        return { return: false, message: enums_1.errorEnums.UNREACHABLE_DB + e };
+    }
+});
+exports.findDocument = findDocument;

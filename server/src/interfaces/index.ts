@@ -1,34 +1,25 @@
-import { Document } from "mongoose";
 export interface Iroom {
-  id: String;
-  host: String;
-  subject: String;
-  subSubject: String;
-  title: String;
-  description: String;
-  participants: Array<string>;
-  limit: Number;
-  isLocked: Boolean;
+  id: string;
+  host: string;
+  subject: string;
+  subSubject: string;
+  title: string;
+  description: string;
+  participants: string[]; 
+  limit: number;
+  isLocked: boolean;
 }
 
-// export interface Iuser extends Document {
-//   firstName: String;
-//   lastName: String;
-//   email: String;
-//   password: String;
-//   birthDate: Date;
-//   username: String;
-// }
 export interface Iuser {
-  firstName: String;
-  lastName: String;
-  email: String;
-  password: String;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
   birthDate: Date;
-  username: String;
+  username: string;
 }
 
-export interface IcanRegister {
-  return: Boolean,
-  message?: String
+export interface IreturnInfo {
+  return: boolean,
+  message?: string
 }
