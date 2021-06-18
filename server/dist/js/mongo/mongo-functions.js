@@ -9,9 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerUser = exports.canRegister = void 0;
+exports.saveRoom = exports.registerUser = exports.canRegister = void 0;
 // import models
 const models_1 = require("./models");
+// src/controllers/userControllers
 const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield models_1.User.find({ $or: [{ email }, { username }] });
@@ -34,16 +35,10 @@ const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.canRegister = canRegister;
+// src/controllers/userControllers
 const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        models_1.User.create({
-            lastName: user.lastName,
-            firstName: user.firstName,
-            email: user.email,
-            password: user.password,
-            birthDate: user.birthDate ? new Date(user.birthDate) : new Date(),
-            username: user.username
-        });
+        models_1.User.create(user);
         return true;
     }
     catch (e) {
@@ -52,3 +47,15 @@ const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.registerUser = registerUser;
+// src/controllers/roomControllers
+const saveRoom = (room) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        models_1.Room.create(room);
+        return true;
+    }
+    catch (e) {
+        console.log(e);
+        return false;
+    }
+});
+exports.saveRoom = saveRoom;

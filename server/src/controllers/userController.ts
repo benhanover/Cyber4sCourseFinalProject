@@ -22,6 +22,8 @@ console.log(pass);
       if (!registrationAvailability.return){
        return res.status(409).send('Could Not Register: ' + registrationAvailability.message);
       }
+      console.log(birthDate);
+      
       const hashPassword: string = hashSync(password, 10);
       const user: Iuser = { lastName, firstName, email, password: hashPassword, birthDate, username }
       

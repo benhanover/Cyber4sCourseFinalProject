@@ -25,6 +25,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!registrationAvailability.return) {
         return res.status(409).send('Could Not Register: ' + registrationAvailability.message);
     }
+    console.log(birthDate);
     const hashPassword = hashSync(password, 10);
     const user = { lastName, firstName, email, password: hashPassword, birthDate, username };
     const registered = yield mongo_functions_1.registerUser(user);

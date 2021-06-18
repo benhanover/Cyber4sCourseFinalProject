@@ -22,16 +22,21 @@ services:
   #   restart: always
   #   ports:
   #     - 8000:80
+  #   # networks:
+  #     # - rest-server
   # server:
   #   container_name: server
   #   build:
-  #     contex: ./server
+  #     context: ./server
   #     dockerfile: ./Dockerfile
   #   ports:
-  #     - 4000:4000
+  #      - 4000:4000
   #   networks:
   #     - db
-
+  #   env_file:  
+  #     - ./server/.env
 networks:
   db:
     driver: bridge
+  # rest-server:
+      # driver: bridge

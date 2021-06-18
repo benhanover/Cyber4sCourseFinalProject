@@ -7,7 +7,7 @@ const App: React.FunctionComponent<{}> = () => {
     <div>
       {/* <Login /> */}
       <Register />
-      {/* <Lobby /> */}
+      <Lobby />
     </div>
   );
 };

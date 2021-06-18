@@ -5,9 +5,9 @@ import mongoose from 'mongoose';
 import {User, Room} from './models'
 
 // import intefaces
-import { Iuser, IcanRegister } from '../interfaces/index';
+import { Iuser, IcanRegister, Iroom } from '../interfaces/index';
 
-
+// src/controllers/userControllers
 export const canRegister = async (email: string, username: string): Promise<IcanRegister> => {
   try {
     const users: Array<Iuser> = await User.find({ $or: [{ email }, { username }] });
@@ -28,20 +28,25 @@ export const canRegister = async (email: string, username: string): Promise<Ican
   }
 }
 
+// src/controllers/userControllers
 export const registerUser = async (user: Iuser): Promise<Boolean> => {
   try {
-    User.create({
-      lastName: user.lastName,
-      firstName: user.firstName,
-      email: user.email,
-      password: user.password,
-      birthDate: user.birthDate ? new Date(user.birthDate) : new Date(),
-      username: user.username
-    })
+    User.create(user)
     return true;
   } catch (e) {
     console.log(e)
     return false;
   }
-
 }
+
+// src/controllers/roomControllers
+export const saveRoom = async (room: Iroom) => {
+  try {
+    Room.create(room)
+    return true;
+  } catch (e) {
+    console.log(e)
+    return false;
+  }
+}
+

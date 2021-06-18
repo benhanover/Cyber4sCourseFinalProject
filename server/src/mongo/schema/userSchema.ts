@@ -5,6 +5,7 @@ const userSchema: Schema = new Schema({
   email: String,
   password: String,
   birthDate: Date,
-  username: String,
+  userName: String,
+  peerId: String
 });
 export default userSchema;

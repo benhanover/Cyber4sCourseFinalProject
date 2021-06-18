@@ -1,8 +1,14 @@
 import { Document } from "mongoose";
-export interface Iroom extends Document {
-  name: String;
+export interface Iroom {
   id: String;
+  host: String;
+  subject: String;
+  subSubject: String;
+  title: String;
+  description: String;
   participants: Array<string>;
+  limit: Number;
+  isLocked: Boolean;
 }
 
 // export interface Iuser extends Document {

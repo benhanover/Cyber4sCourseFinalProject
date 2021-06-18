@@ -2,3 +2,8 @@
   file: userControllers
   function: register
   todo: simplify redeclaration
+
+2 
+  file: roomControllers
+  function: createRoom
+  todo: simplify redeclaration
