@@ -5,7 +5,7 @@ export interface Iroom {
   subSubject: string;
   title: string;
   description: string;
-  participants: string[]; 
+  participants: string[];
   limit: number;
   isLocked: boolean;
 }
@@ -20,6 +20,6 @@ export interface Iuser {
 }
 
 export interface IreturnInfo {
-  return: boolean,
-  message?: string
+  return: boolean;
+  message?: string;
 }

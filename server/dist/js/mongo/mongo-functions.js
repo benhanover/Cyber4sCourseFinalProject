@@ -17,22 +17,32 @@ const assistance_functions_1 = require("./assistance-functions");
 // src/controllers/userControllers
 const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield models_1.User.find({ $or: [{ email }, { username }] });
+        const users = yield models_1.User.find({
+            $or: [{ email }, { username }],
+        });
+        console.log('1');
+        console.log(users);
         let returnObjCaseExist;
         users.find((user) => {
             if (user.email === email) {
                 returnObjCaseExist = { return: false, message: 'Email Already Exist' };
             }
             else if (user.username === username) {
-                returnObjCaseExist = { return: false, message: 'Username Already Exist' };
+                returnObjCaseExist = {
+                    return: false,
+                    message: 'Username Already Exist',
+                };
             }
         });
+        console.log('2');
         if (returnObjCaseExist) {
             return returnObjCaseExist;
         }
+        console.log('3');
         return { return: true };
     }
     catch (e) {
+        console.log('4');
         return { return: false, message: e.message };
     }
 });
@@ -76,16 +86,23 @@ exports.getRooms = getRooms;
 const findDocument = (modelString, field, fieldContent) => __awaiter(void 0, void 0, void 0, function* () {
     const model = assistance_functions_1.getModel(modelString);
     if (!model) {
-        console.log("No Model Enum Entered to findOne Function");
-        return { return: false, message: "Missing parameter line 68 ,mongo-functions" };
+        console.log('No Model Enum Entered to findOne Function');
+        return {
+            return: false,
+            message: 'Missing parameter line 68 ,mongo-functions',
+        };
     }
     try {
-        const foundDocument = yield model.findOne({ [field]: fieldContent });
-        console.log("found Document: ", foundDocument);
-        return foundDocument ? foundDocument : { return: false, message: modelString + enums_1.errorEnums.NOT_FOUND };
+        const foundDocument = yield model.findOne({
+            [field]: fieldContent,
+        });
+        console.log('found Document: ', foundDocument);
+        return foundDocument
+            ? foundDocument
+            : { return: false, message: modelString + enums_1.errorEnums.NOT_FOUND };
     }
     catch (e) {
-        console.log(e, "Inside findeOne Function");
+        console.log(e, 'Inside findeOne Function');
         return { return: false, message: enums_1.errorEnums.UNREACHABLE_DB + e };
     }
 });

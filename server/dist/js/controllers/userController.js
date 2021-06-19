@@ -13,62 +13,62 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = exports.register = void 0;
+require('dotenv').config({ path: '../../.env' });
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const { hash, compare } = bcrypt_1.default;
 // import mongo-functions
 const mongo_functions_1 = require("../mongo/mongo-functions");
+const { hash, compare } = bcrypt_1.default;
+// Type 'string | undefined' is not assignable to type 'string'.
+// Type 'undefined' is not assignable to type 'string'
+// Adding ! tells TypeScript that even though something looks like it could be null, it can trust you that it's not
+const accessTokenKey = process.env.ACCESS_TOKEN_KEY;
+const refreshTokenKey = process.env.REFRESH_TOKEN_KEY;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // prettier-ignore
     const { lastName, firstName, email, password, birthDate, username } = req.body;
     const registrationAvailability = yield mongo_functions_1.canRegister(email, username);
     if (!registrationAvailability.return) {
-        return res.status(409).send('Could Not Register: ' + registrationAvailability.message);
+        return res
+            .status(409)
+            .send('Could Not Register: ' + registrationAvailability.message);
     }
     const hashPassword = yield hash(password, 10);
+    // prettier-ignore
     const user = { lastName, firstName, email, password: hashPassword, birthDate, username };
     const registered = yield mongo_functions_1.registerUser(user);
+    console.log(registered);
     if (!registered)
-        return res.status(500).send("Could Not Register");
-    return res.send("Registered Successfully");
+        return res.status(500).send('Could Not Register');
+    return res.send('Registered Successfully');
 });
 exports.register = register;
+// need to add user does not exist
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('in the route');
     const { email, password } = req.body;
-    const foundUser = yield mongo_functions_1.findDocument("User", "email", email);
-    console.log("email", email, "password", password);
+    const foundUser = yield mongo_functions_1.findDocument('User', 'email', email);
     // all but Iuser
     if (!('username' in foundUser)) {
-        return res.status(409).send("One or two of the following is incorrect");
+        return res.status(409).send('Username or Password is incorrect');
     }
     try {
         const isPasswordCorrect = yield compare(password, foundUser.password);
         if (!isPasswordCorrect) {
-            return res.status(409).send("Password Is Incorrect");
+            return res.status(409).send('Username or Password is incorrect');
         }
-        return res.send("Connected Successfuly");
+        const accessToken = jsonwebtoken_1.default.sign({ foundUser }, accessTokenKey, {
+            expiresIn: '15m',
+        });
+        const refreshToken = jsonwebtoken_1.default.sign({ foundUser }, refreshTokenKey, {
+            expiresIn: '8h',
+        });
+        // prettier-ignore
+        return res.send({ accessToken, refreshToken, message: 'Connected Successfuly', });
     }
     catch (error) {
         console.log(error);
         res.sendStatus(500);
     }
-    // const userData = { username };
-    // const accessToken = jwt.sign(userData, process.env.ACCESS_TOKEN_SECRET, {
-    //     expiresIn: "10s",
-    //   });
-    //   const refreshToken = jwt.sign(userData, process.env.REFRESH_TOKEN_SECRET, {
-    //       expiresIn: "4h",
-    //     });
 });
 exports.login = login;
-//   RefreshTokens.create(
-//     {
-//       refresh_token: refreshToken,
-//       expires_at: new Date().getTime() / 1000 + 14400,
-//       username,
-//     },
-//     { fields: ["refresh_token", "expires_at", "username"] }
-//   );
-//   return res.json({ accessToken, refreshToken });
-// } catch (error) {
-//   console.log(error);
-//   res.sendStatus(500);
-// }

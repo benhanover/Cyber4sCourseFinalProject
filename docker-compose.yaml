@@ -33,10 +33,10 @@ services:
   #      - 4000:4000
   #   networks:
   #     - db
-  #   env_file:  
+  #   env_file:
   #     - ./server/.env
 networks:
   db:
     driver: bridge
   # rest-server:
-      # driver: bridge
+  # driver: bridge
