@@ -18,11 +18,11 @@ const mongo_functions_1 = require("../mongo/mongo-functions");
 // }
 const createRoom = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // prettier-ignore
-    const { id, host, subject, subSubject, title, description, participants, limit, isLocked } = req.body;
+    const { host, subject, subSubject, title, description, participants, limit, isLocked } = req.body;
     // prettier-ignore
-    const roomToCreate = { id, host, subject, subSubject, title, description, participants, limit, isLocked };
-    yield mongo_functions_1.saveRoom(roomToCreate);
-    res.json({ message: 'updated successfully', newRoom: roomToCreate });
+    const roomToCreate = { host, subject, subSubject, title, description, participants, limit, isLocked };
+    const savedRoom = yield mongo_functions_1.saveRoom(roomToCreate);
+    res.json({ message: 'updated successfully', newRoom: savedRoom });
 });
 exports.createRoom = createRoom;
 const getAllRooms = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

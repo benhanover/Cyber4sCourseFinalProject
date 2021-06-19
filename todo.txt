@@ -8,3 +8,7 @@
   function: createRoom
   todo: simplify redeclaration
 
+-when refreshing access tokens make sure to delete from data base
+-not recreating access token 
+CLEAN CODE
+-validation for inputs

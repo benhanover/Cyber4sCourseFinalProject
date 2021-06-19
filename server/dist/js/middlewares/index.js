@@ -11,21 +11,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.accessTokenValidator = void 0;
 require('dotenv').config({ path: '../../.env' });
+const mongo_functions_1 = require("../mongo/mongo-functions");
 const jwt = require('jsonwebtoken');
 const accessTokenKey = process.env.ACCESS_TOKEN_KEY;
 // PROBLEM- go to todo.txt
 // prettier-ignore
-const accessTokenValidator = (req, res, next) => {
+const accessTokenValidator = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const accessToken = req.headers['authorization'];
     if (!accessToken)
         return res.status(401).send('Valid Token Required');
+    if (!(yield mongo_functions_1.isValidAccess(accessToken))) {
+        // catfish detected
+        return res.status(403).send('Forbidden Token');
+    }
     jwt.verify(accessToken, accessTokenKey, (err, user) => __awaiter(void 0, void 0, void 0, function* () {
         if (err) {
-            return res.status(401).end();
+            // ask for the refresh token
+            return res.status(401).send();
         }
         req.body.accessToken = accessToken;
         req.body.user = user;
     }));
     return next();
-};
+});
 exports.accessTokenValidator = accessTokenValidator;

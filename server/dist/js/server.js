@@ -12,12 +12,14 @@ const cors_1 = __importDefault(require("cors"));
 // routes
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
 const roomRoute_1 = __importDefault(require("./routes/roomRoute"));
+const refreshRoute_1 = __importDefault(require("./routes/refreshRoute"));
 // declarations
 const app = express_1.default();
 const { PORT, DB } = process.env;
 // middlewares
 app.use(express_1.default.json());
 app.use(cors_1.default());
+app.use('/refreshToken', refreshRoute_1.default);
 app.use('/user', userRoute_1.default);
 app.use('/room', roomRoute_1.default);
 mongoose_1.default

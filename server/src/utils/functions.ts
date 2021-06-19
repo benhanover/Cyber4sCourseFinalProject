@@ -14,5 +14,6 @@ export const generateTokens = (user: Iuser | { foundUser: Iuser }) => {
   const refreshToken = jwt.sign(user, refreshTokenKey, {
     expiresIn: '8h',
   });
+
   return { accessToken, refreshToken };
 };

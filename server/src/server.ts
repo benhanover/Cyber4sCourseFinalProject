@@ -9,6 +9,8 @@ import cors from 'cors';
 // routes
 import users from './routes/userRoute';
 import rooms from './routes/roomRoute';
+import refreshToken from './routes/refreshRoute';
+import { saveAccessToken } from './mongo/mongo-functions';
 
 // declarations
 const app = express();
@@ -17,6 +19,7 @@ const { PORT, DB } = process.env;
 // middlewares
 app.use(express.json());
 app.use(cors());
+app.use('/refreshToken', refreshToken);
 app.use('/user', users);
 app.use('/room', rooms);
 

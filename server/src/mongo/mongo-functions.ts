@@ -2,7 +2,7 @@
 import mongoose, { Model, Document } from 'mongoose';
 
 // import models
-import { User, Room } from './models';
+import { User, Room, RefreshToken, AccessToken } from './models';
 
 // import intefaces
 import { Iuser, Iroom, IreturnInfo } from '../interfaces/index';
@@ -19,9 +19,6 @@ export const canRegister = async (
     const users: Array<Iuser> = await User.find({
       $or: [{ email }, { username }],
     });
-    console.log('1');
-    console.log(users);
-
     let returnObjCaseExist;
     users.find((user) => {
       if (user.email === email) {
@@ -33,15 +30,11 @@ export const canRegister = async (
         };
       }
     });
-    console.log('2');
     if (returnObjCaseExist) {
       return returnObjCaseExist;
     }
-    console.log('3');
     return { return: true };
   } catch (e) {
-    console.log('4');
-
     return { return: false, message: e.message };
   }
 };
@@ -60,8 +53,8 @@ export const registerUser = async (user: Iuser): Promise<Boolean> => {
 // src/controllers/roomControllers
 export const saveRoom = async (room: Iroom) => {
   try {
-    Room.create(room);
-    return true;
+    const updatedRoom = await Room.create(room);
+    return updatedRoom;
   } catch (e) {
     console.log(e);
     return false;
@@ -96,13 +89,56 @@ export const findDocument = async (
     const foundDocument: Iuser | null = await model.findOne({
       [field]: fieldContent,
     });
-    console.log('found Document: ', foundDocument);
 
     return foundDocument
       ? foundDocument
       : { return: false, message: modelString + errorEnums.NOT_FOUND };
   } catch (e) {
-    console.log(e, 'Inside findeOne Function');
     return { return: false, message: errorEnums.UNREACHABLE_DB + e };
   }
+};
+
+export const removeAccessToken = async (
+  accessToken: string
+): Promise<boolean> => {
+  try {
+    const accessDeleted: any = await AccessToken.deleteOne({ accessToken });
+    console.log('accessDeleted:', accessDeleted);
+    if (accessDeleted.deletedCount > 0) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+export const removeRefreshToken = async (
+  refreshToken: string
+): Promise<boolean> => {
+  try {
+    const refreshDeleted: any = await RefreshToken.deleteOne({ refreshToken });
+    console.log('refreshDeleted:', refreshDeleted);
+    if (refreshDeleted.deletedCount > 0) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+export const saveRefreshToken = (refreshToken: string) => {
+  RefreshToken.create({ refreshToken });
+};
+
+export const saveAccessToken = (accessToken: string) => {
+  AccessToken.create({ accessToken });
+};
+
+export const isValidRefresh = async (refreshToken: string) => {
+  return Boolean(await RefreshToken.findOne({ refreshToken }));
+};
+export const isValidAccess = async (accessToken: string) => {
+  return Boolean(await AccessToken.findOne({ accessToken }));
 };

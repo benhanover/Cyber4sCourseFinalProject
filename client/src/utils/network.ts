@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { AxiosResponse, Method } from 'axios';
+import { AxiosResponse, AxiosError, Method } from 'axios';
+import { recreateAccessToken } from './functions';
 import Cookies from 'js-cookie';
 
 async function Network(
@@ -7,9 +8,12 @@ async function Network(
   endpoint: string,
   body: any = {}
 ): Promise<AxiosResponse> {
+  const accessToken = Cookies.get('accessToken');
+  console.log('accessToken:', accessToken);
+
   const headers = {
     'Content-Type': "application/json;charset=utf-8'",
-    Authorization: Cookies.get('accessToken'),
+    authorization: accessToken,
   };
   const options = {
     method: method,
@@ -21,10 +25,18 @@ async function Network(
 
   return await axios(options)
     .then((response: AxiosResponse) => {
-      return response;
+      if (response.status === 200) return response.data;
     })
-    .catch((e) => {
-      return e.response.data;
+    .catch(async (e) => {
+      switch (e.message) {
+        case 'Request failed with status code 401':
+          return await recreateAccessToken(method, endpoint, body);
+
+          break;
+        default:
+          console.log('defaulttt');
+      }
+      return e.message;
     });
 }
 export default Network;

@@ -1,5 +1,7 @@
+import mongoose from 'mongoose';
+
 export interface Iroom {
-  id: string;
+  _id?: any;
   host: string;
   subject: string;
   subSubject: string;

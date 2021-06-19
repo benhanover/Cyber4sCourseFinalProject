@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { NewRoomObj, RoomObj } from './interfaces';
+import { Iroom } from './interfaces';
 import axios from 'axios';
 import { v1 as uuid } from 'uuid';
 import Network from '../../utils/network';
 import LogoutButton from '../Common/LogoutButton/LougoutButton';
 const Lobby: React.FC = () => {
-  const [rooms, setRooms] = useState<RoomObj[] | undefined>();
+  const [rooms, setRooms] = useState<Iroom[] | undefined>();
 
   useEffect(() => {
-    Network('GET', 'http://localhost:4000/room/all').then(({ data: rooms }) => {
-      console.log(rooms);
+    Network('GET', 'http://localhost:4000/room/all').then((rooms: any) => {
+      if (!Array.isArray(rooms)) return;
       setRooms(rooms);
     });
 
     //
   }, []);
   const createRoom = (): void => {
-    const mockRoom: NewRoomObj = {
+    const mockRoom: Iroom = {
       host: 'fjkednj-fafd56-324fsh-3asdsr3e',
       subject: 'Mathmatics',
       subSubject: 'Geometric',
@@ -32,7 +32,6 @@ const Lobby: React.FC = () => {
     };
     Network('POST', 'http://localhost:4000/room/new', mockRoom)
       .then(({ data }) => {
-        console.log(data.newRoom);
         rooms?.push(data.newRoom);
         setRooms(rooms?.slice());
       })
@@ -43,7 +42,7 @@ const Lobby: React.FC = () => {
     <div>
       <LogoutButton />
       <button onClick={createRoom}>Create Room</button>
-      {rooms?.map((room: RoomObj, i: number) => {
+      {rooms?.map((room: Iroom, i: number) => {
         return (
           <div className='room'>
             <p key={i}>{room.title}</p>

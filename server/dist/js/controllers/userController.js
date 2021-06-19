@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.register = void 0;
+exports.logout = exports.login = exports.register = void 0;
 require('dotenv').config({ path: '../../.env' });
 const bcrypt_1 = __importDefault(require("bcrypt"));
 // import mongo-functions
@@ -35,12 +35,14 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const registered = yield mongo_functions_1.registerUser(user);
     if (!registered)
         return res.status(500).send('Could Not Register');
-    return res.send(Object.assign(Object.assign({}, functions_1.generateTokens(user)), { message: 'Registerd Successfuly' }));
+    const newTokens = functions_1.generateTokens(user);
+    yield mongo_functions_1.saveRefreshToken(newTokens.refreshToken);
+    yield mongo_functions_1.saveAccessToken(newTokens.accessToken);
+    return res.send(Object.assign(Object.assign({}, newTokens), { message: 'Registerd Successfuly' }));
 });
 exports.register = register;
 // need to add user does not exist
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('in the route');
     const { email, password } = req.body;
     const foundUser = yield mongo_functions_1.findDocument('User', 'email', email);
     // all but Iuser
@@ -52,7 +54,10 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!isPasswordCorrect) {
             return res.status(409).send('Username or Password is incorrect');
         }
-        return res.send(Object.assign(Object.assign({}, functions_1.generateTokens({ foundUser })), { message: 'Connected Successfuly' }));
+        const newTokens = functions_1.generateTokens({ foundUser });
+        yield mongo_functions_1.saveRefreshToken(newTokens.refreshToken);
+        yield mongo_functions_1.saveAccessToken(newTokens.accessToken);
+        return res.send(Object.assign(Object.assign({}, newTokens), { message: 'Connected Successfuly' }));
     }
     catch (error) {
         console.log(error);
@@ -60,3 +65,20 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
+// prettier-ignore
+const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const accessToken = req.headers['authorization'];
+    const refreshToken = req.headers['refreshtoken'];
+    if (!refreshToken || Array.isArray(refreshToken)) {
+        res.status(401).send('Refresh Token Required');
+        return;
+    }
+    const refreshremoved = yield mongo_functions_1.removeRefreshToken(refreshToken);
+    const accessremoved = yield mongo_functions_1.removeAccessToken(accessToken);
+    if (refreshremoved && accessremoved) {
+        res.send("Logout Successfully");
+        return;
+    }
+    res.send("Could Not Logout");
+});
+exports.logout = logout;

@@ -12,4 +12,3 @@ const roomSchema = new Schema<Iroom>({
   isLocked: Boolean,
 });
 export default roomSchema;
-

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findDocument = exports.getRooms = exports.saveRoom = exports.registerUser = exports.canRegister = void 0;
+exports.isValidAccess = exports.isValidRefresh = exports.saveAccessToken = exports.saveRefreshToken = exports.removeRefreshToken = exports.removeAccessToken = exports.findDocument = exports.getRooms = exports.saveRoom = exports.registerUser = exports.canRegister = void 0;
 // import models
 const models_1 = require("./models");
 const enums_1 = require("../enums");
@@ -20,8 +20,6 @@ const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, funct
         const users = yield models_1.User.find({
             $or: [{ email }, { username }],
         });
-        console.log('1');
-        console.log(users);
         let returnObjCaseExist;
         users.find((user) => {
             if (user.email === email) {
@@ -34,15 +32,12 @@ const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, funct
                 };
             }
         });
-        console.log('2');
         if (returnObjCaseExist) {
             return returnObjCaseExist;
         }
-        console.log('3');
         return { return: true };
     }
     catch (e) {
-        console.log('4');
         return { return: false, message: e.message };
     }
 });
@@ -62,8 +57,8 @@ exports.registerUser = registerUser;
 // src/controllers/roomControllers
 const saveRoom = (room) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        models_1.Room.create(room);
-        return true;
+        const updatedRoom = yield models_1.Room.create(room);
+        return updatedRoom;
     }
     catch (e) {
         console.log(e);
@@ -96,14 +91,58 @@ const findDocument = (modelString, field, fieldContent) => __awaiter(void 0, voi
         const foundDocument = yield model.findOne({
             [field]: fieldContent,
         });
-        console.log('found Document: ', foundDocument);
         return foundDocument
             ? foundDocument
             : { return: false, message: modelString + enums_1.errorEnums.NOT_FOUND };
     }
     catch (e) {
-        console.log(e, 'Inside findeOne Function');
         return { return: false, message: enums_1.errorEnums.UNREACHABLE_DB + e };
     }
 });
 exports.findDocument = findDocument;
+const removeAccessToken = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const accessDeleted = yield models_1.AccessToken.deleteOne({ accessToken });
+        console.log('accessDeleted:', accessDeleted);
+        if (accessDeleted.deletedCount > 0) {
+            return true;
+        }
+        return false;
+    }
+    catch (e) {
+        console.log(e);
+        return false;
+    }
+});
+exports.removeAccessToken = removeAccessToken;
+const removeRefreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const refreshDeleted = yield models_1.RefreshToken.deleteOne({ refreshToken });
+        console.log('refreshDeleted:', refreshDeleted);
+        if (refreshDeleted.deletedCount > 0) {
+            return true;
+        }
+        return false;
+    }
+    catch (e) {
+        console.log(e);
+        return false;
+    }
+});
+exports.removeRefreshToken = removeRefreshToken;
+const saveRefreshToken = (refreshToken) => {
+    models_1.RefreshToken.create({ refreshToken });
+};
+exports.saveRefreshToken = saveRefreshToken;
+const saveAccessToken = (accessToken) => {
+    models_1.AccessToken.create({ accessToken });
+};
+exports.saveAccessToken = saveAccessToken;
+const isValidRefresh = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
+    return Boolean(yield models_1.RefreshToken.findOne({ refreshToken }));
+});
+exports.isValidRefresh = isValidRefresh;
+const isValidAccess = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
+    return Boolean(yield models_1.AccessToken.findOne({ accessToken }));
+});
+exports.isValidAccess = isValidAccess;
