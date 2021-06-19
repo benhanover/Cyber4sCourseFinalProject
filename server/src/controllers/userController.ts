@@ -1,7 +1,6 @@
 require('dotenv').config({ path: '../../.env' });
 // import from liraries
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 // import interfaces
@@ -14,13 +13,10 @@ import {
   findDocument,
 } from '../mongo/mongo-functions';
 
-const { hash, compare } = bcrypt;
+// import assistance functions
+import { generateTokens } from '../utils/functions';
 
-// Type 'string | undefined' is not assignable to type 'string'.
-// Type 'undefined' is not assignable to type 'string'
-// Adding ! tells TypeScript that even though something looks like it could be null, it can trust you that it's not
-const accessTokenKey: string = process.env.ACCESS_TOKEN_KEY!;
-const refreshTokenKey: string = process.env.REFRESH_TOKEN_KEY!;
+const { hash, compare } = bcrypt;
 
 export const register = async (req: Request, res: Response) => {
   // prettier-ignore
@@ -36,12 +32,13 @@ export const register = async (req: Request, res: Response) => {
   const hashPassword: string = await hash(password, 10);
   // prettier-ignore
   const user: Iuser = { lastName, firstName, email, password: hashPassword, birthDate, username };
-
   const registered = await registerUser(user);
-  console.log(registered);
-
   if (!registered) return res.status(500).send('Could Not Register');
-  return res.send('Registered Successfully');
+
+  return res.send({
+    ...generateTokens(user),
+    message: 'Registerd Successfuly',
+  });
 };
 
 // need to add user does not exist
@@ -60,14 +57,10 @@ export const login = async (req: Request, res: Response) => {
     if (!isPasswordCorrect) {
       return res.status(409).send('Username or Password is incorrect');
     }
-    const accessToken = jwt.sign({ foundUser }, accessTokenKey, {
-      expiresIn: '15m',
+    return res.send({
+      ...generateTokens({ foundUser }),
+      message: 'Connected Successfuly',
     });
-    const refreshToken = jwt.sign({ foundUser }, refreshTokenKey, {
-      expiresIn: '8h',
-    });
-    // prettier-ignore
-    return res.send({accessToken, refreshToken, message: 'Connected Successfuly',});
   } catch (error) {
     console.log(error);
     res.sendStatus(500);

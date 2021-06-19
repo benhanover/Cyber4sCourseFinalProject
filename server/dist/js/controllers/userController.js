@@ -14,16 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = exports.register = void 0;
 require('dotenv').config({ path: '../../.env' });
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 // import mongo-functions
 const mongo_functions_1 = require("../mongo/mongo-functions");
+// import assistance functions
+const functions_1 = require("../utils/functions");
 const { hash, compare } = bcrypt_1.default;
-// Type 'string | undefined' is not assignable to type 'string'.
-// Type 'undefined' is not assignable to type 'string'
-// Adding ! tells TypeScript that even though something looks like it could be null, it can trust you that it's not
-const accessTokenKey = process.env.ACCESS_TOKEN_KEY;
-const refreshTokenKey = process.env.REFRESH_TOKEN_KEY;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // prettier-ignore
     const { lastName, firstName, email, password, birthDate, username } = req.body;
@@ -37,10 +33,9 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // prettier-ignore
     const user = { lastName, firstName, email, password: hashPassword, birthDate, username };
     const registered = yield mongo_functions_1.registerUser(user);
-    console.log(registered);
     if (!registered)
         return res.status(500).send('Could Not Register');
-    return res.send('Registered Successfully');
+    return res.send(Object.assign(Object.assign({}, functions_1.generateTokens(user)), { message: 'Registerd Successfuly' }));
 });
 exports.register = register;
 // need to add user does not exist
@@ -57,14 +52,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!isPasswordCorrect) {
             return res.status(409).send('Username or Password is incorrect');
         }
-        const accessToken = jsonwebtoken_1.default.sign({ foundUser }, accessTokenKey, {
-            expiresIn: '15m',
-        });
-        const refreshToken = jsonwebtoken_1.default.sign({ foundUser }, refreshTokenKey, {
-            expiresIn: '8h',
-        });
-        // prettier-ignore
-        return res.send({ accessToken, refreshToken, message: 'Connected Successfuly', });
+        return res.send(Object.assign(Object.assign({}, functions_1.generateTokens({ foundUser })), { message: 'Connected Successfuly' }));
     }
     catch (error) {
         console.log(error);

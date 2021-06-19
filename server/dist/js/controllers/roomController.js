@@ -17,10 +17,12 @@ const mongo_functions_1 = require("../mongo/mongo-functions");
 //     console.log("all rooms route, does nothing for now");
 // }
 const createRoom = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // prettier-ignore
     const { id, host, subject, subSubject, title, description, participants, limit, isLocked } = req.body;
+    // prettier-ignore
     const roomToCreate = { id, host, subject, subSubject, title, description, participants, limit, isLocked };
     yield mongo_functions_1.saveRoom(roomToCreate);
-    res.send("updated successfully");
+    res.json({ message: 'updated successfully', newRoom: roomToCreate });
 });
 exports.createRoom = createRoom;
 const getAllRooms = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,7 +30,6 @@ const getAllRooms = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const rooms = yield mongo_functions_1.getRooms();
         return res.json(rooms);
     }
-    catch (e) {
-    }
+    catch (e) { }
 });
 exports.getAllRooms = getAllRooms;

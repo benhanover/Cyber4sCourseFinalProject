@@ -1,5 +1,7 @@
-import React, { useRef, useState } from "react";
-import axios from "axios";
+import React, { useRef, useState } from 'react';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+
 const Register: React.FC = () => {
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const nameRef = useRef<HTMLInputElement | null>(null);
@@ -16,15 +18,10 @@ const Register: React.FC = () => {
     const birthDate: string | undefined = dateRef?.current?.value;
     const email: string | undefined = emailRef?.current?.value;
     const password: string | undefined = passwordRef?.current?.value;
-    console.log( username,
-      firstName,
-      lastName,
-      birthDate,
-      email,
-      password);
-    
+    console.log(username, firstName, lastName, birthDate, email, password);
+
     axios
-      .post("http://localhost:4000/user/register", {
+      .post('http://localhost:4000/user/register', {
         username,
         firstName,
         lastName,
@@ -32,7 +29,11 @@ const Register: React.FC = () => {
         email,
         password,
       })
-      .then(({ data }) => console.log(data))
+      .then(({ data }) => {
+        console.log(data);
+        Cookies.set('accessToken', data.accessToken);
+        Cookies.set('refreshToken', data.refreshToken);
+      })
       .catch(console.log);
   };
 
@@ -45,12 +46,12 @@ const Register: React.FC = () => {
       <label onClick={() => lastNameRef.current?.focus()}>Last Name</label>
       <input ref={lastNameRef} />
       <label onClick={() => dateRef.current?.focus()}>BirthDate</label>
-      <input type="date" ref={dateRef} />
+      <input type='date' ref={dateRef} />
       <label onClick={() => emailRef.current?.focus()}>Email</label>
-      <input type="email" ref={emailRef} />
+      <input type='email' ref={emailRef} />
       <label onClick={() => passwordRef.current?.focus()}>Password</label>
-      <input type="text" ref={passwordRef} />
-      <input type="submit"  />
+      <input type='text' ref={passwordRef} />
+      <input type='submit' />
     </form>
   );
 };
