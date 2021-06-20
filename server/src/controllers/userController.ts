@@ -59,8 +59,7 @@ export const register = async (req: Request, res: Response) => {
 
 // authenticate the user and saves new tokens in db
 export const login = async (req: Request, res: Response): Promise<void> => {
-  console.log("Trying to Get a New AccessToken...");
-
+  console.log("Trying to Login...");
   const { email, password }: { email: string, password: string } = req.body;
   const foundUser: Umodels = await findDocument('User', 'email', email);
   // all but Iuser
@@ -127,7 +126,7 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
 /*---------------------------------------------------------------------------------------------------------- */
 //  sends a new saved accessToken to db and removes the old one.
 export const newToken = async (req: Request, res: Response): Promise<void> => {
-  console.log('  console.log("Trying to Login...');
+  console.log("Trying to Get a New AccessToken...");
   const token: Urefresh = req.headers['refreshtoken'];
   if (!token || Array.isArray(token)) {
     console.log(errorEnums.NO_TOKEN);

@@ -12,7 +12,7 @@ import { createRoom, getAllRooms } from '../controllers/roomController';
 import { accessTokenValidator } from '../middlewares/index';
 
 /*---------------------------------------------------------------------------------------------------------- */
-const rooms : Roter = Router();
+const rooms : Router = Router();
 
 rooms.use(accessTokenValidator);
 rooms.get('/all', getAllRooms);

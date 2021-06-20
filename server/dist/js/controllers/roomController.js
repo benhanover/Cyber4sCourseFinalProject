@@ -19,8 +19,11 @@ const createRoom = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const roomToCreate = req.body;
     try {
         const savedRoom = yield mongo_functions_1.saveRoom(roomToCreate);
-        res.json({ message: 'updated successfully', newRoom: savedRoom });
-        return;
+        if (savedRoom) {
+            res.json({ message: 'updated successfully', newRoom: savedRoom });
+            return;
+        }
+        throw "";
     }
     catch (e) {
         console.log(errorEnums_1.errorEnums.FAILED_CREATE_ROOM, e);

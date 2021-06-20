@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
-    "danks": "tsc && node dist/js/server.js"
+    "danks": "tsc && node dist/js/server.js",
+    "first": "npm i && cd ../client && npm i && npm start& cd ../server && docker-compose up -d && npm start"
   },
   "keywords": [],
   "author": "",

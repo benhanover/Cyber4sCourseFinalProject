@@ -13,9 +13,12 @@ import { getRooms, saveRoom } from '../mongo/mongo-functions';
 export const createRoom = async (req: Request, res: Response): Promise<void> => {
   const roomToCreate: Iroom = req.body;
   try {
-    const savedRoom: Iroom | false = await saveRoom(roomToCreate);
-    res.json({ message: 'updated successfully', newRoom: savedRoom });
-    return;
+    const savedRoom: boolean | false = await saveRoom(roomToCreate);
+    if (savedRoom) {
+      res.json({ message: 'updated successfully', newRoom: savedRoom });
+      return;
+    }
+    throw ""
   } catch (e: unknown) {
     console.log(errorEnums.FAILED_CREATE_ROOM, e);
     res.status(500).send(errorEnums.FAILED_CREATE_ROOM);

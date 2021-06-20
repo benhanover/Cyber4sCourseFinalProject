@@ -27,6 +27,7 @@ if (!refreshTokenKey || !accessTokenKey) {
 /*---------------------------------------------------------------------------------------------------------- */
 // saves a new user to db with hashed password; saves the new tokens in db.
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Trying to Register...");
     const user = req.body;
     const registrationAvailability = yield mongo_functions_1.canRegister(user.email, user.username);
     if (!registrationAvailability.return) {
@@ -56,6 +57,7 @@ exports.register = register;
 /*---------------------------------------------------------------------------------------------------------- */
 // authenticate the user and saves new tokens in db
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Trying to Login...");
     const { email, password } = req.body;
     const foundUser = yield mongo_functions_1.findDocument('User', 'email', email);
     // all but Iuser
@@ -93,6 +95,7 @@ exports.login = login;
 /*---------------------------------------------------------------------------------------------------------- */
 //  removes tokens from db
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Trying to Logout...");
     const accessToken = req.body.accessToken;
     const refreshToken = req.headers['refreshtoken'];
     if (!refreshToken || Array.isArray(refreshToken)) {
@@ -114,7 +117,7 @@ exports.logout = logout;
 /*---------------------------------------------------------------------------------------------------------- */
 //  sends a new saved accessToken to db and removes the old one.
 const newToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('Requesting new accessToken');
+    console.log("Trying to Get a New AccessToken...");
     const token = req.headers['refreshtoken'];
     if (!token || Array.isArray(token)) {
         console.log(index_1.errorEnums.NO_TOKEN);
