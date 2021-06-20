@@ -18,13 +18,21 @@ export const createRoom = async (req: Request, res: Response) => {
 
   // prettier-ignore
   const roomToCreate: Iroom = { host, subject, subSubject, title, description, participants, limit, isLocked }
-  const savedRoom = await saveRoom(roomToCreate);
-
-  res.json({ message: 'updated successfully', newRoom: savedRoom });
+  try {
+    const savedRoom = await saveRoom(roomToCreate);
+    return res.json({ message: 'updated successfully', newRoom: savedRoom });
+  } catch (e) {
+    console.log('Could Not Create A New Room:', e);
+    return res.status(500).send('Could Not Create A New Room');
+  }
 };
+
 export const getAllRooms = async (req: Request, res: Response) => {
   try {
     const rooms: Array<Iroom> = await getRooms();
     return res.json(rooms);
-  } catch (e) {}
+  } catch (e) {
+    console.log('Could Not Get All Rooms', e);
+    return res.status(500).send('Could Not Get All Rooms');
+  }
 };

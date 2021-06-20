@@ -10,18 +10,21 @@ export const accessTokenValidator = async (req: Request, res: Response, next: Ne
   
   const accessToken = req.headers['authorization'];
   if (!accessToken) return res.status(401).send('Valid Token Required');
-  if(!await isValidAccess(accessToken)){
-    // catfish detected
-    return res.status(403).send('Forbidden Token');
-  }
-  jwt.verify(accessToken, accessTokenKey, async (err: any, user: any) => {
+  return jwt.verify(accessToken, accessTokenKey, async (err: any, user: any) => {
     if (err) {
       // ask for the refresh token
+      console.log("Invalid AccessToken");
       return res.status(401).send();
     }
+    if(!await isValidAccess(accessToken)){
+      // catfish detected
+      console.log("Catfish Detected");
+      return res.status(403).send('Forbidden Token');
+    }
+    
     req.body.accessToken = accessToken;
     req.body.user = user;
+    return next();
   });
   
-  return next();
 };

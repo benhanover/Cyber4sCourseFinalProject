@@ -21,8 +21,14 @@ const createRoom = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const { host, subject, subSubject, title, description, participants, limit, isLocked } = req.body;
     // prettier-ignore
     const roomToCreate = { host, subject, subSubject, title, description, participants, limit, isLocked };
-    const savedRoom = yield mongo_functions_1.saveRoom(roomToCreate);
-    res.json({ message: 'updated successfully', newRoom: savedRoom });
+    try {
+        const savedRoom = yield mongo_functions_1.saveRoom(roomToCreate);
+        return res.json({ message: 'updated successfully', newRoom: savedRoom });
+    }
+    catch (e) {
+        console.log('Could Not Create A New Room:', e);
+        return res.status(500).send('Could Not Create A New Room');
+    }
 });
 exports.createRoom = createRoom;
 const getAllRooms = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,6 +36,9 @@ const getAllRooms = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const rooms = yield mongo_functions_1.getRooms();
         return res.json(rooms);
     }
-    catch (e) { }
+    catch (e) {
+        console.log('Could Not Get All Rooms', e);
+        return res.status(500).send('Could Not Get All Rooms');
+    }
 });
 exports.getAllRooms = getAllRooms;

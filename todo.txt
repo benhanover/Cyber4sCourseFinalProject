@@ -12,3 +12,23 @@
 -not recreating access token 
 CLEAN CODE
 -validation for inputs
+
+BUGS -
+ 1
+  issue: actions with no tokens get delayed until there is a valid token and then execute
+  steps to reproduce:
+  1 - make sure you dont have any access or refresh token.
+  2 - add 3 new rooms, refresh the page and no room should be there.
+  3 - login and gain access token
+  4 - refresh the page and the 3 rooms should apear
+
+2 
+  issue: creates 2 rooms instead of 1
+  steps to reproduce:
+  1 - login and gain tokens
+  2 - delete access token
+  3 - create room
+  theory: because of BUG 1 the first request wait for a valid token and then it executes twice
+
+3
+issue: only after refreshing the page you see the room that created 

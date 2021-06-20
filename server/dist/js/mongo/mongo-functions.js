@@ -130,13 +130,27 @@ const removeRefreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.removeRefreshToken = removeRefreshToken;
-const saveRefreshToken = (refreshToken) => {
-    models_1.RefreshToken.create({ refreshToken });
-};
+const saveRefreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield models_1.RefreshToken.create({ refreshToken });
+        return true;
+    }
+    catch (e) {
+        console.log('Could Not Add Refresh Token:', e);
+        return false;
+    }
+});
 exports.saveRefreshToken = saveRefreshToken;
-const saveAccessToken = (accessToken) => {
-    models_1.AccessToken.create({ accessToken });
-};
+const saveAccessToken = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield models_1.AccessToken.create({ accessToken });
+        return true;
+    }
+    catch (e) {
+        console.log('Could Not save Acsses Token to mongo:', e);
+        return false;
+    }
+});
 exports.saveAccessToken = saveAccessToken;
 const isValidRefresh = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
     return Boolean(yield models_1.RefreshToken.findOne({ refreshToken }));

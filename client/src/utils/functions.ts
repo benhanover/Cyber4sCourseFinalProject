@@ -8,9 +8,10 @@ export const recreateAccessToken = async (
   body: any = {}
 ): Promise<AxiosResponse | string | void> => {
   const refreshToken = Cookies.get('refreshToken');
+  // const refreshToken = Cookies.get('accessToken');
   try {
     const { data: response } = await axios.get(
-      'http://localhost:4000/refreshToken/',
+      'http://localhost:4000/user/refreshToken',
       {
         headers: { refreshtoken: refreshToken },
       }

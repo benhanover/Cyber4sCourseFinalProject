@@ -128,12 +128,28 @@ export const removeRefreshToken = async (
     return false;
   }
 };
-export const saveRefreshToken = (refreshToken: string) => {
-  RefreshToken.create({ refreshToken });
+export const saveRefreshToken = async (
+  refreshToken: string
+): Promise<boolean> => {
+  try {
+    await RefreshToken.create({ refreshToken });
+    return true;
+  } catch (e) {
+    console.log('Could Not Add Refresh Token:', e);
+    return false;
+  }
 };
 
-export const saveAccessToken = (accessToken: string) => {
-  AccessToken.create({ accessToken });
+export const saveAccessToken = async (
+  accessToken: string
+): Promise<boolean> => {
+  try {
+    await AccessToken.create({ accessToken });
+    return true;
+  } catch (e) {
+    console.log('Could Not save Acsses Token to mongo:', e);
+    return false;
+  }
 };
 
 export const isValidRefresh = async (refreshToken: string) => {

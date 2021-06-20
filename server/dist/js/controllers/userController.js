@@ -12,14 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.login = exports.register = void 0;
+exports.newToken = exports.logout = exports.login = exports.register = void 0;
 require('dotenv').config({ path: '../../.env' });
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 // import mongo-functions
 const mongo_functions_1 = require("../mongo/mongo-functions");
 // import assistance functions
 const functions_1 = require("../utils/functions");
 const { hash, compare } = bcrypt_1.default;
+const refreshTokenKey = process.env.REFRESH_TOKEN_KEY;
+const accessTokenKey = process.env.ACCESS_TOKEN_KEY;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // prettier-ignore
     const { lastName, firstName, email, password, birthDate, username } = req.body;
@@ -70,6 +73,7 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const accessToken = req.headers['authorization'];
     const refreshToken = req.headers['refreshtoken'];
     if (!refreshToken || Array.isArray(refreshToken)) {
+        console.log("No RefreshToken");
         res.status(401).send('Refresh Token Required');
         return;
     }
@@ -82,3 +86,43 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send("Could Not Logout");
 });
 exports.logout = logout;
+const newToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('in the newToken');
+    const token = req.headers['refreshtoken'];
+    let accessUpdated;
+    if (!token || Array.isArray(token)) {
+        console.log('No RefreshToken');
+        return res.status(401).send('Refresh Token Required');
+    }
+    //   const isExist = refreshTokens.includes(token);
+    if (!mongo_functions_1.isValidRefresh(token)) {
+        // catfish in the site
+        console.log('Catfish Detected');
+        return res.status(403).send('Invalid Refresh Token');
+    }
+    jsonwebtoken_1.default.verify(token, refreshTokenKey, (err, user) => __awaiter(void 0, void 0, void 0, function* () {
+        if (err) {
+            console.log('Invalid Refresh Token');
+            return res.status(403).send('Invalid Refresh Token');
+        }
+        const userAssignedToToken = {
+            username: user.username,
+            email: user.email,
+            lastName: user.lastName,
+            firstName: user.firstName,
+            password: user.password,
+            birthDate: user.birthDate,
+        };
+        const accessToken = jsonwebtoken_1.default.sign(userAssignedToToken, accessTokenKey, {
+            expiresIn: '15m',
+        });
+        accessUpdated = yield mongo_functions_1.saveAccessToken(accessToken);
+        if (accessUpdated) {
+            console.log('AccessToken Updated');
+            return res.status(200).json({ accessToken });
+        }
+        console.log('Could Not Add Access Token In DB');
+        return res.status(400).send('Could Not Add Access Token');
+    }));
+});
+exports.newToken = newToken;
