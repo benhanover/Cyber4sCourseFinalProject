@@ -3,7 +3,7 @@ let jest_puppeteer_conf = {
     timeout: 30000,
     dumpio: true, // Whether to pipe the browser process stdout and stderr
     // headless: false,
-    // slowMo: 50
+    // slowMo: 40
   }
 }
 
