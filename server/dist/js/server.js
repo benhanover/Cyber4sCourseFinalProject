@@ -23,6 +23,7 @@ app.use('/room', roomRoute_1.default);
 app.use((req) => {
     console.log('trying to go in:', req.url, req.path);
 });
+/*---------------------------------------------------------------------------------------------------------- */
 mongoose_1.default
     .connect(`mongodb://localhost:27017/${DB}`, {
     useNewUrlParser: true,

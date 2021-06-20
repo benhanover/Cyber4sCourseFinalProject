@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-
 export interface Iroom {
   _id?: any;
   host: string;
@@ -12,6 +10,7 @@ export interface Iroom {
   isLocked: boolean;
 }
 
+/*---------------------------------------------------------------------------------------------------------- */
 export interface Iuser {
   firstName: string;
   lastName: string;
@@ -21,6 +20,7 @@ export interface Iuser {
   username: string;
 }
 
+/*---------------------------------------------------------------------------------------------------------- */
 export interface IreturnInfo {
   return: boolean;
   message?: string;

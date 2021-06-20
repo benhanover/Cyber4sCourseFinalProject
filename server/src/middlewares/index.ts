@@ -1,10 +1,14 @@
-require('dotenv').config({ path: '../../.env' });
+// require('dotenv').config({ path: '../../.env' });
+// import libraries
 import { Request, Response, NextFunction } from 'express';
-import { isValidAccess } from '../mongo/mongo-functions';
 const jwt = require('jsonwebtoken');
+
+// import mongo-functions
+import { isAccessSaved } from '../mongo/mongo-functions';
+
+// import env
 const accessTokenKey = process.env.ACCESS_TOKEN_KEY;
 
-// PROBLEM- go to todo.txt
 // prettier-ignore
 export const accessTokenValidator = async (req: Request, res: Response, next: NextFunction) => {
   
@@ -16,7 +20,7 @@ export const accessTokenValidator = async (req: Request, res: Response, next: Ne
       console.log("Invalid AccessToken");
       return res.status(401).send();
     }
-    if(!await isValidAccess(accessToken)){
+    if(!await isAccessSaved(accessToken)){
       // catfish detected
       console.log("Catfish Detected");
       return res.status(403).send('Forbidden Token');

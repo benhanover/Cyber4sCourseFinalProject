@@ -8,8 +8,10 @@ import { User, Room, RefreshToken, AccessToken } from './models';
 import { Iuser, Iroom, IreturnInfo } from '../interfaces/index';
 import { errorEnums } from '../enums';
 
+// import models
 import { getModel } from './assistance-functions';
 
+/*---------------------------------------------------------------------------------------------------------- */
 // src/controllers/userControllers
 export const canRegister = async (
   email: string,
@@ -35,42 +37,47 @@ export const canRegister = async (
     }
     return { return: true };
   } catch (e) {
+    console.log(errorEnums.FAILED_GETTING_DATA + e);
     return { return: false, message: e.message };
   }
 };
 
+/*---------------------------------------------------------------------------------------------------------- */
 // src/controllers/userControllers
 export const registerUser = async (user: Iuser): Promise<Boolean> => {
   try {
     User.create(user);
     return true;
   } catch (e) {
-    console.log(e);
+    console.log(errorEnums.FAILED_ADDING_DATA + e);
     return false;
   }
 };
 
+/*---------------------------------------------------------------------------------------------------------- */
 // src/controllers/roomControllers
 export const saveRoom = async (room: Iroom) => {
   try {
     const updatedRoom = await Room.create(room);
     return updatedRoom;
   } catch (e) {
-    console.log(e);
+    console.log(errorEnums.FAILED_ADDING_DATA + e);
     return false;
   }
 };
 
+/*---------------------------------------------------------------------------------------------------------- */
 export const getRooms = async () => {
   try {
     const rooms = await Room.find();
     return rooms;
   } catch (e) {
-    console.log(errorEnums.UNREACHABLE_DB + e.message);
+    console.log(errorEnums.FAILED_GETTING_DATA + e.message);
     return [];
   }
 };
 
+/*---------------------------------------------------------------------------------------------------------- */
 // finds a document by model and fiel
 export const findDocument = async (
   modelString: string,
@@ -79,7 +86,7 @@ export const findDocument = async (
 ): Promise<IreturnInfo | Iuser | Iroom> => {
   const model: typeof Model | undefined = getModel(modelString);
   if (!model) {
-    console.log('No Model Enum Entered to findOne Function');
+    console.log(errorEnums.NO_MODEL_ENUM);
     return {
       return: false,
       message: 'Missing parameter line 68 ,mongo-functions',
@@ -94,67 +101,82 @@ export const findDocument = async (
       ? foundDocument
       : { return: false, message: modelString + errorEnums.NOT_FOUND };
   } catch (e) {
-    return { return: false, message: errorEnums.UNREACHABLE_DB + e };
+    console.log(errorEnums.FAILED_GETTING_DATA + e);
+    return { return: false, message: errorEnums.FAILED_GETTING_DATA + e };
   }
 };
 
+/*---------------------------------------------------------------------------------------------------------- */
 export const removeAccessToken = async (
   accessToken: string
 ): Promise<boolean> => {
   try {
     const accessDeleted: any = await AccessToken.deleteOne({ accessToken });
-    console.log('accessDeleted:', accessDeleted);
+    console.log('Access Token Deleted');
     if (accessDeleted.deletedCount > 0) {
       return true;
     }
+    console.log(errorEnums.NOT_FOUND);
     return false;
   } catch (e) {
-    console.log(e);
+    console.log(errorEnums.FAILED_DELETING_DATA + e);
     return false;
   }
 };
+
+/*---------------------------------------------------------------------------------------------------------- */
 export const removeRefreshToken = async (
   refreshToken: string
 ): Promise<boolean> => {
   try {
     const refreshDeleted: any = await RefreshToken.deleteOne({ refreshToken });
-    console.log('refreshDeleted:', refreshDeleted);
+    console.log('Refresh Token Deleted');
     if (refreshDeleted.deletedCount > 0) {
       return true;
     }
+    console.log(errorEnums.NOT_FOUND);
     return false;
   } catch (e) {
-    console.log(e);
+    console.log(errorEnums.FAILED_DELETING_DATA + e);
     return false;
   }
 };
+
+/*---------------------------------------------------------------------------------------------------------- */
 export const saveRefreshToken = async (
   refreshToken: string
 ): Promise<boolean> => {
   try {
     await RefreshToken.create({ refreshToken });
+    console.log('Refresh Token Saved');
+
     return true;
   } catch (e) {
-    console.log('Could Not Add Refresh Token:', e);
+    console.log(errorEnums.FAILED_ADDING_DATA + e);
     return false;
   }
 };
 
+/*---------------------------------------------------------------------------------------------------------- */
 export const saveAccessToken = async (
   accessToken: string
 ): Promise<boolean> => {
   try {
     await AccessToken.create({ accessToken });
+    console.log('Access Token Saved');
     return true;
   } catch (e) {
-    console.log('Could Not save Acsses Token to mongo:', e);
+    console.log(errorEnums.FAILED_ADDING_DATA + e);
     return false;
   }
 };
 
-export const isValidRefresh = async (refreshToken: string) => {
+/*---------------------------------------------------------------------------------------------------------- */
+export const isRefreshSaved = async (refreshToken: string) => {
   return Boolean(await RefreshToken.findOne({ refreshToken }));
 };
-export const isValidAccess = async (accessToken: string) => {
+
+/*---------------------------------------------------------------------------------------------------------- */
+export const isAccessSaved = async (accessToken: string) => {
   return Boolean(await AccessToken.findOne({ accessToken }));
 };

@@ -18,7 +18,6 @@ const Register: React.FC = () => {
     const birthDate: string | undefined = dateRef?.current?.value;
     const email: string | undefined = emailRef?.current?.value;
     const password: string | undefined = passwordRef?.current?.value;
-    console.log(username, firstName, lastName, birthDate, email, password);
 
     axios
       .post('http://localhost:4000/user/register', {
@@ -30,7 +29,6 @@ const Register: React.FC = () => {
         password,
       })
       .then(({ data }) => {
-        console.log(data);
         Cookies.set('accessToken', data.accessToken);
         Cookies.set('refreshToken', data.refreshToken);
       })

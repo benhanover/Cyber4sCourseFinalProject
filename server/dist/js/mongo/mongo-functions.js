@@ -9,11 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isValidAccess = exports.isValidRefresh = exports.saveAccessToken = exports.saveRefreshToken = exports.removeRefreshToken = exports.removeAccessToken = exports.findDocument = exports.getRooms = exports.saveRoom = exports.registerUser = exports.canRegister = void 0;
+exports.isAccessSaved = exports.isRefreshSaved = exports.saveAccessToken = exports.saveRefreshToken = exports.removeRefreshToken = exports.removeAccessToken = exports.findDocument = exports.getRooms = exports.saveRoom = exports.registerUser = exports.canRegister = void 0;
 // import models
 const models_1 = require("./models");
 const enums_1 = require("../enums");
+// import models
 const assistance_functions_1 = require("./assistance-functions");
+/*---------------------------------------------------------------------------------------------------------- */
 // src/controllers/userControllers
 const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -38,10 +40,12 @@ const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, funct
         return { return: true };
     }
     catch (e) {
+        console.log(enums_1.errorEnums.FAILED_GETTING_DATA + e);
         return { return: false, message: e.message };
     }
 });
 exports.canRegister = canRegister;
+/*---------------------------------------------------------------------------------------------------------- */
 // src/controllers/userControllers
 const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -49,11 +53,12 @@ const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
         return true;
     }
     catch (e) {
-        console.log(e);
+        console.log(enums_1.errorEnums.FAILED_ADDING_DATA + e);
         return false;
     }
 });
 exports.registerUser = registerUser;
+/*---------------------------------------------------------------------------------------------------------- */
 // src/controllers/roomControllers
 const saveRoom = (room) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -61,27 +66,29 @@ const saveRoom = (room) => __awaiter(void 0, void 0, void 0, function* () {
         return updatedRoom;
     }
     catch (e) {
-        console.log(e);
+        console.log(enums_1.errorEnums.FAILED_ADDING_DATA + e);
         return false;
     }
 });
 exports.saveRoom = saveRoom;
+/*---------------------------------------------------------------------------------------------------------- */
 const getRooms = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const rooms = yield models_1.Room.find();
         return rooms;
     }
     catch (e) {
-        console.log(enums_1.errorEnums.UNREACHABLE_DB + e.message);
+        console.log(enums_1.errorEnums.FAILED_GETTING_DATA + e.message);
         return [];
     }
 });
 exports.getRooms = getRooms;
+/*---------------------------------------------------------------------------------------------------------- */
 // finds a document by model and fiel
 const findDocument = (modelString, field, fieldContent) => __awaiter(void 0, void 0, void 0, function* () {
     const model = assistance_functions_1.getModel(modelString);
     if (!model) {
-        console.log('No Model Enum Entered to findOne Function');
+        console.log(enums_1.errorEnums.NO_MODEL_ENUM);
         return {
             return: false,
             message: 'Missing parameter line 68 ,mongo-functions',
@@ -96,67 +103,78 @@ const findDocument = (modelString, field, fieldContent) => __awaiter(void 0, voi
             : { return: false, message: modelString + enums_1.errorEnums.NOT_FOUND };
     }
     catch (e) {
-        return { return: false, message: enums_1.errorEnums.UNREACHABLE_DB + e };
+        console.log(enums_1.errorEnums.FAILED_GETTING_DATA + e);
+        return { return: false, message: enums_1.errorEnums.FAILED_GETTING_DATA + e };
     }
 });
 exports.findDocument = findDocument;
+/*---------------------------------------------------------------------------------------------------------- */
 const removeAccessToken = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const accessDeleted = yield models_1.AccessToken.deleteOne({ accessToken });
-        console.log('accessDeleted:', accessDeleted);
+        console.log('Access Token Deleted');
         if (accessDeleted.deletedCount > 0) {
             return true;
         }
+        console.log(enums_1.errorEnums.NOT_FOUND);
         return false;
     }
     catch (e) {
-        console.log(e);
+        console.log(enums_1.errorEnums.FAILED_DELETING_DATA + e);
         return false;
     }
 });
 exports.removeAccessToken = removeAccessToken;
+/*---------------------------------------------------------------------------------------------------------- */
 const removeRefreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const refreshDeleted = yield models_1.RefreshToken.deleteOne({ refreshToken });
-        console.log('refreshDeleted:', refreshDeleted);
+        console.log('Refresh Token Deleted');
         if (refreshDeleted.deletedCount > 0) {
             return true;
         }
+        console.log(enums_1.errorEnums.NOT_FOUND);
         return false;
     }
     catch (e) {
-        console.log(e);
+        console.log(enums_1.errorEnums.FAILED_DELETING_DATA + e);
         return false;
     }
 });
 exports.removeRefreshToken = removeRefreshToken;
+/*---------------------------------------------------------------------------------------------------------- */
 const saveRefreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield models_1.RefreshToken.create({ refreshToken });
+        console.log('Refresh Token Saved');
         return true;
     }
     catch (e) {
-        console.log('Could Not Add Refresh Token:', e);
+        console.log(enums_1.errorEnums.FAILED_ADDING_DATA + e);
         return false;
     }
 });
 exports.saveRefreshToken = saveRefreshToken;
+/*---------------------------------------------------------------------------------------------------------- */
 const saveAccessToken = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield models_1.AccessToken.create({ accessToken });
+        console.log('Access Token Saved');
         return true;
     }
     catch (e) {
-        console.log('Could Not save Acsses Token to mongo:', e);
+        console.log(enums_1.errorEnums.FAILED_ADDING_DATA + e);
         return false;
     }
 });
 exports.saveAccessToken = saveAccessToken;
-const isValidRefresh = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
+/*---------------------------------------------------------------------------------------------------------- */
+const isRefreshSaved = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
     return Boolean(yield models_1.RefreshToken.findOne({ refreshToken }));
 });
-exports.isValidRefresh = isValidRefresh;
-const isValidAccess = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
+exports.isRefreshSaved = isRefreshSaved;
+/*---------------------------------------------------------------------------------------------------------- */
+const isAccessSaved = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
     return Boolean(yield models_1.AccessToken.findOne({ accessToken }));
 });
-exports.isValidAccess = isValidAccess;
+exports.isAccessSaved = isAccessSaved;

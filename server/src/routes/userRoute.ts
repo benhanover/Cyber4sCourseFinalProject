@@ -4,6 +4,7 @@ import { login, register, logout, newToken } from '../controllers/userController
 
 import { accessTokenValidator } from '../middlewares/index';
 
+/*---------------------------------------------------------------------------------------------------------- */
 const users = Router();
 
 users.post('/login', login);

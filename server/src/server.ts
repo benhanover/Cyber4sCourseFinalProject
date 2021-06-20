@@ -9,7 +9,6 @@ import cors from 'cors';
 // routes
 import users from './routes/userRoute';
 import rooms from './routes/roomRoute';
-import { saveAccessToken } from './mongo/mongo-functions';
 
 // declarations
 const app = express();
@@ -23,6 +22,8 @@ app.use('/room', rooms);
 app.use((req) => {
   console.log('trying to go in:', req.url, req.path);
 });
+
+/*---------------------------------------------------------------------------------------------------------- */
 mongoose
   .connect(`mongodb://localhost:27017/${DB}`, {
     useNewUrlParser: true,

@@ -1,7 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorEnums = void 0;
-exports.errorEnums = {
-    "UNREACHABLE_DB": "Coudn't Get Data From DB ",
-    "NOT_FOUND": "Document Not Found ",
-};
+var errorEnums;
+(function (errorEnums) {
+    errorEnums["FAILED_GETTING_DATA"] = "Coudn't Get Data From DB ";
+    errorEnums["FAILED_ADDING_DATA"] = "Coudn't Add Data To DB ";
+    errorEnums["FAILED_DELETING_DATA"] = "Coudn't remove Data From DB ";
+    errorEnums["NO_MODEL_ENUM"] = "No Model Enum Entered ";
+    errorEnums["NOT_FOUND"] = "Document Not Found ";
+    errorEnums["NO_TOKEN"] = "Token Is Missing ";
+    errorEnums["INVALID_TOKEN"] = "The Token Given Is Invalid ";
+    errorEnums["NO_ENV_VAR"] = "Could Not Get Env Vars, Check The Env File ";
+    errorEnums["WRONG_CREDENTIALS"] = "Username or Password is incorrect ";
+    errorEnums["LOGIN_FAILED"] = "Could Not Login ";
+    errorEnums["LOGOUT_FAILED"] = "Could Not Logout ";
+    errorEnums["REGISTER_FAILED"] = "Could Not Register ";
+    errorEnums["NO_SUCH_USER"] = "User Does Not Exist";
+    errorEnums["FAILED_CREATE_ROOM"] = "Could Not Create A New Room";
+})(errorEnums = exports.errorEnums || (exports.errorEnums = {}));

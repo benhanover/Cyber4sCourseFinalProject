@@ -1,8 +1,9 @@
 "use strict";
-// import models
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getModel = void 0;
+// import models
 const models_1 = require("./models");
+/*---------------------------------------------------------------------------------------------------------- */
 function getModel(modelEnum) {
     switch (modelEnum) {
         case 'User':
@@ -11,7 +12,6 @@ function getModel(modelEnum) {
             return models_1.Room;
         default:
             return undefined;
-            break;
     }
 }
 exports.getModel = getModel;

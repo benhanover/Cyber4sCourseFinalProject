@@ -12,7 +12,6 @@ const LougoutButton: React.FC = () => {
       headers: { authorization: accessToken, refreshToken },
     });
     if (removed) {
-      console.log('Removed Successfully');
       return;
     }
     console.log("Didn't Removed Successfully");

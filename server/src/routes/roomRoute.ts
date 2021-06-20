@@ -11,7 +11,9 @@ import { createRoom, getAllRooms } from '../controllers/roomController';
 // use this before any reqest besides login/register
 import { accessTokenValidator } from '../middlewares/index';
 
+/*---------------------------------------------------------------------------------------------------------- */
 const rooms = Router();
+
 rooms.use(accessTokenValidator);
 rooms.get('/all', getAllRooms);
 rooms.post('/new', createRoom);

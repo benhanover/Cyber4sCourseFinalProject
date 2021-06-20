@@ -1,5 +1,4 @@
-export const modelEnums = {
-    "USER": "User",
-    "ROOM": "Room",
-    
+export enum modelEnums {
+  USER = 'User',
+  ROOM = 'Room',
 }

@@ -10,12 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllRooms = exports.createRoom = void 0;
+const errorEnums_1 = require("../enums/errorEnums");
 // import mongo-functions
 const mongo_functions_1 = require("../mongo/mongo-functions");
-// export const getAll = (req: Request, res: Response) => {
-//     // return res.json(mockRooms);
-//     console.log("all rooms route, does nothing for now");
-// }
+/*---------------------------------------------------------------------------------------------------------- */
+// function create a room and saves it into the data base
 const createRoom = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // prettier-ignore
     const { host, subject, subSubject, title, description, participants, limit, isLocked } = req.body;
@@ -23,22 +22,19 @@ const createRoom = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const roomToCreate = { host, subject, subSubject, title, description, participants, limit, isLocked };
     try {
         const savedRoom = yield mongo_functions_1.saveRoom(roomToCreate);
-        return res.json({ message: 'updated successfully', newRoom: savedRoom });
+        res.json({ message: 'updated successfully', newRoom: savedRoom });
+        return;
     }
     catch (e) {
-        console.log('Could Not Create A New Room:', e);
-        return res.status(500).send('Could Not Create A New Room');
+        console.log(errorEnums_1.errorEnums.FAILED_CREATE_ROOM, e);
+        return res.status(500).send(errorEnums_1.errorEnums.FAILED_CREATE_ROOM);
     }
 });
 exports.createRoom = createRoom;
+/*---------------------------------------------------------------------------------------------------------- */
+// function returns all of the rooms in the data base
 const getAllRooms = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const rooms = yield mongo_functions_1.getRooms();
-        return res.json(rooms);
-    }
-    catch (e) {
-        console.log('Could Not Get All Rooms', e);
-        return res.status(500).send('Could Not Get All Rooms');
-    }
+    const rooms = yield mongo_functions_1.getRooms();
+    return res.json(rooms);
 });
 exports.getAllRooms = getAllRooms;

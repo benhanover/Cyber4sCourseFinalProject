@@ -1,8 +1,8 @@
 // import models
+import { User, Room } from './models';
 
-import { User, Room } from "./models";
-
-export function getModel(modelEnum: string){
+/*---------------------------------------------------------------------------------------------------------- */
+export function getModel(modelEnum: string) {
   switch (modelEnum) {
     case 'User':
       return User;
@@ -10,6 +10,5 @@ export function getModel(modelEnum: string){
       return Room;
     default:
       return undefined;
-      break;
   }
 }

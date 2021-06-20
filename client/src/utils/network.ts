@@ -9,7 +9,6 @@ async function Network(
   body: any = {}
 ): Promise<AxiosResponse> {
   const accessToken = Cookies.get('accessToken');
-  console.log('accessToken:', accessToken);
 
   const headers = {
     'Content-Type': "application/json;charset=utf-8'",
@@ -21,7 +20,6 @@ async function Network(
     data: body,
     url: endpoint,
   };
-  console.log('in the network');
 
   return await axios(options)
     .then((response: AxiosResponse) => {

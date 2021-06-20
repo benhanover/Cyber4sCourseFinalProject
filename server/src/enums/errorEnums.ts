@@ -1,5 +1,16 @@
-export const errorEnums = {
-    "UNREACHABLE_DB": "Coudn't Get Data From DB ",
-    "NOT_FOUND": "Document Not Found ",
-    
+export enum errorEnums {
+  FAILED_GETTING_DATA = "Coudn't Get Data From DB ",
+  FAILED_ADDING_DATA = "Coudn't Add Data To DB ",
+  FAILED_DELETING_DATA = "Coudn't remove Data From DB ",
+  NO_MODEL_ENUM = 'No Model Enum Entered ',
+  NOT_FOUND = 'Document Not Found ',
+  NO_TOKEN = 'Token Is Missing ',
+  INVALID_TOKEN = 'The Token Given Is Invalid ',
+  NO_ENV_VAR = 'Could Not Get Env Vars, Check The Env File ',
+  WRONG_CREDENTIALS = 'Username or Password is incorrect ',
+  LOGIN_FAILED = 'Could Not Login ',
+  LOGOUT_FAILED = 'Could Not Logout ',
+  REGISTER_FAILED = 'Could Not Register ',
+  NO_SUCH_USER = 'User Does Not Exist',
+  FAILED_CREATE_ROOM = 'Could Not Create A New Room',
 }

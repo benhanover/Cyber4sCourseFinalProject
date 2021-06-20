@@ -4,19 +4,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateTokens = void 0;
+// import libraries
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const errorEnums_1 = require("../enums/errorEnums");
+// import env
 const accessTokenKey = process.env.ACCESS_TOKEN_KEY;
 const refreshTokenKey = process.env.REFRESH_TOKEN_KEY;
 if (!accessTokenKey || !refreshTokenKey) {
-    throw 'Could Not Get Env Vars, The Env File';
+    throw errorEnums_1.errorEnums.NO_ENV_VAR;
 }
+/*---------------------------------------------------------------------------------------------------------- */
 const generateTokens = (user) => {
-    const accessToken = jsonwebtoken_1.default.sign(user, accessTokenKey, {
-        expiresIn: '15m',
-    });
-    const refreshToken = jsonwebtoken_1.default.sign(user, refreshTokenKey, {
-        expiresIn: '8h',
-    });
-    return { accessToken, refreshToken };
+    try {
+        const accessToken = jsonwebtoken_1.default.sign(user, accessTokenKey, {
+            expiresIn: '15m',
+        });
+        const refreshToken = jsonwebtoken_1.default.sign(user, refreshTokenKey, {
+            expiresIn: '8h',
+        });
+        return { accessToken, refreshToken };
+    }
+    catch (e) {
+        console.log(errorEnums_1.errorEnums.NO_TOKEN + e);
+    }
 };
 exports.generateTokens = generateTokens;

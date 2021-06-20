@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.modelEnums = void 0;
-exports.modelEnums = {
-    "USER": "User",
-    "ROOM": "Room",
-};
+var modelEnums;
+(function (modelEnums) {
+    modelEnums["USER"] = "User";
+    modelEnums["ROOM"] = "Room";
+})(modelEnums = exports.modelEnums || (exports.modelEnums = {}));
