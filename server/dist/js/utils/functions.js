@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateTokens = void 0;
 // import libraries
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+// import unions
 const errorEnums_1 = require("../enums/errorEnums");
 // import env
 const accessTokenKey = process.env.ACCESS_TOKEN_KEY;

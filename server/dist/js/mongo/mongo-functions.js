@@ -16,7 +16,7 @@ const enums_1 = require("../enums");
 // import models
 const assistance_functions_1 = require("./assistance-functions");
 /*---------------------------------------------------------------------------------------------------------- */
-// src/controllers/userControllers
+// used in: userControllers | checks wether the username and email are avalable.
 const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield models_1.User.find({
@@ -25,12 +25,14 @@ const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, funct
         let returnObjCaseExist;
         users.find((user) => {
             if (user.email === email) {
-                returnObjCaseExist = { return: false, message: 'Email Already Exist' };
+                console.log(enums_1.errorEnums.EMAIL_TAKEN);
+                returnObjCaseExist = { return: false, message: enums_1.errorEnums.EMAIL_TAKEN };
             }
             else if (user.username === username) {
+                console.log(enums_1.errorEnums.USERNAME_TAKEN);
                 returnObjCaseExist = {
                     return: false,
-                    message: 'Username Already Exist',
+                    message: enums_1.errorEnums.USERNAME_TAKEN,
                 };
             }
         });
@@ -41,16 +43,19 @@ const canRegister = (email, username) => __awaiter(void 0, void 0, void 0, funct
     }
     catch (e) {
         console.log(enums_1.errorEnums.FAILED_GETTING_DATA + e);
-        return { return: false, message: e.message };
+        return { return: false, message: e };
     }
 });
 exports.canRegister = canRegister;
 /*---------------------------------------------------------------------------------------------------------- */
-// src/controllers/userControllers
+//   used in: userControllers | saves a given user in db
 const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        models_1.User.create(user);
-        return true;
+        const updatedUser = models_1.User.create(user);
+        if (Boolean(updatedUser))
+            return true;
+        console.log(enums_1.errorEnums.FAILED_ADDING_DATA);
+        return false;
     }
     catch (e) {
         console.log(enums_1.errorEnums.FAILED_ADDING_DATA + e);
@@ -59,11 +64,14 @@ const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.registerUser = registerUser;
 /*---------------------------------------------------------------------------------------------------------- */
-// src/controllers/roomControllers
+//   used in: roomControllers | saves a given room in db
 const saveRoom = (room) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const updatedRoom = yield models_1.Room.create(room);
-        return updatedRoom;
+        if (Boolean(updatedRoom))
+            return true;
+        console.log(enums_1.errorEnums.FAILED_ADDING_DATA);
+        return false;
     }
     catch (e) {
         console.log(enums_1.errorEnums.FAILED_ADDING_DATA + e);
@@ -72,19 +80,20 @@ const saveRoom = (room) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.saveRoom = saveRoom;
 /*---------------------------------------------------------------------------------------------------------- */
+//  used in: roomControllers | returns all rooms from db
 const getRooms = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const rooms = yield models_1.Room.find();
         return rooms;
     }
     catch (e) {
-        console.log(enums_1.errorEnums.FAILED_GETTING_DATA + e.message);
+        console.log(enums_1.errorEnums.FAILED_GETTING_DATA + e);
         return [];
     }
 });
 exports.getRooms = getRooms;
 /*---------------------------------------------------------------------------------------------------------- */
-// finds a document by model and fiel
+// used in: userControllers | finds a document by model and field
 const findDocument = (modelString, field, fieldContent) => __awaiter(void 0, void 0, void 0, function* () {
     const model = assistance_functions_1.getModel(modelString);
     if (!model) {
@@ -98,9 +107,7 @@ const findDocument = (modelString, field, fieldContent) => __awaiter(void 0, voi
         const foundDocument = yield model.findOne({
             [field]: fieldContent,
         });
-        return foundDocument
-            ? foundDocument
-            : { return: false, message: modelString + enums_1.errorEnums.NOT_FOUND };
+        return foundDocument ? foundDocument : { return: false, message: modelString + enums_1.errorEnums.NOT_FOUND };
     }
     catch (e) {
         console.log(enums_1.errorEnums.FAILED_GETTING_DATA + e);
@@ -109,11 +116,12 @@ const findDocument = (modelString, field, fieldContent) => __awaiter(void 0, voi
 });
 exports.findDocument = findDocument;
 /*---------------------------------------------------------------------------------------------------------- */
+// used in: userControllers | removes accessToken from db
 const removeAccessToken = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const accessDeleted = yield models_1.AccessToken.deleteOne({ accessToken });
+        const { deletedCount: accessDeleted } = yield models_1.AccessToken.deleteOne({ accessToken });
         console.log('Access Token Deleted');
-        if (accessDeleted.deletedCount > 0) {
+        if (accessDeleted && accessDeleted > 0) {
             return true;
         }
         console.log(enums_1.errorEnums.NOT_FOUND);
@@ -126,11 +134,12 @@ const removeAccessToken = (accessToken) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.removeAccessToken = removeAccessToken;
 /*---------------------------------------------------------------------------------------------------------- */
+// used in: userController | removes refreshToken from db
 const removeRefreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const refreshDeleted = yield models_1.RefreshToken.deleteOne({ refreshToken });
-        console.log('Refresh Token Deleted');
-        if (refreshDeleted.deletedCount > 0) {
+        const { deletedCount: refreshDeleted } = yield models_1.RefreshToken.deleteOne({ refreshToken });
+        if (refreshDeleted && refreshDeleted > 0) {
+            console.log('Refresh Token Deleted');
             return true;
         }
         console.log(enums_1.errorEnums.NOT_FOUND);
@@ -143,6 +152,7 @@ const removeRefreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, f
 });
 exports.removeRefreshToken = removeRefreshToken;
 /*---------------------------------------------------------------------------------------------------------- */
+//  used in: userControllers | saves a refreshToken in db
 const saveRefreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield models_1.RefreshToken.create({ refreshToken });
@@ -156,6 +166,7 @@ const saveRefreshToken = (refreshToken) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.saveRefreshToken = saveRefreshToken;
 /*---------------------------------------------------------------------------------------------------------- */
+//  used in: userControllers | saves a accessToken in db
 const saveAccessToken = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield models_1.AccessToken.create({ accessToken });
@@ -169,11 +180,13 @@ const saveAccessToken = (accessToken) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.saveAccessToken = saveAccessToken;
 /*---------------------------------------------------------------------------------------------------------- */
+// used in: userController | checks if refreshToken exists in db 
 const isRefreshSaved = (refreshToken) => __awaiter(void 0, void 0, void 0, function* () {
     return Boolean(yield models_1.RefreshToken.findOne({ refreshToken }));
 });
 exports.isRefreshSaved = isRefreshSaved;
 /*---------------------------------------------------------------------------------------------------------- */
+//  used in: middlewares/index | checks if accessToken exists in db 
 const isAccessSaved = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
     return Boolean(yield models_1.AccessToken.findOne({ accessToken }));
 });

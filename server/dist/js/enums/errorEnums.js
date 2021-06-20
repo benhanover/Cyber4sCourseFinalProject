@@ -17,4 +17,8 @@ var errorEnums;
     errorEnums["REGISTER_FAILED"] = "Could Not Register ";
     errorEnums["NO_SUCH_USER"] = "User Does Not Exist";
     errorEnums["FAILED_CREATE_ROOM"] = "Could Not Create A New Room";
+    errorEnums["CATFISH"] = "Catfish Detected";
+    errorEnums["FORBIDDEN"] = "Forbidden Ruquest ";
+    errorEnums["EMAIL_TAKEN"] = "Email Already Exist";
+    errorEnums["USERNAME_TAKEN"] = "Username Already Exist";
 })(errorEnums = exports.errorEnums || (exports.errorEnums = {}));

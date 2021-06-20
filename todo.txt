@@ -3,10 +3,6 @@
   function: register
   todo: simplify redeclaration
 
-2 
-  file: roomControllers
-  function: createRoom
-  todo: simplify redeclaration
 
 -when refreshing access tokens make sure to delete from data base
 -not recreating access token 
@@ -19,3 +15,5 @@ issue: only after refreshing the page you see the room that created
 
 2
 check if access token updated in db after recreating one.
+
+remove variables from process env

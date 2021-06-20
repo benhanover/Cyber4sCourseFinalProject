@@ -5,30 +5,29 @@ import mongoose, { Model, Document } from 'mongoose';
 import { User, Room, RefreshToken, AccessToken } from './models';
 
 // import intefaces
-import { Iuser, Iroom, IreturnInfo } from '../interfaces/index';
+import { Iuser, Iroom, IreturnInfo, Umodels } from '../types/index';
 import { errorEnums } from '../enums';
 
 // import models
 import { getModel } from './assistance-functions';
 
 /*---------------------------------------------------------------------------------------------------------- */
-// src/controllers/userControllers
-export const canRegister = async (
-  email: string,
-  username: string
-): Promise<IreturnInfo> => {
+// used in: userControllers | checks wether the username and email are avalable.
+export const canRegister = async ( email: string, username: string ): Promise<IreturnInfo> => {
   try {
-    const users: Array<Iuser> = await User.find({
+    const users: Iuser[] = await User.find({
       $or: [{ email }, { username }],
     });
-    let returnObjCaseExist;
-    users.find((user) => {
+    let returnObjCaseExist: IreturnInfo | undefined;
+    users.find((user: Iuser): void => {
       if (user.email === email) {
-        returnObjCaseExist = { return: false, message: 'Email Already Exist' };
-      } else if (user.username === username) {
+        console.log(errorEnums.EMAIL_TAKEN)
+        returnObjCaseExist = { return: false, message: errorEnums.EMAIL_TAKEN };
+      } else if (user.username === username) {  
+        console.log(errorEnums.USERNAME_TAKEN)
         returnObjCaseExist = {
           return: false,
-          message: 'Username Already Exist',
+          message: errorEnums.USERNAME_TAKEN,
         };
       }
     });
@@ -36,54 +35,55 @@ export const canRegister = async (
       return returnObjCaseExist;
     }
     return { return: true };
-  } catch (e) {
+  } catch (e: unknown) {
     console.log(errorEnums.FAILED_GETTING_DATA + e);
-    return { return: false, message: e.message };
+    return { return: false, message: e };
   }
 };
 
 /*---------------------------------------------------------------------------------------------------------- */
-// src/controllers/userControllers
-export const registerUser = async (user: Iuser): Promise<Boolean> => {
+//   used in: userControllers | saves a given user in db
+export const registerUser = async (user: Iuser): Promise<boolean> => {
   try {
-    User.create(user);
-    return true;
-  } catch (e) {
+    const updatedUser: unknown = User.create(user);
+    if (Boolean(updatedUser)) return true;
+    console.log(errorEnums.FAILED_ADDING_DATA);
+    return false;
+  } catch (e: unknown) {
     console.log(errorEnums.FAILED_ADDING_DATA + e);
     return false;
   }
 };
 
 /*---------------------------------------------------------------------------------------------------------- */
-// src/controllers/roomControllers
+//   used in: roomControllers | saves a given room in db
 export const saveRoom = async (room: Iroom) => {
   try {
-    const updatedRoom = await Room.create(room);
-    return updatedRoom;
-  } catch (e) {
+    const updatedRoom: unknown = await Room.create(room);
+    if (Boolean(updatedRoom)) return true;
+    console.log(errorEnums.FAILED_ADDING_DATA);
+    return false;
+  } catch (e: unknown) {
     console.log(errorEnums.FAILED_ADDING_DATA + e);
     return false;
   }
 };
 
 /*---------------------------------------------------------------------------------------------------------- */
-export const getRooms = async () => {
+//  used in: roomControllers | returns all rooms from db
+export const getRooms = async () :Promise<Iroom[]> => {
   try {
-    const rooms = await Room.find();
+    const rooms: Iroom[] = await Room.find();
     return rooms;
-  } catch (e) {
-    console.log(errorEnums.FAILED_GETTING_DATA + e.message);
+  } catch (e: unknown) {
+    console.log(errorEnums.FAILED_GETTING_DATA + e);
     return [];
   }
 };
 
 /*---------------------------------------------------------------------------------------------------------- */
-// finds a document by model and fiel
-export const findDocument = async (
-  modelString: string,
-  field: string,
-  fieldContent: any
-): Promise<IreturnInfo | Iuser | Iroom> => {
+// used in: userControllers | finds a document by model and field
+export const findDocument = async ( modelString: string, field: string, fieldContent: any): Promise<Umodels> =>  {
   const model: typeof Model | undefined = getModel(modelString);
   if (!model) {
     console.log(errorEnums.NO_MODEL_ENUM);
@@ -97,41 +97,41 @@ export const findDocument = async (
       [field]: fieldContent,
     });
 
-    return foundDocument
-      ? foundDocument
-      : { return: false, message: modelString + errorEnums.NOT_FOUND };
-  } catch (e) {
+    return foundDocument ? foundDocument : { return: false, message: modelString + errorEnums.NOT_FOUND };
+  } catch (e: unknown) {
     console.log(errorEnums.FAILED_GETTING_DATA + e);
     return { return: false, message: errorEnums.FAILED_GETTING_DATA + e };
   }
 };
 
 /*---------------------------------------------------------------------------------------------------------- */
+// used in: userControllers | removes accessToken from db
 export const removeAccessToken = async (
   accessToken: string
 ): Promise<boolean> => {
   try {
-    const accessDeleted: any = await AccessToken.deleteOne({ accessToken });
+    const { deletedCount: accessDeleted }: { deletedCount?: number | undefined } = await AccessToken.deleteOne({ accessToken });
     console.log('Access Token Deleted');
-    if (accessDeleted.deletedCount > 0) {
+    if (accessDeleted && accessDeleted > 0) {
       return true;
     }
     console.log(errorEnums.NOT_FOUND);
     return false;
-  } catch (e) {
+  } catch (e: unknown) {
     console.log(errorEnums.FAILED_DELETING_DATA + e);
     return false;
   }
 };
 
 /*---------------------------------------------------------------------------------------------------------- */
+// used in: userController | removes refreshToken from db
 export const removeRefreshToken = async (
   refreshToken: string
 ): Promise<boolean> => {
   try {
-    const refreshDeleted: any = await RefreshToken.deleteOne({ refreshToken });
-    console.log('Refresh Token Deleted');
-    if (refreshDeleted.deletedCount > 0) {
+    const { deletedCount: refreshDeleted }: { deletedCount?: number | undefined } = await RefreshToken.deleteOne({ refreshToken });
+    if (refreshDeleted && refreshDeleted > 0) {
+      console.log('Refresh Token Deleted');
       return true;
     }
     console.log(errorEnums.NOT_FOUND);
@@ -143,6 +143,7 @@ export const removeRefreshToken = async (
 };
 
 /*---------------------------------------------------------------------------------------------------------- */
+//  used in: userControllers | saves a refreshToken in db
 export const saveRefreshToken = async (
   refreshToken: string
 ): Promise<boolean> => {
@@ -158,6 +159,7 @@ export const saveRefreshToken = async (
 };
 
 /*---------------------------------------------------------------------------------------------------------- */
+//  used in: userControllers | saves a accessToken in db
 export const saveAccessToken = async (
   accessToken: string
 ): Promise<boolean> => {
@@ -172,11 +174,13 @@ export const saveAccessToken = async (
 };
 
 /*---------------------------------------------------------------------------------------------------------- */
-export const isRefreshSaved = async (refreshToken: string) => {
+// used in: userController | checks if refreshToken exists in db 
+export const isRefreshSaved = async (refreshToken: string):Promise<Boolean> => {
   return Boolean(await RefreshToken.findOne({ refreshToken }));
 };
 
 /*---------------------------------------------------------------------------------------------------------- */
-export const isAccessSaved = async (accessToken: string) => {
+//  used in: middlewares/index | checks if accessToken exists in db 
+export const isAccessSaved = async (accessToken: string):Promise<Boolean>=> {
   return Boolean(await AccessToken.findOne({ accessToken }));
 };

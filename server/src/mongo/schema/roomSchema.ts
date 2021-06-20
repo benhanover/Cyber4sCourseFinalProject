@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { Iroom } from '../../interfaces';
+import { Iroom } from '../../types';
 
 const roomSchema = new Schema<Iroom>({
   host: String,

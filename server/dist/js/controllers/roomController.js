@@ -14,12 +14,9 @@ const errorEnums_1 = require("../enums/errorEnums");
 // import mongo-functions
 const mongo_functions_1 = require("../mongo/mongo-functions");
 /*---------------------------------------------------------------------------------------------------------- */
-// function create a room and saves it into the data base
+// creates a room and saves it into the data base
 const createRoom = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // prettier-ignore
-    const { host, subject, subSubject, title, description, participants, limit, isLocked } = req.body;
-    // prettier-ignore
-    const roomToCreate = { host, subject, subSubject, title, description, participants, limit, isLocked };
+    const roomToCreate = req.body;
     try {
         const savedRoom = yield mongo_functions_1.saveRoom(roomToCreate);
         res.json({ message: 'updated successfully', newRoom: savedRoom });
@@ -27,14 +24,16 @@ const createRoom = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (e) {
         console.log(errorEnums_1.errorEnums.FAILED_CREATE_ROOM, e);
-        return res.status(500).send(errorEnums_1.errorEnums.FAILED_CREATE_ROOM);
+        res.status(500).send(errorEnums_1.errorEnums.FAILED_CREATE_ROOM);
+        return;
     }
 });
 exports.createRoom = createRoom;
 /*---------------------------------------------------------------------------------------------------------- */
-// function returns all of the rooms in the data base
+// returns all of the rooms in the data base
 const getAllRooms = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const rooms = yield mongo_functions_1.getRooms();
-    return res.json(rooms);
+    res.status(200).json(rooms);
+    return;
 });
 exports.getAllRooms = getAllRooms;

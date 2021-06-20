@@ -1,8 +1,9 @@
 // import models
 import { User, Room } from './models';
-
+import {Model} from 'mongoose'
 /*---------------------------------------------------------------------------------------------------------- */
-export function getModel(modelEnum: string) {
+//  gets a model by given string
+export function getModel(modelEnum: string): typeof Model | undefined {
   switch (modelEnum) {
     case 'User':
       return User;

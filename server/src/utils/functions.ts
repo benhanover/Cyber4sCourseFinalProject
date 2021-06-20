@@ -2,7 +2,9 @@
 import jwt from 'jsonwebtoken';
 
 // import interfaces
-import { Iuser } from '../interfaces/index';
+import { Iuser, UgenerateTokens } from '../types/index';
+
+// import unions
 
 import { errorEnums } from '../enums/errorEnums';
 
@@ -14,12 +16,12 @@ if (!accessTokenKey || !refreshTokenKey) {
 }
 
 /*---------------------------------------------------------------------------------------------------------- */
-export const generateTokens = (user: Iuser | { foundUser: Iuser }) => {
+export const generateTokens = (user: Iuser | { foundUser: Iuser }): UgenerateTokens  => {
   try {
-    const accessToken = jwt.sign(user, accessTokenKey, {
+    const accessToken: string = jwt.sign(user, accessTokenKey, {
       expiresIn: '15m',
     });
-    const refreshToken = jwt.sign(user, refreshTokenKey, {
+    const refreshToken: string = jwt.sign(user, refreshTokenKey, {
       expiresIn: '8h',
     });
     return { accessToken, refreshToken };

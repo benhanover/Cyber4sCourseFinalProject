@@ -1,5 +1,4 @@
 "use strict";
-// require('dotenv').config({ path: '../../.env' });
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9,45 +8,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.newToken = exports.logout = exports.login = exports.register = void 0;
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcrypt_1 = require("bcrypt");
+const jwt = require('jsonwebtoken'); // types errors if imported and not required
 const index_1 = require("../enums/index");
 // import mongo-functions
 const mongo_functions_1 = require("../mongo/mongo-functions");
 // import assistance functions
 const functions_1 = require("../utils/functions");
-const { hash, compare } = bcrypt_1.default;
+// env
 const refreshTokenKey = process.env.REFRESH_TOKEN_KEY;
 const accessTokenKey = process.env.ACCESS_TOKEN_KEY;
+if (!refreshTokenKey || !accessTokenKey) {
+    console.log(index_1.errorEnums.NO_TOKEN);
+    throw index_1.errorEnums.NO_TOKEN;
+}
 /*---------------------------------------------------------------------------------------------------------- */
-/* function
-  - checks the availibilty of the credentials
-  - hash the password
-  - register the new user to the DB
-  - generates tokens
-  - saves the tokens
-*/
+// saves a new user to db with hashed password; saves the new tokens in db.
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // prettier-ignore
-    const { lastName, firstName, email, password, birthDate, username } = req.body;
-    const registrationAvailability = yield mongo_functions_1.canRegister(email, username);
+    const user = req.body;
+    const registrationAvailability = yield mongo_functions_1.canRegister(user.email, user.username);
     if (!registrationAvailability.return) {
         console.log(index_1.errorEnums.REGISTER_FAILED + registrationAvailability.message);
         return res
             .status(409)
             .send(index_1.errorEnums.REGISTER_FAILED + registrationAvailability.message);
     }
-    const hashPassword = yield hash(password, 10);
-    // prettier-ignore
-    const user = { lastName, firstName, email, password: hashPassword, birthDate, username };
+    user.password = yield bcrypt_1.hash(user.password, 10);
     const registered = yield mongo_functions_1.registerUser(user);
-    if (!registered)
-        return res.status(500).send('Could Not Register');
+    if (!registered) {
+        console.log(index_1.errorEnums.REGISTER_FAILED);
+        res.status(500).send(index_1.errorEnums.REGISTER_FAILED);
+        return;
+    }
     const newTokens = functions_1.generateTokens(user);
     if (!newTokens) {
         console.log(index_1.errorEnums.REGISTER_FAILED + index_1.errorEnums.NO_TOKEN);
@@ -60,55 +54,50 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.register = register;
 /*---------------------------------------------------------------------------------------------------------- */
-/*
-function
-  - looks for the user
-  - test the hash password
-  - generate tokens
-  - save the tokens
- */
+// authenticate the user and saves new tokens in db
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const foundUser = yield mongo_functions_1.findDocument('User', 'email', email);
     // all but Iuser
     if (!('username' in foundUser)) {
         console.log(index_1.errorEnums.NO_SUCH_USER);
-        return res.status(409).send(index_1.errorEnums.NO_SUCH_USER);
+        res.status(409).send(index_1.errorEnums.NO_SUCH_USER);
+        return;
     }
     try {
-        const isPasswordCorrect = yield compare(password, foundUser.password);
+        const isPasswordCorrect = yield bcrypt_1.compare(password, foundUser.password);
         if (!isPasswordCorrect) {
             console.log(index_1.errorEnums.WRONG_CREDENTIALS);
-            return res.status(409).send(index_1.errorEnums.WRONG_CREDENTIALS);
+            res.status(409).send(index_1.errorEnums.WRONG_CREDENTIALS);
+            return;
         }
         const newTokens = functions_1.generateTokens({ foundUser });
         if (!newTokens) {
             console.log(index_1.errorEnums.NO_TOKEN);
+            res.sendStatus(500);
             return;
         }
         yield mongo_functions_1.saveRefreshToken(newTokens.refreshToken);
         yield mongo_functions_1.saveAccessToken(newTokens.accessToken);
         console.log(index_1.logsEnums.LOGGED_IN_SUCCESSFULY);
-        return res.send(Object.assign(Object.assign({}, newTokens), { message: index_1.logsEnums.LOGGED_IN_SUCCESSFULY }));
+        res.send(Object.assign(Object.assign({}, newTokens), { message: index_1.logsEnums.LOGGED_IN_SUCCESSFULY }));
+        return;
     }
     catch (error) {
         console.log(index_1.errorEnums.LOGIN_FAILED + error);
         res.sendStatus(500);
+        return;
     }
 });
 exports.login = login;
 /*---------------------------------------------------------------------------------------------------------- */
-/*
-  - recives both access and refresh tokens
-  -
-*/
-// prettier-ignore
+//  removes tokens from db
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const accessToken = req.headers['authorization'];
+    const accessToken = req.body.accessToken;
     const refreshToken = req.headers['refreshtoken'];
     if (!refreshToken || Array.isArray(refreshToken)) {
         console.log(index_1.errorEnums.NO_TOKEN);
-        res.status(401).send('Refresh Token Required');
+        res.status(401).send(index_1.errorEnums.NO_TOKEN);
         return;
     }
     const refreshremoved = yield mongo_functions_1.removeRefreshToken(refreshToken);
@@ -123,23 +112,27 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.logout = logout;
 /*---------------------------------------------------------------------------------------------------------- */
+//  sends a new saved accessToken to db and removes the old one.
 const newToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Requesting new accessToken');
     const token = req.headers['refreshtoken'];
-    let accessUpdated;
     if (!token || Array.isArray(token)) {
         console.log(index_1.errorEnums.NO_TOKEN);
-        return res.status(401).send(index_1.errorEnums.NO_TOKEN);
+        res.status(401).send(index_1.errorEnums.NO_TOKEN);
+        return;
     }
-    jsonwebtoken_1.default.verify(token, refreshTokenKey, (err, user) => __awaiter(void 0, void 0, void 0, function* () {
+    // TODO: find type of user
+    jwt.verify(token, refreshTokenKey, (err, user) => __awaiter(void 0, void 0, void 0, function* () {
         if (err) {
             console.log(index_1.errorEnums.INVALID_TOKEN + err);
-            return res.status(403).send(index_1.errorEnums.INVALID_TOKEN);
+            res.status(403).send(index_1.errorEnums.INVALID_TOKEN);
+            return;
         }
         if (!mongo_functions_1.isRefreshSaved(token)) {
             // catfish in the site
-            console.log('Catfish Detected');
-            return res.status(403).send(index_1.errorEnums.INVALID_TOKEN);
+            console.log(index_1.errorEnums.CATFISH);
+            res.status(403).send(index_1.errorEnums.FORBIDDEN);
+            return;
         }
         const userAssignedToToken = {
             username: user.username,
@@ -149,15 +142,17 @@ const newToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             password: user.password,
             birthDate: user.birthDate,
         };
-        const accessToken = jsonwebtoken_1.default.sign(userAssignedToToken, accessTokenKey, {
+        const accessToken = jwt.sign(userAssignedToToken, accessTokenKey, {
             expiresIn: '15m',
         });
-        accessUpdated = yield mongo_functions_1.saveAccessToken(accessToken);
+        const accessUpdated = yield mongo_functions_1.saveAccessToken(accessToken);
         if (accessUpdated) {
-            return res.status(200).json({ accessToken });
+            res.status(200).json({ accessToken });
+            return;
         }
         console.log(index_1.errorEnums.FAILED_ADDING_DATA);
-        return res.status(400).send(index_1.errorEnums.FAILED_ADDING_DATA);
+        res.status(400).send(index_1.errorEnums.FAILED_ADDING_DATA);
+        return;
     }));
 });
 exports.newToken = newToken;

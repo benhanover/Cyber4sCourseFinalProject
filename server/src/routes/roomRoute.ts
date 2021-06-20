@@ -2,7 +2,7 @@
 import { Router, Request, Response } from 'express';
 
 // import interfaces
-import { Iroom } from '../interfaces/index';
+import { Iroom } from '../types/index';
 
 // import controllers
 import { createRoom, getAllRooms } from '../controllers/roomController';
@@ -12,7 +12,7 @@ import { createRoom, getAllRooms } from '../controllers/roomController';
 import { accessTokenValidator } from '../middlewares/index';
 
 /*---------------------------------------------------------------------------------------------------------- */
-const rooms = Router();
+const rooms : Roter = Router();
 
 rooms.use(accessTokenValidator);
 rooms.get('/all', getAllRooms);

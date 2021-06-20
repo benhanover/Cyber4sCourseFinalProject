@@ -10,26 +10,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.accessTokenValidator = void 0;
-const jwt = require('jsonwebtoken');
+// require('dotenv').config({ path: '../../.env' });
+// import libraries
+const jwt = require('jsonwebtoken'); // types errors if imported and not required
 // import mongo-functions
 const mongo_functions_1 = require("../mongo/mongo-functions");
 // import env
 const accessTokenKey = process.env.ACCESS_TOKEN_KEY;
-// prettier-ignore
+// import enums
+const index_1 = require("../enums/index");
+if (!accessTokenKey) {
+    throw index_1.errorEnums.NO_TOKEN;
+}
+// Checks AccessToken Validity
 const accessTokenValidator = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const accessToken = req.headers['authorization'];
-    if (!accessToken)
-        return res.status(401).send('Valid Token Required');
+    if (!accessToken) {
+        console.log(index_1.errorEnums.NO_TOKEN);
+        res.status(401).send(index_1.errorEnums.NO_TOKEN);
+        return;
+    }
     return jwt.verify(accessToken, accessTokenKey, (err, user) => __awaiter(void 0, void 0, void 0, function* () {
         if (err) {
             // ask for the refresh token
             console.log("Invalid AccessToken");
-            return res.status(401).send();
+            res.status(401).send();
+            return;
         }
         if (!(yield mongo_functions_1.isAccessSaved(accessToken))) {
             // catfish detected
-            console.log("Catfish Detected");
-            return res.status(403).send('Forbidden Token');
+            console.log(index_1.errorEnums.CATFISH);
+            res.status(403).send(index_1.errorEnums.FORBIDDEN);
+            return;
         }
         req.body.accessToken = accessToken;
         req.body.user = user;

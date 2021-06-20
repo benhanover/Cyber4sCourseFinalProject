@@ -7,9 +7,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 
 // routes
-import users from './routes/userRoute';
-import rooms from './routes/roomRoute';
 
+import {users, rooms, fallbacks} from './routes/index'
 // declarations
 const app = express();
 const { PORT, DB } = process.env;
@@ -19,9 +18,8 @@ app.use(express.json());
 app.use(cors());
 app.use('/user', users);
 app.use('/room', rooms);
-app.use((req) => {
-  console.log('trying to go in:', req.url, req.path);
-});
+app.use(fallbacks);
+
 
 /*---------------------------------------------------------------------------------------------------------- */
 mongoose

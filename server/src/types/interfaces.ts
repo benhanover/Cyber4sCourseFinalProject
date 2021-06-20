@@ -23,5 +23,13 @@ export interface Iuser {
 /*---------------------------------------------------------------------------------------------------------- */
 export interface IreturnInfo {
   return: boolean;
-  message?: string;
+  message?: string | unknown;
 }
+
+/*---------------------------------------------------------------------------------------------------------- */
+export interface Itokens{
+  accessToken: string;
+  refreshToken: string;
+}
+/*---------------------------------------------------------------------------------------------------------- */
+export interface

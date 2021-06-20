@@ -10,19 +10,16 @@ const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
 // routes
-const userRoute_1 = __importDefault(require("./routes/userRoute"));
-const roomRoute_1 = __importDefault(require("./routes/roomRoute"));
+const index_1 = require("./routes/index");
 // declarations
 const app = express_1.default();
 const { PORT, DB } = process.env;
 // middlewares
 app.use(express_1.default.json());
 app.use(cors_1.default());
-app.use('/user', userRoute_1.default);
-app.use('/room', roomRoute_1.default);
-app.use((req) => {
-    console.log('trying to go in:', req.url, req.path);
-});
+app.use('/user', index_1.users);
+app.use('/room', index_1.rooms);
+app.use(index_1.fallbacks);
 /*---------------------------------------------------------------------------------------------------------- */
 mongoose_1.default
     .connect(`mongodb://localhost:27017/${DB}`, {

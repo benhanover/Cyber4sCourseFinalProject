@@ -1,29 +1,45 @@
 // require('dotenv').config({ path: '../../.env' });
 // import libraries
+const jwt = require('jsonwebtoken') // types errors if imported and not required
 import { Request, Response, NextFunction } from 'express';
-const jwt = require('jsonwebtoken');
 
 // import mongo-functions
 import { isAccessSaved } from '../mongo/mongo-functions';
 
 // import env
-const accessTokenKey = process.env.ACCESS_TOKEN_KEY;
+const accessTokenKey: string | undefined = process.env.ACCESS_TOKEN_KEY;
+// import types
+import {Iuser} from '../types/index'
 
-// prettier-ignore
-export const accessTokenValidator = async (req: Request, res: Response, next: NextFunction) => {
+// import enums
+import {errorEnums} from '../enums/index'
+
+
+if (!accessTokenKey) {
+  throw errorEnums.NO_TOKEN;
+}
+
+// Checks AccessToken Validity
+export const accessTokenValidator = async (req: Request, res: Response, next: NextFunction): Promise<NextFunction | void> => {
   
-  const accessToken = req.headers['authorization'];
-  if (!accessToken) return res.status(401).send('Valid Token Required');
-  return jwt.verify(accessToken, accessTokenKey, async (err: any, user: any) => {
+  const accessToken: string | undefined = req.headers['authorization'];
+  if (!accessToken) {
+    console.log(errorEnums.NO_TOKEN);
+    res.status(401).send(errorEnums.NO_TOKEN);
+    return;
+  }
+  return jwt.verify(accessToken, accessTokenKey, async (err: unknown, user: Iuser): Promise<void> => {
     if (err) {
       // ask for the refresh token
       console.log("Invalid AccessToken");
-      return res.status(401).send();
+      res.status(401).send();
+      return;
     }
     if(!await isAccessSaved(accessToken)){
       // catfish detected
-      console.log("Catfish Detected");
-      return res.status(403).send('Forbidden Token');
+      console.log(errorEnums.CATFISH);
+      res.status(403).send(errorEnums.FORBIDDEN);
+      return;
     }
     
     req.body.accessToken = accessToken;

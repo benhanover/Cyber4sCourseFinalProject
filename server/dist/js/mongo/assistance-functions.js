@@ -4,6 +4,7 @@ exports.getModel = void 0;
 // import models
 const models_1 = require("./models");
 /*---------------------------------------------------------------------------------------------------------- */
+//  gets a model by given string
 function getModel(modelEnum) {
     switch (modelEnum) {
         case 'User':

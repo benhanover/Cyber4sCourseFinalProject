@@ -5,7 +5,7 @@ import { login, register, logout, newToken } from '../controllers/userController
 import { accessTokenValidator } from '../middlewares/index';
 
 /*---------------------------------------------------------------------------------------------------------- */
-const users = Router();
+const users: Router = Router();
 
 users.post('/login', login);
 users.delete('/logout', accessTokenValidator, logout);
