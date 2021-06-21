@@ -1,34 +1,69 @@
 
 //import from libraries
-import { Protocol, ElementHandle, Page, HTTPResponse } from 'puppeteer'
+import { ElementHandle, HTTPResponse } from 'puppeteer'
+import { Collection, Db, MongoClient } from 'mongodb';
+require("dotenv").config();
+import { doesTokensExist, fillFormWithMockData } from './functions';
 
 /*
   - tokens   V
   - db
-  - network
+  - network   V
 */
 
 //  mockData for tests
 const mockData = {
-  registerTest: ['3', '3', '3', '', 'q@q', '3'],
+  registerTest: ['testUsername', 'testuserfirstname', 'testuserlastname', '01021997', 'testuser@email', '8787password'],
 }
 
-jest.setTimeout(8000);
+// Tests time configuration - for each 'describe'
+jest.setTimeout(15000);
+
+
+//  Register test
 describe('Register', () => {
- 
-  let testPage: Page;
+  
+  /*settings-------------------------------------------------------------------------------------------------*/
+  //  test's global vars
+  let connection: MongoClient;
+  let db: Db;
+  let User: Collection;
+  
+  // actions to do before all tests.
   beforeAll(async () => {
     await page.goto('http://localhost:3000/')
-  })
-  // afterEach (async () => {
-  //   await page.close();
-  // })
+    connection = new MongoClient (`mongodb://localhost:27017/${process.env.DB}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    await connection.connect()
+    db = await connection.db(process.env.DB);
+    User = db.collection("users" );
+  });
+ 
+ 
+  // actions to do after all tests.
+  afterAll(async () => {
+    await db.dropDatabase();
+    connection.close();
+
+  })    
+  
+ /*-----------------------------------------------------------------------------------------------------------*/
+
   it('Cookies shouldn\'t have Accses & Refresh tokens on open', async (): Promise<void> => {
+    await page.waitForSelector('input')
+    // await page.waitForResponse('http://localhost:4/')
     // checks tokens does not exist on load
     const tokensExistOnLoad: boolean = await doesTokensExist(page);
     expect(tokensExistOnLoad).toBe(false);
   });
-
+/*-----------------------------------------------------------------------------------------------------------*/
+  it('Database has no users on open', async (): Promise<void> => {
+    const usersExist = await User.find({}).toArray();
+    expect(usersExist.length).toEqual(0);
+})
+/*-----------------------------------------------------------------------------------------------------------*/
   it('Response should have expected stucture', async (): Promise<void> => {
     // fill register form
     await page.waitForSelector("input");
@@ -37,8 +72,8 @@ describe('Register', () => {
     await inputs[6].click();
     
     // checks response has expected structure
-    await page.waitForResponse('http://localhost:4000/user/register');
-    const rawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/register');
+    await page.waitForResponse('http://localhost:4000/user/register');  // options 204 response
+    const rawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/register'); // relevant response
     expect(rawResponse.status()).toEqual(200);
     const response: {accessToken: string, refreshToken: string, message: string} = await rawResponse.json();
   
@@ -47,60 +82,15 @@ describe('Register', () => {
     expect(response.message).toMatch(/^Successfuly Registered$/);
       
   });
-
+/*-----------------------------------------------------------------------------------------------------*/
   it('Cookies should have Accses & Refresh tokens', async (): Promise<void> => {
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(1000); // wait for tokens to get in the cookies
+    
     const tokensExistOnRegister: boolean = await doesTokensExist(page);
     expect(tokensExistOnRegister).toBe(true);
-      })      
+  })  
   
-    })
+})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// checks existance of both accesToken and refreshToken
-async function doesTokensExist(page: Page): Promise<boolean> {
-  try {
-    const rawCookies: Protocol.Network.Cookie[] = await page.cookies('http://localhost/');
-    const accessToken: string  = rawCookies[0].name === 'accessToken' ? rawCookies[0].value : rawCookies[1].value;
-    const refreshToken: string = rawCookies[0].name === 'refreshToken' ? rawCookies[0].value : rawCookies[1].value;
-    if (accessToken && refreshToken) return true;
-    return false;
-  }
-  catch (e: unknown) {
-    return false;
-  }
-}
-  
-// fills given inputs with given mock data.
-async function fillFormWithMockData(page: Page, inputArray: ElementHandle<Element>[], mockData: any[]): Promise<void> {
-  for (let i = 0; i < inputArray.length-1; i++){
-      await inputArray[i].click()
-      await page.keyboard.type(mockData[i]);
-    }
-}
-
-// const dimensions = await page.evaluate(() => {
-//   return {
-//     width: document.documentElement.clientWidth,
-//     height: document.documentElement.clientHeight,
-//     deviceScaleFactor: window.devicePixelRatio,
-//   };
-// });
+   
+    

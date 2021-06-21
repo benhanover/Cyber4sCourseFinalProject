@@ -3,10 +3,15 @@ let jest_puppeteer_conf = {
     timeout: 30000,
     dumpio: true, // Whether to pipe the browser process stdout and stderr
     // headless: false,
-    // slowMo: 40
+    // slowMo: 70
+  },
+  server: {
+    command: 'node ../server/dist/js/server.js',
+    port: 4000,
   }
-}
 
+}
+// jest-puppeteer.config.js
 const isDebugMode = typeof v8debug === 'object' || /--debug|--inspect/.test(process.execArgv.join(' '));
 
 if (isDebugMode) {

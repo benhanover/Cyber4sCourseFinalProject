@@ -6,12 +6,16 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
+console.log(process.env.NODE_ENV, "testing");
+
 // routes
 
 import {users, rooms, fallbacks} from './routes/index'
 // declarations
 const app = express();
-const { PORT, DB } = process.env;
+const {PORT, DB} = process.env;
+// const PORT = process.env.PORT;
+// const DB = process.env.NODE_ENV === 'test' ? process.env.DB_TEST : process.env.DB
 
 // middlewares
 app.use(express.json());

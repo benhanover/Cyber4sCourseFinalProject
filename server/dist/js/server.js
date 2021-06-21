@@ -9,11 +9,14 @@ require('dotenv').config();
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
+console.log(process.env.NODE_ENV, "testing");
 // routes
 const index_1 = require("./routes/index");
 // declarations
 const app = express_1.default();
 const { PORT, DB } = process.env;
+// const PORT = process.env.PORT;
+// const DB = process.env.NODE_ENV === 'test' ? process.env.DB_TEST : process.env.DB
 // middlewares
 app.use(express_1.default.json());
 app.use(cors_1.default());
