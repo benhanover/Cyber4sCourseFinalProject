@@ -24,11 +24,12 @@ describe('Authentication', () => {
         useUnifiedTopology: true
      });
     await connection.connect()
+    
     db = connection.db(process.env.DB); // together_test
     resolve({ 
         users: db.collection("users"),
-        refreshTokens: db.collection("refreshTokens"),
-        accessTokens: db.collection("accessTokens")
+        refreshTokens: db.collection("refreshtokens"),
+        accessTokens: db.collection("accesstokens")
     });
   });
 

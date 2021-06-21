@@ -21,7 +21,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className='login-container'>
       email
       <input ref={emailRef}></input>
       password

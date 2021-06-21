@@ -10,6 +10,7 @@ import { ElementHandle, HTTPResponse } from 'puppeteer'
 import { doesTokensExist } from './functions';
 import {logsEnums} from "../../server/src/enums/index";
 import { beforeAll } from '../types/index';
+import {Login} from './login'
 
 export const Logout = (collections: Promise<beforeAll>) => describe("Logout" , () => {
     let Refreshtokens: Collection 
@@ -23,23 +24,17 @@ export const Logout = (collections: Promise<beforeAll>) => describe("Logout" , (
     it('Cookies should have Accses & Refresh tokens', async (): Promise<void> => {
         const tokensExist: boolean = await doesTokensExist(page);
         expect(tokensExist).toBe(true);
-        console.log("1");
         
     });
     
     it('After logging out server response should be logged out succesfuly', async (): Promise<void> => {
         const logOutButton: ElementHandle<Element>[]  = await page.$$('div > button'); 
-        // if (!logOutButton) return console.log('logOutButton is undefined'); 
         await logOutButton[1].click();
         await page.waitForResponse('http://localhost:4000/user/logout');  // options 204 response
         const response: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/logout'); // relevant response
-        const response2 = await response.json();
         expect(response.status()).toBe(200); 
         expect(response.ok()).toBe(true);
-        console.log(await response2.message);
-        
-        // expect(response.json()).toBe(logsEnums.LOGGED_OUT_SUCCESSFULY); 
-        expect(response2.message).toBe(logsEnums.LOGGED_OUT_SUCCESSFULY); 
+        expect((await response.json()).message).toBe(logsEnums.LOGGED_OUT_SUCCESSFULY); 
         
     });
 
@@ -55,5 +50,6 @@ export const Logout = (collections: Promise<beforeAll>) => describe("Logout" , (
         expect(refreshInDb.length).toBe(0);
         expect(accessInDb.length).toBe(0);
     });
+    Login(collections)
 
 })

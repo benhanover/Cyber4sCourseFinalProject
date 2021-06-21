@@ -14,8 +14,15 @@ const mockData = {
 //  Register test
 export const Register = (collections: Promise<beforeAll>): void => describe('Register', () => {
   let User: Collection;
+  let AccessTokens: Collection;
+  let RefreshTokens: Collection;
+
   beforeAll( async () => {
+    
     User = (await collections).users;
+    AccessTokens = (await collections).accessTokens;
+    RefreshTokens = (await collections).refreshTokens;
+    
   })
 
   
@@ -30,15 +37,16 @@ export const Register = (collections: Promise<beforeAll>): void => describe('Reg
 /*-----------------------------------------------------------------------------------------------------------*/
   it('Database has no users on open', async (): Promise<void> => {
     const usersExist = await User.find({}).toArray();
-    console.log(usersExist.length);
     expect(usersExist.length).toEqual(0);
 })
 /*-----------------------------------------------------------------------------------------------------------*/
   it('Response should have expected stucture', async (): Promise<void> => {
     // fill register form
-    await page.waitForSelector("input");
+    await page.waitForSelector("form");
     const inputs: ElementHandle<Element>[] = await page.$$('form > input');
-    await fillFormWithMockData(page, inputs, mockData.registerTest)
+    // sending it without the button
+    const inputs2 = inputs.slice(0,6);
+    await fillFormWithMockData(page, inputs2, mockData.registerTest)
     await inputs[6].click();
     
     // checks response has expected structure
@@ -67,6 +75,14 @@ export const Register = (collections: Promise<beforeAll>): void => describe('Reg
     expect(usersExist.length).toEqual(1);
     expect(usersExist[0].username).toBe(mockData.registerTest[0]);
   })
+
+  it('Tokens Should be saved to the database', async ():Promise<void> => {
+    const accessExist = await AccessTokens.find({}).toArray();
+    const refreshExist = await RefreshTokens.find({}).toArray();
+    expect(accessExist.length).toEqual(1);
+    expect(refreshExist.length).toEqual(1);
+  });
+
   Logout(collections);
 })
 

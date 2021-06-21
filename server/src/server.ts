@@ -14,8 +14,8 @@ import {users, rooms, fallbacks} from './routes/index'
 // declarations
 const app = express();
 const {PORT, DB} = process.env;
-// const PORT = process.env.PORT;
-// const DB = process.env.NODE_ENV === 'test' ? process.env.DB_TEST : process.env.DB
+
+console.log(DB , "from the server");
 
 // middlewares
 app.use(express.json());

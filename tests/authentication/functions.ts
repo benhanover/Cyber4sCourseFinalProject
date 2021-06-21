@@ -18,7 +18,7 @@ export async function doesTokensExist(page: Page): Promise<boolean> {
     
 // fills given inputs with given mock data.
 export async function fillFormWithMockData(page: Page, inputArray: ElementHandle<Element>[], mockData: any[]): Promise<void> {
-    for (let i = 0; i < inputArray.length - 1; i++){
+    for (let i = 0; i < inputArray.length; i++){
         await inputArray[i].type(mockData[i]); 
     }
 }
