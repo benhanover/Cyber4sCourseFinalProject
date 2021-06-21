@@ -1,4 +1,4 @@
-// require('dotenv').config({ path: '../../.env' });
+
 // import libraries
 const jwt = require('jsonwebtoken') // types errors if imported and not required
 import { Request, Response, NextFunction } from 'express';
@@ -16,7 +16,7 @@ import {errorEnums} from '../enums/index'
 
 
 if (!accessTokenKey) {
-  throw errorEnums.NO_TOKEN;
+  throw errorEnums.NO_ENV_VAR;
 }
 
 // Checks AccessToken Validity

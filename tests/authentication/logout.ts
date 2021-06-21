@@ -27,18 +27,20 @@ export const Logout = (collections: Promise<beforeAll>) => describe("Logout" , (
         
     });
     
-    it('after logging out server response should be logedout succesfuly', async (): Promise<void> => {
+    it('After logging out server response should be logged out succesfuly', async (): Promise<void> => {
         const logOutButton: ElementHandle<Element>[]  = await page.$$('div > button'); 
         // if (!logOutButton) return console.log('logOutButton is undefined'); 
         await logOutButton[1].click();
         await page.waitForResponse('http://localhost:4000/user/logout');  // options 204 response
         const response: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/logout'); // relevant response
-        
+        const response2 = await response.json();
         expect(response.status()).toBe(200); 
         expect(response.ok()).toBe(true);
+        console.log(await response2.message);
         
-        // expect(response.json().message).toBe(logsEnums.LOGGED_OUT_SUCCESSFULY); 
-        console.log("2");
+        // expect(response.json()).toBe(logsEnums.LOGGED_OUT_SUCCESSFULY); 
+        expect(response2.message).toBe(logsEnums.LOGGED_OUT_SUCCESSFULY); 
+        
     });
 
     it('after logging out no tokens shoul be in cookies', async (): Promise<void> => {

@@ -115,7 +115,7 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
   const accessremoved = await removeAccessToken(accessToken);
   if (refreshremoved && accessremoved) {
     console.log(logsEnums.LOGGED_OUT_SUCCESSFULY);
-    res.send(logsEnums.LOGGED_OUT_SUCCESSFULY);
+    res.send({message: logsEnums.LOGGED_OUT_SUCCESSFULY});
     return
      
   }

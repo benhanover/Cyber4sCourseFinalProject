@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.accessTokenValidator = void 0;
-// require('dotenv').config({ path: '../../.env' });
 // import libraries
 const jwt = require('jsonwebtoken'); // types errors if imported and not required
 // import mongo-functions
@@ -20,7 +19,7 @@ const accessTokenKey = process.env.ACCESS_TOKEN_KEY;
 // import enums
 const index_1 = require("../enums/index");
 if (!accessTokenKey) {
-    throw index_1.errorEnums.NO_TOKEN;
+    throw index_1.errorEnums.NO_ENV_VAR;
 }
 // Checks AccessToken Validity
 const accessTokenValidator = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {

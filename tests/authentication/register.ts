@@ -50,6 +50,7 @@ export const Register = (collections: Promise<beforeAll>): void => describe('Reg
     expect(response.accessToken).toMatch(/^[0-9a-zA-Z]*\.[0-9a-zA-Z]*\.[0-9a-zA-Z-_]*$/);
     expect(response.refreshToken).toMatch(/^[0-9a-zA-Z]*\.[0-9a-zA-Z]*\.[0-9a-zA-Z-_]*$/);
     expect(response.message).toMatch(/^Successfuly Registered$/);
+    
       
   });
 /*-----------------------------------------------------------------------------------------------------*/

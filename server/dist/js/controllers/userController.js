@@ -107,7 +107,7 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const accessremoved = yield mongo_functions_1.removeAccessToken(accessToken);
     if (refreshremoved && accessremoved) {
         console.log(index_1.logsEnums.LOGGED_OUT_SUCCESSFULY);
-        res.send(index_1.logsEnums.LOGGED_OUT_SUCCESSFULY);
+        res.send({ message: index_1.logsEnums.LOGGED_OUT_SUCCESSFULY });
         return;
     }
     console.log(index_1.errorEnums.LOGOUT_FAILED);
