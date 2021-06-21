@@ -31,13 +31,13 @@ export const register = async (req: Request, res: Response) => {
     console.log(errorEnums.REGISTER_FAILED + registrationAvailability.message);
     return res
       .status(409)
-      .send(errorEnums.REGISTER_FAILED + registrationAvailability.message);
+      .json({ message: errorEnums.REGISTER_FAILED + registrationAvailability.message });
   }
   user.password = await hash(user.password, 10);
   const registered: boolean = await registerUser(user);
   if (!registered) {
     console.log(errorEnums.REGISTER_FAILED);
-    res.status(500).send(errorEnums.REGISTER_FAILED);
+    res.status(500).json({ message: errorEnums.REGISTER_FAILED });
     return;
   }
     
@@ -49,7 +49,7 @@ export const register = async (req: Request, res: Response) => {
   await saveRefreshToken(newTokens.refreshToken);
   await saveAccessToken(newTokens.accessToken);
   console.log(logsEnums.REGISTER_SUCCESSFULY);
-  return res.send({
+  return res.json({
     ...newTokens,
     message: logsEnums.REGISTER_SUCCESSFULY,
   });
@@ -65,7 +65,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   // all but Iuser
   if (!('username' in foundUser)) {
     console.log(errorEnums.NO_SUCH_USER);
-    res.status(409).send(errorEnums.NO_SUCH_USER);
+    res.status(409).json({message: errorEnums.NO_SUCH_USER});
     return;
   }
 
@@ -73,7 +73,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const isPasswordCorrect: boolean = await compare(password, foundUser.password);
     if (!isPasswordCorrect) {
       console.log(errorEnums.WRONG_CREDENTIALS);
-      res.status(409).send(errorEnums.WRONG_CREDENTIALS);
+      res.status(409).json({message: errorEnums.WRONG_CREDENTIALS});
       return;
     }
     const newTokens: UgenerateTokens = generateTokens({ foundUser });
@@ -86,7 +86,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     await saveAccessToken(newTokens.accessToken);
     console.log(logsEnums.LOGGED_IN_SUCCESSFULY);
    
-    res.send({
+    res.json({
       ...newTokens,
       message: logsEnums.LOGGED_IN_SUCCESSFULY,
     });

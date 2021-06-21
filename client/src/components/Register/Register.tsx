@@ -12,12 +12,21 @@ const Register: React.FC = () => {
 
   const handleSubmit = (e: React.SyntheticEvent): void => {
     e.preventDefault();
-    const username: string | undefined = usernameRef?.current?.value;
-    const firstName: string | undefined = nameRef?.current?.value;
-    const lastName: string | undefined = lastNameRef?.current?.value;
-    const birthDate: string | undefined = dateRef?.current?.value;
-    const email: string | undefined = emailRef?.current?.value;
-    const password: string | undefined = passwordRef?.current?.value;
+    if(!(usernameRef?.current && nameRef?.current && lastNameRef?.current && dateRef?.current && emailRef?.current && passwordRef?.current)) return;
+    const username: string | undefined = usernameRef.current?.value;
+    const firstName: string | undefined = nameRef.current?.value;
+    const lastName: string | undefined = lastNameRef.current?.value;
+    const birthDate: string | undefined = dateRef.current?.value;
+    const email: string | undefined = emailRef.current?.value;
+    const password: string | undefined = passwordRef.current?.value;
+
+    // clean up
+    usernameRef.current.value = '';
+    nameRef.current.value = '';
+    lastNameRef.current.value = '';
+    dateRef.current.value = '';
+    emailRef.current.value = '';
+    passwordRef.current.value = '';
 
     axios
       .post('http://localhost:4000/user/register', {

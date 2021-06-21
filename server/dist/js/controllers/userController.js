@@ -34,13 +34,13 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(index_1.errorEnums.REGISTER_FAILED + registrationAvailability.message);
         return res
             .status(409)
-            .send(index_1.errorEnums.REGISTER_FAILED + registrationAvailability.message);
+            .json({ message: index_1.errorEnums.REGISTER_FAILED + registrationAvailability.message });
     }
     user.password = yield bcrypt_1.hash(user.password, 10);
     const registered = yield mongo_functions_1.registerUser(user);
     if (!registered) {
         console.log(index_1.errorEnums.REGISTER_FAILED);
-        res.status(500).send(index_1.errorEnums.REGISTER_FAILED);
+        res.status(500).json({ message: index_1.errorEnums.REGISTER_FAILED });
         return;
     }
     const newTokens = functions_1.generateTokens(user);
@@ -51,7 +51,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield mongo_functions_1.saveRefreshToken(newTokens.refreshToken);
     yield mongo_functions_1.saveAccessToken(newTokens.accessToken);
     console.log(index_1.logsEnums.REGISTER_SUCCESSFULY);
-    return res.send(Object.assign(Object.assign({}, newTokens), { message: index_1.logsEnums.REGISTER_SUCCESSFULY }));
+    return res.json(Object.assign(Object.assign({}, newTokens), { message: index_1.logsEnums.REGISTER_SUCCESSFULY }));
 });
 exports.register = register;
 /*---------------------------------------------------------------------------------------------------------- */
@@ -63,14 +63,14 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // all but Iuser
     if (!('username' in foundUser)) {
         console.log(index_1.errorEnums.NO_SUCH_USER);
-        res.status(409).send(index_1.errorEnums.NO_SUCH_USER);
+        res.status(409).json({ message: index_1.errorEnums.NO_SUCH_USER });
         return;
     }
     try {
         const isPasswordCorrect = yield bcrypt_1.compare(password, foundUser.password);
         if (!isPasswordCorrect) {
             console.log(index_1.errorEnums.WRONG_CREDENTIALS);
-            res.status(409).send(index_1.errorEnums.WRONG_CREDENTIALS);
+            res.status(409).json({ message: index_1.errorEnums.WRONG_CREDENTIALS });
             return;
         }
         const newTokens = functions_1.generateTokens({ foundUser });
@@ -82,7 +82,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         yield mongo_functions_1.saveRefreshToken(newTokens.refreshToken);
         yield mongo_functions_1.saveAccessToken(newTokens.accessToken);
         console.log(index_1.logsEnums.LOGGED_IN_SUCCESSFULY);
-        res.send(Object.assign(Object.assign({}, newTokens), { message: index_1.logsEnums.LOGGED_IN_SUCCESSFULY }));
+        res.json(Object.assign(Object.assign({}, newTokens), { message: index_1.logsEnums.LOGGED_IN_SUCCESSFULY }));
         return;
     }
     catch (error) {

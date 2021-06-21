@@ -10,7 +10,7 @@ import { ElementHandle, HTTPResponse } from 'puppeteer'
 import { doesTokensExist } from './functions';
 import {logsEnums} from "../../server/src/enums/index";
 import { beforeAll } from '../types/index';
-import {Login} from './login'
+import {FailRegister} from './failRegister'
 
 export const Logout = (collections: Promise<beforeAll>) => describe("Logout" , () => {
     let Refreshtokens: Collection 
@@ -50,6 +50,6 @@ export const Logout = (collections: Promise<beforeAll>) => describe("Logout" , (
         expect(refreshInDb.length).toBe(0);
         expect(accessInDb.length).toBe(0);
     });
-    Login(collections)
+    FailRegister(collections);
 
 })

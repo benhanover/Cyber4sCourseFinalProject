@@ -93,7 +93,7 @@ export const findDocument = async ( modelString: string, field: string, fieldCon
     };
   }
   try {
-    const foundDocument: Iuser | null = await model.findOne({
+    const foundDocument : Umodels = await model.findOne({
       [field]: fieldContent,
     });
 

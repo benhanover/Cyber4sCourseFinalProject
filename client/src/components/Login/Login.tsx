@@ -8,8 +8,11 @@ const Login: React.FC = () => {
   const [stuff, setStuff] = useState('');
 
   const submitLogin = () => {
+    if (!(emailRef?.current && passwordRef?.current)) return;
     const email = emailRef?.current?.value;
     const password = passwordRef?.current?.value;
+    emailRef.current.value = '';
+    passwordRef.current.value = '';
     axios
       .post('http://localhost:4000/user/login', { email, password })
       .then(({ data }) => {

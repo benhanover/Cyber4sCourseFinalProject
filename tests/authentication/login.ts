@@ -1,8 +1,9 @@
 import { ElementHandle, HTTPResponse } from 'puppeteer'
-import { Collection, Db, MongoClient } from 'mongodb';
+import { Collection } from 'mongodb';
 import { doesTokensExist, fillFormWithMockData } from './functions';
-import {beforeAll} from '../types/index'
-import {logsEnums} from "../../server/src/enums/index";
+import { beforeAll } from '../types/index'
+import { logsEnums } from "../../server/src/enums/index";
+import { refreshToken } from './refreshToken';
 
 
 
@@ -31,8 +32,7 @@ export const Login = ( collections: Promise<beforeAll> ): void => describe('Logi
 /*-----------------------------------------------------------------------------------------------------------*/
 
   it('server response should be successful', async ():Promise<void> => {
-
-    await page.waitForSelector("input");
+    await page.waitForSelector('.login-container');
     const inputs: ElementHandle<Element>[] = await page.$$('.login-container > input');
     await fillFormWithMockData(page, inputs, mockData.loginTest)
     const loginButton = await page.$('.login-container > button');
@@ -65,7 +65,7 @@ export const Login = ( collections: Promise<beforeAll> ): void => describe('Logi
     expect(accessExist.length).toEqual(1);
     expect(refreshExist.length).toEqual(1);
   });
-
+  refreshToken(collections)
 });
 
 
