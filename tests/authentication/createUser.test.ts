@@ -88,9 +88,19 @@ describe('Register', () => {
     
     const tokensExistOnRegister: boolean = await doesTokensExist(page);
     expect(tokensExistOnRegister).toBe(true);
-  })  
+  });
   
+  /*-----------------------------------------------------------------------------------------------------*/
+  it("User should appear in the database", async (): Promise<void> => {
+    const usersExist = await User.find({}).toArray();
+    expect(usersExist.length).toEqual(1);
+    expect(usersExist[0].username).toBe(mockData.registerTest[0]);
+})
 })
 
+
+
+
+/*-----------------------------------------------------------------------------------------------------*/
    
     
