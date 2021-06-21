@@ -1,0 +1,57 @@
+//should have cookies tokens
+//click the logout 
+//shouldnt have tokens in network and in db
+
+//-have Connection
+//-add imports
+
+import { Collection } from 'mongodb';
+import { ElementHandle, HTTPResponse } from 'puppeteer'
+import { doesTokensExist } from './functions';
+import {logsEnums} from "../../server/src/enums/index";
+import { beforeAll } from '../types/index';
+
+export const Logout = (collections: Promise<beforeAll>) => describe("Logout" , () => {
+    let Refreshtokens: Collection 
+    let Accesstokens: Collection 
+    beforeAll( async()=>{
+        Refreshtokens = (await collections).refreshTokens;
+        Accesstokens = (await collections).accessTokens;
+        page.waitForSelector('div > button');
+    })
+
+    it('Cookies should have Accses & Refresh tokens', async (): Promise<void> => {
+        const tokensExist: boolean = await doesTokensExist(page);
+        expect(tokensExist).toBe(true);
+        console.log("1");
+        
+    });
+    
+    it('after logging out server response should be logedout succesfuly', async (): Promise<void> => {
+        const logOutButton: ElementHandle<Element>[]  = await page.$$('div > button'); 
+        // if (!logOutButton) return console.log('logOutButton is undefined'); 
+        await logOutButton[1].click();
+        await page.waitForResponse('http://localhost:4000/user/logout');  // options 204 response
+        const response: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/logout'); // relevant response
+        
+        expect(response.status()).toBe(200); 
+        expect(response.ok()).toBe(true);
+        
+        // expect(response.json().message).toBe(logsEnums.LOGGED_OUT_SUCCESSFULY); 
+        console.log("2");
+    });
+
+    it('after logging out no tokens shoul be in cookies', async (): Promise<void> => {
+        const tokensExistOnRegister: boolean = await doesTokensExist(page);
+        expect(tokensExistOnRegister).toBe(false);
+    });
+
+    it('tokens should be deleted from the database', async (): Promise<void> => {
+        
+        const refreshInDb =  await Refreshtokens.find({}).toArray();
+        const accessInDb =  await Accesstokens.find({}).toArray(); 
+        expect(refreshInDb.length).toBe(0);
+        expect(accessInDb.length).toBe(0);
+    });
+
+})
