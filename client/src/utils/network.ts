@@ -21,16 +21,14 @@ async function Network(
     url: endpoint,
   };
 
-  return await axios(options)
+  return  axios(options)//awawit
     .then((response: AxiosResponse) => {
       if (response.status === 200) return response.data;
     })
     .catch(async (e) => {
-      switch (e.message) {
+      switch (e.message) { // e.response.status
         case 'Request failed with status code 401':
           return await recreateAccessToken(method, endpoint, body);
-
-          break;
         default:
           console.log('defaulttt');
       }
@@ -38,3 +36,5 @@ async function Network(
     });
 }
 export default Network;
+ //401
+ //200    //403

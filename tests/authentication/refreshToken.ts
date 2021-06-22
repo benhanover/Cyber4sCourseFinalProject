@@ -3,7 +3,7 @@ import { Collection } from 'mongodb';
 import { beforeAll } from '../types/index'
 import { statusCheck } from './functions';
 
-
+//401
 export const refreshToken = ( collections: Promise<beforeAll> ): void => describe('refreshToken', () => {
   let User: Collection;
   let AccessTokens: Collection;
@@ -27,14 +27,14 @@ export const refreshToken = ( collections: Promise<beforeAll> ): void => describ
 
     // refresh page
     await page.goto('http://localhost:3000');
-    
+    console.log("RefreshTokens1");
     expect(await statusCheck('http://localhost:4000/room/all', 401)).toBe(true)
 
     // await page.waitForResponse('http://localhost:4000/room/all');
     // const createRoomRawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/room/all'); 
     // expect(createRoomRawResponse.status()).toBe(401);
     await page.waitForTimeout(3000)
-    
+    console.log("RefreshTokens2");
     expect(await statusCheck('http://localhost:4000/user/refreshToken', 200)).toBe(true)
     // await page.waitForResponse('http://localhost:4000/user/refreshToken');
     // const refreshRawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/refreshToken');

@@ -35,7 +35,7 @@ export const FailLogin = (collections: Promise<beforeAll>) => describe("failLogi
         await fillFormWithMockData(page, inputs,[ mockData.loginTest[0] , "1234"])
         const loginButton: ElementHandle<Element> |null = await page.$('.login-container > button');
         await loginButton?.click();
-        console.log("login after submitting");
+        console.log("loginfail");
         
         expect(await statusCheck('http://localhost:4000/user/login', 409, errorEnums.WRONG_CREDENTIALS)).toBe(true)
 
@@ -50,6 +50,7 @@ export const FailLogin = (collections: Promise<beforeAll>) => describe("failLogi
         
         const tokensExist: boolean = await doesTokensExist(page);
         expect(tokensExist).toBe(false);
+     
 
 
     })
@@ -58,8 +59,8 @@ export const FailLogin = (collections: Promise<beforeAll>) => describe("failLogi
         await fillFormWithMockData(page, inputs,["1234@56"  , mockData.loginTest[1]])
         const loginButton: ElementHandle<Element> |null = await page.$('.login-container > button');
         await loginButton?.click();
-        console.log("login after submitting");
-
+        
+        console.log("faillogin");
         expect(await statusCheck('http://localhost:4000/user/login', 409, errorEnums.NO_SUCH_USER)).toBe(true)
 
         // const res204 = await page.waitForResponse('http://localhost:4000/user/login');  // options 204 response

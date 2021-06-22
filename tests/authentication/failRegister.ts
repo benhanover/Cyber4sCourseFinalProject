@@ -53,13 +53,12 @@ export const FailRegister = ( collections: Promise<beforeAll> ): void => describ
     it('Cannot register with existing email', async (): Promise<void> => {
         await page.waitForTimeout(1000)
     const inputs: ElementHandle<Element>[] = await page.$$('form > input');
-    console.log("register after input");
     // sending it without the button
     const inputs2: ElementHandle<Element>[] = inputs.slice(0,6);
     await fillFormWithMockData(page, inputs2, mockData.failRegisterTestByEmail)
     await inputs[6].click();
-    console.log("register after submitting");
     
+    console.log("register");
     // checks response has expected structure
     expect(await statusCheck('http://localhost:4000/user/register', 409, errorEnums.REGISTER_FAILED + errorEnums.EMAIL_TAKEN)).toBe(true)
       

@@ -25,7 +25,7 @@ export const accessTokenValidator = async (req: Request, res: Response, next: Ne
   const accessToken: string | undefined = req.headers['authorization'];
   if (!accessToken) {
     console.log(errorEnums.NO_TOKEN);
-    res.status(401).send(errorEnums.NO_TOKEN);
+    res.status(401).send(errorEnums.NO_TOKEN); // 400 bad Request
     return;
   }
   return jwt.verify(accessToken, accessTokenKey, async (err: unknown, user: Iuser): Promise<void> => {
