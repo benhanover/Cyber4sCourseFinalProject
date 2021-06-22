@@ -1,5 +1,6 @@
 //  import libraries
 import { Protocol, ElementHandle, Page } from 'puppeteer'
+import {errorEnums} from "../../server/src/enums/index";
 
 
 // checks existance of both accesToken and refreshToken
@@ -23,6 +24,28 @@ export async function fillFormWithMockData(page: Page, inputArray: ElementHandle
     }
 }
 
+
+// checks response statuses are as expected
+export async function statusCheck(url: string, expectedStatus: number, expectedMessage?: string): Promise<boolean> {
+  let relevantResponse;
+  const firstResponse = await page.waitForResponse(url)
+  const secondResponse = await page.waitForResponse(url)
+  const status1 = firstResponse.status()
+  const status2 = secondResponse.status()
+  if (status1 === expectedStatus) {
+    relevantResponse = firstResponse;
+  }
+  else if (status2 === expectedStatus) {
+    relevantResponse = secondResponse;
+  }
+
+  if (!relevantResponse) return false;
+  if (!expectedMessage) return true;
+  const response = await relevantResponse.json()
+  expect(response.message).toMatch(expectedMessage);
+  
+  return true;
+}
 // await expect(page).toFillForm('form[name="myForm"]', {
 //   firstName: 'James',
 //   lastName: 'Bond',
