@@ -1,6 +1,6 @@
 import { Collection } from 'mongodb';
 import { ElementHandle, HTTPResponse } from 'puppeteer'
-import { doesTokensExist , fillFormWithMockData, statusCheck} from './functions';
+import { doesTokensExist , fillFormWithMockData} from './functions';
 
 import { beforeAll } from '../types/index';
 import {Login} from './login'
@@ -25,56 +25,54 @@ export const FailLogin = (collections: Promise<beforeAll>) => describe("failLogi
        await page.waitForSelector('.login-container');
     })
 
-    beforeEach(async ()=>{
-        await page.goto('http://localhost:3000');
-        await page.waitForSelector('.login-container');
-    })
+    // beforeEach(async ()=>{
+    //     await page.goto('http://localhost:3000');
+    //     await page.waitForSelector('.login-container');
+    // })
 
-    it("try to login with good email , bad password", async()=>{
+    it("Cannot login with wrong password or unknown user", async()=>{
+        const testResponse1: any = new Promise((resolve) => {
+            page.on('response', async (response) => {
+              
+              if(await response.url() === 'http://localhost:4000/user/login'
+              && await response.status() === 409
+              && (await response.json()).message === errorEnums.WRONG_CREDENTIALS) {
+                resolve(true);
+              }
+              
+              // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
+            });
+          });
+
+        const testResponse2: any = new Promise((resolve) => {
+            page.on('response', async (response) => {
+              
+              if(await response.url() === 'http://localhost:4000/user/login'
+              && await response.status() === 409
+              && (await response.json()).message === errorEnums.NO_SUCH_USER) {
+                resolve(true);
+              }
+              
+              // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
+            });
+          });
+        await page.waitForSelector('.login-container');  
         const inputs: ElementHandle<Element>[] = await page.$$('.login-container > input');
+
         await fillFormWithMockData(page, inputs,[ mockData.loginTest[0] , "1234"])
         const loginButton: ElementHandle<Element> |null = await page.$('.login-container > button');
         await loginButton?.click();
-        console.log("loginfail");
+        expect(await testResponse1).toBe(true);
+        const tokensExist1: boolean = await doesTokensExist(page); 
+        expect(tokensExist1).toBe(false)
         
-        expect(await statusCheck('http://localhost:4000/user/login', 409, errorEnums.WRONG_CREDENTIALS)).toBe(true)
-
-        // const res204 = await page.waitForResponse('http://localhost:4000/user/login');  // options 204 response
-        // console.log("login after 204", res204.status());
-        // const rawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/login'); // relevant 
-        // console.log("login after 409", rawResponse.status());
-        // const response = await rawResponse.json();
-        
-        // expect(rawResponse.status()).toBe(409);
-        // expect(response.message).toBe(errorEnums.WRONG_CREDENTIALS);
-        
-        const tokensExist: boolean = await doesTokensExist(page);
-        expect(tokensExist).toBe(false);
-     
-
-
-    })
-    it("try to login with bad email , good password", async()=>{
-        const inputs: ElementHandle<Element>[] = await page.$$('.login-container > input');
+        //   next IT need FIX
         await fillFormWithMockData(page, inputs,["1234@56"  , mockData.loginTest[1]])
-        const loginButton: ElementHandle<Element> |null = await page.$('.login-container > button');
         await loginButton?.click();
-        
-        console.log("faillogin");
-        expect(await statusCheck('http://localhost:4000/user/login', 409, errorEnums.NO_SUCH_USER)).toBe(true)
-
-        // const res204 = await page.waitForResponse('http://localhost:4000/user/login');  // options 204 response
-        // console.log("login after 204", res204.status());
-        // const rawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/login'); // relevant 
-        // const response = await rawResponse.json();
-        // console.log("login after 409", rawResponse.status());
-
-        // console.log(rawResponse.status(), response ,"fffffffffffffffff")
-        // expect(rawResponse.status()).toBe(409);
-        // expect(response.message).toBe(errorEnums.NO_SUCH_USER); 
-        
-        const tokensExist: boolean = await doesTokensExist(page);
-        expect(tokensExist).toBe(false);
+        expect(await testResponse2).toBe(true);
+        const tokensExist2: boolean = await doesTokensExist(page); 
+        expect(tokensExist2).toBe(false)
     })
-    Login(collections)
-})
+     Login(collections)
+});
+

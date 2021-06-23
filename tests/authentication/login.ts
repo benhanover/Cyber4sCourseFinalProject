@@ -32,20 +32,29 @@ export const Login = ( collections: Promise<beforeAll> ): void => describe('Logi
 /*-----------------------------------------------------------------------------------------------------------*/
 
   it('server response should be successful', async ():Promise<void> => {
+    const rawResponse: any = new Promise((resolve) => {
+      page.on('response', async (response) => {
+        if(await response.url() === 'http://localhost:4000/user/login'
+        && await response.status() === 200){
+            console.log('resolved');
+            
+            resolve(await response.json());
+        } 
+        // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
+      });
+    });
+
     await page.waitForSelector('.login-container');
     const inputs: ElementHandle<Element>[] = await page.$$('.login-container > input');
     await fillFormWithMockData(page, inputs, mockData.loginTest)
     const loginButton = await page.$('.login-container > button');
     await loginButton?.click();
 
-    await page.waitForResponse('http://localhost:4000/user/login');  // options 204 response
-    const rawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/login'); // relevant 
-    expect(rawResponse.status()).toEqual(200);
-    
-    const response: {accessToken: string, refreshToken: string, message: string} = await rawResponse.json();
+    const response: {accessToken: string, refreshToken: string, message: string} = await rawResponse;
     expect(response.accessToken).toMatch(/^[0-9a-zA-Z]*\.[0-9a-zA-Z]*\.[0-9a-zA-Z-_]*$/);
     expect(response.refreshToken).toMatch(/^[0-9a-zA-Z]*\.[0-9a-zA-Z]*\.[0-9a-zA-Z-_]*$/);
     expect(response.message).toMatch(logsEnums.LOGGED_IN_SUCCESSFULY);
+    
 
   });
 

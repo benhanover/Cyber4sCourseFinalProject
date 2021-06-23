@@ -1,6 +1,7 @@
 import { ElementHandle, HTTPResponse } from 'puppeteer'
 import { Collection, Db, MongoClient } from 'mongodb';
-import { doesTokensExist, fillFormWithMockData, statusCheck } from './functions';
+// import { doesTokensExist, fillFormWithMockData, statusCheck } from './functions';
+import { doesTokensExist, fillFormWithMockData } from './functions';
 import {beforeAll} from '../types/index'
 import {FailLogin} from './failLogin'
 import {errorEnums} from "../../server/src/enums/index";
@@ -24,55 +25,53 @@ export const FailRegister = ( collections: Promise<beforeAll> ): void => describ
 
 /*-----------------------------------------------------------------------------------------------------------*/
 
-  it('Cannot register with existing username', async ():Promise<void> => {
-      await page.waitForSelector("form");
-      await page.waitForTimeout(1000)
-      const inputs: ElementHandle<Element>[] = await page.$$('form > input');
-      // sending it without the button
-    console.log("register after input");
-    
-    const inputs2: ElementHandle<Element>[] = inputs.slice(0,6);
-    await fillFormWithMockData(page, inputs2, mockData.failRegisterByUsername)
-    await inputs[6].click();
-    console.log("register after submitting");
-    
-    // checks response has expected structure
-    expect(await statusCheck('http://localhost:4000/user/register', 409, errorEnums.REGISTER_FAILED + errorEnums.USERNAME_TAKEN)).toBe(true)
-    // const firstResponse = await page.waitForResponse('http://localhost:4000/user/register');  // options 204 response
-    // console.log("register after 204", res204.status());
-    // const rawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/register'); // relevant response
-    // console.log("register after 409", res204.status());
-    // expect(rawResponse.status()).toEqual(409);
-    //   const response: { message: string } = await rawResponse.json();
-      
-    //   expect(response.message).toMatch(errorEnums.REGISTER_FAILED + errorEnums.USERNAME_TAKEN);
-  });
+  it('Cannot register with existing username or existing email', async ():Promise<void> => {
+    const testResponse1: any = new Promise((resolve) => {
+      page.on('response', async (response) => {
+        
+        if(await response.url() === 'http://localhost:4000/user/register'
+        && await response.status() === 409
+        && (await response.json()).message === errorEnums.REGISTER_FAILED + errorEnums.USERNAME_TAKEN) {
+          resolve(true);
+        }
+        
+        // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
+      });
+    });
 
-/*-----------------------------------------------------------------------------------------------------------*/
-
-    it('Cannot register with existing email', async (): Promise<void> => {
-        await page.waitForTimeout(1000)
-    const inputs: ElementHandle<Element>[] = await page.$$('form > input');
+    const testResponse2: any = new Promise((resolve) => {
+      page.on('response', async (response) => {
+        if(await response.url() === 'http://localhost:4000/user/register'
+        && await response.status() === 409
+        && (await response.json()).message === errorEnums.REGISTER_FAILED + errorEnums.EMAIL_TAKEN) {
+            console.log('resolved');
+            
+            resolve(true);
+        } 
+        // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
+      });
+    });
+    
+    await page.waitForSelector("form");
+    await page.waitForTimeout(1000)
+    const inputs: ElementHandle<Element>[] = await page.$$('form > input');    
     // sending it without the button
-    const inputs2: ElementHandle<Element>[] = inputs.slice(0,6);
-    await fillFormWithMockData(page, inputs2, mockData.failRegisterTestByEmail)
+    await fillFormWithMockData(page, inputs.slice(0,6), mockData.failRegisterByUsername)
+    await inputs[6].click();
+    expect(await testResponse1).toBe(true);
+    
+    
+    await fillFormWithMockData(page, inputs.slice(0,6), mockData.failRegisterTestByEmail)
     await inputs[6].click();
     
-    console.log("register");
-    // checks response has expected structure
-    expect(await statusCheck('http://localhost:4000/user/register', 409, errorEnums.REGISTER_FAILED + errorEnums.EMAIL_TAKEN)).toBe(true)
-      
-    // const res204 = await page.waitForResponse('http://localhost:4000/user/register');  // options 204 response
-    // console.log("register after 204", res204.status());
-    // const rawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/register'); // relevant response
-    // expect(rawResponse.status()).toEqual(409);
-    // const response: { message: string } = await rawResponse.json();
-    // console.log("register after 409", res204.status());
+    expect(await testResponse2).toBe(true);
+
     
-    // expect(response.message).toMatch(errorEnums.REGISTER_FAILED + errorEnums.EMAIL_TAKEN);
   });
   FailLogin(collections)
 });
+
+  
 
 
 
