@@ -4,7 +4,7 @@ import { Logout } from "./logout";
 
 //import from libraries
 import { Collection, Db, MongoClient } from "mongodb";
-// require("dotenv").config();
+require("dotenv").config();
 
 // import types
 import { beforeAll } from "../types/index";
@@ -39,11 +39,11 @@ describe("Authentication", () => {
   );
 
   beforeAll(async () => {
-    page.on('response', (res) => {
+//     page.on('response', (res) => {
   
-      console.log(res.url(), res.status());
+//       console.log(res.url(), res.status());
       
-})
+// })
 
 
     await page.goto("http://localhost:8000");
