@@ -41,6 +41,18 @@ export const Register = (collections: Promise<beforeAll>): void => describe('Reg
 })
 /*-----------------------------------------------------------------------------------------------------------*/
   it('Response should have expected stucture', async (): Promise<void> => {
+    page.on('response', async (response) => {
+        
+      // if(await response.url() === 'http://localhost:4000/user/register'
+      // && await response.status() === 409
+      // && (await response.json()).message === errorEnums.REGISTER_FAILED + errorEnums.USERNAME_TAKEN) {
+      //   resolve(true);
+      // }
+      
+      console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
+    });
+    
+    
     // fill register form
     await page.waitForSelector("form");
     const inputs: ElementHandle<Element>[] = await page.$$('form > input');
