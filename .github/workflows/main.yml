@@ -32,6 +32,11 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run tests
+        env:
+          PORT: ${{ secrets.PORT }}
+          DB: ${{ secrets.DB }}
+          ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
+          REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
         run: |
           npm i ./tests
               |
