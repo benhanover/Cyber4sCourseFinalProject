@@ -1,8 +1,12 @@
-import { HTTPResponse, Protocol } from 'puppeteer'
+// import libraies
+import {  Protocol } from 'puppeteer'
 import { Collection } from 'mongodb';
+
+// import types
 import { beforeAll } from '../types/index'
 
-//401
+/*-----------------------------------------------------------------------------------------------------------*/
+
 export const refreshToken = ( collections: Promise<beforeAll> ): void => describe('refreshToken', () => {
   let User: Collection;
   let AccessTokens: Collection;
@@ -13,6 +17,7 @@ export const refreshToken = ( collections: Promise<beforeAll> ): void => describ
     AccessTokens = (await collections).accessTokens;
     RefreshTokens = (await collections).refreshTokens;
   });
+/*-----------------------------------------------------------------------------------------------------------*/
 
   it('test that request failed and a new token is requested, and the new token is saved', async ():Promise<void> => {
     const rawResponse1: any = new Promise((resolve) => {
@@ -49,15 +54,19 @@ export const refreshToken = ( collections: Promise<beforeAll> ): void => describ
     // refresh page
     await page.goto('http://localhost:3000');
 
+    // test that we failed to request without accestoken
     expect(await rawResponse1).toBe(true)
+    // test that we recived a new token
     expect(await rawResponse2).toBe(true)
   
     
     const rawCookies: Protocol.Network.Cookie[] = await page.cookies('http://localhost/');
     const isAccessTokenExist = Boolean(rawCookies.find(cookie => cookie.name === 'accessToken'));
+    // test that we succesfully saved a new token in the browser
     expect(isAccessTokenExist).toBe(true);
 
     const newAcessToken = (await AccessTokens.find({}).toArray())[0].accessToken;
+    // test that this access token is not the same as before
     expect(newAcessToken).not.toBe(oldAccessToken);
   });
 });

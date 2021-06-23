@@ -1,28 +1,28 @@
-import { ElementHandle, HTTPResponse } from 'puppeteer'
+// import libraries
+import { ElementHandle } from 'puppeteer'
 import { Collection } from 'mongodb';
+
+// import functions
 import { doesTokensExist, fillFormWithMockData } from './functions';
+
+// import types
 import { beforeAll } from '../types/index'
+
+// import enums
 import { logsEnums } from "../../server/src/enums/index";
+
+// import next test
 import { refreshToken } from './refreshToken';
-
-
-
 
 const mockData = {
   loginTest: ['email@email.com', 'myIncrediblePassword'],
 }
 
-//startpoint -the user logedout-V
-//fil in the login input and submit -V
-//check   the  tokens in cookies-V
-//check the tokens in db
-//mabey cleanup?
-
-let AccessTokens: Collection;
-let RefreshTokens: Collection;
-
+/*-----------------------------------------------------------------------------------------------------------*/
 export const Login = ( collections: Promise<beforeAll> ): void => describe('Login', () => {
   let User: Collection;
+  let AccessTokens: Collection;
+  let RefreshTokens: Collection;
   beforeAll( async () => {
     User = (await collections).users;
     AccessTokens = (await collections).accessTokens;
@@ -74,6 +74,7 @@ export const Login = ( collections: Promise<beforeAll> ): void => describe('Logi
     expect(accessExist.length).toEqual(1);
     expect(refreshExist.length).toEqual(1);
   });
+  /*-----------------------------------------------------------------------------------------------------------*/
   refreshToken(collections)
 });
 

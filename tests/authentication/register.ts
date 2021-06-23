@@ -1,9 +1,15 @@
 
 //import from libraries
 import { ElementHandle, HTTPResponse } from 'puppeteer'
-import { Collection, Db, MongoClient } from 'mongodb';
+import { Collection } from 'mongodb';
+
+// import functions
 import { doesTokensExist, fillFormWithMockData } from './functions';
+
+// import 
 import { beforeAll } from '../types/index';
+
+// import next test
 import { Logout } from './logout';
 
 //  mockData for tests
@@ -76,6 +82,7 @@ export const Register = (collections: Promise<beforeAll>): void => describe('Reg
     expect(usersExist[0].username).toBe(mockData.registerTest[0]);
   })
 
+  /*-----------------------------------------------------------------------------------------------------*/
   it('Tokens Should be saved to the database', async ():Promise<void> => {
     const accessExist = await AccessTokens.find({}).toArray();
     const refreshExist = await RefreshTokens.find({}).toArray();
@@ -83,10 +90,10 @@ export const Register = (collections: Promise<beforeAll>): void => describe('Reg
     expect(refreshExist.length).toEqual(1);
   });
 
+  /*-----------------------------------------------------------------------------------------------------*/
   Logout(collections);
 })
 
 
 
- /*-----------------------------------------------------------------------------------------------------*/  
  

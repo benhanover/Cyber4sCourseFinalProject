@@ -1,26 +1,30 @@
-import { ElementHandle, HTTPResponse } from 'puppeteer'
-import { Collection, Db, MongoClient } from 'mongodb';
-// import { doesTokensExist, fillFormWithMockData, statusCheck } from './functions';
-import { doesTokensExist, fillFormWithMockData } from './functions';
-import {beforeAll} from '../types/index'
-import {FailLogin} from './failLogin'
+// import libraries
+import { ElementHandle } from 'puppeteer'
+import { Collection } from 'mongodb';
+
+// import functions
+import { fillFormWithMockData } from './functions';
+
+// import types
+import { beforeAll } from '../types/index'
+
+// import enums
 import {errorEnums} from "../../server/src/enums/index";
+
+// import next test
+import {FailLogin} from './failLogin'
 
 const mockData = {
     failRegisterByUsername: ['UserName', 'FirstName', 'LastName', '01021997', 'otherEmail@email.com', 'myIncrediblePassword'],
     failRegisterTestByEmail: ['otherUserName', 'FirstName', 'LastName', '01021997', 'email@email.com', 'myIncrediblePassword']
   }
 
-
-let AccessTokens: Collection;
-let RefreshTokens: Collection;
+/*-----------------------------------------------------------------------------------------------------------*/
 
 export const FailRegister = ( collections: Promise<beforeAll> ): void => describe('FailRegister', () => {
   let User: Collection;
   beforeAll( async () => {
     User = (await collections).users;
-    AccessTokens = (await collections).accessTokens;
-    RefreshTokens = (await collections).refreshTokens;
   })
 
 /*-----------------------------------------------------------------------------------------------------------*/
@@ -39,6 +43,17 @@ export const FailRegister = ( collections: Promise<beforeAll> ): void => describ
       });
     });
 
+
+    await page.waitForSelector("form");
+    await page.waitForTimeout(1000)
+    const inputs: ElementHandle<Element>[] = await page.$$('form > input');    
+    // sending it without the button
+    await fillFormWithMockData(page, inputs.slice(0,6), mockData.failRegisterByUsername)
+    await inputs[6].click();
+    expect(await testResponse1).toBe(true);
+  /*-----------------------------------------------------------------------------------------------------------*/
+
+
     const testResponse2: any = new Promise((resolve) => {
       page.on('response', async (response) => {
         if(await response.url() === 'http://localhost:4000/user/register'
@@ -52,22 +67,13 @@ export const FailRegister = ( collections: Promise<beforeAll> ): void => describ
       });
     });
     
-    await page.waitForSelector("form");
-    await page.waitForTimeout(1000)
-    const inputs: ElementHandle<Element>[] = await page.$$('form > input');    
-    // sending it without the button
-    await fillFormWithMockData(page, inputs.slice(0,6), mockData.failRegisterByUsername)
-    await inputs[6].click();
-    expect(await testResponse1).toBe(true);
-    
-    
     await fillFormWithMockData(page, inputs.slice(0,6), mockData.failRegisterTestByEmail)
     await inputs[6].click();
     
     expect(await testResponse2).toBe(true);
-
-    
   });
+  /*-----------------------------------------------------------------------------------------------------------*/
+
   FailLogin(collections)
 });
 

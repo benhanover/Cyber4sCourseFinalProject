@@ -1,31 +1,38 @@
-//should have cookies tokens
-//click the logout 
-//shouldnt have tokens in network and in db
-
-//-have Connection
-//-add imports
-
+// import libraries
 import { Collection } from 'mongodb';
 import { ElementHandle, HTTPResponse } from 'puppeteer'
+
+// import functions
 import { doesTokensExist } from './functions';
-import {logsEnums} from "../../server/src/enums/index";
+
+// import enums
+import { logsEnums } from "../../server/src/enums/index";
+
+// import types
 import { beforeAll } from '../types/index';
-import {FailRegister} from './failRegister'
+
+// import next test
+import { FailRegister } from './failRegister'
+
+/*-----------------------------------------------------------------------------------------------------------*/
 
 export const Logout = (collections: Promise<beforeAll>) => describe("Logout" , () => {
     let Refreshtokens: Collection 
     let Accesstokens: Collection 
+
     beforeAll( async()=>{
         Refreshtokens = (await collections).refreshTokens;
         Accesstokens = (await collections).accessTokens;
         page.waitForSelector('div > button');
     })
+/*-----------------------------------------------------------------------------------------------------------*/
 
     it('Cookies should have Accses & Refresh tokens', async (): Promise<void> => {
         const tokensExist: boolean = await doesTokensExist(page);
         expect(tokensExist).toBe(true);
         
     });
+/*-----------------------------------------------------------------------------------------------------------*/
     
     it('After logging out server response should be logged out succesfuly', async (): Promise<void> => {
         const logOutButton: ElementHandle<Element>[]  = await page.$$('div > button'); 
@@ -37,11 +44,13 @@ export const Logout = (collections: Promise<beforeAll>) => describe("Logout" , (
         expect((await response.json()).message).toBe(logsEnums.LOGGED_OUT_SUCCESSFULY); 
         
     });
+/*-----------------------------------------------------------------------------------------------------------*/
 
     it('after logging out no tokens shoul be in cookies', async (): Promise<void> => {
         const tokensExistOnRegister: boolean = await doesTokensExist(page);
         expect(tokensExistOnRegister).toBe(false);
     });
+/*-----------------------------------------------------------------------------------------------------------*/
 
     it('tokens should be deleted from the database', async (): Promise<void> => {
         
@@ -50,6 +59,7 @@ export const Logout = (collections: Promise<beforeAll>) => describe("Logout" , (
         expect(refreshInDb.length).toBe(0);
         expect(accessInDb.length).toBe(0);
     });
-    FailRegister(collections);
 
+/*-----------------------------------------------------------------------------------------------------------*/
+    FailRegister(collections);
 })

@@ -16,4 +16,8 @@ issue: only after refreshing the page you see the room that created
 2
 check if access token updated in db after recreating one.
 
+IMPROVES - 
+ TESTS-
+  - divide describes into it's
+  - run all of the tests from tests.test.ts and not test calling test
 remove variables from process env
