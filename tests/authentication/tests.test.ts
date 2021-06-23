@@ -39,7 +39,15 @@ describe("Authentication", () => {
   );
 
   beforeAll(async () => {
+    page.on('response', (res) => {
+  
+      console.log(res.url(), res.status());
+      
+})
+
+
     await page.goto("http://localhost:8000");
+    
   });
 
   afterAll(async () => {

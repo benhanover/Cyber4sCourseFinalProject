@@ -41,35 +41,35 @@ export const Register = (collections: Promise<beforeAll>): void => describe('Reg
 })
 /*-----------------------------------------------------------------------------------------------------------*/
   it('Response should have expected stucture', async (): Promise<void> => {
-    page.on('response', async (response) => {
+    const testResponse: any = new Promise((resolve) => {
+      page.on('response', async (response) => {
         
-      // if(await response.url() === 'http://localhost:4000/user/register'
-      // && await response.status() === 409
-      // && (await response.json()).message === errorEnums.REGISTER_FAILED + errorEnums.USERNAME_TAKEN) {
-      //   resolve(true);
-      // }
+      if(await response.url() === 'http://localhost:4000/user/register'
+      && await response.status() === 200
+      ) {
+        resolve(await response.json());
+      }
       
-      console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
+      // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
     });
+  });
     
     
     // fill register form
     await page.waitForSelector("form");
     const inputs: ElementHandle<Element>[] = await page.$$('form > input');
     // sending it without the button
-    const inputs2 = inputs.slice(0,6);
-    await fillFormWithMockData(page, inputs2, mockData.registerTest)
+    await fillFormWithMockData(page, inputs.slice(0,6), mockData.registerTest)
     await inputs[6].click();
     
     console.log("before");
     
     // checks response has expected structure
-    await page.waitForResponse('http://localhost:4000/user/register');  // options 204 response
-    console.log("between");
-    const rawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/register'); // relevant response
-    console.log("after");
-    expect(rawResponse.status()).toEqual(200);
-    const response: {accessToken: string, refreshToken: string, message: string} = await rawResponse.json();
+    // await page.waitForResponse('http://localhost:4000/user/register');  // options 204 response
+    // console.log("between");
+    // const rawResponse: HTTPResponse = await page.waitForResponse('http://localhost:4000/user/register'); // relevant response
+    // console.log("after");
+    const response: {accessToken: string, refreshToken: string, message: string} = await testResponse;
     
     expect(response.accessToken).toMatch(/^[0-9a-zA-Z]*\.[0-9a-zA-Z]*\.[0-9a-zA-Z-_]*$/);
     expect(response.refreshToken).toMatch(/^[0-9a-zA-Z]*\.[0-9a-zA-Z]*\.[0-9a-zA-Z-_]*$/);
