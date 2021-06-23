@@ -52,7 +52,7 @@ export const refreshToken = ( collections: Promise<beforeAll> ): void => describ
     await page.deleteCookie({name: 'accessToken'});
 
     // refresh page
-    await page.goto('http://localhost:3000');
+    await page.goto('http://localhost:8000');
 
     // test that we failed to request without accestoken
     expect(await rawResponse1).toBe(true)

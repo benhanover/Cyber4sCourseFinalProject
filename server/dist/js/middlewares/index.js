@@ -26,7 +26,7 @@ const accessTokenValidator = (req, res, next) => __awaiter(void 0, void 0, void 
     const accessToken = req.headers['authorization'];
     if (!accessToken) {
         console.log(index_1.errorEnums.NO_TOKEN);
-        res.status(401).send(index_1.errorEnums.NO_TOKEN);
+        res.status(401).send(index_1.errorEnums.NO_TOKEN); // 400 bad Request
         return;
     }
     return jwt.verify(accessToken, accessTokenKey, (err, user) => __awaiter(void 0, void 0, void 0, function* () {
