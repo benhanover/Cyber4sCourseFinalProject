@@ -1,5 +1,5 @@
 // environment
-require("dotenv").config();
+// require("dotenv").config();
 
 // libraries
 import express from "express";
