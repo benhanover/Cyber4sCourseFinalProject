@@ -15,11 +15,11 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  env:
-      PORT: ${{ secrets.PORT }}
-      DB: ${{ secrets.DB }}
-      ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
-      REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
+  # env:
+  #     PORT: ${{ secrets.PORT }}
+  #     DB: ${{ secrets.DB }}
+  #     ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
+  #     REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
 
   # This workflow contains a single job called "build"
   build:
