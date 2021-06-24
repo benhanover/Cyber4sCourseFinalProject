@@ -1,19 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { Iroom } from './interfaces';
+import { ImessageBox, Iroom } from './interfaces';
 import axios from 'axios';
 import { v1 as uuid } from 'uuid';
 import Network from '../../utils/network';
 import LogoutButton from '../Common/LogoutButton/LougoutButton';
+import { send } from 'process';
+
+
+
+
 const Lobby: React.FC = () => {
   const [rooms, setRooms] = useState<Iroom[] | undefined>();
 
   useEffect(() => {
+    // const ws = new WebSocket('ws://localhost:4000');
+    // ws.addEventListener('open', (socket) => {
+    //   console.log("connected to server");
+    // })
+    // ws.addEventListener('message', (messageBoxString: MessageEvent<ImessageBox>) => {
+    //   const messageBox: ImessageBox = JSON.parse(messageBoxString.data)
+    //   switch (messageBox.type) {
+    //     case 'rooms':
+    //       if (typeof messageBox.message === 'string') return;
+    //       setRooms(messageBox.message);
+    //       break;
+        
+    //     default:
+    //       break;
+    //   }
+    // })
     Network('GET', 'http://localhost:4000/room/all').then((rooms: any) => {
       if (!Array.isArray(rooms)) return;
       setRooms(rooms);
     });
 
     //
+    return () => {
+      // ws.close()
+    }
   }, []);
   const createRoom = (): void => {
     const mockRoom: Iroom = {
