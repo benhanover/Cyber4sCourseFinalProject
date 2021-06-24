@@ -1,4 +1,4 @@
 export enum ActionEnum {
-  INCREASE = 'increase',
-  DECREASE = 'decrease',
+  NEW_WS = 'set new WebSocket',
+  SET_IS_LOGGED = 'set isLogged'
 }

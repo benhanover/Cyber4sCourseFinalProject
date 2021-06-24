@@ -31,6 +31,7 @@ export const Register = (collections: Promise<beforeAll>): void => describe('Reg
   it('Cookies shouldn\'t have Accses & Refresh tokens on open', async (): Promise<void> => {
     await page.waitForSelector('form')
     // checks tokens does not exist on load
+    
     const tokensExistOnLoad: boolean = await doesTokensExist(page);
     expect(tokensExistOnLoad).toBe(false);
   });

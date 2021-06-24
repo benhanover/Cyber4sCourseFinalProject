@@ -22,7 +22,7 @@ export const refreshToken = ( collections: Promise<beforeAll> ): void => describ
   it('test that request failed and a new token is requested, and the new token is saved', async ():Promise<void> => {
     const rawResponse1: any = new Promise((resolve) => {
       page.on('response', async (response) => {
-        if(await response.url() === 'http://localhost:4000/room/all'
+        if(await response.url() === 'http://localhost:4000/user/validator'
           && await response.status() === 401){
             console.log('resolved');
             

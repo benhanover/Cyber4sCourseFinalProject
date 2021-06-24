@@ -46,7 +46,7 @@ describe("Authentication", () => {
 // })
 
 
-    await page.goto("http://localhost:8000");
+    await page.goto("http://localhost:8000/");
     
   });
 

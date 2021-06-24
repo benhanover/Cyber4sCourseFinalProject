@@ -168,3 +168,9 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
     return;
   });
 };
+
+/*---------------------------------------------------------------------------------------------------------- */
+
+export const returnValidation = ((req: Request, res: Response) => {
+  return res.status(200).end();
+}) 

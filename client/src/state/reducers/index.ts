@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import roomCountReducer from './roomCountReducer';
+import wsReducer from './wsReducer';
 
 const reducers = combineReducers({
-  roomCount: roomCountReducer,
+  ws: wsReducer
 });
 
 export default reducers;

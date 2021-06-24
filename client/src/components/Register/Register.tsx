@@ -1,8 +1,24 @@
-import React, { useRef, useState } from 'react';
+// import libraries
+import React, { useRef } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useDispatch} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { useHistory } from 'react-router-dom';
+
+// react shit
+import { wsActionCreator } from '../../state';
+
+// import functions
+
+import {register} from './functions'
 
 const Register: React.FC = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { setIsLogged } = bindActionCreators({...wsActionCreator}, dispatch);
+  
+  // refs
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const nameRef = useRef<HTMLInputElement | null>(null);
   const lastNameRef = useRef<HTMLInputElement | null>(null);
@@ -10,8 +26,40 @@ const Register: React.FC = () => {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
-  const handleSubmit = (e: React.SyntheticEvent): void => {
+
+
+  const goToLogin = () => {
+    history.push('/');
+  }
+  return (
+    <form onSubmit={handleSubmit}>
+      <button onClick={goToLogin}>Login</button>
+      <input ref={usernameRef} placeholder="Username" />
+      <input ref={nameRef}  placeholder="First Name"/>
+      <input ref={lastNameRef} placeholder="Last Name"/>
+      <input type='date' ref={dateRef} placeholder="BirthDate"/>
+      <input type='email' ref={emailRef} placeholder="Email"/>
+      <input type='text' ref={passwordRef} placeholder="Password"/>
+      <input type='submit' />
+    </form>
+  );
+
+  // functions
+/*-----------------------------------------------------------------------------------------------------------------*/
+function cleanup(): void {
+  if(!(usernameRef?.current && nameRef?.current && lastNameRef?.current && dateRef?.current && emailRef?.current && passwordRef?.current)) return;
+  usernameRef.current.value = '';
+  nameRef.current.value = '';
+  lastNameRef.current.value = '';
+  dateRef.current.value = '';
+  emailRef.current.value = '';
+  passwordRef.current.value = '';
+}
+
+/*-----------------------------------------------------------------------------------------------------------------*/
+  async function handleSubmit(e: React.SyntheticEvent): Promise<void> {
     e.preventDefault();
+    
     if(!(usernameRef?.current && nameRef?.current && lastNameRef?.current && dateRef?.current && emailRef?.current && passwordRef?.current)) return;
     const username: string | undefined = usernameRef.current?.value;
     const firstName: string | undefined = nameRef.current?.value;
@@ -21,46 +69,16 @@ const Register: React.FC = () => {
     const password: string | undefined = passwordRef.current?.value;
 
     // clean up
-    usernameRef.current.value = '';
-    nameRef.current.value = '';
-    lastNameRef.current.value = '';
-    dateRef.current.value = '';
-    emailRef.current.value = '';
-    passwordRef.current.value = '';
-
-    axios
-      .post('http://localhost:4000/user/register', {
-        username,
-        firstName,
-        lastName,
-        birthDate,
-        email,
-        password,
-      })
-      .then(({ data }) => {
-        Cookies.set('accessToken', data.accessToken);
-        Cookies.set('refreshToken', data.refreshToken);
-      })
-      .catch(console.log);
+    cleanup();
+    try {
+      const {data: response} = await register(username,  firstName, lastName, birthDate, email, password);
+      Cookies.set('accessToken', response.accessToken);
+      Cookies.set('refreshToken', response.refreshToken);
+      setIsLogged(true)
+    } catch (e) {
+      console.log("couldn't register", e);
+    }
   };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label onClick={() => usernameRef.current?.focus()}>Username</label>
-      <input ref={usernameRef} />
-      <label onClick={() => nameRef.current?.focus()}>First Name</label>
-      <input ref={nameRef} />
-      <label onClick={() => lastNameRef.current?.focus()}>Last Name</label>
-      <input ref={lastNameRef} />
-      <label onClick={() => dateRef.current?.focus()}>BirthDate</label>
-      <input type='date' ref={dateRef} />
-      <label onClick={() => emailRef.current?.focus()}>Email</label>
-      <input type='email' ref={emailRef} />
-      <label onClick={() => passwordRef.current?.focus()}>Password</label>
-      <input type='text' ref={passwordRef} />
-      <input type='submit' />
-    </form>
-  );
 };
 
 export default Register;

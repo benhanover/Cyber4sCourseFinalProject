@@ -17,6 +17,7 @@ export const recreateAccessToken = async (
     );
     if (response) {
       Cookies.set('accessToken', response.accessToken);
+      
       return await Network(method, endpoint, body);
     }
     return;
@@ -24,3 +25,5 @@ export const recreateAccessToken = async (
     return 'error in recreateaccess:' + e.message;
   }
 };
+
+
