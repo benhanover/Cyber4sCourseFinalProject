@@ -1,30 +1,23 @@
 // import libraries
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { v1 as uuid } from 'uuid';
+import React, {  useEffect } from 'react';
 import { useDispatch, useSelector,  } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 // import types
 import { ImessageBox, Iroom } from './interfaces';
-
-// import network
-import Network from '../../utils/network';
-
 // import components
 import LogoutButton from '../Common/LogoutButton/LougoutButton';
-
 // import redux-states
-import { wsActionCreator } from '../../state/index';
+import { wsActionCreator, roomsActionCreator, State} from '../../state/index';
+import NewRoomForm from './NewRoomForm/NewRoomForm';
+
+/*================================================================================================*/
 
 
-
+//  creates a WebSocket connection with the server, display all rooms through the WebSocket.
 const Lobby: React.FC = () => {
-  
   const dispatch = useDispatch();
-  const [rooms, setRooms] = useState<Iroom[] | undefined>();
-  const { ws } = useSelector((state: any) => state)
-  const {setWS } = bindActionCreators({...wsActionCreator} ,dispatch)
+  const { ws, rooms } = useSelector((state: State) => state)
+  const {setWS, setRooms } = bindActionCreators({...wsActionCreator, ...roomsActionCreator} ,dispatch)
   
   useEffect(() => {
     // create connection to the websocket server  
@@ -35,27 +28,19 @@ const Lobby: React.FC = () => {
     
     // message handler
     newWS.onmessage = messageHandler;
+    
+    //set the state
     setWS(newWS)
-    // Network('GET', 'http://localhost:4000/room/all').then((rooms: any) => {
-    //   if (!Array.isArray(rooms)) return;
-    //   setRooms(rooms);
-    // });
-        
+  
     //cleanup
     return () => {
       newWS.close()
     }
   }, []);
 
-  useEffect(() => {
-   console.log(ws);
-  }, [ws])
-  
-
   return (
     <div>
       <LogoutButton />
-      <button onClick={createRoom}>Create Room</button>
       {rooms?.map((room: Iroom, i: number) => {
         return (
           <div className='room'>
@@ -66,59 +51,45 @@ const Lobby: React.FC = () => {
             })}
           </div>
           
-        );
-      })}
-      <button onClick={() => {
-        ws.send({type: "creating new room", message: {}})
-        // setWS("dddddddd")
-      }}>test</button>
+          );
+        })}
+      <NewRoomForm />
     </div>
   );
 
 
 
 // Functions
-// ===========
+/*------------------------------------------------------------------------------------------------------*/
   
+  //  handles all message events from the server
 function messageHandler(messageBoxEvent: MessageEvent<string>){
   const messageData: ImessageBox = JSON.parse(messageBoxEvent.data);
+  console.log(messageData);
   
   switch (messageData.type) {
     case 'rooms':
       console.log("in rooms!");
-      if (typeof messageData.message === 'string') return;
+      if (typeof messageData.message === 'string') return;////??
       setRooms(messageData.message);
       break;
+    case "new room was created":
+      if (typeof messageData.message === 'string') return;////??
+      console.log(messageData.message);
       
+      const newRooms: any = rooms?.slice();///any
+      newRooms?.push(messageData.message);
+      setRooms(newRooms);
+      break;  
+    case "room deleted":
+      setRooms(rooms?.filter((room: Iroom) => { //???
+        return room._id !== messageData.message._id
+      }));
+      break;
     default:
       break;
   }
 }
-
-function createRoom(): void {
-  const mockRoom: Iroom = {
-    host: 'fjkednj-fafd56-324fsh-3asdsr3e',
-    subject: 'Mathmatics',
-    subSubject: 'Geometric',
-    title: 'Geomtric is so awsome!',
-    description: 'high school level geometric, doing some bagrut excercises',
-    participants: [
-      'sdffdh-hsasw-jsh63-sdfs-gfd',
-      'fdshj-s4e5t-neswdcvyj-63e',
-      'dfrdy6c-dsf2qch6-a24g-2sdg',
-    ],
-    limit: 3,
-    isLocked: true,
-  };
-  ws.send(JSON.stringify({type: "creating new room", message: mockRoom}))
-  Network('POST', 'http://localhost:4000/room/new', mockRoom)
-    .then(({ data }) => {
-      rooms?.push(data.newRoom);
-      setRooms(rooms?.slice());
-    })
-    .catch(console.log);
-};
-
 
 };
 

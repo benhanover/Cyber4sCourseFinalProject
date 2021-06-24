@@ -21,3 +21,9 @@ IMPROVES -
   - divide describes into it's
   - run all of the tests from tests.test.ts and not test calling test
 remove variables from process env
+
+
+TODO: on ws connection: create a {socketId, socket} and push to db
+1. create a user state when logged or register
+2. add participant and host properties on the room object,that contains socket id & user id
+3.

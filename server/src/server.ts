@@ -35,9 +35,10 @@ app.use(fallbacks);
 /*---------------------------------------------------------------------------------------------------------- */
 
 
-import { getRooms } from './mongo/mongo-functions';
+import { getRooms, saveRoom } from './mongo/mongo-functions';
 import WebSocket from 'ws';
 import { ImessageBox } from "./ws/interfaces";
+import { Room } from "./mongo/models";
 
 const wsServer = new WebSocket.Server({ server });
 
@@ -48,27 +49,39 @@ wsServer.on('connection', async (clientSocket: any) => {
     
     const rooms = await getRooms();
     clientSocket.send(JSON.stringify({type: "rooms", message: rooms }));
-    //connection is up, let's add a simple simple event
-    clientSocket.on('message', (messageBoxEvent: MessageEvent<string>) => {
-      console.log('received:', messageBoxEvent.data);
-      const messageData: ImessageBox = JSON.parse(messageBoxEvent.data);
+    
+    
+    //cadding event listeners
+    clientSocket.on('message', (messageBoxEvent: any) => {
+      console.log('received:', messageBoxEvent);
+      // console.log(messageBoxEvent);
+      // if (!messageBoxEvent.data) {
+        const messageData: ImessageBox = JSON.parse(messageBoxEvent);
+      // }
       switch (messageData.type) {
         case "creating new room":
-        
-         wsServer.clients.forEach((client)=>{
-           client.send(JSON.stringify({type: "new room was created" , message: messageData }))
-         })
-        break;
-      
-        default:
+          if (typeof messageData.message === "string" || Array.isArray(messageData.message)) return;///???
+          // saveRoom({ ...messageData.message })
+          wsServer.clients.forEach((client) => {
+            client.send(JSON.stringify({ type: "new room was created", message: messageData }))
+          })
           break;
+        case "lock room":
+          break;
+        case "delete room":
+          wsServer.clients.forEach((client) => {
+            client.send(JSON.stringify({ type: "room deleted", message: messageData }))
+          });
+          //log the received message and send it back to the client
+          break;
+        default:
+          return;
       }
-        //log the received message and send it back to the client
     });
 });
-wsServer.on('close', () => {
+  wsServer.on('close', () => {
     "connection closed"
-})
+  });
 
 mongoose
   .connect(`mongodb://${MONGO_SERVER}:27017/${DB}`, {

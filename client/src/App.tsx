@@ -26,7 +26,7 @@ const App: React.FunctionComponent<{}> = () => {
         if (typeof res !== 'boolean') return;
         if (!(res === true)) return;
         setIsLogged(res)
-    })
+    });
   }, []);
   return (
     <div>

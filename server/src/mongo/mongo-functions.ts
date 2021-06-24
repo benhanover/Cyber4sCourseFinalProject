@@ -59,6 +59,8 @@ export const registerUser = async (user: Iuser): Promise<boolean> => {
 //   used in: roomControllers | saves a given room in db
 export const saveRoom = async (room: Iroom) => {
   try {
+    console.log("room.host:", room.host);
+    
     const updatedRoom: unknown = await Room.create(room);
     if (Boolean(updatedRoom)) return true;
     console.log(errorEnums.FAILED_ADDING_DATA);

@@ -71,7 +71,7 @@ function cleanup(): void {
     // clean up
     cleanup();
     try {
-      const {data: response} = await register(username,  firstName, lastName, birthDate, email, password);
+      const { data: response } = await register(username, firstName, lastName, birthDate, email, password);
       Cookies.set('accessToken', response.accessToken);
       Cookies.set('refreshToken', response.refreshToken);
       setIsLogged(true)
