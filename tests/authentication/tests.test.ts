@@ -4,7 +4,7 @@ import { Logout } from "./logout";
 
 //import from libraries
 import { Collection, Db, MongoClient } from "mongodb";
-require("dotenv").config({path: '../../.env'});
+require("dotenv").config();
 
 // import types
 import { beforeAll } from "../types/index";

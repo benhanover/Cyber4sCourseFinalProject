@@ -1,5 +1,5 @@
 // environment
-require("dotenv").config({path: '../.env'});
+require("dotenv").config();
 
 // libraries
 import express from "express";
