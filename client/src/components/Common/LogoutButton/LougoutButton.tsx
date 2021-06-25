@@ -28,6 +28,6 @@ const LougoutButton: React.FC = () => {
     console.log("Didn't Removed Successfully");
   };
 
-  return <button onClick={logout}>Logout</button>;
+  return <button className='logout-button' onClick={logout}>Logout</button>;
 };
 export default LougoutButton;

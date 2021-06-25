@@ -19,10 +19,10 @@ const Login: React.FC = () => {
   
   return (
     <div className='login-container'>
-      <button onClick={() => history.push('/register')}>Register</button>
+      <button className='register-button' onClick={() => history.push('/register')}>Register</button>
       <input ref={emailRef} placeholder="Email"></input>
       <input ref={passwordRef} placeholder="Password"></input>
-      <button onClick={submitLogin}>Login</button>
+      <button className='login-button' onClick={submitLogin}>Login</button>
     </div>
   );
 
