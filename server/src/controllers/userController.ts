@@ -34,7 +34,8 @@ export const register = async (req: Request, res: Response) => {
       .json({ message: errorEnums.REGISTER_FAILED + registrationAvailability.message });
   }
   user.password = await hash(user.password, 10);
-  const registered: boolean = await registerUser(user);
+  const registered: false | Iuser = await registerUser(user);
+  
   if (!registered) {
     console.log(errorEnums.REGISTER_FAILED);
     res.status(500).json({ message: errorEnums.REGISTER_FAILED });
@@ -49,9 +50,11 @@ export const register = async (req: Request, res: Response) => {
   await saveRefreshToken(newTokens.refreshToken);
   await saveAccessToken(newTokens.accessToken);
   console.log(logsEnums.REGISTER_SUCCESSFULY);
+  registered.password = "";
   return res.json({
     ...newTokens,
     message: logsEnums.REGISTER_SUCCESSFULY,
+    user: registered
   });
 };
 
@@ -76,7 +79,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       res.status(409).json({message: errorEnums.WRONG_CREDENTIALS});
       return;
     }
-    const newTokens: UgenerateTokens = generateTokens({ foundUser });
+    const newTokens: UgenerateTokens = generateTokens(foundUser);
     if (!newTokens) {
       console.log(errorEnums.NO_TOKEN);
       res.sendStatus(500);
@@ -85,10 +88,11 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     await saveRefreshToken(newTokens.refreshToken);
     await saveAccessToken(newTokens.accessToken);
     console.log(logsEnums.LOGGED_IN_SUCCESSFULY);
-   
+    foundUser.password = ""
     res.json({
       ...newTokens,
       message: logsEnums.LOGGED_IN_SUCCESSFULY,
+      user: foundUser
     });
     return;
   } catch (error) {
@@ -146,6 +150,7 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
       res.status(403).send(errorEnums.FORBIDDEN);
       return;
     }
+    console.log("user in refresh", user)
     const userAssignedToToken: Iuser = {
       username: user.username,
       email: user.email,
@@ -172,5 +177,13 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
 /*---------------------------------------------------------------------------------------------------------- */
 
 export const returnValidation = ((req: Request, res: Response) => {
-  return res.status(200).end();
+  console.log("user in returnvalidation", req.body.user);
+  
+  const user = req.body.user;
+  const { _id, username, password, email, firstName,lastName, birthDate } = user;
+  const userToSend = { _id, username, password, email, firstName,lastName, birthDate }
+  console.log("userToSend", userToSend);
+  userToSend.password = "";
+  return res.status(200).json({ user: userToSend});
+  //return res.status(200).end();
 }) 

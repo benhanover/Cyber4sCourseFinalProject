@@ -12,6 +12,7 @@ export interface Iroom {
 
 /*---------------------------------------------------------------------------------------------------------- */
 export interface Iuser {
+  _id?: string;
   firstName: string;
   lastName: string;
   email: string;

@@ -44,10 +44,11 @@ export const canRegister = async ( email: string, username: string ): Promise<Ir
 
 /*---------------------------------------------------------------------------------------------------------- */
 //   used in: userControllers | saves a given user in db
-export const registerUser = async (user: Iuser): Promise<boolean> => {
+export const registerUser = async (user: Iuser): Promise<false | Iuser> => {
   try {
-    const updatedUser: unknown = User.create(user);
-    if (Boolean(updatedUser)) return true;
+    const registeredUser: Iuser = await User.create(user);
+    
+    if (Boolean(registeredUser)) return registeredUser;
     console.log(errorEnums.FAILED_ADDING_DATA);
     return false;
   } catch (e: unknown) {

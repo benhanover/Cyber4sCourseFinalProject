@@ -16,16 +16,20 @@ if (!accessTokenKey || !refreshTokenKey) {
 }
 
 /*---------------------------------------------------------------------------------------------------------- */
-export const generateTokens = (user: Iuser | { foundUser: Iuser }): UgenerateTokens  => {
+export const generateTokens = (user: Iuser ): UgenerateTokens  => {
   try {
-    const accessToken: string = jwt.sign(user, accessTokenKey, {
+    console.log("user in generateTokens", user);
+    const {_id, username, password, email, firstName, lastName, birthDate} = user
+    const userForTokens = {_id, password, username, email, firstName, lastName, birthDate}
+    const accessToken: string = jwt.sign(userForTokens, accessTokenKey, {
       expiresIn: '15m',
     });
-    const refreshToken: string = jwt.sign(user, refreshTokenKey, {
+    const refreshToken: string = jwt.sign(userForTokens, refreshTokenKey, {
       expiresIn: '8h',
     });
     return { accessToken, refreshToken };
   } catch (e) {
+    console.log("userForTokens in generateTokens catch", {...user});
     console.log(errorEnums.NO_TOKEN + e);
   }
 };

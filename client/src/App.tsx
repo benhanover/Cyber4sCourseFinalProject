@@ -24,7 +24,8 @@ const App: React.FunctionComponent<{}> = () => {
     Network('GET', 'http://localhost:4000/user/validator')
       .then((res) => {
         if (typeof res !== 'boolean') return;
-        if (!(res === true)) return;
+        if (!res) return;
+        console.log(res)
         setIsLogged(res)
     });
   }, []);
@@ -48,9 +49,7 @@ const App: React.FunctionComponent<{}> = () => {
       </Switch>
           
       }
-      {/* <Login />
-      <Register />
-      <Lobby /> */}
+    
     </div>
   );
 };
