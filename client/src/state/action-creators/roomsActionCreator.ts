@@ -9,3 +9,12 @@ export const setRooms = (rooms: Iroom[])=>{
         })
     }
 }
+
+export const addRoom = (room: Iroom) => {
+    return (dispatch: Dispatch<any>)=>{
+        dispatch({
+            type: "addRoom" , 
+            payload:room
+        })
+    }
+}

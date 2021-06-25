@@ -59,12 +59,12 @@ export const registerUser = async (user: Iuser): Promise<false | Iuser> => {
 
 /*---------------------------------------------------------------------------------------------------------- */
 //   used in: roomControllers | saves a given room in db
-export const saveRoom = async (room: Iroom) => {
+export const saveRoom = async (room: Iroom): Promise<Iroom | false> => {
   try {
     console.log("room.host:", room.host);
     
-    const updatedRoom: unknown = await Room.create(room);
-    if (Boolean(updatedRoom)) return true;
+    const updatedRoom: Iroom = await Room.create(room);
+    if (Boolean(updatedRoom)) return updatedRoom;
     console.log(errorEnums.FAILED_ADDING_DATA);
     return false;
   } catch (e: unknown) {

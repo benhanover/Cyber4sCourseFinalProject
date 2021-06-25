@@ -6,12 +6,10 @@ import Network from '../../../utils/network';
 import { Iroom } from '../interfaces';
 
 function NewRoomForm() {
-    const dispatch = useDispatch();
-    const { ws, rooms } = useSelector((state: State) => state)
-    const { setWS, setRooms } = bindActionCreators({ ...wsActionCreator, ...roomsActionCreator }, dispatch)
+    const { serverSocket, user } = useSelector((state: State) => state.ws)
     
     //  creates all refs for the form's inputs
-    const subjectRef = useRef<HTMLInputElement | null>(null);
+    const subjectRef = useRef<HTMLSelectElement | null>(null);
     const subSubjectRef = useRef<HTMLInputElement | null>(null);
     const titleRef = useRef<HTMLInputElement | null>(null);
     const descriptionRef = useRef<HTMLInputElement | null>(null);
@@ -21,7 +19,7 @@ function NewRoomForm() {
 
     return (
         <form className="new-room-form" >
-            <select required>
+            <select ref={subjectRef} required>
                 <option value="Math">Math</option>
                 <option value="Programming">Programming</option>
             </select>
@@ -37,10 +35,39 @@ function NewRoomForm() {
     )
 
 //      Functions
-/*------------------------------------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------------------------------------*/
+    // cleanup
+    function cleanup(): void {
+        console.log("VLLRASAISDFGNJAFSDGBKAJSDFGAKLDGSNKJSADF");
+        console.log(subjectRef
+            ,subSubjectRef
+            ,titleRef
+            ,descriptionRef
+            ,participantsRef
+            ,limitRef
+            ,isLockedRef);
+        
+        if (!(subjectRef?.current &&
+            subSubjectRef?.current &&
+            titleRef?.current &&
+            descriptionRef?.current &&
+            participantsRef?.current &&
+            limitRef?.current &&
+            isLockedRef?.current)) return;
+        subjectRef.current.value = "Math"
+        subSubjectRef.current.value = ""
+        titleRef.current.value = ""
+        descriptionRef.current.value = ""
+        participantsRef.current.value = "";  // should not be sent here!!!
+        limitRef.current.value = "";
+        isLockedRef.current.checked = false;
+    }
+
+
     //  creates a new room.
     function createNewRoom(e: any) {
-    e.preventDefault();
+        e.preventDefault();
+        
         if (!subjectRef?.current &&
             !subSubjectRef?.current &&
             !titleRef?.current &&
@@ -48,49 +75,29 @@ function NewRoomForm() {
             !participantsRef?.current &&
             !limitRef?.current &&
             !isLockedRef?.current) return;
-    
-        const subject: string = subjectRef.current?.value!;
-        const subSubject: string = subSubjectRef.current?.value!;
-        const title: string = titleRef.current?.value!;
-        const description: string = descriptionRef.current?.value!;
-        const participants: string[] = [];  // should not be sent here!!!
-        const limit: number = Number(limitRef.current?.value)!;
-        const isLocked: boolean = isLockedRef.current?.checked!
         
-        const newRoom: Iroom = { subject, subSubject, title, description, participants, limit, isLocked }//host participents
+            const subject: string = subjectRef.current?.value!;
+            const subSubject: string = subSubjectRef.current?.value!;
+            const title: string = titleRef.current?.value!;
+            const description: string = descriptionRef.current?.value!;
+            const participants: string[] = [];  // should not be sent here!!!
+            const limit: number = Number(limitRef.current?.value)!;
+            const isLocked: boolean = isLockedRef.current?.checked!
+            const host: any = JSON.stringify({userId: user._id, userSocket: user.mySocket })
+        const newRoom: Iroom = { subject, subSubject, title, description, participants, limit, isLocked, host }//host participents
+            console.log(subject);
         
-        // creates new room in db
-        Network('POST', 'http://localhost:4000/room/new', newRoom)
-    .then(({ data }) => {
-        ws.serverSocket.send(JSON.stringify({ type: "creating new room", message: data.newRoom }));
-    })
-    .catch(console.log);
-        
-//   function createRoom(): void {
-//   const mockRoom: Iroom = {
-//     host: 'fjkednj-fafd56-324fsh-3asdsr3e',
-//     subject: 'Mathmatics',
-//     subSubject: 'Geometric',
-//     title: 'Geomtric is so awsome!',
-//     description: 'high school level geometric, doing some bagrut excercises',
-//     participants: [
-//       'sdffdh-hsasw-jsh63-sdfs-gfd',
-//       'fdshj-s4e5t-neswdcvyj-63e',
-//       'dfrdy6c-dsf2qch6-a24g-2sdg',
-//     ],
-//     limit: 3,
-//     isLocked: true,
-//   };
-//   ws.send(JSON.stringify({type: "creating new room", message: mockRoom}))
-//   Network('POST', 'http://localhost:4000/room/new', mockRoom)
-//     .then(({ data }) => {
-//       rooms?.push(data.newRoom);
-//       setRooms(rooms?.slice());
-//     })
-//     .catch(console.log);
-// };
-
-}
+            cleanup();
+            
+            // creates new room in db
+            Network('POST', 'http://localhost:4000/room/new', newRoom)
+                .then((response) => {
+                    const newRoom: Iroom = response.newRoom;
+            serverSocket.send(JSON.stringify({ type: "creating new room", message: newRoom }));
+        })
+        .catch(console.log);
+        cleanup();
+    }
 }
 
 export default NewRoomForm

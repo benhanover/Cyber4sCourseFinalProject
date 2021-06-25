@@ -13,7 +13,7 @@ import { getRooms, saveRoom } from '../mongo/mongo-functions';
 export const createRoom = async (req: Request, res: Response): Promise<void> => {
   const roomToCreate: Iroom = req.body;
   try {
-    const savedRoom: boolean | false = await saveRoom(roomToCreate);
+    const savedRoom: Iroom | false = await saveRoom(roomToCreate);
     if (savedRoom) {
       res.json({ message: 'updated successfully', newRoom: savedRoom });
       return;

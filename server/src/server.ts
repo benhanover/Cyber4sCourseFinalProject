@@ -49,7 +49,7 @@ wsServer.on('connection', async (clientSocket: any) => {
     
     const rooms = await getRooms();
     clientSocket.send(JSON.stringify({type: "rooms", message: rooms }));
-    
+  clientSocket.send(JSON.stringify({ type: "socket", message: clientSocket }));
     
     //cadding event listeners
     clientSocket.on('message', (messageBoxEvent: any) => {
@@ -63,7 +63,7 @@ wsServer.on('connection', async (clientSocket: any) => {
           if (typeof messageData.message === "string" || Array.isArray(messageData.message)) return;///???
           // saveRoom({ ...messageData.message })
           wsServer.clients.forEach((client) => {
-            client.send(JSON.stringify({ type: "new room was created", message: messageData }))
+            client.send(JSON.stringify({ type: "new room was created", message: messageData.message }))
           })
           break;
         case "lock room":

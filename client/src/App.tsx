@@ -23,7 +23,7 @@ const App: React.FunctionComponent<{}> = () => {
   useEffect(() => {
     Network('GET', 'http://localhost:4000/user/validator')
       .then((res) => {
-        console.log("in the validator:", res);
+       
         if (!res) return;
         setUser(res.user)
       }).catch(e =>{

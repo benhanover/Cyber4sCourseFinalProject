@@ -1,6 +1,6 @@
 export interface Iroom {
   _id?: string;
-  host?: string;
+  host?: any;
   subject: string;
   subSubject: string;
   title: string;
