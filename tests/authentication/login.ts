@@ -47,7 +47,7 @@ export const Login = ( collections: Promise<beforeAll> ): void => describe('Logi
     await page.waitForSelector('.login-container');
     const inputs: ElementHandle<Element>[] = await page.$$('.login-container > input');
     await fillFormWithMockData(page, inputs, mockData.loginTest)
-    const loginButton = await page.$('.login-container > button');
+    const loginButton = await page.$('.login-button');
     await loginButton?.click();
 
     const response: {accessToken: string, refreshToken: string, message: string} = await rawResponse;

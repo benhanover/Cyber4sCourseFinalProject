@@ -21,9 +21,7 @@ if (!accessTokenKey) {
 
 // Checks AccessToken Validity
 export const accessTokenValidator = async (req: Request, res: Response, next: NextFunction): Promise<NextFunction | void> => {
-  console.log("in the validator, " , )
   const accessToken: string | undefined = req.headers['authorization'];
-  console.log(accessToken ,"line 26")
   if (!accessToken) {
     console.log(errorEnums.NO_TOKEN);
     res.status(401).send(errorEnums.NO_TOKEN); // 400 bad Request

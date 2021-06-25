@@ -33,7 +33,7 @@ const Register: React.FC = () => {
   }
   return (
     <form onSubmit={handleSubmit}>
-      <button onClick={goToLogin}>Login</button>
+      <button className='login-button' onClick={goToLogin}>Login</button>
       <input ref={usernameRef} placeholder="Username" />
       <input ref={nameRef}  placeholder="First Name"/>
       <input ref={lastNameRef} placeholder="Last Name"/>
