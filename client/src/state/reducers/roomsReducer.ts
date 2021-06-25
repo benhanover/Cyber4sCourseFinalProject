@@ -5,7 +5,7 @@ const roomReducer = (state:Iroom[] = [] , action:any )=>{
         case "setRooms":
             return action.payload
         default:
-        return    
+        return state;  
     }
 }
 

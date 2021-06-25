@@ -18,6 +18,7 @@ export const canRegister = async ( email: string, username: string ): Promise<Ir
     const users: Iuser[] = await User.find({
       $or: [{ email }, { username }],
     });
+    console.log(users, "line 21" , process.env.DB )
     let returnObjCaseExist: IreturnInfo | undefined;
     users.find((user: Iuser): void => {
       if (user.email === email) {
