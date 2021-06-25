@@ -1,6 +1,6 @@
 import { ActionEnum } from '../action-enum';
 
-const wsReducer = (state: any = { serverSocket: "", isLogged: false }, action: any) => {
+const wsReducer = (state: any = { serverSocket: "", user: false }, action: any) => {
   console.log("in the reducer!!");
   
   switch (action.type) {
@@ -8,7 +8,8 @@ const wsReducer = (state: any = { serverSocket: "", isLogged: false }, action: a
       state.serverSocket = action.payload;
       break;
     case ActionEnum.SET_IS_LOGGED:
-      state.isLogged = action.payload;
+      console.log(action.payload);
+      state.user = action.payload;
       break;
     default:
       return state;

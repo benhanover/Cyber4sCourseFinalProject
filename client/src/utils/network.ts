@@ -7,7 +7,7 @@ async function Network(
   method: Method,
   endpoint: string,
   body: any = {}
-): Promise<AxiosResponse> {
+): Promise<any> {
   const accessToken = Cookies.get('accessToken');
 
   const headers = {
@@ -24,7 +24,7 @@ async function Network(
   return axios(options)//awawit
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
-        if (endpoint === 'http://localhost:4000/user/validator') return true;
+        // if (endpoint === 'http://localhost:4000/user/validator') return true;
           
         return response.data;
       }

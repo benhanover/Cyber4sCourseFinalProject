@@ -16,22 +16,23 @@ import { State, wsActionCreator } from './state';
 import Network from './utils/network';
 
 const App: React.FunctionComponent<{}> = () => {
-  const { isLogged } = useSelector((state: State) => state.ws)
+  const { user } = useSelector((state: State) => state.ws)
   const dispatch = useDispatch();
-  const { setIsLogged } = bindActionCreators({...wsActionCreator}, dispatch);
+  const { setUser } = bindActionCreators({...wsActionCreator}, dispatch);
   
   useEffect(() => {
     Network('GET', 'http://localhost:4000/user/validator')
       .then((res) => {
-        if (typeof res !== 'boolean') return;
+        console.log("in the validator:", res);
         if (!res) return;
-        console.log(res)
-        setIsLogged(res)
-    });
+        setUser(res.user)
+      }).catch(e =>{
+        console.log("in the validator error:", e)
+    })
   }, []);
   return (
     <div>
-      {!isLogged
+      {!user
       ?
         <Switch>
         <Route exact path="/" component={Login} />

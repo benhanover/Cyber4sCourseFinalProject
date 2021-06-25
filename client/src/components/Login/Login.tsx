@@ -15,7 +15,7 @@ const Login: React.FC = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   
   const dispatch = useDispatch();
-  const { setIsLogged } = bindActionCreators({...wsActionCreator}, dispatch);
+  const { setUser } = bindActionCreators({...wsActionCreator}, dispatch);
   
   return (
     <div className='login-container'>
@@ -45,10 +45,10 @@ const Login: React.FC = () => {
     cleanup();
     axios
       .post('http://localhost:4000/user/login', { email, password })
-      .then(({ data }) => {
-        Cookies.set('accessToken', data.accessToken);
-        Cookies.set('refreshToken', data.refreshToken);
-        setIsLogged(true)
+      .then(({ data: response }) => {
+        Cookies.set('accessToken', response.accessToken);
+        Cookies.set('refreshToken', response.refreshToken);
+        setUser(response.user);
       })
       .catch(console.log);
   };

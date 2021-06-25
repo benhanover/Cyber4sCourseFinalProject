@@ -10,7 +10,7 @@ import { wsActionCreator } from '../../../state';
 
 const LougoutButton: React.FC = () => {
   const dispatch = useDispatch();
-  const { setIsLogged } = bindActionCreators(wsActionCreator, dispatch);
+  const { setUser } = bindActionCreators(wsActionCreator, dispatch);
 
 
   const logout = async () => {
@@ -22,7 +22,7 @@ const LougoutButton: React.FC = () => {
       headers: { authorization: accessToken, refreshToken },
     });
     if (removed) {
-      setIsLogged(false);
+      setUser(false);
       return;
     }
     console.log("Didn't Removed Successfully");

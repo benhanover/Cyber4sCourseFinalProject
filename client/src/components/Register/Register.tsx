@@ -16,7 +16,7 @@ import {register} from './functions'
 const Register: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { setIsLogged } = bindActionCreators({...wsActionCreator}, dispatch);
+  const { setUser } = bindActionCreators({...wsActionCreator}, dispatch);
   
   // refs
   const usernameRef = useRef<HTMLInputElement | null>(null);
@@ -74,7 +74,7 @@ function cleanup(): void {
       const { data: response } = await register(username, firstName, lastName, birthDate, email, password);
       Cookies.set('accessToken', response.accessToken);
       Cookies.set('refreshToken', response.refreshToken);
-      setIsLogged(true)
+      setUser(response.user)
     } catch (e) {
       console.log("couldn't register", e);
     }

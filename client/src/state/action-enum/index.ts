@@ -1,4 +1,4 @@
 export enum ActionEnum {
   NEW_WS = 'set new WebSocket',
-  SET_IS_LOGGED = 'set isLogged'
+  SET_IS_LOGGED = 'set user'
 }
