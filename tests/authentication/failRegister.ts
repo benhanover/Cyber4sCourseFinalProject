@@ -59,8 +59,6 @@ export const FailRegister = ( collections: Promise<beforeAll> ): void => describ
         if(await response.url() === 'http://localhost:4000/user/register'
         && await response.status() === 409
         && (await response.json()).message === errorEnums.REGISTER_FAILED + errorEnums.EMAIL_TAKEN) {
-            console.log('resolved');
-            
             resolve(true);
         } 
         // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);

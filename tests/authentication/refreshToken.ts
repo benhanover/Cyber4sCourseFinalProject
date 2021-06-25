@@ -24,7 +24,7 @@ export const refreshToken = ( collections: Promise<beforeAll> ): void => describ
       page.on('response', async (response) => {
         if(await response.url() === 'http://localhost:4000/user/validator'
           && await response.status() === 401){
-            console.log('resolved');
+            // console.log('resolved');
             
             resolve(true);
         } 
@@ -36,7 +36,7 @@ export const refreshToken = ( collections: Promise<beforeAll> ): void => describ
       page.on('response', async (response) => {
         if(await response.url() === 'http://localhost:4000/user/refreshToken'
         && await response.status() === 200){
-            console.log('resolved');
+            // console.log('resolved');
             
             resolve(true);
         } 

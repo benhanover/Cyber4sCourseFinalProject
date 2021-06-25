@@ -36,8 +36,6 @@ export const Login = ( collections: Promise<beforeAll> ): void => describe('Logi
       page.on('response', async (response) => {
         if(await response.url() === 'http://localhost:4000/user/login'
         && await response.status() === 200){
-            console.log('resolved');
-            
             resolve(await response.json());
         } 
         // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
