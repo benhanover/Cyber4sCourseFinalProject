@@ -44,11 +44,15 @@ export const FailLogin = (collections: Promise<beforeAll>) => describe("failLogi
         });
       });
 
+      // rediret to login page
+      const loginButtonFromRegPage: ElementHandle<Element> | null = await page.$(".login-button");
+      if(loginButtonFromRegPage)  await loginButtonFromRegPage.click();
+
       await page.waitForSelector('.login-container');  
       const inputs: ElementHandle<Element>[] = await page.$$('.login-container > input');
 
       await fillFormWithMockData(page, inputs,[ mockData.loginTest[0] , "1234"])
-      const loginButton: ElementHandle<Element> |null = await page.$('.login-container > button');
+      const loginButton: ElementHandle<Element> |null = await page.$('.login-button');
       await loginButton?.click();
       expect(await testResponse1).toBe(true);
       const tokensExist1: boolean = await doesTokensExist(page); 

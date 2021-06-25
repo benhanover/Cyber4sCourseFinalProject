@@ -43,9 +43,9 @@ export const FailRegister = ( collections: Promise<beforeAll> ): void => describ
       });
     });
 
-
+    const RegisterButton: ElementHandle<Element> | null = await page.$(".register-button");
+    if(RegisterButton)  await RegisterButton.click();
     await page.waitForSelector("form");
-    await page.waitForTimeout(1000)
     const inputs: ElementHandle<Element>[] = await page.$$('form > input');    
     // sending it without the button
     await fillFormWithMockData(page, inputs.slice(0,6), mockData.failRegisterByUsername)

@@ -35,10 +35,8 @@ export const Logout = (collections: Promise<beforeAll>) =>
     /*-----------------------------------------------------------------------------------------------------------*/
 
     it("After logging out server response should be logged out succesfuly", async (): Promise<void> => {
-      const logOutButton: ElementHandle<Element>[] = await page.$$(
-        "div > button"
-      );
-      await logOutButton[1].click();
+      const logOutButton: ElementHandle<Element> | null = await page.$(".logout-button");
+      if(logOutButton)  await logOutButton.click();
       await page.waitForResponse("http://localhost:4000/user/logout"); // options 204 response
       const response: HTTPResponse = await page.waitForResponse(
         "http://localhost:4000/user/logout"
