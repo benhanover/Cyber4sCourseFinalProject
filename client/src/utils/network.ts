@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AxiosResponse, AxiosError, Method } from 'axios';
+import { AxiosResponse, Method } from 'axios';
 import { recreateAccessToken } from './functions';
 import Cookies from 'js-cookie';
 

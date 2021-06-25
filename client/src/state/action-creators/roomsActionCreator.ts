@@ -18,3 +18,13 @@ export const addRoom = (room: Iroom) => {
         })
     }
 }
+
+export const removeRoom = (room: Iroom) => {
+    return (dispatch: Dispatch<any>)=>{
+        dispatch({
+            type: "removeRoom" , 
+            payload:room
+        })
+    }
+}
+

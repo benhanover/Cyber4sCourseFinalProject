@@ -1,15 +1,17 @@
 import { Iroom } from "../../components/Lobby/interfaces"
 
-const roomReducer = (state: Iroom[] = [], action: any) => {
+const roomReducer = (state: Array<Iroom | null> = [], action: any) => {
     
     switch(action.type){
         case "setRooms":
-            console.log("newRooms in reducer", action.payload);
             state = action.payload;
             break;
         case "addRoom":
-            console.log("newRooms in reducer", action.payload);
             state.push(action.payload)
+            break;
+        case "removeRoom":
+            const roomIndex = state.findIndex(room => action.payload);
+            state[roomIndex] = null;
             break;
         default:
         return state;  

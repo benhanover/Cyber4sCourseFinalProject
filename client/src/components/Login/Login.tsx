@@ -1,7 +1,7 @@
 // import libraries
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 // redux shit

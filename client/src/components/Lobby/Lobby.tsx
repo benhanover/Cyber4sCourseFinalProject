@@ -19,12 +19,8 @@ const Lobby: React.FC = () => {
   const { ws, rooms } = useSelector((state: State) => state);
   const { user } = ws;
   const { setWS, setUser } = bindActionCreators({ ...wsActionCreator }, dispatch)
-  const { setRooms, addRoom } = bindActionCreators({ ...roomsActionCreator}, dispatch)
+  const { setRooms, addRoom, removeRoom } = bindActionCreators({ ...roomsActionCreator}, dispatch)
   
-  useEffect(() => {
-    console.log("rooms useEffect",  rooms);
-    
-  },[rooms]);
   useEffect(() => {
     // create connection to the websocket server  
     const newWS = new WebSocket('ws://localhost:4000');
@@ -55,29 +51,20 @@ const Lobby: React.FC = () => {
   //  handles all message events from the server
   const messageHandler=(messageBoxEvent: MessageEvent<string>, ) => {
     const messageData: ImessageBox = JSON.parse(messageBoxEvent.data);
-    console.log(rooms);
     
     switch (messageData.type) {
       case 'rooms':
-        console.log("in rooms!" , rooms);
-        if (typeof messageData.message === 'string') return;////??
-        console.log("rooms from server:", messageData.message);
-        
+        if (typeof messageData.message === 'string') return;
         setRooms(messageData.message);
         break;
       case "new room was created":
-        console.log("in here?",rooms );
-        if (typeof messageData.message === 'string') return;////??
-        console.log(messageData.message , "and" , rooms);
+        if (typeof messageData.message === 'string') return;
         addRoom(messageData.message);
         break;  
       case "room deleted":
-        setRooms(rooms?.filter((room: Iroom) => { //???
-          return room._id !== messageData.message._id
-        }));
+        removeRoom(messageData.message);
         break;
       case "socket":
-        
         user.mySocket=messageData.message
         setUser(user)
         break;
@@ -89,14 +76,12 @@ const Lobby: React.FC = () => {
 return (
   <div>
     <LogoutButton />
-    {rooms?.map((room: Iroom, i: number) => {
+    {rooms?.map((room: Iroom | null, i: number) => {
+      if (!room) return;
       return (
-        <div className='room'>
-          <p key={i}>{room.title}</p>
-          <p key={i}>{room._id}</p>
-          {room.participants.map((user: string, j: number) => {
-            return <p key={j}>{user}</p>;
-          })}
+        <div key={i} className='room'>
+          <p >{room.title}</p>
+          <p >{room._id}</p>
         </div>
         
         );

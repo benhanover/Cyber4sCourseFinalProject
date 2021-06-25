@@ -1,6 +1,5 @@
 // import libraries
 import React, { useRef } from 'react';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useDispatch} from 'react-redux';
 import { bindActionCreators } from 'redux';
