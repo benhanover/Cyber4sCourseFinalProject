@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,KAAK,CAAA;EACD,gBAAgB,EAAe,wBAAO;EACtC,aAAa,EAAE,GAAG;EAClB,MAAM,EAAc,wBAAO;CAC9B;;AACD,AAAA,OAAO,CAAA;EACH,QAAQ,EAAE,QAAQ;EAClB,GAAG,EAAE,KAAK;EACV,IAAI,EAAE,KAAK;EACX,OAAO,EAAE,IAAI;EACb,gBAAgB,EAAe,OAAO;EACtC,MAAM,EAAc,uBAAO;CAC9B",
-    "sources": [
-        "Room.scss"
-    ],
-    "names": [],
-    "file": "Room.css"
-}
