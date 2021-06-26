@@ -2,11 +2,11 @@
 import { Request, Response } from 'express';
 
 // import interfaces
-import { Iroom } from '../types/index';
+import { Iroom, Umodels, IreturnInfo } from '../types/index';
 import { errorEnums } from '../enums/errorEnums';
 
 // import mongo-functions
-import { getRooms, saveRoom } from '../mongo/mongo-functions';
+import { findDocument, getRooms, saveRoom } from '../mongo/mongo-functions';
 
 /*---------------------------------------------------------------------------------------------------------- */
 // creates a room and saves it into the data base
@@ -29,7 +29,19 @@ export const createRoom = async (req: Request, res: Response): Promise<void> => 
 /*---------------------------------------------------------------------------------------------------------- */
 // returns all of the rooms in the data base
 export const getAllRooms = async (req: Request, res: Response): Promise<void> => {
-  const rooms: Array<Iroom> = await getRooms();
-  res.status(200).json(rooms);
-  return;
+    const rooms: Array<Iroom> = await getRooms();
+    res.status(200).json(rooms);
+    return;
+};
+/*---------------------------------------------------------------------------------------------------------- */
+// returns room by roomId
+export const getRoom = async (req: Request, res: Response): Promise<void> => {
+    const roomId: string = req.params.roomId;
+  const room: Umodels = await findDocument('Room', '_id', roomId);
+  if ('return' in room) {
+    res.sendStatus(500)
+    return
+  }
+    res.status(200).json(room);
+    return;
 };

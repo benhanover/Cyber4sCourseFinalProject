@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Lobby from './components/Lobby/Lobby';
+import VideoRoom from './components/VideoRoom/VideoRoom';
 
 // redux shit
 import { bindActionCreators } from 'redux';
@@ -44,6 +45,7 @@ const App: React.FunctionComponent<{}> = () => {
       :
       <Switch>
         <Route path="/lobby" component={Lobby} />
+        <Route path="/rooms" component={VideoRoom} />
         <Route path="*">
           <Redirect to="/lobby" />
         </Route>

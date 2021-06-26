@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { wsActionCreator, State } from '../../../state' 
 import { IroomProps } from './interfaces'
+import { useHistory } from "react-router-dom";
 import './Room.css';
 
 const Room: FC<IroomProps> = ({ room, chosen }) => {
     const dispatch = useDispatch();
     const {chosenRoom} = useSelector((state: State) => state.ws)
     const { setChosenRoom } = bindActionCreators({ ...wsActionCreator }, dispatch)
-
+    const history = useHistory();
+    const url="";
     if (chosen) {
         return (
             <div key={42} className="chosen room">
@@ -40,8 +42,10 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
     function goToRoom(roomId: string | undefined) {
         if (!roomId) return;
         console.log(roomId);
+        history.push("/rooms?roomId=" + roomId);
         
     }
 }
 
 export default Room
+//
