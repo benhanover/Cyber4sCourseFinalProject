@@ -1,5 +1,5 @@
 // import libraries
-import React, {  FC, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector,  } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import types
@@ -51,7 +51,7 @@ const Lobby: React.FC = () => {
 /*------------------------------------------------------------------------------------------------------*/
   
   //  handles all message events from the server
-  const messageHandler=(messageBoxEvent: MessageEvent<string>, ) => {
+  function messageHandler(messageBoxEvent: MessageEvent<string>){
     const messageData: ImessageBox = JSON.parse(messageBoxEvent.data);
     
     switch (messageData.type) {
@@ -79,7 +79,7 @@ return (
   <div>
     <LogoutButton />
     {rooms?.map((room: Iroom | null, i: number) => {
-      if (!room) return;
+      if (!room) return null;
       return (
         <Room key={i} room={ room } chosen={false} />
         
@@ -95,6 +95,6 @@ return (
     const roomChosed: Iroom = chosenRoom
     return (<Room room={roomChosed} chosen={true} />)
   }
-};
+}; 
 
 export default Lobby;

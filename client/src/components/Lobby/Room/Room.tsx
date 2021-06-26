@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { wsActionCreator, State } from '../../../state' 
 import { IroomProps } from './interfaces'
+import './Room.css';
 
 const Room: FC<IroomProps> = ({ room, chosen }) => {
     const dispatch = useDispatch();
