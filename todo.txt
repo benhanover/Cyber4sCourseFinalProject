@@ -1,29 +1,15 @@
-1
-  file: userControllers
-  function: register
-  todo: simplify redeclaration
-
-
--when refreshing access tokens make sure to delete from data base
--not recreating access token 
-CLEAN CODE
--validation for inputs
-
-BUGS -
-1
-issue: only after refreshing the page you see the room that created 
-
-2
-check if access token updated in db after recreating one.
 
 IMPROVES - 
  TESTS-
   - divide describes into it's
   - run all of the tests from tests.test.ts and not test calling test
+  
 remove variables from process env
 
 
 TODO: on ws connection: create a {socketId, socket} and push to db
-1. create a user state when logged or register
-2. add participant and host properties on the room object,that contains socket id & user id
-3.
+1. check why user._id in user state (client) dont exist all the time.{to check the user after login , register and refresh(app)-client}
+2. server peer
+3. detect the reason that cause the mongo db to lack data(collections)
+4. when refreshing access tokens make sure to delete from data base
+5. validation for inputs

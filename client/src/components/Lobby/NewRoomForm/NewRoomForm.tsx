@@ -6,7 +6,6 @@ import { Iroom } from '../interfaces';
 
 function NewRoomForm() {
     const { serverSocket, user } = useSelector((state: State) => state.ws)
-    
     //  creates all refs for the form's inputs
     const subjectRef = useRef<HTMLSelectElement | null>(null);
     const subSubjectRef = useRef<HTMLInputElement | null>(null);

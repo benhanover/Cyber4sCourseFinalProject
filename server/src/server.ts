@@ -61,12 +61,15 @@ wsServer.on('connection', async (clientSocket: any) => {
       switch (messageData.type) {
         case "creating new room":
           if (typeof messageData.message === "string" || Array.isArray(messageData.message)) return;///???
-          // saveRoom({ ...messageData.message })
+          saveRoom({ ...messageData.message })
           wsServer.clients.forEach((client) => {
             client.send(JSON.stringify({ type: "new room was created", message: messageData.message }))
           })
+          console.log("creating new room");
           break;
         case "lock room":
+          console.log("in the lock room!!");
+          
           break;
         case "delete room":
           wsServer.clients.forEach((client) => {
@@ -74,7 +77,13 @@ wsServer.on('connection', async (clientSocket: any) => {
           });
           //log the received message and send it back to the client
           break;
+        case "join-room":
+            console.log(`${messageData.message.username} joined to room ${messageData.message.roomId} using the new peer: ${messageData.message.peerId}`);
+            
+          break;
         default:
+          console.log("in ws default", messageData.type);
+          
           return;
       }
     });

@@ -150,7 +150,6 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
       res.status(403).send(errorEnums.FORBIDDEN);
       return;
     }
-    console.log("user in refresh", user)
     const userAssignedToToken: Iuser = {
       username: user.username,
       email: user.email,
@@ -177,12 +176,9 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
 /*---------------------------------------------------------------------------------------------------------- */
 
 export const returnValidation = ((req: Request, res: Response) => {
-  console.log("user in returnvalidation", req.body.user);
-  
   const user = req.body.user;
   const { _id, username, password, email, firstName,lastName, birthDate } = user;
   const userToSend = { _id, username, password, email, firstName,lastName, birthDate }
-  console.log("userToSend", userToSend);
   userToSend.password = "";
   return res.status(200).json({ user: userToSend});
   //return res.status(200).end();

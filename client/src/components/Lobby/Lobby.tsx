@@ -37,9 +37,9 @@ const Lobby: React.FC = () => {
     setWS(newWS)
   
     //cleanup
-    return () => {
-      newWS.close()
-    }
+    // return () => {
+    //   newWS.close()
+    // }
   }, []);
 
  
