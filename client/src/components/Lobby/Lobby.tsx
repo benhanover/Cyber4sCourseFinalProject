@@ -1,5 +1,5 @@
 // import libraries
-import React, {  useEffect } from 'react';
+import React, {  FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector,  } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import types
@@ -9,6 +9,8 @@ import LogoutButton from '../Common/LogoutButton/LougoutButton';
 // import redux-states
 import { wsActionCreator, roomsActionCreator, State} from '../../state/index';
 import NewRoomForm from './NewRoomForm/NewRoomForm';
+import Room from './Room/Room';
+import { ReactElement } from 'react';
 
 /*================================================================================================*/
 
@@ -17,7 +19,7 @@ import NewRoomForm from './NewRoomForm/NewRoomForm';
 const Lobby: React.FC = () => {
   const dispatch = useDispatch();
   const { ws, rooms } = useSelector((state: State) => state);
-  const { user } = ws;
+  const { user, chosenRoom } = ws;
   const { setWS, setUser } = bindActionCreators({ ...wsActionCreator }, dispatch)
   const { setRooms, addRoom, removeRoom } = bindActionCreators({ ...roomsActionCreator}, dispatch)
   
@@ -79,17 +81,20 @@ return (
     {rooms?.map((room: Iroom | null, i: number) => {
       if (!room) return;
       return (
-        <div key={i} className='room'>
-          <p >{room.title}</p>
-          <p >{room._id}</p>
-        </div>
+        <Room key={i} room={ room } chosen={false} />
         
         );
-      })}
+    })}
+    {chosenRoomDisplay(chosenRoom)}
     <NewRoomForm />
   </div>
 ); 
   
+  function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null{
+    if (chosenRoom === null) return null;
+    const roomChosed: Iroom = chosenRoom
+    return (<Room room={roomChosed} chosen={true} />)
+  }
 };
 
 export default Lobby;

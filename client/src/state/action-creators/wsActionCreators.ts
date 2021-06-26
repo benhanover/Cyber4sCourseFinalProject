@@ -1,4 +1,5 @@
 import { Dispatch } from "react";
+import { Iroom } from "../../components/Lobby/interfaces";
 import { ActionEnum } from "../action-enum";
 
 
@@ -21,3 +22,12 @@ export const setUser = (user: any) => {
   };
 };
   
+export const setChosenRoom = (room: Iroom | null) => {
+  return (dispatch: Dispatch<any>)=>{
+      dispatch({
+          type: "chooseRoom" , 
+          payload:room
+      })
+  }
+}
+

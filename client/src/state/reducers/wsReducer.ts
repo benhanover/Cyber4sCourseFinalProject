@@ -1,6 +1,6 @@
 import { ActionEnum } from '../action-enum';
 
-const wsReducer = (state: any = { serverSocket: "", user: false }, action: any) => {
+const wsReducer = (state: any = { serverSocket: "", user: false, chosenRoom: null }, action: any) => {
   
   
   switch (action.type) {
@@ -10,6 +10,9 @@ const wsReducer = (state: any = { serverSocket: "", user: false }, action: any) 
     case ActionEnum.SET_IS_LOGGED:
       
       state.user = action.payload;
+      break;
+    case "chooseRoom":
+      state.chosenRoom = action.payload;
       break;
     default:
       return state;
