@@ -14,7 +14,6 @@ import { ReactElement } from 'react';
 
 /*================================================================================================*/
 
-
 //  creates a WebSocket connection with the server, display all rooms through the WebSocket.
 const Lobby: React.FC = () => {
   const dispatch = useDispatch();
