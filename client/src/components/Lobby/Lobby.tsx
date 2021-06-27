@@ -1,16 +1,16 @@
 // import libraries
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector,  } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
 // import types
-import { ImessageBox, Iroom } from './interfaces';
+import { ImessageBox, Iroom } from "./interfaces";
 // import components
-import LogoutButton from '../Common/LogoutButton/LougoutButton';
+import LogoutButton from "../Common/LogoutButton/LougoutButton";
 // import redux-states
-import { wsActionCreator, roomsActionCreator, State} from '../../state/index';
-import NewRoomForm from './NewRoomForm/NewRoomForm';
-import Room from './Room/Room';
-import { ReactElement } from 'react';
+import { wsActionCreator, roomsActionCreator, State } from "../../state/index";
+import NewRoomForm from "./NewRoomForm/NewRoomForm";
+import Room from "./Room/Room";
+import { ReactElement } from "react";
 
 /*================================================================================================*/
 
@@ -19,81 +19,84 @@ const Lobby: React.FC = () => {
   const dispatch = useDispatch();
   const { ws, rooms } = useSelector((state: State) => state);
   const { user, chosenRoom } = ws;
-  const { setWS, setUser } = bindActionCreators({ ...wsActionCreator }, dispatch)
-  const { setRooms, addRoom, removeRoom } = bindActionCreators({ ...roomsActionCreator}, dispatch)
-  
+  const { setWS, setUser } = bindActionCreators(
+    { ...wsActionCreator },
+    dispatch
+  );
+  const { setRooms, addRoom, removeRoom } = bindActionCreators(
+    { ...roomsActionCreator },
+    dispatch
+  );
   useEffect(() => {
-    // create connection to the websocket server  
-    const newWS = new WebSocket('ws://localhost:4000');
+    console.log(rooms);
+  }, [rooms]);
+  useEffect(() => {
+    // create connection to the websocket server
+    const newWS = new WebSocket("ws://localhost:4000");
     newWS.onopen = () => {
       console.log("connected to server");
+    };
 
-    }
-    
-    // message handler
+    // // message handler
     newWS.onmessage = messageHandler;
-    
+
     //set the state
-    setWS(newWS)
-  
+    setWS(newWS);
+
     //cleanup
     // return () => {
     //   newWS.close()
     // }
   }, []);
 
- 
+  // Functions
+  /*------------------------------------------------------------------------------------------------------*/
 
-
-
-// Functions
-/*------------------------------------------------------------------------------------------------------*/
-  
   //  handles all message events from the server
-  function messageHandler(messageBoxEvent: MessageEvent<string>){
+  function messageHandler(messageBoxEvent: MessageEvent<string>) {
     const messageData: ImessageBox = JSON.parse(messageBoxEvent.data);
-    
+    console.log("in message hendler");
+
     switch (messageData.type) {
-      case 'rooms':
-        if (typeof messageData.message === 'string') return;
+      case "rooms":
+        console.log("rooms");
+
+        if (typeof messageData.message === "string") return;
         setRooms(messageData.message);
         break;
       case "new room was created":
-        if (typeof messageData.message === 'string') return;
+        if (typeof messageData.message === "string") return;
         addRoom(messageData.message);
-        break;  
+        break;
       case "room deleted":
         removeRoom(messageData.message);
         break;
       case "socket":
-        user.mySocket=messageData.message
-        setUser(user)
+        user.mySocket = messageData.message;
+        setUser(user);
         break;
       default:
         break;
     }
   }
 
-return (
-  <div>
-    <LogoutButton />
-    {rooms?.map((room: Iroom | null, i: number) => {
-      if (!room) return null;
-      return (
-        <Room key={i} room={ room } chosen={false} />
-        
-        );
-    })}
-    {chosenRoomDisplay(chosenRoom)}
-    <NewRoomForm />
-  </div>
-); 
-  
-  function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null{
+  return (
+    <div>
+      <LogoutButton />
+      {rooms?.map((room: Iroom | null, i: number) => {
+        if (!room) return null;
+        return <Room key={i} room={room} chosen={false} />;
+      })}
+      {chosenRoomDisplay(chosenRoom)}
+      <NewRoomForm />
+    </div>
+  );
+
+  function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null {
     if (chosenRoom === null) return null;
-    const roomChosed: Iroom = chosenRoom
-    return (<Room room={roomChosed} chosen={true} />)
+    const roomChosed: Iroom = chosenRoom;
+    return <Room room={roomChosed} chosen={true} />;
   }
-}; 
+};
 
 export default Lobby;
