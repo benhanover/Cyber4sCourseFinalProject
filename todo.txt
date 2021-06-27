@@ -13,3 +13,4 @@ TODO: on ws connection: create a {socketId, socket} and push to db
 3. detect the reason that cause the mongo db to lack data(collections)
 4. when refreshing access tokens make sure to delete from data base
 5. validation for inputs
+6. make chosen room participants update on realtime.
