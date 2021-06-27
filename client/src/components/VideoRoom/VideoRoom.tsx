@@ -10,9 +10,11 @@ import { Iroom } from '../Lobby/interfaces';
 
 
 function VideoRoom() {
-    const {serverSocket, user} = useSelector((state: State) => state.ws)
-    // const dispatch = useDispatch();
-    // const { set} = bindActionCreators({ ...wsActionCreator }, dispatch)
+    const { serverSocket, user } = useSelector((state: State) => state.ws);
+    const flagRef = useRef(false)
+    const [peerState, setPeerState] = useState<Peer>()
+    const dispatch = useDispatch();
+    const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch)
    
    
    const location = useLocation();
@@ -26,33 +28,66 @@ function VideoRoom() {
         }).catch((e)=>{
             console.log("could not get room in VideoRoom Component", e) ///add reaction 
         })
+        const peer = new Peer();
+        peer.on('open', (id) => {
+            console.log('My peer ID is: ' + id);
+            user.peerId = id;
+            setUser(user);        
+        })
+        setPeerState(peer);
    }, [])
  
-   useEffect(() => {
-    createPeer();
+    useEffect(() => {
+        createConnection();
        
-    }, [room])
+    }, [user])
+    
     return (
         <div>
-          {/* <button onClick ={(e) => createPeer()}>create peer</button>   */}
+            
         </div>
     )
 
 // Functions
 // =========
-    function createPeer() {
-            // const socket = new WebSocket('http://localhost:4000/')
-        const peer = new Peer();
-        peer.on('open', (id) => {
-            console.log('My peer ID is: ' + id);
-            console.log("1");
-            console.log(serverSocket);
+
+//to pull the partcipents in the room, and call them
+//add the user to the room participants on db
+//
+    function createConnection() {
+        console.log("in createConnection");
+        
+        if (!room) return;
+        console.log("there is a room");
+        
+        serverSocket
+            .send(JSON.stringify({
+                type: 'join-room', message: { peerId: user.peerId, roomId: room._id, username: user.username }
+            }));
+        if (!peerState) return;
+        peerState.on('connection', (conn) => {
+            conn.on('data', function(data){
+                console.log(data);})
+                
+    
+        });
+        room.participants?.forEach(roomMate => {
+            const connection = peerState?.connect(roomMate)
+            console.log("connecting to", roomMate);
+            connection.send("Hey, we've just connected")
+            
+            
+        })
+        //     if (!peerState) return;
+        // peerState.on('open', (id) => {
+        //     console.log('My peer ID is: ' + id);
+        //     console.log("1");
+        //     console.log(serverSocket);
               
             
-            if (!room) return;
-            console.log("2");
-            serverSocket.send(JSON.stringify({type: 'join-room', message:{peerId: id, roomId: room._id, username: user.username}}))
-            console.log("3");
+        //     console.log("2");
+        //     serverSocket.send(JSON.stringify({type: 'join-room', message:{peerId: id, roomId: room._id, username: user.username}}))
+        //     console.log("3");
             
             // navigator.getUserMedia({ video: true, audio: true },
             //     (media) => {
@@ -75,17 +110,17 @@ function VideoRoom() {
             //         })
             //     },
             //     (e) => { console.log("errrorr!" + e) });
-        });
+        //});
         
         
-        peer.on('connection', (conn) => {
+        // peerState.on('connection', (conn) => {
 
-            conn.on("data", (msg) => {
-                console.log("recieved from client A :", msg);
-                conn.send("holas back to you")
-            });
+        //     conn.on("data", (msg) => {
+        //         console.log("recieved from client A :", msg);
+        //         conn.send("holas back to you")
+        //     });
         
-        });
+        // });
     }
 }
 

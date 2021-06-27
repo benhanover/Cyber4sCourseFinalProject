@@ -106,6 +106,32 @@ export const findDocument = async ( modelString: string, field: string, fieldCon
     return { return: false, message: errorEnums.FAILED_GETTING_DATA + e };
   }
 };
+/*---------------------------------------------------------------------------------------------------------- */
+// used in: userControllers | finds a document by model and field
+export const updateDocument = async ( modelString: string, fieldToFind: string, fieldToFindContent: any, fieldToUpdate: string, fieldToUpdateContent: any): Promise<Umodels> =>  {
+  const model: typeof Model | undefined = getModel(modelString);
+  if (!model) {
+    console.log(errorEnums.NO_MODEL_ENUM);
+    return {
+      return: false,
+      message: 'Missing parameter line 68 ,mongo-functions',
+    };
+  }
+  try {
+    console.log("before updating");
+    
+    const updatedDocument : any = await model.updateOne({
+      [fieldToFind]: fieldToFindContent,
+    }, {[fieldToUpdate]: fieldToUpdateContent}, {returnOriginal: false});
+
+    console.log("updatedDocument:", updatedDocument);
+    
+    return updatedDocument ? updatedDocument : { return: false, message: modelString + errorEnums.NOT_FOUND };
+  } catch (e: unknown) {
+    console.log(errorEnums.FAILED_GETTING_DATA + e);
+    return { return: false, message: errorEnums.FAILED_GETTING_DATA + e };
+  }
+};
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in: userControllers | removes accessToken from db

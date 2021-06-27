@@ -30,75 +30,79 @@ app.use(fallbacks);
 
 /*---------------------------------------------------------------------------------------------------------- */
 
-import { getRooms, saveRoom } from "./mongo/mongo-functions";
+import { findDocument, getRooms, saveRoom, updateDocument } from "./mongo/mongo-functions";
 import WebSocket from "ws";
 import { ImessageBox } from "./ws/interfaces";
 import { Room } from "./mongo/models";
+import { Iroom, Umodels } from "./types";
 
 const wsServer = new WebSocket.Server({ server });
 
 //  connection listener
 wsServer.on("connection", async (clientSocket: any) => {
-  console.log("connected!");
+    console.log("connected!");
 
-  const rooms = await getRooms();
-  clientSocket.send(JSON.stringify({ type: "rooms", message: rooms }));
-  try {
-    clientSocket.send(
-      JSON.stringify({ type: "socket", message: clientSocket })
-    );
-  } catch (e) {
-    console.log(e);
-  }
-
-  //cadding event listeners
-  clientSocket.on("message", (messageBoxEvent: any) => {
-    console.log("received:", messageBoxEvent);
-    // console.log(messageBoxEvent);
-    // if (!messageBoxEvent.data) {
-    const messageData: ImessageBox = JSON.parse(messageBoxEvent);
-    // }
-    switch (messageData.type) {
-      case "creating new room":
-        if (
-          typeof messageData.message === "string" ||
-          Array.isArray(messageData.message)
-        )
-          return; ///???
-        saveRoom({ ...messageData.message });
-        wsServer.clients.forEach((client) => {
-          client.send(
-            JSON.stringify({
-              type: "new room was created",
-              message: messageData.message,
-            })
-          );
-        });
-        console.log("creating new room");
-        break;
-      case "lock room":
-        console.log("in the lock room!!");
-
-        break;
-      case "delete room":
-        wsServer.clients.forEach((client) => {
-          client.send(
-            JSON.stringify({ type: "room deleted", message: messageData })
-          );
-        });
-        //log the received message and send it back to the client
-        break;
-      case "join-room":
-        console.log(
-          `${messageData.message.username} joined to room ${messageData.message.roomId} using the new peer: ${messageData.message.peerId}`
-        );
-
-        break;
-      default:
-        console.log("in ws default", messageData.type);
-
-        return;
+    const rooms = await getRooms();
+    clientSocket.send(JSON.stringify({ type: "rooms", message: rooms }));
+    try {
+      clientSocket.send(
+        JSON.stringify({ type: "socket", message: clientSocket })
+      );
+    } catch (e) {
+      console.log(e);
     }
+
+    //cadding event listeners
+    clientSocket.on("message", async (messageBoxEvent: any) => {
+      console.log("received:", messageBoxEvent);
+      // console.log(messageBoxEvent);
+      // if (!messageBoxEvent.data) {
+      const messageData: ImessageBox = JSON.parse(messageBoxEvent);
+      // }
+      switch (messageData.type) {
+        case "creating new room":
+          if (
+            typeof messageData.message === "string" ||
+            Array.isArray(messageData.message)
+          )
+            return; ///???
+          saveRoom({ ...messageData.message });
+          wsServer.clients.forEach((client) => {
+            client.send(
+              JSON.stringify({
+                type: "new room was created",
+                message: messageData.message,
+              })
+            );
+          });
+          console.log("creating new room");
+          break;
+        case "lock room":
+          console.log("in the lock room!!");
+
+          break;
+        case "delete room":
+          wsServer.clients.forEach((client) => {
+            client.send(
+              JSON.stringify({ type: "room deleted", message: messageData })
+            );
+          });
+          //log the received message and send it back to the client
+          break;
+        case "join-room":
+          console.log(
+            `${messageData.message.username} joined to room ${messageData.message.roomId} using the new peer: ${messageData.message.peerId}`
+          );
+          const room: Umodels = await updateDocument('Room', '_id', messageData.message.roomId, 'participants', messageData.message.peerId);
+          if(!('participants' in room)) return
+            // console.log("room after participant added:", room);
+
+          break;
+        default:
+          console.log("in ws default", messageData.type);
+
+          return;
+      }
   });
 });
 wsServer.on("close", () => {
