@@ -20,7 +20,7 @@ const LougoutButton: React.FC = () => {
     Cookies.remove('refreshToken');
     serverSocket.close();
     setUser(false);
-    axios.delete('http://localhost:4000/user/logout', {
+    axios.delete('http://192.168.1.111:4000/user/logout', {
       headers: { authorization: accessToken, refreshToken },
     }).then(()=>{console.log("Removed Succsesfuly");
     })
