@@ -28,9 +28,6 @@ const Lobby: React.FC = () => {
     dispatch
   );
   useEffect(() => {
-    console.log(rooms);
-  }, [rooms]);
-  useEffect(() => {
     // create connection to the websocket server
     const newWS = new WebSocket("ws://192.168.1.111:4000");
     newWS.onopen = () => {
@@ -56,11 +53,11 @@ const Lobby: React.FC = () => {
   //  handles all message events from the server
   function messageHandler(messageBoxEvent: MessageEvent<string>) {
     const messageData: ImessageBox = JSON.parse(messageBoxEvent.data);
-    console.log("in message hendler");
+    // console.log("in message hendler");
 
     switch (messageData.type) {
       case "rooms":
-        console.log("rooms", rooms);
+        // console.log("rooms", rooms);
 
         if (typeof messageData.message === "string") return;
         setRooms(messageData.message);

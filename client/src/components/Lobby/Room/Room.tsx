@@ -16,7 +16,6 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
     dispatch
   );
   const history = useHistory();
-  const url = "";
   // useEffect(()=>{
   //  const updatedRoom = rooms.filter((roomItem)=>{
   //     return roomItem._id = room._id
@@ -68,7 +67,7 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
   );
   function goToRoom(roomId: string | undefined) {
     if (!roomId) return;
-    console.log(roomId);
+    // console.log(roomId);
     history.push("/rooms?roomId=" + roomId);
   }
 };

@@ -14,3 +14,6 @@ TODO: on ws connection: create a {socketId, socket} and push to db
 4. when refreshing access tokens make sure to delete from data base
 5. validation for inputs
 6. make chosen room participants update on realtime.
+7. update the room ufter adding a participent, in vedioroom component(at the moment only rooms in loby update)
+8. improve redirection to VideoRoom (route).
+9. joined participants somehow send stream twice
