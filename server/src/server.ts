@@ -33,6 +33,7 @@ app.use(fallbacks);
 import {
   findDocument,
   getRooms,
+  removePartecipentfromRoom,
   saveRoom,
   updateDocument,
 } from "./mongo/mongo-functions";
@@ -96,18 +97,47 @@ wsServer.on("connection", async (clientSocket: any) => {
         break;
         case "leave room":
         //remove the participent from room db
+        const isRemoved = await removePartecipentfromRoom(messageData.message.roomId, messageData.message.participant);
+        console.log(isRemoved);
+        if (!isRemoved) {
+          console.log("could not remove participant from db");
+          return;
+        }
+        if (isRemoved.participants) {
+          
+          isRemoved.participantsSchema.forEach((participant: any)=>{
+            // parti.send(
+              //   JSON.stringify({
+                //     type: "rooms",
+                //     message: rooms,
+                //   })
+                //   );
+                
+              })
+              
+            }
+        const newRooms = await getRooms();
+        wsServer.clients.forEach((client) => {
+        console.log("1each");
 
+          client.send(
+          JSON.stringify({
+            type: "rooms",
+            message: newRooms,
+          })
+        );
+      });
         break;
-      case "join-room":
+      case "join room":
         console.log(
-          `${messageData.message.username} joined to room ${messageData.message.roomId} using the new peer: ${messageData.message.peerId}`
+          `${messageData.message.username} joined to room ${messageData.message.roomId} using the new peer: ${messageData.message.participant.peerId} and the stream with if: ${messageData.message.participant.streamId}`
         );
         const room: Umodels = await updateDocument(
           "Room",
           "_id",
           messageData.message.roomId,
           "participants",
-          messageData.message.peerId
+          messageData.message.participant
         );
         console.log(room);
         ///update everyone
@@ -142,6 +172,7 @@ mongoose
   .connect(`mongodb://${MONGO_SERVER}:27017/${DB}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false 
   })
   .then(() => {
     console.log("Connected To MongodDB " + DB);

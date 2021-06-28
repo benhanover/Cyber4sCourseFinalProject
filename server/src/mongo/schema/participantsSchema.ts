@@ -1,7 +1,8 @@
 import { Schema } from 'mongoose';
 
 const participantsSchema = new Schema({
-    participantId: String,
-    participantSocket: String
+    peerId: String,
+    streamId: String,
+    username: String
 });
 export default participantsSchema;

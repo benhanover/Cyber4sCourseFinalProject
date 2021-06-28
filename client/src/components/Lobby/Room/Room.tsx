@@ -40,8 +40,8 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
         <p key={6}>{room.limit}</p>
         <p key={7}>{room.isLocked ? "Locked" : "opened"}</p>
         {room.participants
-          ? room.participants.map((profile, i) => {
-              return <p key={i}>{profile}</p>;
+          ? room.participants.map((profile: any, i: number) => {
+              return <p key={i}>{profile.username}</p>;
             })
           : null}
         <button key={9} onClick={() => goToRoom(room._id)}>

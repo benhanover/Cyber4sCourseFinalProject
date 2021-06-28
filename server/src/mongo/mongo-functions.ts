@@ -140,7 +140,7 @@ export const updateDocument = async (
         [fieldToFind]: fieldToFindContent,
       },
       { $push: { [fieldToUpdate]: fieldToUpdateContent } },
-      { returnOriginal: false }
+      { new: true }
     );
 
     console.log("updatedDocument:", updatedDocument);
@@ -245,9 +245,36 @@ export const isAccessSaved = async (accessToken: string): Promise<Boolean> => {
   return Boolean(await AccessToken.findOne({ accessToken }));
 };
 /*---------------------------------------------------------------------------------------------------------- */
-// export const removePartecipentfromRoom =(roomId , participent )=>{
-// Room.updateOne(
-//   {_id:roomId}
-//   {$pull:{participants: participent }}
-// )
+export const removePartecipentfromRoom = async (roomId: string , participant: any ): Promise<any> =>{
+//   try {
+//     const removedParticipant = await Room.updateOne(
+//       { _id: roomId },
+//       { $pull: { "participants": participent } },{new:true});
+//     if (removedParticipant.ok) {
+//       console.log("removedParticipant", removedParticipant);
+      
+//       return removedParticipant;
+//     }
+//     return false;
+//     }
+// catch (e) {
+//     console.log(e)
+//     return false
 // }
+console.log(participant);
+
+     return await Room.update(
+        {"_id": roomId},
+       { $pull: { "participants": { "peerId": participant.peerId } } },{new:true}).then((removedParticipant)=>{
+      if (removedParticipant) {
+        console.log("removedParticipant", removedParticipant);
+        
+        return removedParticipant;
+      }
+      
+     } )
+  .catch(e=> {
+      console.log(e)
+      return false;
+  })
+}

@@ -1,3 +1,4 @@
+
 export interface Iroom {
   _id?: any;
   host: string;
@@ -5,7 +6,7 @@ export interface Iroom {
   subSubject: string;
   title: string;
   description: string;
-  participants: string[];
+  participants: any[];
   limit: number;
   isLocked: boolean;
 }
