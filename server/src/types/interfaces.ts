@@ -49,7 +49,6 @@ export interface Iuser {
   password: string;
   birthDate: Date;
   username: string;
-  profileUrl: string;
   profile?: Iprofile;
 }
 

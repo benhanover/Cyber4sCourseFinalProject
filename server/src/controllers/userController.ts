@@ -36,7 +36,6 @@ export const register = async (req: Request, res: Response) => {
       .json({ message: errorEnums.REGISTER_FAILED + registrationAvailability.message });
   }
   user.password = await hash(user.password, 10);
-  user.profileUrl = 'http://localhost:3000/profile/' + user.username;
   const registered: false | Iuser = await registerUser(user);
   
   if (!registered) {
@@ -161,6 +160,7 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
       firstName: user.firstName,
       password: user.password,
       birthDate: user.birthDate,
+
     };
 
     const accessToken: string = jwt.sign(userAssignedToToken, accessTokenKey, {

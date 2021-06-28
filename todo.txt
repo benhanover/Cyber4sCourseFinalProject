@@ -26,4 +26,4 @@ remove variables from process env
 TODO: on ws connection: create a {socketId, socket} and push to db
 1. create a user state when logged or register
 2. add participant and host properties on the room object,that contains socket id & user id
-3.
+3. otherUser's profile doesnt change on the second click.
