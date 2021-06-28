@@ -9,9 +9,6 @@ import { State, wsActionCreator } from '../../state';
 // import functions
 import { updateByField } from './functions';
 
-// import components
-import LogoutButton from '../Common/LogoutButton/LougoutButton';
-
 
 
 const Profile: React.FC = () => {
@@ -80,7 +77,6 @@ const Profile: React.FC = () => {
     <p>{user.profile.intrests}</p>
     <label onClick={() => setFieldToUpdate('relationship')}>relationship status</label>
     <p>{user.profile.relationship}</p>
-    <LogoutButton />
   </div>
   );
 }

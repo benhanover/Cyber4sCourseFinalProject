@@ -6,9 +6,6 @@ import { bindActionCreators } from 'redux';
 // import types
 import { ImessageBox, Iroom } from './interfaces';
 
-// import components
-import LogoutButton from '../Common/LogoutButton/LougoutButton';
-
 // import redux-states
 import { wsActionCreator, roomsActionCreator, State} from '../../state/index';
 import NewRoomForm from './NewRoomForm/NewRoomForm';
@@ -78,7 +75,6 @@ const Lobby: React.FC = () => {
 
 return (
   <div>
-    <LogoutButton />
     {rooms?.map((room: Iroom | null, i: number) => {
       if (!room) return;
       return (

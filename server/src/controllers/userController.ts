@@ -8,7 +8,7 @@ import { Iuser, IreturnInfo, Itokens, Umodels, UgenerateTokens, Urefresh } from 
 import { errorEnums, logsEnums } from '../enums/index';
 
 // import mongo-functions
-import { canRegister, registerUser, findDocument, saveRefreshToken, saveAccessToken, removeRefreshToken, removeAccessToken, isRefreshSaved, updateUserByField, getUsers } from '../mongo/mongo-functions';
+import { canRegister, registerUser, findDocument, saveRefreshToken, saveAccessToken, removeRefreshToken, removeAccessToken, isRefreshSaved, updateUserByField, getUsers, getUser } from '../mongo/mongo-functions';
 
 // import assistance functions
 import { generateTokens } from '../utils/functions';
@@ -211,3 +211,14 @@ export const getAllUsers = (async (req: Request, res: Response): Promise<void> =
   res.status(200).send(users);
   return
 });
+
+/*---------------------------------------------------------------------------------------------------------- */
+
+export const getUserProfile = async (req: Request, res: Response):Promise<void> => {
+  // const { username }: { username: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] | undefined } = req.query
+  const { username } = req.query
+  const user = await getUser(username);
+  user.password = 'Not Today :)'
+  res.status(200).send(user);
+  return
+}

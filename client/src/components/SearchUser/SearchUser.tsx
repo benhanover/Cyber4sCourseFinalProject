@@ -1,5 +1,6 @@
 // import libraries
 import { useEffect, useState, useRef } from 'react'
+import { useHistory } from 'react-router-dom';
 
 // import functions
 import { getAllUsers, filterSearchedList } from './fuctions';
@@ -8,9 +9,9 @@ import { getAllUsers, filterSearchedList } from './fuctions';
 import { Iuser } from './interfaces'
 
 const SearchUser: React.FC = () => {
-  const allUsersRef = useRef();
+  const allUsersRef = useRef<Iuser[]>();
   const [allUsers, setAllUsers] = useState<Iuser[]>();
-
+  const history = useHistory();
 
   useEffect(() => {
     getAllUsers()
@@ -38,7 +39,7 @@ const SearchUser: React.FC = () => {
         <ul>
             {
             allUsers.map((user: any) => {
-              return (<li>{user.username}</li>);
+              return (<li onClick={() => history.push(`/profile?username=${user.username}`)}>{user.username}</li>);
             })
           }
         </ul>

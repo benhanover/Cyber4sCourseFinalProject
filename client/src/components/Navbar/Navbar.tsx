@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom'
 
 // import components
 import SearchUser from '../SearchUser/SearchUser';
+import LogoutButton from '../Common/LogoutButton/LougoutButton'
 
 const Navbar: React.FC = () => {
   return (
     <nav>
-      <Link to='/profile'>Profile</Link>
+      <Link to='/my-profile'>Profile</Link>
       <Link to='/lobby'>Lobby</Link>
       <SearchUser />
+      <LogoutButton />
     </nav>
   )
 }

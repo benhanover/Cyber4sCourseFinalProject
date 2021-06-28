@@ -212,3 +212,13 @@ export const getUsers = async () => {
     console.log(e);
   }
 }
+
+/*---------------------------------------------------------------------------------------------------------- */
+// used in userController getUserProfile | get spesific user from the DB 
+export const getUser = async (username: any) => {
+  try {
+    return User.findOne({ username });
+  } catch(e) {
+    console.log(e);
+  }
+}

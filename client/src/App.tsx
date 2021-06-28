@@ -8,6 +8,7 @@ import Register from './components/Register/Register';
 import Lobby from './components/Lobby/Lobby';
 import Profile from './components/Profile/Profile';
 import Navbar from './components/Navbar/Navbar';
+import OtherUserProfile from './components/OtherUserProfile/OtherUserProfile';
 
 // redux shit
 import { bindActionCreators } from 'redux';
@@ -50,7 +51,8 @@ const App: React.FunctionComponent<{}> = () => {
         <Navbar />
         <Switch>
           <Route path="/lobby" component={Lobby} />
-          <Route path="/profile" component={Profile} />
+          <Route path="/my-profile" component={Profile} />
+          <Route path="/profile" component={OtherUserProfile} />
           <Route path="*">
             <Redirect to="/lobby" />
           </Route>
