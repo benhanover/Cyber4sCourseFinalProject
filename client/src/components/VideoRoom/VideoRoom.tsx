@@ -33,32 +33,38 @@ function VideoRoom() {
       .catch((e) => {
         console.log("could not get room in VideoRoom Component", e); ///add reaction
       });
-      getUserMedia().then((media) => {
-          setMyStream(media)
-        // videos.push(media);
-        // setVideos([...videos]);
-      }).catch(err => console.log("thats why: ", err)
-      )
+      
   }, []);
  
     useEffect(() => {
      console.log("videos changed:", videos.length, videos);
      
     }, [videos])
+    // useEffect(() => {
+    //  console.log("videos changed:", videos.length, videos);
+     
+    // }, [room])
   return (
     <div>
       <h1>videoRoom</h1>
           {videos?.map((videoStream: any, i: number) => {
               //   if(!myStream) return null;
-              return <UserVideo key={i} stream={videoStream} />
+              return <UserVideo key={i} muted={false} stream={videoStream} />
           })}
       
           {myStream &&
-              <UserVideo stream={myStream} />}
+              <UserVideo  muted={true} stream={myStream} />}
     </div>
   );
 
-    function createConnection(room: any) {
+    async function createConnection(room: any) {
+        const myMedia = await getUserMedia()
+        if (!myMedia) {
+            console.log("No media... ")
+        }
+            setMyStream(myMedia)
+          // videos.push(media);
+          // setVideos([...videos]);
         //creating new peer
         const mypeer = new Peer();
         //getting peer id
@@ -85,9 +91,9 @@ function VideoRoom() {
            
            ///peer handler for receiving stream
             mypeer.on("call", (call) => {
-                console.log("i received a call yeeaaa!!!", myStream);
+                console.log("i received a call yeeaaa!!!", myMedia);
                 // if (media) {
-                call.answer(myStream);
+                call.answer(myMedia);
                 // }
                 call.on("stream", (remoteStream) => {
                     console.log("mypeer call listener");
@@ -96,29 +102,31 @@ function VideoRoom() {
                 });
             });
 
-          //create peer hendlers
-          mypeer.on("connection", (conn) => {
-            conn.on("data", function (data) {
-                console.log("received message from peer connection:", data);
-            });
-        });
+        //   //create peer hendlers
+        //   mypeer.on("connection", (conn) => {
+        //     conn.on("data", function (data) {
+        //         console.log("received message from peer connection:", data);
+        //     });
+        // });
 
-        //calling all parrticipents
-        room.participants?.forEach((roomMate: any) => {
-            console.log(roomMate);
-            const connection = mypeer.connect(roomMate);
-            connection.on("open", () => {
-                console.log("connecting to", roomMate);
-                connection.send("Hey, we've just connected");
-            });
-        });
+        // //calling all parrticipents
+        // room.participants?.forEach((roomMate: any) => {
+        //     console.log(roomMate);
+        //     const connection = mypeer.connect(roomMate);
+        //     connection.on("open", () => {
+        //         console.log("connecting to", roomMate);
+        //         connection.send("Hey, we've just connected");
+        //     });
+        // });
             
             if(!room.participants)return
             //calling others
             room.participants?.forEach((participent: string) => {
-                const call = mypeer.call(participent, myStream);
+                const call = mypeer.call(participent, myMedia);
+                console.log("calling participant:", participent, "with stream:", myMedia);
+                
                 if (!call) {
-                    console.log("no call created, participant:", participent, "myStream:", myStream);
+                    console.log("no call created, participant:", participent, "myMedia:", myMedia);
                     return;
                 }
                 call.on("error", (err) => {
