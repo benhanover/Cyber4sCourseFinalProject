@@ -2,10 +2,10 @@
 import React, {  FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector,  } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 // import types
 import { ImessageBox, Iroom } from './interfaces';
-// import components
-import LogoutButton from '../Common/LogoutButton/LougoutButton';
+
 // import redux-states
 import { wsActionCreator, roomsActionCreator, State} from '../../state/index';
 import NewRoomForm from './NewRoomForm/NewRoomForm';
@@ -13,7 +13,6 @@ import Room from './Room/Room';
 import { ReactElement } from 'react';
 
 /*================================================================================================*/
-
 
 //  creates a WebSocket connection with the server, display all rooms through the WebSocket.
 const Lobby: React.FC = () => {
@@ -28,7 +27,6 @@ const Lobby: React.FC = () => {
     const newWS = new WebSocket('ws://localhost:4000');
     newWS.onopen = () => {
       console.log("connected to server");
-
     }
     
     // message handler
@@ -77,7 +75,6 @@ const Lobby: React.FC = () => {
 
 return (
   <div>
-    <LogoutButton />
     {rooms?.map((room: Iroom | null, i: number) => {
       if (!room) return;
       return (

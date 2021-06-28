@@ -1,6 +1,6 @@
 import { Router } from 'express';
 // prettier-ignore
-import { login, register, logout, newToken, returnValidation } from '../controllers/userController';
+import { login, register, logout, newToken, returnValidation, update, getAllUsers, getUserProfile } from '../controllers/userController';
 
 import { accessTokenValidator } from '../middlewares/index';
 
@@ -11,5 +11,9 @@ users.post('/login', login);
 users.delete('/logout', accessTokenValidator, logout);
 users.post('/register', register);
 users.get('/refreshToken/', newToken);
-users.get('/validator', accessTokenValidator, returnValidation)
+users.get('/validator', accessTokenValidator, returnValidation);
+users.put('/update', accessTokenValidator, update);
+users.get('/get-all', accessTokenValidator, getAllUsers);
+users.get('/profile', accessTokenValidator, getUserProfile)
+
 export default users;
