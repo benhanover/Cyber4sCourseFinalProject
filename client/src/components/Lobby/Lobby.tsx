@@ -2,10 +2,13 @@
 import React, {  FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector,  } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 // import types
 import { ImessageBox, Iroom } from './interfaces';
+
 // import components
 import LogoutButton from '../Common/LogoutButton/LougoutButton';
+
 // import redux-states
 import { wsActionCreator, roomsActionCreator, State} from '../../state/index';
 import NewRoomForm from './NewRoomForm/NewRoomForm';
@@ -27,7 +30,6 @@ const Lobby: React.FC = () => {
     const newWS = new WebSocket('ws://localhost:4000');
     newWS.onopen = () => {
       console.log("connected to server");
-
     }
     
     // message handler

@@ -20,7 +20,7 @@ if (!accessTokenKey) {
 }
 
 // Checks AccessToken Validity
-export const accessTokenValidator = async (req: Request, res: Response, next: NextFunction): Promise<NextFunction | void> => {
+export const accessTokenValidator = async (req: Request, res: Response, next: NextFunction): Promise<NextFunction | void> => {  
   const accessToken: string | undefined = req.headers['authorization'];
   if (!accessToken) {
     console.log(errorEnums.NO_TOKEN);

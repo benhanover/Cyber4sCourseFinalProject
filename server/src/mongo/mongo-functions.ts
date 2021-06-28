@@ -185,6 +185,30 @@ export const isRefreshSaved = async (refreshToken: string):Promise<Boolean> => {
 
 /*---------------------------------------------------------------------------------------------------------- */
 //  used in: middlewares/index | checks if accessToken exists in db 
-export const isAccessSaved = async (accessToken: string):Promise<Boolean>=> {
+export const isAccessSaved = async (accessToken: string):Promise<Boolean> => {
   return Boolean(await AccessToken.findOne({ accessToken }));
 };
+
+/*---------------------------------------------------------------------------------------------------------- */
+// used in: userController update | change field in the profile
+export const updateUserByField = async (email: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
+  try {
+    const user = await User.findOne({email: email});
+    // const user: Iuser = await User.findOne({email: email});
+    user.profile[fieldToUpdate] = contentOfTheUpdate;
+    await user.save();
+    return user;
+  } catch(e) {
+    console.log(e);
+  }
+}
+
+/*---------------------------------------------------------------------------------------------------------- */
+// used in userController getAllUsers | get all users from the database
+export const getUsers = async () => {
+  try {
+    return await User.find();
+  } catch(e) {
+    console.log(e);
+  }
+}
