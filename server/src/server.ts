@@ -94,6 +94,10 @@ wsServer.on("connection", async (clientSocket: any) => {
         });
         //log the received message and send it back to the client
         break;
+        case "leave room":
+        //remove the participent from room db
+
+        break;
       case "join-room":
         console.log(
           `${messageData.message.username} joined to room ${messageData.message.roomId} using the new peer: ${messageData.message.peerId}`

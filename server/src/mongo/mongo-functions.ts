@@ -245,9 +245,9 @@ export const isAccessSaved = async (accessToken: string): Promise<Boolean> => {
   return Boolean(await AccessToken.findOne({ accessToken }));
 };
 /*---------------------------------------------------------------------------------------------------------- */
-// export const appendPartecipentToRoom =(roomId , participent )=>{
+// export const removePartecipentfromRoom =(roomId , participent )=>{
 // Room.updateOne(
 //   {_id:roomId}
-//   {$push:{participent}}
+//   {$pull:{participants: participent }}
 // )
 // }

@@ -4,7 +4,7 @@ interface Ivideo{
     stream: any;
     muted: boolean;
 }
-export const UserVideo: FC<Ivideo> = ({ stream, muted }) => {
+export const UserVideo: FC<Ivideo> = ({ stream, muted = false}) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     useEffect(() => {
         if (!videoRef.current) {
@@ -15,9 +15,8 @@ export const UserVideo: FC<Ivideo> = ({ stream, muted }) => {
     }, [])
     return (
         <>
-        <video ref={videoRef} autoPlay src={stream}></video>
-            <audio ref={videoRef} muted={muted} autoPlay></audio>
-            </>
+            <video ref={videoRef} muted={muted} autoPlay ></video>
+        </>
     )
 }
 

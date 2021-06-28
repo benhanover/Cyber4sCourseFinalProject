@@ -11,39 +11,23 @@ import UserVideo from "./UserVideo/UserVideo";
 
 function VideoRoom() {
   const { serverSocket, user } = useSelector((state: State) => state.ws);
-  const flagRef = useRef(false);
   const [peerState, setPeerState] = useState<Peer>();
   const dispatch = useDispatch();
   const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
   const location = useLocation();
-  const [room, setRoom] = useState<Iroom | undefined>();
-  const myVidRef = useRef<HTMLVideoElement | null>(null);
   const [videos, setVideos] = useState<any>([]);
   const [myStream , setMyStream] = useState<any>();
   useEffect(() => {
     const roomId = location.search.slice(8);
     Network("GET", `http://192.168.1.111:4000/room/${roomId}`)
       .then((roomFromDb) => {
-        setRoom(roomFromDb);
-        console.log(roomFromDb);
-
         createConnection(roomFromDb);
-       
       })
       .catch((e) => {
         console.log("could not get room in VideoRoom Component", e); ///add reaction
       });
-      
   }, []);
  
-    useEffect(() => {
-     console.log("videos changed:", videos.length, videos);
-     
-    }, [videos])
-    // useEffect(() => {
-    //  console.log("videos changed:", videos.length, videos);
-     
-    // }, [room])
   return (
     <div>
       <h1>videoRoom</h1>
@@ -62,20 +46,17 @@ function VideoRoom() {
         if (!myMedia) {
             console.log("No media... ")
         }
-            setMyStream(myMedia)
-          // videos.push(media);
-          // setVideos([...videos]);
+        setMyStream(myMedia)
+        
         //creating new peer
         const mypeer = new Peer();
+
         //getting peer id
-        let peerId;
+        let peerId: any;
         mypeer.on("open", async (id) => {
-            console.log("My peer ID is: " + id);
             user.peerId = id;
             peerId = id;
             setUser(user);
-
-            console.log("the user before sending it to ws server", peerId);
 
             serverSocket.send(
                 JSON.stringify({
@@ -91,16 +72,54 @@ function VideoRoom() {
            
            ///peer handler for receiving stream
             mypeer.on("call", (call) => {
-                console.log("i received a call yeeaaa!!!", myMedia);
-                // if (media) {
+                if (myMedia) {
+                    console.log("dont have myMedia:", myMedia);
+                    
                 call.answer(myMedia);
-                // }
+                }
                 call.on("stream", (remoteStream) => {
-                    console.log("mypeer call listener");
-                    videos.push(remoteStream);
-                      setVideos([...videos]);
+                    if (!videos.some((stream: any) => stream === remoteStream)) {
+                        videos.push(remoteStream);
+                        setVideos([...videos]);
+                    }
                 });
             });
+
+        
+            
+            if(!room.participants)return
+            //calling others
+            // console.log(room.participants, "all participents");
+            
+            room.participants?.forEach((participent: string) => {
+                // console.log("peerId", peerId);
+                
+                if (participent === peerId) return;
+                const call = mypeer.call(participent, myMedia);
+                if (!call) {
+                     console.log("no call created, participant:", participent, "myMedia:", myMedia);
+                    return;
+                }
+                call.on("error", (err) => {
+                    console.log("error in the call", err);
+                });
+                call.on("stream", (remoteStream: any) => {
+                    // console.log("setting on the video");
+                    // const stream = new MediaStream();
+                    // stream.addTrack(remoteStream);
+                    //setVideos(true);
+                    const isStreamExist = videos.some((stream: any) => stream === remoteStream);
+                    console.log("isStreamExist", isStreamExist, "videos:", videos[0]);
+                    
+                    if (!isStreamExist) {
+                        videos.push(remoteStream);
+                        setVideos([...videos]);
+                    }
+                });
+            });
+            
+        //  DataConnection
+        // ===============
 
         //   //create peer hendlers
         //   mypeer.on("connection", (conn) => {
@@ -118,30 +137,6 @@ function VideoRoom() {
         //         connection.send("Hey, we've just connected");
         //     });
         // });
-            
-            if(!room.participants)return
-            //calling others
-            room.participants?.forEach((participent: string) => {
-                const call = mypeer.call(participent, myMedia);
-                console.log("calling participant:", participent, "with stream:", myMedia);
-                
-                if (!call) {
-                    console.log("no call created, participant:", participent, "myMedia:", myMedia);
-                    return;
-                }
-                call.on("error", (err) => {
-                    console.log("error in the call", err);
-                });
-                call.on("stream", (remoteStream: any) => {
-                    console.log("setting on the video");
-                    // const stream = new MediaStream();
-                    // stream.addTrack(remoteStream);
-                    //setVideos(true);
-                    videos.push(remoteStream);
-                    setVideos([...videos]);
-                });
-            });
-
             
         });
         setPeerState(mypeer);
