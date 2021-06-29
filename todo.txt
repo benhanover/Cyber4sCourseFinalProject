@@ -19,3 +19,8 @@ TODO: on ws connection: create a {socketId, socket} and push to db
 9. joined participants somehow send stream twice
 10. when fail to add new room should not get the user inside the videoRoom
 11. BIG-ISSUE: when having refresh token and accessToken expired the server creates a new accessToken even if the refreshToken does not exist in db.
+
+
+1. create a user state when logged or register
+2. add participant and host properties on the room object,that contains socket id & user id
+3. otherUser's profile doesnt change on the second click.

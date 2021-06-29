@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 // import types
 import { ImessageBox, Iroom } from "./interfaces";
-// import components
-import LogoutButton from "../Common/LogoutButton/LougoutButton";
 // import redux-states
 import { wsActionCreator, roomsActionCreator, State } from "../../state/index";
 import NewRoomForm from "./NewRoomForm/NewRoomForm";
@@ -78,19 +76,21 @@ const Lobby: React.FC = () => {
     }
   }
 
-  return (
-    <div>
-      <LogoutButton />
-      {rooms?.map((room: Iroom | null, i: number) => {
-        if (!room) return null;
-        return <Room key={i} room={room} chosen={false} />;
-      })}
-      {chosenRoomDisplay(chosenRoom)}
-      <NewRoomForm />
-    </div>
-  );
-
-  function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null {
+return (
+  <div>
+    {rooms?.map((room: Iroom | null, i: number) => {
+      if (!room) return;
+      return (
+        <Room key={i} room={ room } chosen={false} />
+        
+        );
+    })}
+    {chosenRoomDisplay(chosenRoom)}
+    <NewRoomForm />
+  </div>
+); 
+  
+  function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null{
     if (chosenRoom === null) return null;
     const roomChosed: Iroom = chosenRoom;
     return <Room room={roomChosed} chosen={true} />;

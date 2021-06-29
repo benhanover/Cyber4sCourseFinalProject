@@ -10,7 +10,7 @@ require("dotenv").config();
 import { beforeAll } from "../types/index";
 
 // Tests time configuration - for each 'describe'
-jest.setTimeout(15000);
+jest.setTimeout(5000);
 
 describe("Authentication", () => {
   //  test's global vars

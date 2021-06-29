@@ -278,3 +278,37 @@ console.log(participant);
       return false;
   })
 }
+
+/*---------------------------------------------------------------------------------------------------------- */
+// used in: userController update | change field in the profile
+export const updateUserByField = async (email: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
+  try {
+    const user = await User.findOne({email: email});
+    // const user: Iuser = await User.findOne({email: email});
+    user.profile[fieldToUpdate] = contentOfTheUpdate;
+    await user.save();
+    return user;
+  } catch(e) {
+    console.log(e);
+  }
+}
+
+/*---------------------------------------------------------------------------------------------------------- */
+// used in userController getAllUsers | get all users from the database
+export const getUsers = async () => {
+  try {
+    return await User.find();
+  } catch(e) {
+    console.log(e);
+  }
+}
+
+/*---------------------------------------------------------------------------------------------------------- */
+// used in userController getUserProfile | get spesific user from the DB 
+export const getUser = async (username: any) => {
+  try {
+    return User.findOne({ username });
+  } catch(e) {
+    console.log(e);
+  }
+}

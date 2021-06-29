@@ -25,29 +25,27 @@ const Register: React.FC = () => {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
-  const profileImageRef = useRef<HTMLInputElement | null>(null);
-  const addressRef = useRef<HTMLInputElement | null>(null);
-  const statusRef = useRef<HTMLTextAreaElement | null>(null);
-  const aboutRef = useRef<HTMLTextAreaElement | null>(null);
-  const intrestsRef = useRef<HTMLTextAreaElement | null>(null);
-  const hobbysRef = useRef<HTMLTextAreaElement | null>(null);
-  const relationshipStatusRef = useRef<HTMLSelectElement | null>(null);
+  // const profileImageRef = useRef<HTMLInputElement | null>(null);
+  // const addressRef = useRef<HTMLInputElement | null>(null);
+  // const statusRef = useRef<HTMLTextAreaElement | null>(null);
+  // const aboutRef = useRef<HTMLTextAreaElement | null>(null);
+  // const intrestsRef = useRef<HTMLTextAreaElement | null>(null);
+  // const hobbysRef = useRef<HTMLTextAreaElement | null>(null);
+  // const relationshipStatusRef = useRef<HTMLSelectElement | null>(null);
 
 
 
-  const goToLogin = () => {
-    history.push('/');
-  }
   return (
     <form onSubmit={handleSubmit}>
-      <button className='login-button' onClick={goToLogin}>Login</button>
+      <button className='login-button' onClick={() => history.push('/')}>Login</button>
       <input ref={usernameRef} placeholder="Username" />
       <input ref={nameRef}  placeholder="First Name"/>
       <input ref={lastNameRef} placeholder="Last Name"/>
       <input type='date' ref={dateRef} placeholder="BirthDate"/>
       <input type='email' ref={emailRef} placeholder="Email"/>
       <input type='text' ref={passwordRef} placeholder="Password" />
-      <br />
+      <input type='submit' />
+      {/* <br />
       <br />
       <br />
       <input type='file' ref={profileImageRef} accept="image/*" />
@@ -64,13 +62,10 @@ const Register: React.FC = () => {
       <h4>Best hours to catch me inside?</h4>
       <label>08:00-16:00</label>
         <input type='checkbox' value='08:00-16:00' id='morning' />
-      <label>16:00-00:00</label>
+        <label>16:00-00:00</label>
         <input type='checkbox' value='16:00-00:00' id='evening' />
       <label>00:00-08:00</label>
-        <input type='checkbox' value='00:00-08:00' id='night' />
-        
-
-      <input type='submit' />
+        <input type='checkbox' value='00:00-08:00' id='night' /> */}
     </form>
   );
 

@@ -68,7 +68,7 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
   function goToRoom(roomId: string | undefined) {
     if (!roomId) return;
     // console.log(roomId);
-    history.push("/rooms?roomId=" + roomId);
+    history.push("/room?roomId=" + roomId);
   }
 };
 

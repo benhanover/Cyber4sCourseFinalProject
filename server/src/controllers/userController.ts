@@ -8,7 +8,7 @@ import { Iuser, IreturnInfo, Itokens, Umodels, UgenerateTokens, Urefresh } from 
 import { errorEnums, logsEnums } from '../enums/index';
 
 // import mongo-functions
-import { canRegister, registerUser, findDocument, saveRefreshToken, saveAccessToken, removeRefreshToken, removeAccessToken, isRefreshSaved } from '../mongo/mongo-functions';
+import { canRegister, registerUser, findDocument, saveRefreshToken, saveAccessToken, removeRefreshToken, removeAccessToken, isRefreshSaved, updateUserByField, getUsers, getUser } from '../mongo/mongo-functions';
 
 // import assistance functions
 import { generateTokens } from '../utils/functions';
@@ -26,6 +26,8 @@ if(!refreshTokenKey || !accessTokenKey){
 export const register = async (req: Request, res: Response) => {
   console.log("Trying to Register...");
   const user: Iuser = req.body;
+  
+  
   const registrationAvailability: IreturnInfo = await canRegister(user.email, user.username);
   if (!registrationAvailability.return) {
     console.log(errorEnums.REGISTER_FAILED + registrationAvailability.message);
@@ -157,6 +159,7 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
       firstName: user.firstName,
       password: user.password,
       birthDate: user.birthDate,
+
     };
 
     const accessToken: string = jwt.sign(userAssignedToToken, accessTokenKey, {
@@ -175,11 +178,46 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
 
 /*---------------------------------------------------------------------------------------------------------- */
 
-export const returnValidation = ((req: Request, res: Response) => {
-  const user = req.body.user;
-  const { _id, username, password, email, firstName,lastName, birthDate } = user;
-  const userToSend = { _id, username, password, email, firstName,lastName, birthDate }
+export const returnValidation = (async (req: Request, res: Response): Promise<void> => {
+  console.log("user in returnvalidation", req.body.user);
+  
+  const { username: oldUserName } = req.body.user;
+  const user = await findDocument('User', 'username', oldUserName);
+  if(!('username' in user)) return console.log('userController func returnValidator');
+  const { _id, username, password, email, firstName,lastName, birthDate, profile } = user;
+  const userToSend = { _id, username, password, email, firstName,lastName, birthDate, profile }
+  console.log("userToSend", userToSend);
   userToSend.password = "";
-  return res.status(200).json({ user: userToSend});
+  res.status(200).json({ user: userToSend});
+  return 
   //return res.status(200).end();
 }) 
+
+/*---------------------------------------------------------------------------------------------------------- */
+
+export const update = (async (req: Request, res: Response): Promise<void> => {
+  const { email }: { email:string} = req.body.user;
+  const { field, update }: { field: string, update: unknown } = req.body;
+  const updatedUser = await updateUserByField(email, field, update);
+  res.status(200).send(updatedUser);
+  return 
+});
+
+/*---------------------------------------------------------------------------------------------------------- */
+
+export const getAllUsers = (async (req: Request, res: Response): Promise<void> => {
+  const users = await getUsers();
+  res.status(200).send(users);
+  return
+});
+
+/*---------------------------------------------------------------------------------------------------------- */
+
+export const getUserProfile = async (req: Request, res: Response):Promise<void> => {
+  // const { username }: { username: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] | undefined } = req.query
+  const { username } = req.query
+  const user = await getUser(username);
+  user.password = 'Not Today :)'
+  res.status(200).send(user);
+  return
+}
