@@ -4,11 +4,11 @@ interface Ivideo{
     stream: any;
     muted: boolean;
 }
-export const UserVideo: FC<Ivideo> = ({ stream, muted = false}) => {
+export const UserVideo: FC<Ivideo> = ({ stream, muted}) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     useEffect(() => {
-        if (!videoRef.current) {
-            console.log("no videoRef.current");
+        if (!videoRef.current) {  //typescript
+            console.log("no videoRef");
             return;
         }
        videoRef.current.srcObject = stream

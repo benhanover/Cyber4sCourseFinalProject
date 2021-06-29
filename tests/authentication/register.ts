@@ -44,7 +44,7 @@ export const Register = (collections: Promise<beforeAll>): void => describe('Reg
   it('Response should have expected stucture', async (): Promise<void> => {
     const rawResponse: any = new Promise((resolve) => {
       page.on('response', async (response) => {
-        if(await response.url() === 'http://localhost:4000/user/register'
+        if(await response.url() === 'http://192.168.1.111:4000/user/register'
         && await response.status() === 200){
             resolve(await response.json());
         } 

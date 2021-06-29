@@ -33,7 +33,7 @@ export const FailRegister = ( collections: Promise<beforeAll> ): void => describ
     const testResponse1: any = new Promise((resolve) => {
       page.on('response', async (response) => {
         
-        if(await response.url() === 'http://localhost:4000/user/register'
+        if(await response.url() === 'http://192.168.1.111:4000/user/register'
         && await response.status() === 409
         && (await response.json()).message === errorEnums.REGISTER_FAILED + errorEnums.USERNAME_TAKEN) {
           resolve(true);
@@ -56,7 +56,7 @@ export const FailRegister = ( collections: Promise<beforeAll> ): void => describ
 
     const testResponse2: any = new Promise((resolve) => {
       page.on('response', async (response) => {
-        if(await response.url() === 'http://localhost:4000/user/register'
+        if(await response.url() === 'http://192.168.1.111:4000/user/register'
         && await response.status() === 409
         && (await response.json()).message === errorEnums.REGISTER_FAILED + errorEnums.EMAIL_TAKEN) {
             resolve(true);

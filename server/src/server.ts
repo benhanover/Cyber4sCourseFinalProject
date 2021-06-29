@@ -50,49 +50,34 @@ wsServer.on("connection", async (clientSocket: any) => {
 
   const rooms = await getRooms();
   clientSocket.send(JSON.stringify({ type: "rooms", message: rooms }));
-  // try {
-  //   clientSocket.send(
-  //     JSON.stringify({ type: "socket", message: clientSocket })
-  //   );
-  // } catch (e) {
-  //   console.log("Json err:", e);
-  // }
-
+ 
   //cadding event listeners
   clientSocket.on("message", async (messageBoxEvent: any) => {
     console.log("received:", messageBoxEvent);
-    // console.log(messageBoxEvent);
-    // if (!messageBoxEvent.data) {
+    
     const messageData: ImessageBox = JSON.parse(messageBoxEvent);
-    // }
     switch (messageData.type) {
       case "creating new room":
         if (
           typeof messageData.message === "string" ||
           Array.isArray(messageData.message)
         )
-          return; ///???
-        saveRoom({ ...messageData.message });
-        wsServer.clients.forEach((client) => {
-          client.send(
-            JSON.stringify({
-              type: "new room was created",
-              message: messageData.message,
-            })
-          );
-        });
+          return; 
+        saveRoom(messageData.message);
+        wsServer.emit('populate new room', messageData.message)
         console.log("creating new room");
-        break;
+      break;
       case "lock room":
         console.log("in the lock room!!");
-
-        break;
-      case "delete room":
-        wsServer.clients.forEach((client) => {
-          client.send(
-            JSON.stringify({ type: "room deleted", message: messageData })
-          );
-        });
+      break;
+      case "delete room"://havent been tested 
+        wsServer.emit('delete room for all', messageData.message)
+          
+        // wsServer.clients.forEach((client) => {
+        //   client.send(
+        //     JSON.stringify({ type: "room deleted", message: messageData })
+        //   );
+        // });
         //log the received message and send it back to the client
         break;
         case "leave room":
@@ -115,18 +100,8 @@ wsServer.on("connection", async (clientSocket: any) => {
                 
               })
               
-            }
-        const newRooms = await getRooms();
-        wsServer.clients.forEach((client) => {
-        console.log("1each");
-
-          client.send(
-          JSON.stringify({
-            type: "rooms",
-            message: newRooms,
-          })
-        );
-      });
+        }
+        wsServer.emit('send rooms to all', messageData.message)
         break;
       case "join room":
         console.log(
@@ -143,19 +118,7 @@ wsServer.on("connection", async (clientSocket: any) => {
         ///update everyone
 
         console.log("after if there are participent");
-
-        const rooms = await getRooms();
-        wsServer.clients.forEach((client) => {
-          console.log("1each");
-
-          client.send(
-            JSON.stringify({
-              type: "rooms",
-              message: rooms,
-            })
-          );
-        });
-
+        wsServer.emit('send rooms to all', messageData.message)
         break;
       default:
         console.log("in ws default", messageData.type);
@@ -164,6 +127,40 @@ wsServer.on("connection", async (clientSocket: any) => {
     }
   });
 });
+
+//wsServer event listeners
+/*-------------------------------------------------------------------------------------------------------------------------------*/
+wsServer.on("populate new room", (newRoom) => {
+  wsServer.clients.forEach((client) => {
+    client.send(
+      JSON.stringify({
+        type: "new room was created",
+        message: newRoom,
+      })
+    );
+  });
+});
+
+wsServer.on("delete room for all", (room) => {
+  wsServer.clients.forEach((client) => {
+    client.send(
+      JSON.stringify({ type: "room deleted", message: room })
+    );
+  });
+});
+wsServer.on("send rooms to all", async (newRoom) => {
+  const rooms = await getRooms();
+        wsServer.clients.forEach((client) => {
+          client.send(
+          JSON.stringify({
+            type: "rooms",
+            message: rooms,
+          })
+        );
+      });
+});
+
+
 wsServer.on("close", () => {
   "connection closed";
 });

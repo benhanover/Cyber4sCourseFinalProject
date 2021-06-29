@@ -50,7 +50,7 @@ function VideoRoom() {
     
   return (
     <div>
-          <h1>videoRoom</h1>
+          <h1>{room?.title}</h1>
           <button onClick={leaveRoom}>Leave</button>
           {videos?.map((videoStream: any, i: number) => {
               //   if(!myStream) return null;
@@ -65,7 +65,7 @@ function VideoRoom() {
     async function createConnection(room: any) {
         const myMedia = await getUserMedia()
         if (!myMedia) {
-            console.log("No media... ")
+            console.log("No media... ");
         }
         setMyStream(myMedia)
         
@@ -76,15 +76,15 @@ function VideoRoom() {
         let peerId: any;
         mypeer.on("open", async (id) => {
             user.peerId = id;
+            setUser({ ...user });   // if using should make sure it is updated in db.
             peerId = id;
-            setPeerId(peerId)
-            setUser(user);
+            setPeerId(peerId);
 
             serverSocket.send(
                 JSON.stringify({
                     type: "join room",
                     message: {
-                        participant: { peerId: peerId, streamId: myMedia.id, username: user.username},
+                        participant: { peerId: peerId, streamId: myMedia.id, username: user.username}, // username will be changed to profile.
                         roomId: room._id,
                         username: user.username,
                     },
@@ -94,15 +94,15 @@ function VideoRoom() {
            
            ///peer handler for receiving stream
             mypeer.on("call", (call) => {
-                if (myMedia) {
-                call.answer(myMedia);
-                }
                 call.on("stream", (remoteStream) => {
                     if (!videos.some((stream: any) => stream === remoteStream)) {
                         videos.push(remoteStream);
                         setVideos([...videos]);
                     }
                 });
+                if (myMedia) {
+                call.answer(myMedia);
+                }
             });
 
         
