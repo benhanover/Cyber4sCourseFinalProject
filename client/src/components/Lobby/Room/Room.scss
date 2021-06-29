@@ -1,0 +1,13 @@
+.room{
+    background-color: rgba($color: #ffffb8, $alpha: 0.6);
+    border-radius: 5px;
+    border:rgba($color: #ffff68, $alpha: 0.6)
+}
+.chosen{
+    position: absolute;
+    top: 10rem;
+    left: 10rem;
+    padding: 5rem;
+    background-color: rgba($color: #ffe1ad, $alpha: 1);
+    border:rgba($color: #fdbc4b, $alpha: 0.6)
+}

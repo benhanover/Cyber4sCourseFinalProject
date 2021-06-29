@@ -38,8 +38,8 @@ const SearchUser: React.FC = () => {
         allUsers&&
         <ul>
             {
-            allUsers.map((user: any) => {
-              return (<li onClick={() => history.push(`/profile?username=${user.username}`)}>{user.username}</li>);
+            allUsers.map((user: any, i: number) => {
+              return (<li key={i} onClick={() => history.push(`/profile?username=${user.username}`)}>{user.username}</li>);
             })
           }
         </ul>

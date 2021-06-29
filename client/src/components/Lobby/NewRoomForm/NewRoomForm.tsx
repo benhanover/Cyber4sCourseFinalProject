@@ -6,7 +6,6 @@ import { Iroom } from '../interfaces';
 
 function NewRoomForm() {
     const { serverSocket, user } = useSelector((state: State) => state.ws)
-    
     //  creates all refs for the form's inputs
     const subjectRef = useRef<HTMLSelectElement | null>(null);
     const subSubjectRef = useRef<HTMLInputElement | null>(null);
@@ -74,7 +73,7 @@ function NewRoomForm() {
             cleanup();
             
             // creates new room in db
-            Network('POST', 'http://localhost:4000/room/new', newRoom)
+            Network('POST', 'http://192.168.1.111:4000/room/new', newRoom)
                 .then((response) => {
                     const newRoom: Iroom = response.newRoom;
                     

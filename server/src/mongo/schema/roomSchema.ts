@@ -1,6 +1,7 @@
-import { Schema } from 'mongoose';
-import { Iroom } from '../../types';
-import participantsSchema from './participantsSchema';
+import { Schema } from "mongoose";
+import { Iroom } from "../../types";
+import participantsSchema from "./participantsSchema";
+
 
 const roomSchema = new Schema<Iroom>({
   host: String,
@@ -8,7 +9,7 @@ const roomSchema = new Schema<Iroom>({
   subSubject: String,
   title: String,
   description: String,
-  participants: [String],
+  participants: [participantsSchema], //////////
   limit: Number,
   isLocked: Boolean,
 });

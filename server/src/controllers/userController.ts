@@ -152,7 +152,6 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
       res.status(403).send(errorEnums.FORBIDDEN);
       return;
     }
-    console.log("user in refresh", user)
     const userAssignedToToken: Iuser = {
       username: user.username,
       email: user.email,

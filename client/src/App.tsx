@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Lobby from './components/Lobby/Lobby';
+import VideoRoom from './components/VideoRoom/VideoRoom';
 import Profile from './components/Profile/Profile';
 import Navbar from './components/Navbar/Navbar';
 import OtherUserProfile from './components/OtherUserProfile/OtherUserProfile';
@@ -26,8 +27,8 @@ const App: React.FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
   const { setUser } = bindActionCreators({...wsActionCreator}, dispatch);
   
-  useEffect(() => {    
-    Network('GET', 'http://localhost:4000/user/validator')
+  useEffect(() => {
+    Network('GET', 'http://192.168.1.111:4000/user/validator')
       .then((res) => {
         if (!res) return;
         setUser(res.user)
@@ -51,6 +52,7 @@ const App: React.FunctionComponent<{}> = () => {
         <Navbar />
         <Switch>
           <Route path="/lobby" component={Lobby} />
+          <Route path="/room" component={VideoRoom} />
           <Route path="/my-profile" component={Profile} />
           <Route path="/profile" component={OtherUserProfile} />
           <Route path="*">
