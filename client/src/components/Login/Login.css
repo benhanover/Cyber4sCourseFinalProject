@@ -1,0 +1,40 @@
+.login-form-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100%;
+}
+
+.login-form-container .login-container {
+  background-color: #c4dfff;
+  border-radius: 20px;
+  height: 40%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  width: 20rem;
+  padding: 3rem;
+}
+
+.register-button {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+.button {
+  padding: 0.5rem;
+}
+/*# sourceMappingURL=Login.css.map */

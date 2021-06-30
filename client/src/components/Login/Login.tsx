@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-
+import './Login.css'
 // redux shit
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -18,11 +18,14 @@ const Login: React.FC = () => {
   const { setUser } = bindActionCreators({...wsActionCreator}, dispatch);
   
   return (
+    <div className="login-form-container">
+
+      <button className='register-button button' onClick={() => history.push('/register')}>Register</button>
     <div className='login-container'>
-      <button className='register-button' onClick={() => history.push('/register')}>Register</button>
       <input ref={emailRef} placeholder="Email"></input>
       <input ref={passwordRef} placeholder="Password"></input>
-      <button className='login-button' onClick={submitLogin}>Login</button>
+      <button className='login-button button' onClick={submitLogin}>Login</button>
+    </div>
     </div>
   );
 

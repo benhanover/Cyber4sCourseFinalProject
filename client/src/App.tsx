@@ -37,7 +37,7 @@ const App: React.FunctionComponent<{}> = () => {
     });
   }, []);
   return (
-    <div>
+    <>
       {!user
       ?
         <Switch>
@@ -63,7 +63,7 @@ const App: React.FunctionComponent<{}> = () => {
           
       }
     
-    </div>
+    </>
   );
 };
 

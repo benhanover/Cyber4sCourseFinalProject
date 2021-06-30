@@ -1,13 +1,78 @@
 .room{
-    background-color: rgba($color: #ffffb8, $alpha: 0.6);
+    position: relative;
+    background-color: rgb(196, 223, 255);
     border-radius: 5px;
-    border:rgba($color: #ffff68, $alpha: 0.6)
+    border:rgba($color: #ffff68, $alpha: 0.6);
+    width: 15rem;
+    margin: 0.3rem;
+    border-radius: 10px;
+    .title{
+        font-weight: bolder;
+        padding: 0.3rem;
+    }
+    .subject{
+        font-size: 0.7rem;
+        color: rgba($color: #000000, $alpha: 0.6);
+    }
+    .description{
+        padding: 1rem;
+    }
+.limit{
+position: absolute;
+top: 0.4rem;
+right: 0.6rem;
+font-size: 0.7rem;
+color: rgba($color: #000000, $alpha: 0.4);
+}
+.isLocked{
+    position: absolute;
+    top: 0.4rem;
+    left: 0.6rem;
+    font-size: 0.7rem;
+    color: rgba($color: #000000, $alpha: 0.4);
+}
+}
+.chosen-background{
+    background-color: rgba($color: #000000, $alpha: 0.4);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
 }
 .chosen{
-    position: absolute;
-    top: 10rem;
-    left: 10rem;
-    padding: 5rem;
-    background-color: rgba($color: #ffe1ad, $alpha: 1);
-    border:rgba($color: #fdbc4b, $alpha: 0.6)
+    // position: absolute;
+    // z-index: 1;
+    // top: 10rem;
+    // left: 10rem;
+    width: 60%;
+    padding: 2rem;
+    background-color: rgba($color: #ffe1ad, $alpha: 0.9);
+    border:rgba($color: #fdbc4b, $alpha: 0.6);
+    .close-chosen-button{
+        position: absolute;
+        top: 0.4rem;
+        right: 0.6rem;
+        font-size: 0.7rem;
+        color: rgba($color: #000000, $alpha: 0.4);
+    }
+    .limit{
+        top: unset;
+        right:unset;
+        position: relative;
+    }
+    .room-participants{
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        border: 1px solid rgba(0, 0, 0, 0.151);
+        
+    }
+    .button {
+        margin-top: 0.8rem;
+        padding: 0.5rem;
+      }
 }

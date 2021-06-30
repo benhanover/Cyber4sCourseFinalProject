@@ -29,24 +29,30 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
   }, []);
   if (chosen) {
     return (
-      <div key={42} className="chosen room">
-        <span key={1} onClick={() => setChosenRoom(null)}>
+      <div className="chosen-background" onClick={(e)=> setChosenRoom(null)}>
+        <div key={42} className="chosen room" onClick={(e) => e.stopPropagation()}>
+
+        <span key={1} className="close-chosen-button" onClick={() => setChosenRoom(null)}>
           X
         </span>
-        <p key={2}>{room.title}</p>
-        <p key={3}>{`${room.subject} > ${room.subSubject}`}</p>
-        <p key={4}>{room.subSubject}</p>
-        <p key={5}>{room.description}</p>
-        <p key={6}>{room.limit}</p>
-        <p key={7}>{room.isLocked ? "Locked" : "opened"}</p>
-        {room.participants
-          ? room.participants.map((profile: any, i: number) => {
-              return <p key={i}>{profile.username}</p>;
-            })
+        <p key={2} className="title">{room.title}</p>
+        <p key={3} className="subject">{`${room.subject} > ${room.subSubject}`}</p>
+        <p key={5} className="description">{room.description}</p>
+          <p key={7} className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
+
+        {room.participants.length > 0
+              ?
+          <div className="room-participants">
+              <p key={6} className="limit">{ room.participants.length}/{room.limit}</p>
+                {room.participants.map((profile: any, i: number) => {
+                  return <p key={i} className="username">{profile.username}</p>;
+                })}
+                </div>
           : null}
-        <button key={9} onClick={() => goToRoom(room._id)}>
+          <button key={9} className="button" onClick={() => goToRoom(room._id)}>
           Join Room
         </button>
+    </div>
       </div>
     );
   }
@@ -57,12 +63,11 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
         chosenRoom !== room ? setChosenRoom(room) : setChosenRoom(null)
       }
     >
-      <p>{room.title}</p>
-      <p>{`${room.subject} > ${room.subSubject}`}</p>
-      <p>{room.subSubject}</p>
-      <p>{room.description}</p>
-      <p>{room.limit}</p>
-      <p>{room.isLocked ? "Locked" : "opened"}</p>
+      <p className="title">{room.title}</p>
+      <p className="subject">{`${room.subject} > ${room.subSubject}`}</p>
+      <p className="description">{room.description}</p>
+      <p className="limit">{ room.participants.length}/{room.limit}</p>
+      <p className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
     </div>
   );
   function goToRoom(roomId: string | undefined) {

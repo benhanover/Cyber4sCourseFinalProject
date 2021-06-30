@@ -1,0 +1,12 @@
+
+.my-profile-container{
+display: flex;
+justify-content: center;
+align-items: center;
+height: 90%;
+    .my-profile{
+        // background-color: rgba(196, 223, 255, 0.5);
+        background-color: rgba($color: rgb(196, 223, 255), $alpha: 0.8);
+        padding: 2rem;
+    }
+}

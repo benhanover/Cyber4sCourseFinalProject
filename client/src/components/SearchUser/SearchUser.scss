@@ -1,0 +1,16 @@
+
+.search-user{
+    margin-right: 1rem;
+
+    position: relative;
+    .results{
+        list-style-type: none;
+        background-color: rgb(255, 255, 255);
+        position: absolute;
+        width: 100%;
+        border: 1px solid black;
+        li{
+            border-top: 1px solid black;
+        }
+    }
+}

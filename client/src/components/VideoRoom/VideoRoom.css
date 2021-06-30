@@ -1,0 +1,28 @@
+.video-room {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  background-color: black;
+  min-height: 90%;
+  overflow: hidden;
+}
+
+.video-room .leave-button {
+  position: fixed;
+  bottom: 0.7rem;
+  left: 0.7rem;
+  padding: 0.5rem;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+/*# sourceMappingURL=VideoRoom.css.map */

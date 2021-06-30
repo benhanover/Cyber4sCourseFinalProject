@@ -8,6 +8,7 @@ import { State, wsActionCreator } from "../../state";
 import { useRef } from "react";
 import { Iroom } from "../Lobby/interfaces";
 import UserVideo from "./UserVideo/UserVideo";
+import './VideoRoom.css';
 
 function VideoRoom() {
   const { serverSocket, user } = useSelector((state: State) => state.ws);
@@ -49,9 +50,9 @@ function VideoRoom() {
     }, [room])
     
   return (
-    <div>
-          <h1>{room?.title}</h1>
-          <button onClick={leaveRoom}>Leave</button>
+    <div className="video-room">
+          {/* <h1>{room?.title}</h1> */}
+          <button className="leave-button" onClick={leaveRoom}>Leave</button>
           {videos?.map((videoStream: any, i: number) => {
               //   if(!myStream) return null;
               return <UserVideo key={i} muted={false} stream={videoStream} />

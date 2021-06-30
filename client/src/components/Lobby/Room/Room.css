@@ -1,15 +1,94 @@
 .room {
-  background-color: rgba(255, 255, 184, 0.6);
+  position: relative;
+  background-color: #c4dfff;
   border-radius: 5px;
   border: rgba(255, 255, 104, 0.6);
+  width: 15rem;
+  margin: 0.3rem;
+  border-radius: 10px;
+}
+
+.room .title {
+  font-weight: bolder;
+  padding: 0.3rem;
+}
+
+.room .subject {
+  font-size: 0.7rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.room .description {
+  padding: 1rem;
+}
+
+.room .limit {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.6rem;
+  font-size: 0.7rem;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.room .isLocked {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.6rem;
+  font-size: 0.7rem;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.chosen-background {
+  background-color: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 .chosen {
-  position: absolute;
-  top: 10rem;
-  left: 10rem;
-  padding: 5rem;
-  background-color: #ffe1ad;
+  width: 60%;
+  padding: 2rem;
+  background-color: rgba(255, 225, 173, 0.9);
   border: rgba(253, 188, 75, 0.6);
+}
+
+.chosen .close-chosen-button {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.6rem;
+  font-size: 0.7rem;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.chosen .limit {
+  top: unset;
+  right: unset;
+  position: relative;
+}
+
+.chosen .room-participants {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  border: 1px solid rgba(0, 0, 0, 0.151);
+}
+
+.chosen .button {
+  margin-top: 0.8rem;
+  padding: 0.5rem;
 }
 /*# sourceMappingURL=Room.css.map */

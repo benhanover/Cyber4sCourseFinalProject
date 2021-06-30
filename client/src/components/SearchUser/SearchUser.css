@@ -1,0 +1,17 @@
+.search-user {
+  margin-right: 1rem;
+  position: relative;
+}
+
+.search-user .results {
+  list-style-type: none;
+  background-color: white;
+  position: absolute;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.search-user .results li {
+  border-top: 1px solid black;
+}
+/*# sourceMappingURL=SearchUser.css.map */

@@ -8,7 +8,7 @@ import { State, wsActionCreator } from '../../state';
 
 // import functions
 import { updateByField } from './functions';
-
+import './Profile.css';
 
 
 const Profile: React.FC = () => {
@@ -42,7 +42,9 @@ const Profile: React.FC = () => {
  
   
   return (
-    <div>
+    <div className="my-profile-container">
+
+    <div className="my-profile">
     <h1>Profile</h1>
     {fieldToUpdate&& 
       <div>
@@ -54,13 +56,13 @@ const Profile: React.FC = () => {
         }}>update</button>
       </div>
     
-    }
+  }
     {/* <label>Profile Image</label>
     {
       img&&
-        <>
-          <img src={img} />
-        </>
+      <>
+      <img src={img} />
+      </>
     }
     <input type='file' accept='image/*' onChange={fileSelectedHandler} /> */}
     <label onClick={() => setFieldToUpdate('about')}>about</label>
@@ -78,6 +80,7 @@ const Profile: React.FC = () => {
     <label onClick={() => setFieldToUpdate('relationship')}>relationship status</label>
     <p>{user.profile.relationship}</p>
   </div>
+    </div>
   );
 }
 

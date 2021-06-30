@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { useDispatch} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useHistory } from 'react-router-dom';
+import './Register.css';
 
 // react shit
 import { wsActionCreator } from '../../state';
@@ -36,15 +37,17 @@ const Register: React.FC = () => {
 
 
   return (
-    <form onSubmit={handleSubmit}>
-      <button className='login-button' onClick={() => history.push('/')}>Login</button>
+    <div className="register-container">
+
+      <button className='login-btn button' onClick={() => history.push('/')}>Login</button>
+    <form className="register-form" onSubmit={handleSubmit}>
       <input ref={usernameRef} placeholder="Username" />
       <input ref={nameRef}  placeholder="First Name"/>
       <input ref={lastNameRef} placeholder="Last Name"/>
       <input type='date' ref={dateRef} placeholder="BirthDate"/>
       <input type='email' ref={emailRef} placeholder="Email"/>
       <input type='text' ref={passwordRef} placeholder="Password" />
-      <input type='submit' />
+      <input type='submit' className="button" value="Register" />
       {/* <br />
       <br />
       <br />
@@ -55,18 +58,19 @@ const Register: React.FC = () => {
       <textarea ref={intrestsRef} placeholder='intrests' />
       <textarea ref={hobbysRef} placeholder='hobbys' />
       <select ref={relationshipStatusRef}>
-        <option value='single'>Single</option>
-        <option value='married'>Married</option>
-        <option value='relationship'>In A Relationship</option>
+      <option value='single'>Single</option>
+      <option value='married'>Married</option>
+      <option value='relationship'>In A Relationship</option>
       </select>
       <h4>Best hours to catch me inside?</h4>
       <label>08:00-16:00</label>
-        <input type='checkbox' value='08:00-16:00' id='morning' />
-        <label>16:00-00:00</label>
-        <input type='checkbox' value='16:00-00:00' id='evening' />
+      <input type='checkbox' value='08:00-16:00' id='morning' />
+      <label>16:00-00:00</label>
+      <input type='checkbox' value='16:00-00:00' id='evening' />
       <label>00:00-08:00</label>
-        <input type='checkbox' value='00:00-08:00' id='night' /> */}
+    <input type='checkbox' value='00:00-08:00' id='night' /> */}
     </form>
+</div>
   );
 
   // functions
