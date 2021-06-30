@@ -1,4 +1,3 @@
-
 export interface Iroom {
   _id?: any;
   host: string;
@@ -47,4 +46,3 @@ export interface Iuser {
   username: string;
   profile?: Iprofile;
 }
-
