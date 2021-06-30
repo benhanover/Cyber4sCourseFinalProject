@@ -8,7 +8,7 @@ import { Iuser, IreturnInfo, Itokens, Umodels, UgenerateTokens, Urefresh } from 
 import { errorEnums, logsEnums } from '../enums/index';
 
 // import mongo-functions
-import { canRegister, registerUser, findDocument, saveRefreshToken, saveAccessToken, removeRefreshToken, removeAccessToken, isRefreshSaved, updateUserProfileByField, getUsers, getUser, updateUserByField } from '../mongo/mongo-functions';
+import { canRegister, registerUser, findDocument, saveRefreshToken, saveAccessToken, removeRefreshToken, removeAccessToken, isRefreshSaved, getUsers, getUser, updateUserByField } from '../mongo/mongo-functions';
 
 // import aws functions
 import { uploadToS3 } from '../aws-sdk/index2';
@@ -199,15 +199,17 @@ export const returnValidation = (async (req: Request, res: Response): Promise<vo
 /*---------------------------------------------------------------------------------------------------------- */
 
 export const updateProfile = (async (req: Request, res: Response): Promise<void> => {    
-    const { email }: { email:string} = req.body.user;
-    const { field, update }: { field: string, update: string} = req.body;
-    const updatedUser = await updateUserProfileByField(email, field, update);
-    if (!updatedUser) {
-      // case blob is to big to handle
-      res.status(418).send("Try smaller image when tea time is over.");
-    } 
-    res.status(200).send(updatedUser);
-    return 
+  const { email }: { email:string} = req.body.user;
+  const { place, field, update }: { place: string, field: string, update: string} = req.body;
+  const updatedUser = await updateUserByField(email, place, field, update);
+      if (!updatedUser) {
+        // case blob is to big to handle
+        res.status(418).send("Try smaller image when tea time is over.");
+      } 
+      res.status(200).send(updatedUser);
+  
+      return 
+    });
 
   // AWS
 
@@ -221,18 +223,7 @@ export const updateProfile = (async (req: Request, res: Response): Promise<void>
   //   res.status(200).send(updatedUser);
   //   return 
   // } else {
-});
 
-/*---------------------------------------------------------------------------------------------------------- */
-
-
-export const updateUser = (async (req: Request, res: Response): Promise<void> => {
-  const { email }: { email:string} = req.body.user;
-  const { field, update }: { field: string, update: string} = req.body;
-  const updatedUser = await updateUserByField(email, field, update);
-    res.status(200).send(updatedUser);
-    return 
-});
 
 
 /*---------------------------------------------------------------------------------------------------------- */
