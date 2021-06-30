@@ -195,7 +195,7 @@ export const returnValidation = (async (req: Request, res: Response): Promise<vo
 
 /*---------------------------------------------------------------------------------------------------------- */
 
-export const update = (async (req: Request, res: Response): Promise<void> => {
+export const updateProfile = (async (req: Request, res: Response): Promise<void> => {
   const { email }: { email:string} = req.body.user;
   const { field, update }: { field: string, update: unknown } = req.body;
   const updatedUser = await updateUserByField(email, field, update);

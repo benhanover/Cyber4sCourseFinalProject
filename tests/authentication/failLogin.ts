@@ -34,7 +34,7 @@ export const FailLogin = (collections: Promise<beforeAll>) => describe("failLogi
       const testResponse1: any = new Promise((resolve) => {
         page.on('response', async (response) => {
           
-          if(await response.url() === 'http://192.168.1.111:4000/user/login'
+          if(await response.url() === 'http://localhost:4000/user/login'
           && await response.status() === 409
           && (await response.json()).message === errorEnums.WRONG_CREDENTIALS) {
             resolve(true);
@@ -62,7 +62,7 @@ export const FailLogin = (collections: Promise<beforeAll>) => describe("failLogi
       const testResponse2: any = new Promise((resolve) => {
           page.on('response', async (response) => {
             
-            if(await response.url() === 'http://192.168.1.111:4000/user/login'
+            if(await response.url() === 'http://localhost:4000/user/login'
             && await response.status() === 409
             && (await response.json()).message === errorEnums.NO_SUCH_USER) {
               resolve(true);

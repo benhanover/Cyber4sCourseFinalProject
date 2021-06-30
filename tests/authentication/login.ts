@@ -34,7 +34,7 @@ export const Login = ( collections: Promise<beforeAll> ): void => describe('Logi
   it('server response should be successful', async ():Promise<void> => {
     const rawResponse: any = new Promise((resolve) => {
       page.on('response', async (response) => {
-        if(await response.url() === 'http://192.168.1.111:4000/user/login'
+        if(await response.url() === 'http://localhost:4000/user/login'
         && await response.status() === 200){
             resolve(await response.json());
         } 

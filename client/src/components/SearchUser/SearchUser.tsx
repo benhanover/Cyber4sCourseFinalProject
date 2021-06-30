@@ -13,6 +13,7 @@ import './SearchUser.css'
 
 const SearchUser: React.FC = () => {
   const allUserRef = useRef<Iuser[]>();
+  const searchRef = useRef<any>();
   const [filteredUsers, setFilteredUsers] = useState<Iuser[]>();
   const history = useHistory();
 
@@ -33,14 +34,26 @@ const SearchUser: React.FC = () => {
   }
 
   return (
-    <div className="search-user">
-      <input onBlur={(e) => { e.target.value = ""; setFilteredUsers([]) }} onChange={(e) => filterTable(e)} placeholder='Search For A User..' />
+    <div className="search-user"
+      // onMouseLeave={() => setTimeout(() => { setFilteredUsers([]) }, 1000)}
+    >
+      <input ref={searchRef}
+      //   onBlur={(e) => {
+      //   e.target.value = ""; setFilteredUsers([])
+      // }} 
+      onChange={(e) => filterTable(e)} placeholder='Search For A User..' />
       {
         filteredUsers &&
         <ul className="results">
             {
             filteredUsers.map((user: any, i: number) => {
-              return (<li key={i} onClick={() => history.push(`/profile?username=${user.username}`)}>{user.username}</li>);
+              return (<li key={i} onClick={() => {
+                console.log('clicked')
+                searchRef.current.value = ""; 
+                setFilteredUsers([]);
+              
+                history.push(`/profile?username=${user.username}`)}
+              }>{user.username}</li>);
             })
           }
         </ul>

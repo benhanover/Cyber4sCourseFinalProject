@@ -8,3 +8,7 @@ export const updateByField  = (field: any, update: any): any => {
   })
   .catch(console.log);
 }
+
+// const fs = require('fs');
+// const readFilePromise = promisify(fs.readFile);
+// const data = await readFilePromise('../assets/images/annonymous.png');

@@ -21,7 +21,7 @@ describe("Authentication", () => {
   const collections: Promise<beforeAll> = new Promise(
     async (resolve, reject) => {
       connection = new MongoClient(
-        `mongodb://192.168.1.111:27017/${process.env.DB}`,
+        `mongodb://localhost:27017/${process.env.DB}`,
         {
           useNewUrlParser: true,
           useUnifiedTopology: true,
@@ -39,7 +39,7 @@ describe("Authentication", () => {
   );
 
   beforeAll(async () => {
-    await page.goto("http://192.168.1.111:3000/register");
+    await page.goto("http://localhost:3000/register");
     
   });
 

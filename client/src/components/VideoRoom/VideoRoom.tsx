@@ -24,7 +24,7 @@ function VideoRoom() {
   const roomId = location.search.slice(8);
   
   useEffect(() => {
-    Network("GET", `http://192.168.1.111:4000/room/${roomId}`)
+    Network("GET", `http://localhost:4000/room/${roomId}`)
       .then((roomFromDb) => {
         setRoom(roomFromDb);
         createConnection(roomFromDb);
@@ -35,7 +35,7 @@ function VideoRoom() {
   }, []);
  
     useEffect(() => {
-      Network("GET", `http://192.168.1.111:4000/room/${roomId}`)
+      Network("GET", `http://localhost:4000/room/${roomId}`)
       .then((roomFromDb) => {
         setRoom(roomFromDb);
       })

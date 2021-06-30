@@ -28,7 +28,7 @@ const App: React.FunctionComponent<{}> = () => {
   const { setUser } = bindActionCreators({...wsActionCreator}, dispatch);
   
   useEffect(() => {
-    Network('GET', 'http://192.168.1.111:4000/user/validator')
+    Network('GET', 'http://localhost:4000/user/validator')
       .then((res) => {
         if (!res) return;
         setUser(res.user)
