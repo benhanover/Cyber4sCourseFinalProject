@@ -282,25 +282,25 @@ console.log(participant);
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in: userController update | change field in the profile
-export const updateUserProfileByField = async (email: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
-  console.log('mongo functions', contentOfTheUpdate);
+export const updateUserByField = async (email: string, place: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
   try {
     const user = await User.findOne({email: email});
-    // const user: Iuser = await User.findOne({email: email});
-    user.profile[fieldToUpdate] = contentOfTheUpdate;
+    switch(place) {
+      case 'user': 
+        user[fieldToUpdate] = contentOfTheUpdate;
+        break;
+      case 'profile':
+        user.profile[fieldToUpdate] = contentOfTheUpdate;
+        break;
+      default: 
+        console.log('mongo-functions updateUserByField default in switch');
+    }
     await user.save();
     return user;
   } catch(e) {
     console.log(e);
     return false;
   }
-}
-
-/*---------------------------------------------------------------------------------------------------------- */
-export const updateUserByField =  async (email: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
-  console.log(email)
-  console.log(fieldToUpdate)
-  console.log(contentOfTheUpdate)
 }
 
 /*---------------------------------------------------------------------------------------------------------- */
