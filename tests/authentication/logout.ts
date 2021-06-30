@@ -36,17 +36,22 @@ export const Logout = (collections: Promise<beforeAll>) =>
 
     it("After logging out server response should be logged out succesfuly", async (): Promise<void> => {
       const rawResponse: any = new Promise((resolve) => {
-        page.on('response', async (response) => {
-          if(await response.url() === 'http://192.168.1.111:4000/user/logout'
-          && await response.status() === 200 && response.ok() === true){
-              resolve(await response.json());
-          } 
+        page.on("response", async (response) => {
+          if (
+            (await response.url()) === "http://localhost:4000/user/logout" &&
+            (await response.status()) === 200 &&
+            response.ok() === true
+          ) {
+            resolve(await response.json());
+          }
           // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
         });
       });
 
-      const logOutButton: ElementHandle<Element> | null = await page.$(".logout-button");
-      if(logOutButton)  await logOutButton.click();
+      const logOutButton: ElementHandle<Element> | null = await page.$(
+        ".logout-button"
+      );
+      if (logOutButton) await logOutButton.click();
       // expect(response.ok()).toBe(true);
       expect((await rawResponse).message).toBe(
         logsEnums.LOGGED_OUT_SUCCESSFULY

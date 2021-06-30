@@ -245,70 +245,70 @@ export const isAccessSaved = async (accessToken: string): Promise<Boolean> => {
   return Boolean(await AccessToken.findOne({ accessToken }));
 };
 /*---------------------------------------------------------------------------------------------------------- */
-export const removePartecipentfromRoom = async (roomId: string , participant: any ): Promise<any> =>{
-//   try {
-//     const removedParticipant = await Room.updateOne(
-//       { _id: roomId },
-//       { $pull: { "participants": participent } },{new:true});
-//     if (removedParticipant.ok) {
-//       console.log("removedParticipant", removedParticipant);
-      
-//       return removedParticipant;
-//     }
-//     return false;
-//     }
-// catch (e) {
-//     console.log(e)
-//     return false
-// }
-console.log(participant);
-
-     return await Room.update(
-        {"_id": roomId},
-       { $pull: { "participants": { "peerId": participant.peerId } } },{new:true}).then((removedParticipant)=>{
-      if (removedParticipant) {
-        console.log("removedParticipant", removedParticipant);
-        
-        return removedParticipant;
-      }
-      
-     } )
-  .catch(e=> {
-      console.log(e)
+export const removePartecipentfromRoom = async (
+  roomId: string,
+  participant: any
+): Promise<any> => {
+  try {
+    const room = await Room.findOne({ _id: roomId });
+    if (!room) {
+      console.log(room, "noooooot roooom");
       return false;
-  })
-}
+    }
+    const modifiedParticipants = room.participants.filter((user: any) => {
+      return user.peerId !== participant.peerId;
+    });
+    room.participants = modifiedParticipants;
+    room
+      .save()
+      .then((result: any) =>
+        console.log("removed participant from db succesfuly", result)
+      )
+      .catch((e: any) => {
+        console.log(" failed to removed participant from db", e);
+        return e;
+      });
+    return modifiedParticipants;
+  } catch (e) {
+    console.log(e, "cuoldnt find room");
+    return e;
+  }
+};
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in: userController update | change field in the profile
-export const updateUserByField = async (email: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
+export const updateUserByField = async (
+  email: string,
+  fieldToUpdate: string,
+  contentOfTheUpdate: unknown
+) => {
   try {
-    const user = await User.findOne({email: email});
+    const user = await User.findOne({ email: email });
     // const user: Iuser = await User.findOne({email: email});
     user.profile[fieldToUpdate] = contentOfTheUpdate;
     await user.save();
     return user;
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
-}
+};
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in userController getAllUsers | get all users from the database
 export const getUsers = async () => {
   try {
     return await User.find();
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
-}
+};
 
 /*---------------------------------------------------------------------------------------------------------- */
-// used in userController getUserProfile | get spesific user from the DB 
+// used in userController getUserProfile | get spesific user from the DB
 export const getUser = async (username: any) => {
   try {
     return User.findOne({ username });
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
-}
+};
