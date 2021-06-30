@@ -1,12 +1,23 @@
 
 .my-profile-container{
-display: flex;
-justify-content: center;
-align-items: center;
-height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
     .my-profile{
         // background-color: rgba(196, 223, 255, 0.5);
         background-color: rgba($color: rgb(196, 223, 255), $alpha: 0.8);
         padding: 2rem;
+        .error {
+            background-color: rgba(228, 69, 69, 0.507)
+        }
+        .new-profile-image{
+            height: 8rem;
+            border-radius: 50%;
+        }
+        .profile-image{
+            height: 4rem;
+            border-radius: 50%;
+        }
     }
 }

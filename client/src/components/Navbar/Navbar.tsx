@@ -5,8 +5,11 @@ import './Navbar.css'
 // import components
 import SearchUser from '../SearchUser/SearchUser';
 import LogoutButton from '../Common/LogoutButton/LougoutButton'
+import { useSelector } from 'react-redux';
+import { State } from '../../state';
 
 const Navbar: React.FC = () => {
+  const {user} = useSelector((state: State )  => state.ws)
   const [profileMenu, setProfileMenu] = useState(false)
   function toggleProfileMenu() {
     if (profileMenu) {
@@ -23,7 +26,7 @@ const Navbar: React.FC = () => {
       <div className="options">
         <SearchUser />
         <div className="profile-menu-container" onMouseLeave={()=>setProfileMenu(false)}>
-          <span className="profile-menu-button" onClick={toggleProfileMenu}>Profile</span>
+          <img className="profile-menu-button" src={user.profile.imageBlob} onClick={toggleProfileMenu}/>
           
 
             {profileMenu &&

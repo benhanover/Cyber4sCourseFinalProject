@@ -9,6 +9,7 @@ import { useRef } from "react";
 import { Iroom } from "../Lobby/interfaces";
 import UserVideo from "./UserVideo/UserVideo";
 import './VideoRoom.css';
+import { Iuser } from "../SearchUser/interfaces";
 
 function VideoRoom() {
   const { serverSocket, user } = useSelector((state: State) => state.ws);
@@ -63,6 +64,18 @@ function VideoRoom() {
     </div>
   );
 
+  function getCleanedUser(user: any) {
+    return {
+      username: user.username,
+      profile: user.profile,
+      firstname: user.firsname,
+      lastname: user.lastname,
+      age: user.birthDate ? (new Date()).getFullYear() - user.birthDate.getFullYear() : 22,
+    }
+    
+  }
+
+
     async function createConnection(room: any) {
         const myMedia = await getUserMedia()
         if (!myMedia) {
@@ -85,7 +98,7 @@ function VideoRoom() {
                 JSON.stringify({
                     type: "join room",
                     message: {
-                        participant: { peerId: peerId, streamId: myMedia.id, username: user.username}, // username will be changed to profile.
+                        participant: { peerId: peerId, streamId: myMedia.id, user: getCleanedUser(user)}, // username will be changed to profile.
                         roomId: room._id,
                         username: user.username,
                     },

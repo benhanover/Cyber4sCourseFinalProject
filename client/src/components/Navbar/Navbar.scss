@@ -10,8 +10,13 @@
     }
     .options{
         display: flex;
+        align-items: center;
+        justify-content: center;
         .profile-menu-button{
+            margin-top: 0.2rem;
+            height: 1.8rem;
             margin-right: 1rem;
+            border-radius: 50%;
             
         }
         .profile-menu-container{

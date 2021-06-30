@@ -1,14 +1,21 @@
 // import network
 import Network from '../../utils/network';
 
-export const updateByField  = (field: any, update: any): any => {  
-  return Network('PUT', 'http://localhost:4000/user/update', {field: field, update: update})
-  .then((response) => {
-    return(response);
-  })
-  .catch(console.log);
-}
+export const updateProfileByField  = (field: any, update: any): any => {  
+  try {
+    return Network('PUT', 'http://localhost:4000/user/update-profile', { field, update })
+  }
+  catch (e) {
+    console.log("saiokdlkdnsgfa");
+    
+    return "Image too big, please try a smaller one.."
+  };
+  }
 
-// const fs = require('fs');
-// const readFilePromise = promisify(fs.readFile);
-// const data = await readFilePromise('../assets/images/annonymous.png');
+export const updateUserByField = (field: any, update: any): any => {
+  try {
+    return Network('PUT', 'http://localhost:4000/user/update-user', {field, update})
+  } catch(e) {
+    console.log(e)
+  }
+}

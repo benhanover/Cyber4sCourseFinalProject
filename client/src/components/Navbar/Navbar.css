@@ -20,10 +20,19 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .navbar .options .profile-menu-button {
+  margin-top: 0.2rem;
+  height: 1.8rem;
   margin-right: 1rem;
+  border-radius: 50%;
 }
 
 .navbar .options .profile-menu-container .profile-menu {

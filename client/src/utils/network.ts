@@ -33,8 +33,12 @@ async function Network(
       switch (e.message) { // e.response.status
         case 'Request failed with status code 401':
           return await recreateAccessToken(method, endpoint, body);
+        case 'Network Error':
+          return "Image too big, please try a smaller one.."
         default:
-          console.log('defaulttt');
+          console.log('default from Network function');
+          console.log(e.message);
+          
       }
       return e.message;
     });

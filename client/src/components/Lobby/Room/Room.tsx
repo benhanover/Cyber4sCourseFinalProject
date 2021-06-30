@@ -7,6 +7,9 @@ import { useHistory } from "react-router-dom";
 import "./Room.css";
 import { setRooms } from "../../../state/action-creators/roomsActionCreator";
 
+// import components
+import ProfileTicket from './ProfileTicket/ProfileTicket';
+
 const Room: FC<IroomProps> = ({ room, chosen }) => {
   const dispatch = useDispatch();
   const { chosenRoom } = useSelector((state: State) => state.ws);
@@ -16,12 +19,7 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
     dispatch
   );
   const history = useHistory();
-  // useEffect(()=>{
-  //  const updatedRoom = rooms.filter((roomItem)=>{
-  //     return roomItem._id = room._id
-  //   });
-  //   setRoom(updatedRoom[0])
-  // },[rooms])
+
   useEffect(() => {
     return () => {
       setChosenRoom(null);
@@ -38,7 +36,8 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
         <p key={2} className="title">{room.title}</p>
         <p key={3} className="subject">{`${room.subject} > ${room.subSubject}`}</p>
         <p key={5} className="description">{room.description}</p>
-          <p key={7} className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
+        <p key={7} className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
+        <ProfileTicket participants={room.participants}/>
 
         {room.participants.length > 0
               ?
@@ -68,6 +67,8 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
       <p className="description">{room.description}</p>
       <p className="limit">{ room.participants.length}/{room.limit}</p>
       <p className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
+      
+
     </div>
   );
   function goToRoom(roomId: string | undefined) {

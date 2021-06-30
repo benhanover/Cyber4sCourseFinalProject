@@ -10,6 +10,7 @@ import { errorEnums } from "../enums";
 
 // import models
 import { getModel } from "./assistance-functions";
+import { profile } from "console";
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in: userControllers | checks wether the username and email are avalable.
@@ -281,7 +282,8 @@ console.log(participant);
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in: userController update | change field in the profile
-export const updateUserByField = async (email: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
+export const updateUserProfileByField = async (email: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
+  console.log('mongo functions', contentOfTheUpdate);
   try {
     const user = await User.findOne({email: email});
     // const user: Iuser = await User.findOne({email: email});
@@ -290,7 +292,15 @@ export const updateUserByField = async (email: string, fieldToUpdate: string, co
     return user;
   } catch(e) {
     console.log(e);
+    return false;
   }
+}
+
+/*---------------------------------------------------------------------------------------------------------- */
+export const updateUserByField =  async (email: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
+  console.log(email)
+  console.log(fieldToUpdate)
+  console.log(contentOfTheUpdate)
 }
 
 /*---------------------------------------------------------------------------------------------------------- */
@@ -310,5 +320,33 @@ export const getUser = async (username: any) => {
     return User.findOne({ username });
   } catch(e) {
     console.log(e);
+  }
+}
+//find many document from a model
+/*---------------------------------------------------------------------------------------------------------- */
+export const findManyDocuments = async (
+  modelString: string,
+  field: string,
+  contentsArray: []
+): Promise<Umodels[] | Umodels> => {
+  const model: typeof Model | undefined = getModel(modelString);
+  if (!model) {
+    console.log(errorEnums.NO_MODEL_ENUM);
+    return {
+      return: false,
+      message: "Missing parameter line 68 ,mongo-functions",
+    };
+  }
+  try {
+    const Documents: Umodels[] = await model.find(
+      {[field]:{ $in: contentsArray} });
+    
+
+    return  Documents
+      ?  Documents
+      : { return: false, message: modelString + errorEnums.NOT_FOUND };
+  } catch (e: unknown) {
+    console.log(errorEnums.FAILED_GETTING_DATA + e);
+    return { return: false, message: errorEnums.FAILED_GETTING_DATA + e };
   }
 }
