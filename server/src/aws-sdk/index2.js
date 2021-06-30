@@ -14,7 +14,7 @@ const s3 = new AWS.S3({
 export const uploadToS3 = async (data, username) => {
   const name = username + '.png';
   await s3.putObject({
-    Key: name, f
+    Key: name,
     Bucket: process.env.AWS_S3_BUCKET_NAME,
     ContentType: 'image/png',
     Body: data,
