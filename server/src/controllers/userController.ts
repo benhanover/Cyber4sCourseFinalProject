@@ -149,7 +149,8 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
       res.status(403).send(errorEnums.INVALID_TOKEN);
       return;
     }
-    if (!isRefreshSaved(token)) {
+
+    if (!(await isRefreshSaved(token))) {
       // catfish in the site
       console.log(errorEnums.CATFISH);
       res.status(403).send(errorEnums.FORBIDDEN);
@@ -265,7 +266,11 @@ export const updateProfile = (async (req: Request, res: Response): Promise<void>
 /*---------------------------------------------------------------------------------------------------------- */
 
 export const getAllUsers = (async (req: Request, res: Response): Promise<void> => {
-  const users = await getUsers();
+  const rawUsers = await getUsers();
+  const users = rawUsers?.map(user => {
+    user.password = "naa, I'm starting to like this lil conversations..";
+    return user;
+  })
   res.status(200).send(users);
   return
 });
