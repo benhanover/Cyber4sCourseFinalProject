@@ -1,7 +1,7 @@
 //imports
 /*-------------------------------------------------------------------------------------*/
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import Peer from "peerjs";
 import Network from "../../utils/network";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,7 @@ function VideoRoom() {
 
   //declerations-states and more
   /*-------------------------------------------------------------------------------------*/
+  const history = useHistory();
   const location = useLocation();
   const [peerState, setPeerState] = useState<Peer>();
   const [room, setRoom] = useState<any>();
@@ -38,21 +39,21 @@ function VideoRoom() {
   // on roomstate change: update  the room details from db
   /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
-    Network("GET", `http://localhost:4000/room/${roomId}`)
+    Network("GET", `http://192.168.1.111:4000/room/${roomId}`)
       .then((roomFromDb) => {
         if (!room) createConnection(roomFromDb);
         setRoom(roomFromDb);
+        const relevnatStream = roomFromDb.participants.map((user:any)=>user.streamId);
+        setVideos(videos.filter((video:any)=>{
+          return relevnatStream.includes(video.stream.id);
+        }) )
       })
       .catch((e) => {
         console.log("could not get room in VideoRoom Component", e);
       });
+      
   }, [rooms]);
-  //=========================================================
-  useEffect(() => {
-    console.log("the videos changed", videos);
-  }, [videos]);
-
-  //==========================================================
+  
   //component renders:
   /*-------------------------------------------------------------------------------------*/
 
@@ -75,15 +76,17 @@ function VideoRoom() {
     console.log("inside create connection");
 
     //get user media
-    const myMedia = await getUserMedia();
+    
+    const myMedia: MediaStream | undefined = await getUserMedia();
     if (!myMedia) {
       console.log("No media... ");
+      return;
     }
     setMyStream(myMedia);
 
     //creating new peer
     const mypeer = new Peer();
-
+    user.peer= mypeer;
     //getting peer id
     let peerId: any;
     mypeer.on("open", async (id) => {
@@ -110,7 +113,7 @@ function VideoRoom() {
 
       ///peer handler for receiving calls
       mypeer.on("call", (call: any) => {
-        console.log(call, "call obj");
+        
 
         //hanle err
         call.on("error", (err: any) => {
@@ -119,11 +122,9 @@ function VideoRoom() {
 
         //remove participant`s stream how left the room
         call.on("close", () => {
-          console.log("onclose from other");
-
           setVideos(
             videos.filter((video: any) => {
-              console.log("compare:", video.call, "adnnnnnnn", call);
+              
 
               return video.call.connectionId !== call.connectionId;
             })
@@ -192,13 +193,31 @@ function VideoRoom() {
   }
 
   /*-----------------------------------------------------------------------------------*/
-  async function getUserMedia() {
-    const media = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-
-    return media;
+  async function getUserMedia(): Promise<MediaStream | undefined> {
+    try {
+      const media = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      
+      return media;
+    } catch (e) {
+     
+      try {
+          const media = await navigator.mediaDevices.getUserMedia({
+            video: false,
+            audio: true,
+          });
+          return media;
+        }
+        catch (e) {
+          console.log("in the catch of the catch of usermedia", e.message);
+         
+            console.log("return nothing!!");
+            
+            return;
+          }
+        }
   }
   /*-----------------------------------------------------------------------------------------*/
   async function leaveRoom() {
@@ -217,6 +236,12 @@ function VideoRoom() {
 
       video.call.close();
     });
+    user.peer.destroy()
+    myStream.getTracks().forEach((track: any)=>{
+      track.stop()
+    })
+
+    history.push("/loby");
   }
 }
 export default VideoRoom;
