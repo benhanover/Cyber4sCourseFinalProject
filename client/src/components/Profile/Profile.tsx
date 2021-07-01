@@ -39,8 +39,13 @@ const Profile: React.FC = () => {
               <input ref={profileUpdateRef} />
               <button onClick={async () => {
                 if (!profileUpdateRef.current?.value) setFieldToUpdate(false);
-                setUser(await updateDetailsByField(fieldToUpdate, profileUpdateRef.current?.value));
-                setFieldToUpdate(false);
+            const updated = await updateDetailsByField(fieldToUpdate, profileUpdateRef.current?.value)
+            if(typeof updated === 'string') {
+              setError(updated);
+            } else {
+              setUser(updated);
+            }
+            setFieldToUpdate(false);
               }}>update</button>
             </div>
           }
@@ -53,7 +58,12 @@ const Profile: React.FC = () => {
           {error && <p className="error">{error}</p>}
           <button onClick={async () => {
             const updated =  await updateDetailsByField({place: 'profile' , field: 'imageBlob'}, imgBlob);
-            if (updated === "Image too big, please try a smaller one..") setError(updated);
+            if (typeof updated === 'string') {
+              console.log('IM IN THE IFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF')
+              setError(updated);
+              return;
+            }
+            setUser(updated);
           }
           }>save</button>
 

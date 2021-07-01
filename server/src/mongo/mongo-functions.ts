@@ -302,6 +302,17 @@ export const updateUserByField = async (email: string, place: string, fieldToUpd
     return false;
   }
 }
+/*---------------------------------------------------------------------------------------------------------- */
+export const updateEmailOrUsername = async (email: string, place: string, field: string, update: string) => {
+  console.log(email, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+  const users = await User.find();
+  const userExist = users.find((user) => user[field] === update);
+  if(userExist) return false;
+  const user = await User.findOne({email});
+  user[field] = update;
+  await user.save();
+  return user; 
+} 
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in userController getAllUsers | get all users from the database

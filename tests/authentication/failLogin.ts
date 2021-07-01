@@ -45,7 +45,7 @@ export const FailLogin = (collections: Promise<beforeAll>) => describe("failLogi
       });
 
       // rediret to login page
-      const loginButtonFromRegPage: ElementHandle<Element> | null = await page.$(".login-button");
+      const loginButtonFromRegPage: ElementHandle<Element> | null = await page.$(".login-btn");
       if(loginButtonFromRegPage)  await loginButtonFromRegPage.click();
 
       await page.waitForSelector('.login-container');  
