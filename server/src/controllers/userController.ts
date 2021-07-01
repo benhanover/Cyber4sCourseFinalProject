@@ -8,7 +8,7 @@ import { Iuser, IreturnInfo, Itokens, Umodels, UgenerateTokens, Urefresh } from 
 import { errorEnums, logsEnums } from '../enums/index';
 
 // import mongo-functions
-import { canRegister, registerUser, findDocument, saveRefreshToken, saveAccessToken, removeRefreshToken, removeAccessToken, isRefreshSaved, getUsers, getUser, updateUserByField } from '../mongo/mongo-functions';
+import { canRegister, registerUser, findDocument, saveRefreshToken, saveAccessToken, removeRefreshToken, removeAccessToken, isRefreshSaved, getUsers, getUser, updateUserByField, updateEmailOrUsername } from '../mongo/mongo-functions';
 
 // import aws functions
 import { uploadToS3 } from '../aws-sdk/index2';
@@ -201,7 +201,38 @@ export const returnValidation = (async (req: Request, res: Response): Promise<vo
 export const updateProfile = (async (req: Request, res: Response): Promise<void> => {    
   const { email }: { email:string} = req.body.user;
   const { place, field, update }: { place: string, field: string, update: string} = req.body;
-  const updatedUser = await updateUserByField(email, place, field, update);
+  let updatedUser;
+  switch(field) {
+    case 'email':
+      updatedUser = await updateEmailOrUsername(email, place, field, update);
+      if(!updatedUser) {
+        res.status(409).send('Email Is Already Taken');
+        return;
+      }
+      res.status(200).send(updatedUser);
+      return;
+    case 'username':
+      updatedUser = await updateEmailOrUsername(email, place, field, update);
+      if(!updatedUser) {
+        res.status(409).send('Username Is Already Taken');
+        return;
+      }
+      res.status(200).send(updatedUser);
+      return;
+    case 'password':
+      const hashedPassword = await hash(update, 10);
+      try {
+        updatedUser = await updateUserByField(email, place, field, hashedPassword);
+        res.status(200).send(updatedUser);
+        return;
+      } catch(e) {
+        console.log(e);
+      }
+      break;
+    default:
+      console.log('user controller function: updateProfile default of the switch');
+  }
+  updatedUser = await updateUserByField(email, place, field, update);
       if (!updatedUser) {
         // case blob is to big to handle
         res.status(418).send("Try smaller image when tea time is over.");
