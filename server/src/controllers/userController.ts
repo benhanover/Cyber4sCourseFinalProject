@@ -202,6 +202,11 @@ export const updateProfile = (async (req: Request, res: Response): Promise<void>
   const { email }: { email:string} = req.body.user;
   const { place, field, update }: { place: string, field: string, update: string} = req.body;
   let updatedUser;
+
+  console.log("refreshToken", req.headers['refreshtoken']);
+  console.log("accessToken", req.headers['authorization']);
+  
+
   switch(field) {
     case 'email':
       updatedUser = await updateEmailOrUsername(email, place, field, update);

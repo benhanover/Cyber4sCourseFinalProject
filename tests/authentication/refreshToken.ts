@@ -36,11 +36,12 @@ export const refreshToken = ( collections: Promise<beforeAll> ): void => describ
       page.on('response', async (response) => {
         if(await response.url() === 'http://localhost:4000/user/refreshToken'
         && await response.status() === 200){
-            // console.log('resolved');
-            
-            resolve(true);
-        } 
-        // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
+          // console.log('resolved');
+          
+          resolve(true);
+        }
+        // (await response.json()).message
+        // console.log(response.url(), 'status: ', response.status(), );
       });
     });
     
@@ -49,13 +50,14 @@ export const refreshToken = ( collections: Promise<beforeAll> ): void => describ
     await AccessTokens.drop();
     
     // delete from the browser
-    await page.deleteCookie({name: 'accessToken'});
-
+    await page.deleteCookie({ name: 'accessToken' });
+    
     // refresh page
     await page.goto('http://localhost:3000');
 
     // test that we failed to request without accestoken
     expect(await rawResponse1).toBe(true)
+
     // test that we recived a new token
     expect(await rawResponse2).toBe(true)
   

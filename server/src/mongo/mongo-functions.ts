@@ -283,9 +283,6 @@ console.log(participant);
 /*---------------------------------------------------------------------------------------------------------- */
 // used in: userController update | change field in the profile
 export const updateUserByField = async (email: string, place: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
-  console.log('232222222222222222222222222222222232222222222222222222222222222222');
-  
-  console.log(fieldToUpdate,contentOfTheUpdate )
   try {
     const user = await User.findOne({email: email});
     switch(place) {

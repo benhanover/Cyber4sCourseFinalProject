@@ -24,7 +24,7 @@ export const Logout = (collections: Promise<beforeAll>) =>
     beforeAll(async () => {
       Refreshtokens = (await collections).refreshTokens;
       Accesstokens = (await collections).accessTokens;
-      page.waitForSelector("div > button");
+      page.waitForSelector(".profile-menu-button");
     });
     /*-----------------------------------------------------------------------------------------------------------*/
 
@@ -44,7 +44,7 @@ export const Logout = (collections: Promise<beforeAll>) =>
           // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
         });
       });
-
+      await page.click('.profile-menu-button');
       const logOutButton: ElementHandle<Element> | null = await page.$(".logout-button");
       if(logOutButton)  await logOutButton.click();
       // expect(response.ok()).toBe(true);
