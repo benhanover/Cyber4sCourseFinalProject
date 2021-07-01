@@ -24,3 +24,27 @@ TODO: on ws connection: create a {socketId, socket} and push to db
 1. create a user state when logged or register
 2. add participant and host properties on the room object,that contains socket id & user id
 3. otherUser's profile doesnt change on the second click.
+
+comment/code 
+=========================================================================================================
+
+
+//  DataConnection:
+// ===============
+
+//   //create peer hendlers
+//   mypeer.on("connection", (conn) => {
+//     conn.on("data", function (data) {
+//         console.log("received message from peer connection:", data);
+//     });
+// });
+
+// //calling all parrticipents
+// room.participants?.forEach((roomMate: any) => {
+//     console.log(roomMate);
+//     const connection = mypeer.connect(roomMate.peerId);
+//     connection.on("open", () => {
+//         console.log("connecting to", roomMate.peerId);
+//         connection.send("Hey, we've just connected");
+//     });
+// });

@@ -85,7 +85,7 @@ wsServer.on("connection", async (clientSocket: any) => {
 
         //remove the participent from room db
         const isRemoved = await removePartecipentfromRoom(
-          messageData.message.roomId,
+          messageData.message.participant.roomId,
           messageData.message.participant
         );
         console.log(isRemoved, "isremoved!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -93,20 +93,7 @@ wsServer.on("connection", async (clientSocket: any) => {
           console.log("could not remove participant from db");
           return;
         }
-        // if (isRemoved.participants) {
-
-        //   isRemoved.participantsSchema.forEach((participant: any)=>{
-        //     // parti.send(
-        //       //   JSON.stringify({
-        //         //     type: "rooms",
-        //         //     message: rooms,
-        //         //   })
-        //         //   );
-
-        //       })
-
-        // }
-        wsServer.emit("send rooms to all", messageData.message);
+        wsServer.emit("send rooms to all");
         break;
       case "join room":
         console.log(
@@ -151,7 +138,7 @@ wsServer.on("delete room for all", (room) => {
     client.send(JSON.stringify({ type: "room deleted", message: room }));
   });
 });
-wsServer.on("send rooms to all", async (newRoom) => {
+wsServer.on("send rooms to all", async () => {
   const rooms = await getRooms();
   wsServer.clients.forEach((client) => {
     client.send(

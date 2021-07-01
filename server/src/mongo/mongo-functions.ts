@@ -249,6 +249,8 @@ export const removePartecipentfromRoom = async (
   roomId: string,
   participant: any
 ): Promise<any> => {
+  console.log("the room id", roomId);
+
   try {
     const room = await Room.findOne({ _id: roomId });
     if (!room) {
