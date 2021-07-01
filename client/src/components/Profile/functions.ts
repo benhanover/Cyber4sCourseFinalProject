@@ -10,9 +10,9 @@ export const updateDetailsByField  = (fieldAndLocation: Ifield | boolean, update
   const { place, field } = fieldAndLocation;
   try {
     return Network('PUT', 'http://localhost:4000/user/update', { place, field, update })
-  }
-  catch (e) {  
-    return "Image too big, please try a smaller one.."
+  } catch (e) {  
+    console.log('Profile > functions.ts > updatedDetailsByField');
+    console.log(e);
   };
   }
 
@@ -25,6 +25,7 @@ export async function fileSelectedHandler(e: any): Promise<any>  {
         resolve(reader.result); 
       }
     }
+    if(!e.target.files[0]) return;
     reader.readAsDataURL(e.target.files[0]);
   })
 }

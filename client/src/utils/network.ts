@@ -35,6 +35,8 @@ async function Network(
           return await recreateAccessToken(method, endpoint, body);
         case 'Network Error':
           return "Image too big, please try a smaller one.."
+        case 'Request failed with status code 413':
+          return "Image too big, please try a smaller one.."
         default:
           console.log('default from Network function');
           console.log(e.message);

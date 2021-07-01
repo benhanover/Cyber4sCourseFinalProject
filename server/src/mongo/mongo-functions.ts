@@ -307,6 +307,7 @@ export const updateUserByField = async (email: string, place: string, fieldToUpd
 }
 /*---------------------------------------------------------------------------------------------------------- */
 export const updateEmailOrUsername = async (email: string, place: string, field: string, update: string) => {
+  console.log(email, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
   const users = await User.find();
   const userExist = users.find((user) => user[field] === update);
   if(userExist) return false;

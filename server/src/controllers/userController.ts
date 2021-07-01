@@ -209,37 +209,37 @@ export const updateProfile = (async (req: Request, res: Response): Promise<void>
         res.status(409).send('Email Is Already Taken');
         return;
       }
-      res.status(200).send(updatedUser);
-      return;
+      break;
     case 'username':
       updatedUser = await updateEmailOrUsername(email, place, field, update);
       if(!updatedUser) {
         res.status(409).send('Username Is Already Taken');
         return;
       }
-      res.status(200).send(updatedUser);
-      return;
+      break;
     case 'password':
-      const hashedPassword = await hash(update, 10);
       try {
+        const hashedPassword = await hash(update, 10);
         updatedUser = await updateUserByField(email, place, field, hashedPassword);
-        res.status(200).send(updatedUser);
-        return;
+        break;
       } catch(e) {
         console.log(e);
+        res.status(500).send("Could not change password");
+        return;
       }
       break;
     default:
-      console.log('user controller function: updateProfile default of the switch');
+      // console.log('user controller function: updateProfile default of the switch');
+      updatedUser = await updateUserByField(email, place, field, update);
+          if (!updatedUser) {
+            // case blob is to big to handle
+            res.status(418).send("Try smaller image when tea time is over.");
+            return;
+          } 
   }
-  updatedUser = await updateUserByField(email, place, field, update);
-      if (!updatedUser) {
-        // case blob is to big to handle
-        res.status(418).send("Try smaller image when tea time is over.");
-      } 
       res.status(200).send(updatedUser);
   
-      return 
+      return;
     });
 
   // AWS
