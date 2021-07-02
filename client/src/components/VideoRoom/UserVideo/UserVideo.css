@@ -23,6 +23,8 @@
 .user-video-container .user-image {
   left: 15%;
   position: absolute;
+  background-color: #c4dfff;
+  border-radius: 50%;
   height: 100%;
 }
 /*# sourceMappingURL=UserVideo.css.map */

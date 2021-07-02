@@ -22,6 +22,27 @@
   padding: 0.5rem;
 }
 
+.video-room .self-mute-button {
+  position: fixed;
+  bottom: 4.7rem;
+  left: 0.7rem;
+  padding: 0.5rem;
+}
+
+.video-room .stop-self-video-button {
+  position: fixed;
+  bottom: 6.7rem;
+  left: 0.7rem;
+  padding: 0.5rem;
+}
+
+.video-room .video-button {
+  position: fixed;
+  bottom: 2.7rem;
+  left: 0.7rem;
+  padding: 0.5rem;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }

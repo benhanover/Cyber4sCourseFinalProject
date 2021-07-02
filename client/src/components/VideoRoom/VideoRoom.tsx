@@ -59,8 +59,6 @@ function VideoRoom() {
   return (
     videos && room ?
     <div className="video-room">
-      <h1>{room?.title}</h1>
-
       {videos?.map((video: any, i: number) => {
         return <UserVideo key={i} muted={false} stream={video.stream} userImage={video.remoteUserProfileImage} isVideoOn={video.isVideoOn} />;
       })}
@@ -100,8 +98,6 @@ function VideoRoom() {
   }
 
   function selfVideoToggle() {
-  console.log(myStream.getVideoTracks()[0]);
-  
     myStream.getVideoTracks()[0].enabled = !myStream.getVideoTracks()[0].enabled;
     const videoState = myStream.getVideoTracks()[0].enabled
     setMyVideoIsOn(videoState);
@@ -179,7 +175,9 @@ function VideoRoom() {
           
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
-            ) {
+          ) {
+            console.log("onStream getUserImage", getUserImageByStreamId(remoteStream.id));
+            
               videos.push({ stream: remoteStream, call: call, remoteUserProfileImage: getUserImageByStreamId(remoteStream.id), isVideoOn: remoteStream.getVideoTracks()[0].enabled });
               setVideos([...videos]);
           }
@@ -231,7 +229,9 @@ function VideoRoom() {
           
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
-            ) {
+          ) {
+            console.log("onStream getUserImage", getUserImageByStreamId(remoteStream.id));
+            
               videos.push({ stream: remoteStream, call: call, remoteUserProfileImage: getUserImageByStreamId(remoteStream.id), isVideoOn: remoteStream.getVideoTracks()[0].enabled   });
               setVideos([...videos]);
           }

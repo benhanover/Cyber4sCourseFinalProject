@@ -17,7 +17,9 @@ position: relative;
         // left: 4.5rem;
         left: 15%;
         position: absolute;
+        background-color: rgba($color: rgb(196, 223, 255), $alpha: 1);
         // width: 50%;
+        border-radius: 50%;
         height: 100%;
     }
 }
