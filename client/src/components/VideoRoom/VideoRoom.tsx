@@ -30,6 +30,7 @@ function VideoRoom() {
   const [peerId, setPeerId] = useState<any>();
   const [videos, setVideos] = useState<any>([]);
   const [myStream, setMyStream] = useState<any>();
+  const [myVideoIsOn, setMyVideoIsOn] = useState<any>(true);
   const roomId = location.search.slice(8);
 
   //hapens on 2 cases:
@@ -56,35 +57,54 @@ function VideoRoom() {
   /*-------------------------------------------------------------------------------------*/
 
   return (
+    videos && room ?
     <div className="video-room">
       <h1>{room?.title}</h1>
 
       {videos?.map((video: any, i: number) => {
-        return <UserVideo key={i} muted={false} stream={video.stream} />;
+        return <UserVideo key={i} muted={false} stream={video.stream} userImage={video.remoteUserProfileImage} isVideoOn={video.isVideoOn} />;
       })}
 
-      {myStream && <UserVideo muted={true} stream={myStream} />}
+      {myStream && <UserVideo muted={true} stream={myStream} userImage={user.profile.imageBlob}  isVideoOn={myVideoIsOn}  />}
       <button  className="leave-button" onClick={leaveRoom}>Leave</button>
       <button  className="self-mute-button" onClick={selfMuteToggle}>Mute</button>
       <button  className="stop-self-video-button" onClick={selfVideoToggle}>stop Video</button>
-    </div>
+      <button  className="video-button" onClick={()=>getUserImageByStreamId(videos[0].call._remoteStream.id)}>check image</button>
+      </div>
+      :
+      null
   );
 
   //functions:
   /*-------------------------------------------------------------------------------------*/
-  function selfMuteToggle() {
-    if (myStream.getTracks()[0].enabled === false) {
-      myStream.getTracks()[0].enabled = true;
-      return;
-    }
-    myStream.getTracks()[0].enabled = false;
+  function getUserImageByStreamId(streamId: any) {
+  if (!room) {
+    console.log("was no room");
+    return
   }
-function selfVideoToggle() {
-    if (myStream.getVideoTracks()[0].enabled === false) {
-      myStream.getVideoTracks()[0].enabled = true;
-      return;
-    }
-    myStream.getVideoTracks()[0].enabled = false;
+    
+  const user = room.participants.find((u: any) => {
+    console.log("user", u);
+    console.log("streamId argument", streamId);
+    console.log("users streamId", u.streamId);
+    
+    return u.streamId === streamId
+  });
+  console.log("thats the blob!", user.user.profile.imageBlob);
+  
+  return user.user.profile.imageBlob;
+}
+
+  function selfMuteToggle() {
+      myStream.getTracks()[0].enabled = !myStream.getTracks()[0].enabled;
+  }
+
+  function selfVideoToggle() {
+  console.log(myStream.getVideoTracks()[0]);
+  
+    myStream.getVideoTracks()[0].enabled = !myStream.getVideoTracks()[0].enabled;
+    const videoState = myStream.getVideoTracks()[0].enabled
+    setMyVideoIsOn(videoState);
   }
 
 
@@ -113,7 +133,7 @@ function selfVideoToggle() {
     //creating new peer
     const mypeer = new Peer();
     
-    //getting peer id
+    //getting peer id;
     mypeer.on("open", async (id) => {
       user.peer= mypeer;
       user.peerId = id;
@@ -151,7 +171,7 @@ function selfVideoToggle() {
         call.on("close", () => {
         });
         
-        //recieving new participent stream
+        //recieving new participant stream
         call.on("stream", (remoteStream: any) => {
           // console.log("in the stream");
           // console.log(remoteStream);
@@ -160,7 +180,7 @@ function selfVideoToggle() {
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
             ) {
-              videos.push({ stream: remoteStream, call: call });
+              videos.push({ stream: remoteStream, call: call, remoteUserProfileImage: getUserImageByStreamId(remoteStream.id), isVideoOn: remoteStream.getVideoTracks()[0].enabled });
               setVideos([...videos]);
           }
         });
@@ -173,12 +193,12 @@ function selfVideoToggle() {
       //calling others
       if (!room.participants) return;
 
-      room.participants?.forEach((participent: any) => {
+      room.participants?.forEach((participant: any) => {
         //console.log("for each participants");
         
-        if (participent.peerId === peerId) return;
+        if (participant.peerId === peerId) return;
         // console.log("1");
-        const call: any = mypeer.call(participent.peerId, myMedia);
+        const call: any = mypeer.call(participant.peerId, myMedia);
         // console.log("call", call);
           
           
@@ -186,7 +206,7 @@ function selfVideoToggle() {
           if (!call) {
             console.log(
               "no call created, participant:",
-              participent.peerId,
+              participant.peerId,
               "myMedia:",
               myMedia
               );
@@ -212,7 +232,7 @@ function selfVideoToggle() {
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
             ) {
-              videos.push({ stream: remoteStream, call: call });
+              videos.push({ stream: remoteStream, call: call, remoteUserProfileImage: getUserImageByStreamId(remoteStream.id), isVideoOn: remoteStream.getVideoTracks()[0].enabled   });
               setVideos([...videos]);
           }
         });
