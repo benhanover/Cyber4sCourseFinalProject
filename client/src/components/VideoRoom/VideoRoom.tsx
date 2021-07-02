@@ -65,11 +65,20 @@ function VideoRoom() {
 
       {myStream && <UserVideo muted={true} stream={myStream} />}
       <button  className="leave-button" onClick={leaveRoom}>Leave</button>
+      <button  className="self-mute-button" onClick={selfMuteToggle}>Mute</button>
     </div>
   );
 
   //functions:
   /*-------------------------------------------------------------------------------------*/
+  function selfMuteToggle() {
+    if (myStream.getTracks()[0].enabled === false) {
+      myStream.getTracks()[0].enabled = true;
+      return;
+    }
+    myStream.getTracks()[0].enabled = false;
+  }
+
 
   function getCleanedUser(user: any) {
     return {
