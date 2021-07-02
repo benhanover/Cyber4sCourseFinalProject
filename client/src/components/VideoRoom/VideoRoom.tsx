@@ -77,24 +77,21 @@ function VideoRoom() {
 
     //get user media
     
-    const myMedia: MediaStream | undefined = await getUserMedia();
-    if (!myMedia) {
-      console.log("No media... ");
-      return;
-    }
-    setMyStream(myMedia);
+    const myMedia: MediaStream = await getUserMedia();
+      setMyStream(myMedia);
+    
 
     //creating new peer
     const mypeer = new Peer();
-    user.peer= mypeer;
+    
     //getting peer id
-    let peerId: any;
     mypeer.on("open", async (id) => {
+      user.peer= mypeer;
       user.peerId = id;
       setUser({ ...user });
-      peerId = id;
+      const peerId = id;
       setPeerId(peerId);
-
+      
       //tell the server to update room participant in db and at other clients
       serverSocket.send(
         JSON.stringify({
@@ -113,7 +110,7 @@ function VideoRoom() {
 
       ///peer handler for receiving calls
       mypeer.on("call", (call: any) => {
-        
+        // console.log("got a call")
 
         //hanle err
         call.on("error", (err: any) => {
@@ -122,69 +119,71 @@ function VideoRoom() {
 
         //remove participant`s stream how left the room
         call.on("close", () => {
-          setVideos(
-            videos.filter((video: any) => {
-              
-
-              return video.call.connectionId !== call.connectionId;
-            })
-          );
         });
-
+        
         //recieving new participent stream
         call.on("stream", (remoteStream: any) => {
+          // console.log("in the stream");
+          // console.log(remoteStream);
+          
+          
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
-          ) {
-            videos.push({ stream: remoteStream, call: call });
-            setVideos([...videos]);
+            ) {
+              videos.push({ stream: remoteStream, call: call });
+              setVideos([...videos]);
           }
         });
         //sending my stream to new participant
-        if (myMedia) {
-          call.answer(myMedia);
-        }
+        
+          // console.log("iam answering yor call" , call);
+        call.answer(myMedia);
       });
 
       //calling others
       if (!room.participants) return;
 
       room.participants?.forEach((participent: any) => {
+        //console.log("for each participants");
+        
         if (participent.peerId === peerId) return;
+        // console.log("1");
         const call: any = mypeer.call(participent.peerId, myMedia);
-
-        //unable to call
-        if (!call) {
-          console.log(
-            "no call created, participant:",
-            participent.peerId,
-            "myMedia:",
-            myMedia
-          );
-          return;
-        }
-        //handle err
-        call.on("error", (err: any) => {
+        // console.log("call", call);
+          
+          
+          //unable to call
+          if (!call) {
+            console.log(
+              "no call created, participant:",
+              participent.peerId,
+              "myMedia:",
+              myMedia
+              );
+              return;
+            }
+            //handle err
+            call.on("error", (err: any) => {
           console.log("error in the call", err);
         });
 
         //remove participant`s stream how left the room
         call.on("close", () => {
-          console.log("removing participent vedio");
-
+          console.log("removing participant video");
           setVideos(
             videos.filter((video: any) => {
               return video.call.connectionId !== call.connectionId;
             })
           );
         });
-        //recieving new participent stream
+        //recieving new participant stream
         call.on("stream", (remoteStream: any) => {
+          
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
-          ) {
-            videos.push({ stream: remoteStream, call: call });
-            setVideos([...videos]);
+            ) {
+              videos.push({ stream: remoteStream, call: call });
+              setVideos([...videos]);
           }
         });
       });
@@ -193,7 +192,7 @@ function VideoRoom() {
   }
 
   /*-----------------------------------------------------------------------------------*/
-  async function getUserMedia(): Promise<MediaStream | undefined> {
+  async function getUserMedia(): Promise<MediaStream> {
     try {
       const media = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -211,11 +210,11 @@ function VideoRoom() {
           return media;
         }
         catch (e) {
-          console.log("in the catch of the catch of usermedia", e.message);
+          // console.log("in the catch of the catch of usermedia", e.message);
          
             console.log("return nothing!!");
             
-            return;
+            return new MediaStream();
           }
         }
   }
@@ -233,11 +232,11 @@ function VideoRoom() {
     );
     videos.forEach((video: any) => {
       console.log("closing the video");
-
+      
       video.call.close();
     });
     user.peer.destroy()
-    myStream.getTracks().forEach((track: any)=>{
+    myStream?.getTracks().forEach((track: any)=>{
       track.stop()
     })
 
