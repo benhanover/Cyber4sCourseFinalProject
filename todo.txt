@@ -10,12 +10,12 @@ remove variables from process env
 TODO: on ws connection: create a {socketId, socket} and push to db
 
 
-leave room
-mute
-stop video
-share screen
-change host
-lock room
+V leave room
+V mute
+  stop video
+  share screen
+  change host
+  lock room
 
 change volume to others
 mute others
