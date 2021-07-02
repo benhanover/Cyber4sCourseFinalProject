@@ -8,7 +8,10 @@ import { Iuser, IreturnInfo, Itokens, Umodels, UgenerateTokens, Urefresh } from 
 import { errorEnums, logsEnums } from '../enums/index';
 
 // import mongo-functions
-import { canRegister, registerUser, findDocument, saveRefreshToken, saveAccessToken, removeRefreshToken, removeAccessToken, isRefreshSaved, updateUserByField, getUsers, getUser } from '../mongo/mongo-functions';
+import { canRegister, registerUser, findDocument, saveRefreshToken, saveAccessToken, removeRefreshToken, removeAccessToken, isRefreshSaved, getUsers, getUser, updateUserByField, updateEmailOrUsername } from '../mongo/mongo-functions';
+
+// import aws functions
+import { uploadToS3 } from '../aws-sdk/index2';
 
 // import assistance functions
 import { generateTokens } from '../utils/functions';
@@ -146,7 +149,8 @@ export const newToken = async (req: Request, res: Response): Promise<void> => {
       res.status(403).send(errorEnums.INVALID_TOKEN);
       return;
     }
-    if (!isRefreshSaved(token)) {
+
+    if (!(await isRefreshSaved(token))) {
       // catfish in the site
       console.log(errorEnums.CATFISH);
       res.status(403).send(errorEnums.FORBIDDEN);
@@ -195,18 +199,78 @@ export const returnValidation = (async (req: Request, res: Response): Promise<vo
 
 /*---------------------------------------------------------------------------------------------------------- */
 
-export const update = (async (req: Request, res: Response): Promise<void> => {
+export const updateProfile = (async (req: Request, res: Response): Promise<void> => {    
   const { email }: { email:string} = req.body.user;
-  const { field, update }: { field: string, update: unknown } = req.body;
-  const updatedUser = await updateUserByField(email, field, update);
-  res.status(200).send(updatedUser);
-  return 
-});
+  const { place, field, update }: { place: string, field: string, update: string} = req.body;
+  let updatedUser;
+
+  console.log("refreshToken", req.headers['refreshtoken']);
+  console.log("accessToken", req.headers['authorization']);
+  
+
+  switch(field) {
+    case 'email':
+      updatedUser = await updateEmailOrUsername(email, place, field, update);
+      if(!updatedUser) {
+        res.status(409).send('Email Is Already Taken');
+        return;
+      }
+      break;
+    case 'username':
+      updatedUser = await updateEmailOrUsername(email, place, field, update);
+      if(!updatedUser) {
+        res.status(409).send('Username Is Already Taken');
+        return;
+      }
+      break;
+    case 'password':
+      try {
+        const hashedPassword = await hash(update, 10);
+        updatedUser = await updateUserByField(email, place, field, hashedPassword);
+        break;
+      } catch(e) {
+        console.log(e);
+        res.status(500).send("Could not change password");
+        return;
+      }
+      break;
+    default:
+      // console.log('user controller function: updateProfile default of the switch');
+      updatedUser = await updateUserByField(email, place, field, update);
+          if (!updatedUser) {
+            // case blob is to big to handle
+            res.status(418).send("Try smaller image when tea time is over.");
+            return;
+          } 
+  }
+      res.status(200).send(updatedUser);
+  
+      return;
+    });
+
+  // AWS
+
+  // console.log("inUpdateProfile");
+  // console.log("field", field )
+  // console.log("update",  typeof update)
+  // console.log(username)
+  // if (field === 'imageUrl' && username !== null) {
+  //   console.log("inUpdateProfile after ts terror");
+  //   const updatedUser = await updateUserByField(email, field, update))
+  //   res.status(200).send(updatedUser);
+  //   return 
+  // } else {
+
+
 
 /*---------------------------------------------------------------------------------------------------------- */
 
 export const getAllUsers = (async (req: Request, res: Response): Promise<void> => {
-  const users = await getUsers();
+  const rawUsers = await getUsers();
+  const users = rawUsers?.map(user => {
+    user.password = "naa, I'm starting to like this lil conversations..";
+    return user;
+  })
   res.status(200).send(users);
   return
 });

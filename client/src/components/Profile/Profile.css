@@ -1,0 +1,32 @@
+.my-profile-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 90%;
+}
+
+.my-profile-container .my-profile {
+  background-color: rgba(196, 223, 255, 0.8);
+  padding: 2rem;
+}
+
+.my-profile-container .my-profile .error {
+  background-color: rgba(228, 69, 69, 0.507);
+}
+
+.my-profile-container .my-profile .new-profile-image {
+  height: 8rem;
+  border-radius: 50%;
+}
+
+.my-profile-container .my-profile .profile-image {
+  height: 4rem;
+  border-radius: 50%;
+}
+/*# sourceMappingURL=Profile.css.map */

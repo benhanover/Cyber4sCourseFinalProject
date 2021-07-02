@@ -7,7 +7,8 @@ const profileSchema = new Schema({
   intrests: { type: String, default: 'test' },
   hobbys: { type: String, default: 'test' },
   relationship: { type: String, default: 'test' },
-  activeTime: { type: String, default: 'test' }
+  activeTime: { type: String, default: 'test' },
+  imageBlob: { type: String, default: 'test' }
 });
 export default profileSchema;
-// img: { data: Buffer, contentType: String },
+

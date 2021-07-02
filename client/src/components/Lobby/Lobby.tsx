@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
+import './Lobby.css'
 // import types
 import { ImessageBox, Iroom } from "./interfaces";
 // import redux-states
@@ -77,17 +78,22 @@ const Lobby: React.FC = () => {
   }
 
   return (
-    <div>
+  <>
+    {chosenRoomDisplay(chosenRoom)}
+    <NewRoomForm />
+    <div className="rooms-container">
       {rooms?.map((room: Iroom | null, i: number) => {
         if (!room) return;
-        return <Room key={i} room={room} chosen={false} />;
+        return (
+          <Room key={i} room={ room } chosen={false} />
+          
+          );
       })}
-      {chosenRoomDisplay(chosenRoom)}
-      <NewRoomForm />
     </div>
-  );
-
-  function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null {
+  </>
+); 
+  
+  function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null{
     if (chosenRoom === null) return null;
     const roomChosed: Iroom = chosenRoom;
     return <Room room={roomChosed} chosen={true} />;

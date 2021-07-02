@@ -8,25 +8,35 @@ remove variables from process env
 
 
 TODO: on ws connection: create a {socketId, socket} and push to db
-1. check why user._id in user state (client) dont exist all the time.{to check the user after login , register and refresh(app)-client}
-2. server peer
-3. detect the reason that cause the mongo db to lack data(collections)
-4. when refreshing access tokens make sure to delete from data base
-5. validation for inputs
-6. make chosen room participants update on realtime.
-7. update the room ufter adding a participent, in vedioroom component(at the moment only rooms in loby update)
-8. improve redirection to VideoRoom (route).
-9. joined participants somehow send stream twice
-10. when fail to add new room should not get the user inside the videoRoom
-11. BIG-ISSUE: when having refresh token and accessToken expired the server creates a new accessToken even if the refreshToken does not exist in db.
 
 
-1. create a user state when logged or register
-2. add participant and host properties on the room object,that contains socket id & user id
+leave room
+mute
+stop video
+share screen
+change host
+lock room
+
+change volume to others
+mute others
+outer room chat
+inroom chat
+add user as friend
+block user
+
+
+# cleanup ws+peer
+# make limit to room.
 3. otherUser's profile doesnt change on the second click.
+5. validation for inputs
 
-comment/code 
-=========================================================================================================
+9. joined participants somehow send stream twice
+8. improve redirection to VideoRoom and profiles (route).
+6. make chosen room participants update on realtime.
+# unknown mongo error when creating a room
+3. detect the reason that cause the mongo db to lack data(collections)
+2. server peer of our own
+1. check why user._id in user state (client) doesn't exist all the time.{to check the user after login , register and refresh(app)-client}
 
 
 //  DataConnection:

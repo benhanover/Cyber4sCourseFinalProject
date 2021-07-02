@@ -279,21 +279,37 @@ export const removePartecipentfromRoom = async (
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in: userController update | change field in the profile
-export const updateUserByField = async (
-  email: string,
-  fieldToUpdate: string,
-  contentOfTheUpdate: unknown
-) => {
+export const updateUserByField = async (email: string, place: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
   try {
-    const user = await User.findOne({ email: email });
-    // const user: Iuser = await User.findOne({email: email});
-    user.profile[fieldToUpdate] = contentOfTheUpdate;
+    const user = await User.findOne({email: email});
+    switch(place) {
+      case 'user': 
+        user[fieldToUpdate] = contentOfTheUpdate;
+        break;
+      case 'profile':
+        user.profile[fieldToUpdate] = contentOfTheUpdate;
+        break;
+      default: 
+        console.log('mongo-functions updateUserByField default in switch');
+    }
     await user.save();
     return user;
   } catch (e) {
     console.log(e);
+    return false;
   }
-};
+}
+/*---------------------------------------------------------------------------------------------------------- */
+export const updateEmailOrUsername = async (email: string, place: string, field: string, update: string) => {
+  console.log(email, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+  const users = await User.find();
+  const userExist = users.find((user) => user[field] === update);
+  if(userExist) return false;
+  const user = await User.findOne({email});
+  user[field] = update;
+  await user.save();
+  return user; 
+} 
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in userController getAllUsers | get all users from the database
@@ -313,4 +329,32 @@ export const getUser = async (username: any) => {
   } catch (e) {
     console.log(e);
   }
-};
+}
+//find many document from a model
+/*---------------------------------------------------------------------------------------------------------- */
+export const findManyDocuments = async (
+  modelString: string,
+  field: string,
+  contentsArray: []
+): Promise<Umodels[] | Umodels> => {
+  const model: typeof Model | undefined = getModel(modelString);
+  if (!model) {
+    console.log(errorEnums.NO_MODEL_ENUM);
+    return {
+      return: false,
+      message: "Missing parameter line 68 ,mongo-functions",
+    };
+  }
+  try {
+    const Documents: Umodels[] = await model.find(
+      {[field]:{ $in: contentsArray} });
+    
+
+    return  Documents
+      ?  Documents
+      : { return: false, message: modelString + errorEnums.NOT_FOUND };
+  } catch (e: unknown) {
+    console.log(errorEnums.FAILED_GETTING_DATA + e);
+    return { return: false, message: errorEnums.FAILED_GETTING_DATA + e };
+  }
+}

@@ -81,14 +81,14 @@ wsServer.on("connection", async (clientSocket: any) => {
         //log the received message and send it back to the client
         break;
       case "leave room":
-        console.log("testttttttttttttttttttt", messageData.message);
+        // console.log("testttttttttttttttttttt", messageData.message);
 
         //remove the participent from room db
         const isRemoved = await removePartecipentfromRoom(
           messageData.message.participant.roomId,
           messageData.message.participant
         );
-        console.log(isRemoved, "isremoved!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        // console.log(isRemoved, "isremoved!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (!isRemoved) {
           console.log("could not remove participant from db");
           return;
@@ -99,6 +99,11 @@ wsServer.on("connection", async (clientSocket: any) => {
         console.log(
           `${messageData.message.username} joined to room ${messageData.message.roomId} using the new peer: ${messageData.message.participant.peerId} and the stream with if: ${messageData.message.participant.streamId}`
         );
+        // console.log(
+        //   messageData.message.participant,
+        //   "participent !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        // );
+
         const room: Umodels = await updateDocument(
           "Room",
           "_id",
@@ -148,6 +153,7 @@ wsServer.on("send rooms to all", async () => {
       })
     );
   });
+  // console.log("sent rooms to all");
 });
 
 wsServer.on("close", () => {

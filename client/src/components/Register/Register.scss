@@ -1,0 +1,24 @@
+.register-container{
+    display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+    .register-form{
+        background-color: rgb(196, 223, 255);
+        border-radius: 20px;
+        height: 40%;
+        display: flex;
+        flex-direction: column; 
+        justify-content: space-around;  
+        width: 20rem;
+        padding: 3rem;
+    }
+}
+.button{
+    padding: 0.5rem;
+}
+.login-btn{
+    position: absolute;
+    top: 0.5rem;
+    left:0.5rem;
+}

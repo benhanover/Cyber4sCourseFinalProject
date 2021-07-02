@@ -12,14 +12,9 @@ export interface Iroom {
 }
 
 /*---------------------------------------------------------------------------------------------------------- */
-export interface Iimg {
-  data: Buffer;
-  contentType: string;
-}
-
-/*---------------------------------------------------------------------------------------------------------- */
 export interface Iprofile {
-  img?: Iimg;
+  img?: string;
+  gender?: string;
   address?: string;
   status?: string;
   about?: string;
@@ -52,4 +47,3 @@ export interface Iuser {
   username: string;
   profile?: Iprofile;
 }
-

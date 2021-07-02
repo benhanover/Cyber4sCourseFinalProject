@@ -1,14 +1,13 @@
 //imports
 /*-------------------------------------------------------------------------------------*/
-import React, { useEffect, useState } from "react";
+import "./VideoRoom.css";
+import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Peer from "peerjs";
 import Network from "../../utils/network";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { State, wsActionCreator } from "../../state";
-import { useRef } from "react";
-import { Iroom } from "../Lobby/interfaces";
 import UserVideo from "./UserVideo/UserVideo";
 
 //conponnent
@@ -31,7 +30,6 @@ function VideoRoom() {
   const [peerId, setPeerId] = useState<any>();
   const [videos, setVideos] = useState<any>([]);
   const [myStream, setMyStream] = useState<any>();
-  const [calls, setCalls] = useState<any>([]);
   const roomId = location.search.slice(8);
 
   //hapens on 2 cases:
@@ -58,7 +56,7 @@ function VideoRoom() {
   /*-------------------------------------------------------------------------------------*/
 
   return (
-    <div>
+    <div className="video-room">
       <h1>{room?.title}</h1>
 
       {videos?.map((video: any, i: number) => {
@@ -66,12 +64,26 @@ function VideoRoom() {
       })}
 
       {myStream && <UserVideo muted={true} stream={myStream} />}
-      <button onClick={leaveRoom}>Leave</button>
+      <button  className="leave-button" onClick={leaveRoom}>Leave</button>
     </div>
   );
 
   //functions:
   /*-------------------------------------------------------------------------------------*/
+
+  function getCleanedUser(user: any) {
+    return {
+      username: user.username,
+      profile: user.profile,
+      firstname: user.firstName,
+      lastname: user.lastName,
+      age: 22,
+      // age: user.birthDate
+      //   ? new Date().getFullYear() - user.birthDate.getFullYear()
+      //   : 22,
+    };
+  };
+  
   async function createConnection(room: any) {
     console.log("inside create connection");
 
@@ -91,6 +103,7 @@ function VideoRoom() {
       setUser({ ...user });
       const peerId = id;
       setPeerId(peerId);
+      console.log("user", getCleanedUser(user));
       
       //tell the server to update room participant in db and at other clients
       serverSocket.send(
@@ -100,7 +113,7 @@ function VideoRoom() {
             participant: {
               peerId: peerId,
               streamId: myMedia.id,
-              username: user.username,
+              user: getCleanedUser(user),
             }, // username will be changed to profile.
             roomId: room._id,
             username: user.username,

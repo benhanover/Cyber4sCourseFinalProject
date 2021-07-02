@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { FC } from 'react'
+import './UserVideo.css';
 interface Ivideo{
     stream: any;
     muted: boolean;
@@ -15,7 +16,7 @@ export const UserVideo: FC<Ivideo> = ({ stream, muted}) => {
     }, [])
     return (
         <>
-            <video ref={videoRef} muted={muted} autoPlay ></video>
+            <video ref={videoRef} className="user-video" muted={muted} autoPlay ></video>
         </>
     )
 }

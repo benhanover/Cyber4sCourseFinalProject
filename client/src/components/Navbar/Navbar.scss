@@ -1,0 +1,38 @@
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(196, 223, 255);
+    height: 2rem;
+    .logo{
+        margin-left: 1rem;
+
+    }
+    .options{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .profile-menu-button{
+            margin-top: 0.2rem;
+            height: 1.8rem;
+            margin-right: 1rem;
+            border-radius: 50%;
+            
+        }
+        .profile-menu-container{
+            // position: relative;
+            .profile-menu{
+                width: 8rem;
+                right: 0;
+                list-style-type: none;
+                background-color: rgb(255, 255, 255);
+                position: absolute;
+                // width: 100%;
+                border: 1px solid black;
+                li{
+                    border-top: 1px solid black;
+                }
+            }
+        }
+    }
+}
