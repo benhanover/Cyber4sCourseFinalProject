@@ -37,3 +37,24 @@ block user
 3. detect the reason that cause the mongo db to lack data(collections)
 2. server peer of our own
 1. check why user._id in user state (client) doesn't exist all the time.{to check the user after login , register and refresh(app)-client}
+
+
+//  DataConnection:
+// ===============
+
+//   //create peer hendlers
+//   mypeer.on("connection", (conn) => {
+//     conn.on("data", function (data) {
+//         console.log("received message from peer connection:", data);
+//     });
+// });
+
+// //calling all parrticipents
+// room.participants?.forEach((roomMate: any) => {
+//     console.log(roomMate);
+//     const connection = mypeer.connect(roomMate.peerId);
+//     connection.on("open", () => {
+//         console.log("connecting to", roomMate.peerId);
+//         connection.send("Hey, we've just connected");
+//     });
+// });

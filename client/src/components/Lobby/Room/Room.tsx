@@ -19,7 +19,6 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
     dispatch
   );
   const history = useHistory();
-
   useEffect(() => {
     return () => {
       setChosenRoom(null);
@@ -29,46 +28,32 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
     return (
       <div className="chosen-background" onClick={(e)=> setChosenRoom(null)}>
         <div key={42} className="chosen room" onClick={(e) => e.stopPropagation()}>
-
-        <span key={1} className="close-chosen-button" onClick={() => setChosenRoom(null)}>
-          X
-        </span>
-        <p key={2} className="title">{room.title}</p>
-        <p key={3} className="subject">{`${room.subject} > ${room.subSubject}`}</p>
-        <p key={5} className="description">{room.description}</p>
-        <p key={7} className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
-        <ProfileTicket participants={room.participants}/>
-
-        {room.participants.length > 0
-              ?
-          <div className="room-participants">
+          <span key={1} className="close-chosen-button" onClick={() => setChosenRoom(null)}>X</span>
+          <p key={2} className="title">{room.title}</p>
+          <p key={3} className="subject">{`${room.subject} > ${room.subSubject}`}</p>
+          <p key={5} className="description">{room.description}</p>
+          <p key={7} className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
+          <ProfileTicket participants={room.participants}/>
+          {room.participants.length > 0
+            ?
+            <div className="room-participants">
               <p key={6} className="limit">{ room.participants.length}/{room.limit}</p>
-                {room.participants.map((profile: any, i: number) => {
-                  return <p key={i} className="username">{profile.username}</p>;
-                })}
-                </div>
-          : null}
-          <button key={9} className="button" onClick={() => goToRoom(room._id)}>
-          Join Room
-        </button>
-    </div>
+              {room.participants.map((profile: any, i: number) => <p key={i} className="username">{profile.username}</p>)}
+            </div>
+            : null
+          }
+          <button key={9} className="button" onClick={() => goToRoom(room._id)}>Join Room</button>
+        </div>
       </div>
     );
   }
   return (
-    <div
-      className="room"
-      onClick={() =>
-        chosenRoom !== room ? setChosenRoom(room) : setChosenRoom(null)
-      }
-    >
+    <div className="room" onClick={() => chosenRoom !== room ? setChosenRoom(room) : setChosenRoom(null)}>
       <p className="title">{room.title}</p>
       <p className="subject">{`${room.subject} > ${room.subSubject}`}</p>
       <p className="description">{room.description}</p>
       <p className="limit">{ room.participants.length}/{room.limit}</p>
       <p className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
-      
-
     </div>
   );
   function goToRoom(roomId: string | undefined) {

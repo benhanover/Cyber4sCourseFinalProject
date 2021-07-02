@@ -50,7 +50,6 @@ const SearchUser: React.FC = () => {
               return (<li key={i} onClick={() => {
                 searchRef.current.value = ""; 
                 setFilteredUsers([]);
-              
                 history.push(`/profile?username=${user.username}`)}
               }>{user.username}</li>);
             })

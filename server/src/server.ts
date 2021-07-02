@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app);
 
 const { PORT, DB } = process.env;
-const MONGO_SERVER = DB === "together_dev" ? "localhost" : "mongo";
+const MONGO_SERVER = DB === "together_dev" ? "192.168.1.111" : "mongo";
 
 console.log(DB, "from the server");
 
@@ -81,36 +81,28 @@ wsServer.on("connection", async (clientSocket: any) => {
         //log the received message and send it back to the client
         break;
       case "leave room":
+        // console.log("testttttttttttttttttttt", messageData.message);
+
         //remove the participent from room db
         const isRemoved = await removePartecipentfromRoom(
-          messageData.message.roomId,
+          messageData.message.participant.roomId,
           messageData.message.participant
         );
-        console.log(isRemoved);
+        // console.log(isRemoved, "isremoved!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (!isRemoved) {
           console.log("could not remove participant from db");
           return;
         }
-        if (isRemoved.participants) {
-          isRemoved.participantsSchema.forEach((participant: any) => {
-            // parti.send(
-            //   JSON.stringify({
-            //     type: "rooms",
-            //     message: rooms,
-            //   })
-            //   );
-          });
-        }
-        wsServer.emit("send rooms to all", messageData.message);
+        wsServer.emit("send rooms to all");
         break;
       case "join room":
         console.log(
           `${messageData.message.username} joined to room ${messageData.message.roomId} using the new peer: ${messageData.message.participant.peerId} and the stream with if: ${messageData.message.participant.streamId}`
         );
-        console.log(
-          messageData.message.participant,
-          "participent !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-        );
+        // console.log(
+        //   messageData.message.participant,
+        //   "participent !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        // );
 
         const room: Umodels = await updateDocument(
           "Room",
@@ -151,7 +143,7 @@ wsServer.on("delete room for all", (room) => {
     client.send(JSON.stringify({ type: "room deleted", message: room }));
   });
 });
-wsServer.on("send rooms to all", async (newRoom) => {
+wsServer.on("send rooms to all", async () => {
   const rooms = await getRooms();
   wsServer.clients.forEach((client) => {
     client.send(
@@ -161,7 +153,7 @@ wsServer.on("send rooms to all", async (newRoom) => {
       })
     );
   });
-  console.log("sent rooms to all");
+  // console.log("sent rooms to all");
 });
 
 wsServer.on("close", () => {

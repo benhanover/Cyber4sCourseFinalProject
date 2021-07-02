@@ -1,17 +1,17 @@
-import axios from 'axios';
-import { AxiosResponse, Method } from 'axios';
-import { recreateAccessToken } from './functions';
-import Cookies from 'js-cookie';
+import axios from "axios";
+import { AxiosResponse, Method } from "axios";
+import { recreateAccessToken } from "./functions";
+import Cookies from "js-cookie";
 
 async function Network(
   method: Method,
   endpoint: string,
   body: any = {}
 ): Promise<any> {
-  const accessToken = Cookies.get('accessToken');
+  const accessToken = Cookies.get("accessToken");
 
   const headers = {
-    'Content-Type': "application/json;charset=utf-8'",
+    "Content-Type": "application/json;charset=utf-8'",
     authorization: accessToken,
   };
   const options = {
@@ -21,11 +21,11 @@ async function Network(
     url: endpoint,
   };
 
-  return axios(options)//awawit
+  return axios(options) //awawit
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
-        // if (endpoint === 'http://localhost:4000/user/validator') return true;
-          
+        // if (endpoint === 'http://192.168.1.111:4000/user/validator') return true;
+
         return response.data;
       }
     })
@@ -47,5 +47,5 @@ async function Network(
     });
 }
 export default Network;
- //401
- //200    //403
+//401
+//200    //403

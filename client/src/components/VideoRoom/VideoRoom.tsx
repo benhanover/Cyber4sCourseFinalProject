@@ -1,67 +1,75 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+//imports
+/*-------------------------------------------------------------------------------------*/
+import "./VideoRoom.css";
+import { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import Peer from "peerjs";
 import Network from "../../utils/network";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { State, wsActionCreator } from "../../state";
-import { useRef } from "react";
-import { Iroom } from "../Lobby/interfaces";
 import UserVideo from "./UserVideo/UserVideo";
-import "./VideoRoom.css";
-import { Iuser } from "../SearchUser/interfaces";
 
+//conponnent
+/*-------------------------------------------------------------------------------------*/
+
+//redux states
+/*-------------------------------------------------------------------------------------*/
 function VideoRoom() {
   const { serverSocket, user } = useSelector((state: State) => state.ws);
   const { rooms } = useSelector((state: State) => state);
-  const [peerState, setPeerState] = useState<Peer>();
   const dispatch = useDispatch();
   const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
+
+  //declerations-states and more
+  /*-------------------------------------------------------------------------------------*/
+  const history = useHistory();
   const location = useLocation();
+  const [peerState, setPeerState] = useState<Peer>();
   const [room, setRoom] = useState<any>();
   const [peerId, setPeerId] = useState<any>();
   const [videos, setVideos] = useState<any>([]);
   const [myStream, setMyStream] = useState<any>();
   const roomId = location.search.slice(8);
 
+  //hapens on 2 cases:
+  //on componnent did mount:  get the room details and creat the peer js connection
+  // on roomstate change: update  the room details from db
+  /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
-    Network("GET", `http://localhost:4000/room/${roomId}`)
+    Network("GET", `http://192.168.1.111:4000/room/${roomId}`)
       .then((roomFromDb) => {
+        if (!room) createConnection(roomFromDb);
         setRoom(roomFromDb);
-        createConnection(roomFromDb);
+        const relevnatStream = roomFromDb.participants.map((user:any)=>user.streamId);
+        setVideos(videos.filter((video:any)=>{
+          return relevnatStream.includes(video.stream.id);
+        }) )
       })
       .catch((e) => {
-        console.log("could not get room in VideoRoom Component", e); ///add reaction
+        console.log("could not get room in VideoRoom Component", e);
       });
-  }, []);
-
-  useEffect(() => {
-    Network("GET", `http://localhost:4000/room/${roomId}`)
-      .then((roomFromDb) => {
-        setRoom(roomFromDb);
-      })
-      .catch((e) => {
-        console.log("could not get room in VideoRoom Component", e); ///add reaction
-      });
+      
   }, [rooms]);
-  useEffect(() => {
-    console.log("room was updated", room);
-  }, [room]);
+  
+  //component renders:
+  /*-------------------------------------------------------------------------------------*/
 
   return (
     <div className="video-room">
-      {/* <h1>{room?.title}</h1> */}
-      <button className="leave-button" onClick={leaveRoom}>
-        Leave
-      </button>
-      {videos?.map((videoStream: any, i: number) => {
-        //   if(!myStream) return null;
-        return <UserVideo key={i} muted={false} stream={videoStream} />;
+      <h1>{room?.title}</h1>
+
+      {videos?.map((video: any, i: number) => {
+        return <UserVideo key={i} muted={false} stream={video.stream} />;
       })}
 
       {myStream && <UserVideo muted={true} stream={myStream} />}
+      <button  className="leave-button" onClick={leaveRoom}>Leave</button>
     </div>
   );
+
+  //functions:
+  /*-------------------------------------------------------------------------------------*/
 
   function getCleanedUser(user: any) {
     return {
@@ -74,27 +82,30 @@ function VideoRoom() {
       //   ? new Date().getFullYear() - user.birthDate.getFullYear()
       //   : 22,
     };
-  }
-
+  };
+  
   async function createConnection(room: any) {
-    const myMedia = await getUserMedia();
-    if (!myMedia) {
-      console.log("No media... ");
-    }
-    setMyStream(myMedia);
+    console.log("inside create connection");
+
+    //get user media
+    
+    const myMedia: MediaStream = await getUserMedia();
+      setMyStream(myMedia);
+    
 
     //creating new peer
     const mypeer = new Peer();
-
+    
     //getting peer id
-    let peerId: any;
     mypeer.on("open", async (id) => {
+      user.peer= mypeer;
       user.peerId = id;
-      setUser({ ...user }); // if using should make sure it is updated in db.
-      peerId = id;
+      setUser({ ...user });
+      const peerId = id;
       setPeerId(peerId);
       console.log("user", getCleanedUser(user));
-
+      
+      //tell the server to update room participant in db and at other clients
       serverSocket.send(
         JSON.stringify({
           type: "join room",
@@ -110,88 +121,117 @@ function VideoRoom() {
         })
       );
 
-      ///peer handler for receiving stream
-      mypeer.on("call", (call) => {
-        call.on("stream", (remoteStream) => {
-          if (!videos.some((stream: any) => stream === remoteStream)) {
-            videos.push(remoteStream);
-            setVideos([...videos]);
-          }
-        });
-        if (myMedia) {
-          call.answer(myMedia);
-        }
-      });
+      ///peer handler for receiving calls
+      mypeer.on("call", (call: any) => {
+        // console.log("got a call")
 
-      if (!room.participants) return;
-      //calling others
-      // console.log(room.participants, "all participents");
-
-      room.participants?.forEach((participent: any) => {
-        // console.log("peerId", peerId);
-
-        if (participent.peerId === peerId) return;
-        const call = mypeer.call(participent.peerId, myMedia);
-        if (!call) {
-          console.log(
-            "no call created, participant:",
-            participent.peerId,
-            "myMedia:",
-            myMedia
-          );
-          return;
-        }
-        call.on("error", (err) => {
+        //hanle err
+        call.on("error", (err: any) => {
           console.log("error in the call", err);
         });
-        call.on("stream", (remoteStream: any) => {
-          // console.log("setting on the video");
-          // const stream = new MediaStream();
-          // stream.addTrack(remoteStream);
-          //setVideos(true);
-          const isStreamExist = videos.some(
-            (stream: any) => stream === remoteStream
-          );
-          console.log("isStreamExist", isStreamExist, "videos:", videos[0]);
 
-          if (!isStreamExist) {
-            videos.push(remoteStream);
-            setVideos([...videos]);
+        //remove participant`s stream how left the room
+        call.on("close", () => {
+        });
+        
+        //recieving new participent stream
+        call.on("stream", (remoteStream: any) => {
+          // console.log("in the stream");
+          // console.log(remoteStream);
+          
+          
+          if (
+            !videos.some((video: any) => video.stream.id === remoteStream.id)
+            ) {
+              videos.push({ stream: remoteStream, call: call });
+              setVideos([...videos]);
+          }
+        });
+        //sending my stream to new participant
+        
+          // console.log("iam answering yor call" , call);
+        call.answer(myMedia);
+      });
+
+      //calling others
+      if (!room.participants) return;
+
+      room.participants?.forEach((participent: any) => {
+        //console.log("for each participants");
+        
+        if (participent.peerId === peerId) return;
+        // console.log("1");
+        const call: any = mypeer.call(participent.peerId, myMedia);
+        // console.log("call", call);
+          
+          
+          //unable to call
+          if (!call) {
+            console.log(
+              "no call created, participant:",
+              participent.peerId,
+              "myMedia:",
+              myMedia
+              );
+              return;
+            }
+            //handle err
+            call.on("error", (err: any) => {
+          console.log("error in the call", err);
+        });
+
+        //remove participant`s stream how left the room
+        call.on("close", () => {
+          console.log("removing participant video");
+          setVideos(
+            videos.filter((video: any) => {
+              return video.call.connectionId !== call.connectionId;
+            })
+          );
+        });
+        //recieving new participant stream
+        call.on("stream", (remoteStream: any) => {
+          
+          if (
+            !videos.some((video: any) => video.stream.id === remoteStream.id)
+            ) {
+              videos.push({ stream: remoteStream, call: call });
+              setVideos([...videos]);
           }
         });
       });
-
-      //  DataConnection
-      // ===============
-
-      //   //create peer hendlers
-      //   mypeer.on("connection", (conn) => {
-      //     conn.on("data", function (data) {
-      //         console.log("received message from peer connection:", data);
-      //     });
-      // });
-
-      // //calling all parrticipents
-      // room.participants?.forEach((roomMate: any) => {
-      //     console.log(roomMate);
-      //     const connection = mypeer.connect(roomMate.peerId);
-      //     connection.on("open", () => {
-      //         console.log("connecting to", roomMate.peerId);
-      //         connection.send("Hey, we've just connected");
-      //     });
-      // });
     });
     setPeerState(mypeer);
   }
-  async function getUserMedia() {
-    const media = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-    console.log(media);
 
-    return media;
+  /*-----------------------------------------------------------------------------------*/
+  async function getUserMedia(): Promise<MediaStream> {
+    try {
+      const media = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      
+      return media;
+    } catch (e) {
+     
+      try {
+          const media = await navigator.mediaDevices.getUserMedia({
+            video: false,
+            audio: true,
+          });
+          return media;
+        }
+        catch (e) {
+          // console.log("in the catch of the catch of usermedia", e.message);
+         
+            console.log("return nothing!!");
+            
+            return new MediaStream();
+          }
+        }
   }
+  /*-----------------------------------------------------------------------------------------*/
   async function leaveRoom() {
     console.log(roomId, peerId, user.peerId, "check");
     serverSocket.send(
@@ -203,6 +243,17 @@ function VideoRoom() {
         },
       })
     );
+    videos.forEach((video: any) => {
+      console.log("closing the video");
+      
+      video.call.close();
+    });
+    user.peer.destroy()
+    myStream?.getTracks().forEach((track: any)=>{
+      track.stop()
+    })
+
+    history.push("/loby");
   }
 }
 export default VideoRoom;

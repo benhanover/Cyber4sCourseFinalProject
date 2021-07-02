@@ -1,6 +1,6 @@
 // import libraries
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Switch, Route, Redirect } from "react-router-dom";
+import { useEffect } from "react";
 
 // import components
 import Login from './components/Login/Login';
@@ -12,29 +12,30 @@ import Navbar from './components/Navbar/Navbar';
 import OtherUserProfile from './components/OtherUserProfile/OtherUserProfile';
 
 // redux shit
-import { bindActionCreators } from 'redux';
-import { useDispatch, useSelector } from 'react-redux'
-import { State, wsActionCreator } from './state';
+import { bindActionCreators } from "redux";
+import { useDispatch, useSelector } from "react-redux";
+import { State, wsActionCreator } from "./state";
 
 // network
-import Network from './utils/network';
+import Network from "./utils/network";
 
 // import css
-import './App.css'
+import "./App.css";
 
 const App: React.FunctionComponent<{}> = () => {
-  const { user } = useSelector((state: State) => state.ws)
+  const { user } = useSelector((state: State) => state.ws);
   const dispatch = useDispatch();
-  const { setUser } = bindActionCreators({...wsActionCreator}, dispatch);
-  
+  const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
+
   useEffect(() => {
-    Network('GET', 'http://localhost:4000/user/validator')
+    Network("GET", "http://192.168.1.111:4000/user/validator")
       .then((res) => {
         if (!res) return;
-        setUser(res.user)
-      }).catch(e =>{
-        console.log("in the validator error:", e)
-    });
+        setUser(res.user);
+      })
+      .catch((e) => {
+        console.log("in the validator error:", e);
+      });
   }, []);
   return (
     <>
