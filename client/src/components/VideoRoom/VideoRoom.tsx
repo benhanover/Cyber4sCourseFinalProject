@@ -66,6 +66,7 @@ function VideoRoom() {
       {myStream && <UserVideo muted={true} stream={myStream} />}
       <button  className="leave-button" onClick={leaveRoom}>Leave</button>
       <button  className="self-mute-button" onClick={selfMuteToggle}>Mute</button>
+      <button  className="stop-self-video-button" onClick={selfVideoToggle}>stop Video</button>
     </div>
   );
 
@@ -77,6 +78,13 @@ function VideoRoom() {
       return;
     }
     myStream.getTracks()[0].enabled = false;
+  }
+function selfVideoToggle() {
+    if (myStream.getVideoTracks()[0].enabled === false) {
+      myStream.getVideoTracks()[0].enabled = true;
+      return;
+    }
+    myStream.getVideoTracks()[0].enabled = false;
   }
 
 

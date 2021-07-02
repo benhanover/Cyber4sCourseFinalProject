@@ -15,7 +15,7 @@ V mute
   stop video
   share screen
   change host
-  lock room
+  lock room + limit
 
 change volume to others
 mute others
