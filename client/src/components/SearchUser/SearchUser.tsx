@@ -48,7 +48,6 @@ const SearchUser: React.FC = () => {
             {
             filteredUsers.map((user: any, i: number) => {
               return (<li key={i} onClick={() => {
-                console.log('clicked')
                 searchRef.current.value = ""; 
                 setFilteredUsers([]);
               
