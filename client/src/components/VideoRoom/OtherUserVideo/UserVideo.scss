@@ -5,22 +5,21 @@
     width: 50%;
     height: 50vh;
     text-align: center;
-    position: relative;
+position: relative;
     .user-video{
         margin: 0 auto;
         // left: 0;
         // position: absolute;
         height: 100%;
+        z-index: 1;
     }
     .user-image{
         // left: 4.5rem;
-        left: 2.5rem;
-        top: 1rem;
+        left: 15%;
         position: absolute;
-        z-index: 1;
         background-color: rgba($color: rgb(196, 223, 255), $alpha: 1);
         // width: 50%;
         border-radius: 50%;
-        height: 20%;
+        height: 100%;
     }
 }

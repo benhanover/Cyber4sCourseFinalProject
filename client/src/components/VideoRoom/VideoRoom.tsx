@@ -1,7 +1,7 @@
 //imports
 /*-------------------------------------------------------------------------------------*/
 import "./VideoRoom.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Peer from "peerjs";
 import Network from "../../utils/network";
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { State, wsActionCreator } from "../../state";
 import UserVideo from "./UserVideo/UserVideo";
+import OtherUserVideo from "./OtherUserVideo/OtherUserVideo";
 
 //conponnent
 /*-------------------------------------------------------------------------------------*/
@@ -20,7 +21,6 @@ function VideoRoom() {
   const { rooms } = useSelector((state: State) => state);
   const dispatch = useDispatch();
   const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
-
   //declerations-states and more
   /*-------------------------------------------------------------------------------------*/
   const history = useHistory();
@@ -29,6 +29,7 @@ function VideoRoom() {
   const [room, setRoom] = useState<any>();
   const [peerId, setPeerId] = useState<any>();
   const [videos, setVideos] = useState<any>([]);
+  const [videoImages, setVideoImages] = useState<any>([]);
   const [myStream, setMyStream] = useState<any>();
   const [myVideoIsOn, setMyVideoIsOn] = useState<any>(true);
   const roomId = location.search.slice(8);
@@ -43,15 +44,19 @@ function VideoRoom() {
         if (!room) createConnection(roomFromDb);
         setRoom(roomFromDb);
         const relevnatStream = roomFromDb.participants.map((user:any)=>user.streamId);
-        setVideos(videos.filter((video:any)=>{
+        console.log("stream id in videos", relevnatStream)
+        setVideos(videos.filter((video: any) => {
           return relevnatStream.includes(video.stream.id);
-        }) )
+        }));
+        // setVideoImages(getAllRemoteProfileImages())
       })
       .catch((e) => {
         console.log("could not get room in VideoRoom Component", e);
       });
       
   }, [rooms]);
+
+  console.log("rerendered");
   
   //component renders:
   /*-------------------------------------------------------------------------------------*/
@@ -59,15 +64,17 @@ function VideoRoom() {
   return (
     videos && room ?
     <div className="video-room">
-      {videos?.map((video: any, i: number) => {
-        return <UserVideo key={i} muted={false} stream={video.stream} userImage={video.remoteUserProfileImage} isVideoOn={video.isVideoOn} />;
+        {videos?.map((video: any, i: number) => {
+        // console.log(peerState);
+        
+          return <UserVideo key={i} muted={false} stream={video.stream} username="video.username" userImage={getUserByStreamId(video.call._remoteStream.id)} isVideoOn={video.isVideoOn} />;
       })}
 
-      {myStream && <UserVideo muted={true} stream={myStream} userImage={user.profile.imageBlob}  isVideoOn={myVideoIsOn}  />}
+      {myStream && <UserVideo muted={true} stream={myStream} userImage={user.profile.imageBlob} username="peerState"  isVideoOn={myVideoIsOn}  />}
       <button  className="leave-button" onClick={leaveRoom}>Leave</button>
       <button  className="self-mute-button" onClick={selfMuteToggle}>Mute</button>
       <button  className="stop-self-video-button" onClick={selfVideoToggle}>stop Video</button>
-      <button  className="video-button" onClick={()=>getUserImageByStreamId(videos[0].call._remoteStream.id)}>check image</button>
+      <button  className="video-button" onClick={()=>getAllRemoteProfileImages()}>check image</button>
       </div>
       :
       null
@@ -75,32 +82,70 @@ function VideoRoom() {
 
   //functions:
   /*-------------------------------------------------------------------------------------*/
-  function getUserImageByStreamId(streamId: any) {
+  
+  function getAllRemoteProfileImages(){
+    const userImages = room.participants.map((u: any) => {
+      console.log("user", u);
+      console.log("users streamId", u.streamId);
+      // const  user = getUserByStreamId(u.streamId)
+      return { username: u.user.username, imageBlob: u.user.profile.imageBlob, streamId: u.streamId }
+    });
+    console.log(userImages);
+    
+    return userImages;
+  }
+  
+  function getUserByStreamId(streamId: any) {
   if (!room) {
     console.log("was no room");
     return
   }
-    
   const user = room.participants.find((u: any) => {
-    console.log("user", u);
-    console.log("streamId argument", streamId);
-    console.log("users streamId", u.streamId);
+    // console.log("user", u);
+    // console.log("streamId argument", streamId);
+    // console.log("users streamId", u.streamId);
     
     return u.streamId === streamId
   });
-  console.log("thats the blob!", user.user.profile.imageBlob);
-  
-  return user.user.profile.imageBlob;
+    if (!user) return;
+  return user.user.profile.imageBlob
 }
 
   function selfMuteToggle() {
-      myStream.getTracks()[0].enabled = !myStream.getTracks()[0].enabled;
+    if (!myStream.getTracks()[0]) return;
+    myStream.getTracks()[0].enabled = !myStream.getTracks()[0].enabled;
   }
-
+  
   function selfVideoToggle() {
-    myStream.getVideoTracks()[0].enabled = !myStream.getVideoTracks()[0].enabled;
+    if (!myStream.getVideoTracks()[0]) return;
+    // myStream.applyConstraints({video: false, audio:true})
+    // console.log(myStream.getVideoTracks()[0].getSettings())
+    // myStream.getVideoTracks()[0].start();
+    if (myStream.getVideoTracks()[0].enabled) {
+    // //   myStream.getVideoTracks()[0].stop();
+    // //   return;
+    //   myStream.getVideoTracks().emit("mute");
+    // videos.forEach((video: any) => {
+    //   const videosender = video.call.peerConnection.getSenders().find((sender: any)=>{
+    //     return sender.track.kind === "video"
+    //   });
+    //   videosender.track.stop();
+    //   videosender.track.dispatchEvent(new Event("ended"));
+    // });
+    }
+    // myStream.getVideoTracks()[0].resume();
+    
+    const newState = !myStream.getVideoTracks()[0].enabled;
+    console.log(myStream.getVideoTracks()[0]);
+    myStream.getVideoTracks()[0].enabled = newState;
+    // console.log(myStream.getVideoTracks()[0]);
+    // // myStream.getVideoTracks()[0].pause();
     const videoState = myStream.getVideoTracks()[0].enabled
     setMyVideoIsOn(videoState);
+    // setMyVideoIsOn(false);
+
+    
+
   }
 
 
@@ -121,8 +166,26 @@ function VideoRoom() {
     console.log("inside create connection");
 
     //get user media
+
+    // const myMedia: MediaStream = await getUserMedia();
+    let myMedia: MediaStream = new MediaStream();
+    myMedia.onaddtrack = (e) => {
+      console.log('track added');
+    }
     
-    const myMedia: MediaStream = await getUserMedia();
+    
+    myMedia = await getUserMedia();
+    myMedia.getVideoTracks()[0].addEventListener('muted' , () => {
+      console.log("muted");
+    
+  });
+    myMedia.getVideoTracks()[0].addEventListener('unmuted', () => {
+      console.log("unmuted");
+    });
+    
+    myMedia.addEventListener("addtrack", () => {
+      console.log("event listener add track");
+    });
       setMyStream(myMedia);
     
 
@@ -166,26 +229,26 @@ function VideoRoom() {
         //remove participant`s stream how left the room
         call.on("close", () => {
         });
-        
+        //
         //recieving new participant stream
         call.on("stream", (remoteStream: any) => {
-          // console.log("in the stream");
-          // console.log(remoteStream);
+          console.log("in the stream");
+          console.log("remoteStream", remoteStream, "call", call, "tracks", remoteStream.getVideoTracks()[0]?.enabled || remoteStream.getTracks()[0]?.enabled || null );
           
           
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {
-            console.log("onStream getUserImage", getUserImageByStreamId(remoteStream.id));
             
-              videos.push({ stream: remoteStream, call: call, remoteUserProfileImage: getUserImageByStreamId(remoteStream.id), isVideoOn: remoteStream.getVideoTracks()[0].enabled });
+            videos.push({ stream: remoteStream, call: call, isVideoOn: remoteStream.getVideoTracks()[0]?.enabled });
               setVideos([...videos]);
           }
         });
         //sending my stream to new participant
         
-          // console.log("iam answering yor call" , call);
+        console.log("myMedia", myMedia);
         call.answer(myMedia);
+          // console.log("iam answering yor call" , call);
       });
 
       //calling others
@@ -226,18 +289,40 @@ function VideoRoom() {
         });
         //recieving new participant stream
         call.on("stream", (remoteStream: any) => {
+          console.log("stream of creating call");
+          console.log("remoteStream", remoteStream, "call", call, "tracks", remoteStream.getVideoTracks()[0]?.enabled || remoteStream.getTracks()[0]?.enabled || null );
           
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {
-            console.log("onStream getUserImage", getUserImageByStreamId(remoteStream.id));
             
-              videos.push({ stream: remoteStream, call: call, remoteUserProfileImage: getUserImageByStreamId(remoteStream.id), isVideoOn: remoteStream.getVideoTracks()[0].enabled   });
+              videos.push({ stream: remoteStream, call: call, isVideoOn: remoteStream.getVideoTracks()[0]?.enabled});
               setVideos([...videos]);
           }
         });
       });
     });
+
+    //  DataConnection:
+// ===============
+
+  //create peer hendlers
+//   mypeer.on("connection", (conn) => {
+//     conn.on("data", function (data) {
+//         console.log("received message from peer connection:", data);
+//     });
+// });
+
+// // //calling all parrticipents
+// room.participants?.forEach((roomMate: any) => {
+//     console.log(roomMate);
+//     const connection = mypeer.connect(roomMate.peerId);
+//     connection.on("open", () => {
+//         console.log("connecting to", roomMate.peerId);
+//         connection.send("Hey, we've just connected");
+//     });
+//   roomMate.dataConnection = connection;
+// });
     setPeerState(mypeer);
   }
 
@@ -257,6 +342,8 @@ function VideoRoom() {
             video: false,
             audio: true,
           });
+        console.log("media", media);
+        
           return media;
         }
         catch (e) {

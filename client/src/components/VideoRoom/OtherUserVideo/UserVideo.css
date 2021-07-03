@@ -17,15 +17,14 @@
 .user-video-container .user-video {
   margin: 0 auto;
   height: 100%;
+  z-index: 1;
 }
 
 .user-video-container .user-image {
-  left: 2.5rem;
-  top: 1rem;
+  left: 15%;
   position: absolute;
-  z-index: 1;
   background-color: #c4dfff;
   border-radius: 50%;
-  height: 20%;
+  height: 100%;
 }
 /*# sourceMappingURL=UserVideo.css.map */
