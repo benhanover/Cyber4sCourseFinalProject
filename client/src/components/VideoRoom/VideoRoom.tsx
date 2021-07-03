@@ -31,7 +31,7 @@ function VideoRoom() {
   const [videos, setVideos] = useState<any>([]);
   const [myStream, setMyStream] = useState<any>();
   const roomId = location.search.slice(8);
-
+  
   //hapens on 2 cases:
   //on componnent did mount:  get the room details and creat the peer js connection
   // on roomstate change: update  the room details from db
@@ -51,7 +51,12 @@ function VideoRoom() {
       });
       
   }, [rooms]);
-  
+  //===============================
+  useEffect(()=>{
+    console.log("mystream" , myStream);
+    
+  },[myStream])
+  //===============================
   //component renders:
   /*-------------------------------------------------------------------------------------*/
 
@@ -63,14 +68,40 @@ function VideoRoom() {
         return <UserVideo key={i} muted={false} stream={video.stream} />;
       })}
 
-      {myStream && <UserVideo muted={true} stream={myStream} />}
+      {myStream && <>my video<UserVideo muted={true} stream={myStream} /></>}
       <button  className="leave-button" onClick={leaveRoom}>Leave</button>
       <button  className="self-mute-button" onClick={selfMuteToggle}>Mute</button>
+      <button  className="share-screen-button" onClick={shareScreen}>share Screen</button>
     </div>
   );
 
   //functions:
   /*-------------------------------------------------------------------------------------*/
+  async function shareScreen  (){
+    
+    //@ts-ignore
+    const screenMedia = await navigator.mediaDevices.getDisplayMedia({cursor:true});
+    const screenTrack = screenMedia.getTracks()[0];
+    videos.forEach((video:any) => {
+     let videoSender = video.call.peerConnection.getSenders().find((sender: any)=>{
+       return sender.track.kind === "video"
+     });
+     videoSender.replaceTrack(screenTrack);
+    });
+    screenTrack.onended= function(){
+      videos.forEach((video:any) => {
+        let videoSender = video.call.peerConnection.getSenders().find((sender: any)=>{
+          return sender.track.kind === "video"
+        });
+        videoSender.replaceTrack(myStream.getVideoTracks()[0]);
+       });
+    }
+  
+
+  }
+  
+  
+  
   function selfMuteToggle() {
     if (myStream.getTracks()[0].enabled === false) {
       myStream.getTracks()[0].enabled = true;
