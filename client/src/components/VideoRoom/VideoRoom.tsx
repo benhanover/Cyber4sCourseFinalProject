@@ -81,12 +81,21 @@ function VideoRoom() {
     
     //@ts-ignore
     const screenMedia = await navigator.mediaDevices.getDisplayMedia({cursor:true});
-    const screenTrack = screenMedia.getTracks()[0];videos.forEach((video:any) => {
+    const screenTrack = screenMedia.getTracks()[0];
+    videos.forEach((video:any) => {
      let videoSender = video.call.peerConnection.getSenders().find((sender: any)=>{
        return sender.track.kind === "video"
      });
      videoSender.replaceTrack(screenTrack);
     });
+    screenTrack.onended= function(){
+      videos.forEach((video:any) => {
+        let videoSender = video.call.peerConnection.getSenders().find((sender: any)=>{
+          return sender.track.kind === "video"
+        });
+        videoSender.replaceTrack(myStream.getVideoTracks()[0]);
+       });
+    }
   
 
   }
