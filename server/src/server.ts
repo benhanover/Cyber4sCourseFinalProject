@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app);
 
 const { PORT, DB } = process.env;
-const MONGO_SERVER = DB === "together_dev" ? "192.168.1.111" : "mongo";
+const MONGO_SERVER = DB === "together_dev" ? "localhost" : "mongo";
 
 console.log(DB, "from the server");
 

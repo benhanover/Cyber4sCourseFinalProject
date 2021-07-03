@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import './Lobby.css'
+import "./Lobby.css";
 // import types
 import { ImessageBox, Iroom } from "./interfaces";
 // import redux-states
@@ -28,7 +28,7 @@ const Lobby: React.FC = () => {
   );
   useEffect(() => {
     // create connection to the websocket server
-    const newWS = new WebSocket("ws://192.168.1.111:4000");
+    const newWS = new WebSocket("ws://localhost:4000");
     newWS.onopen = () => {
       console.log("connected to server");
     };
@@ -78,22 +78,19 @@ const Lobby: React.FC = () => {
   }
 
   return (
-  <>
-    {chosenRoomDisplay(chosenRoom)}
-    <NewRoomForm />
-    <div className="rooms-container">
-      {rooms?.map((room: Iroom | null, i: number) => {
-        if (!room) return;
-        return (
-          <Room key={i} room={ room } chosen={false} />
-          
-          );
-      })}
-    </div>
-  </>
-); 
-  
-  function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null{
+    <>
+      {chosenRoomDisplay(chosenRoom)}
+      <NewRoomForm />
+      <div className="rooms-container">
+        {rooms?.map((room: Iroom | null, i: number) => {
+          if (!room) return;
+          return <Room key={i} room={room} chosen={false} />;
+        })}
+      </div>
+    </>
+  );
+
+  function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null {
     if (chosenRoom === null) return null;
     const roomChosed: Iroom = chosenRoom;
     return <Room room={roomChosed} chosen={true} />;

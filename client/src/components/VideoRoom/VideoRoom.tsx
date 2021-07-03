@@ -37,40 +37,64 @@ function VideoRoom() {
   // on roomstate change: update  the room details from db
   /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
-    Network("GET", `http://192.168.1.111:4000/room/${roomId}`)
+    Network("GET", `http://localhost:4000/room/${roomId}`)
       .then((roomFromDb) => {
         if (!room) createConnection(roomFromDb);
         setRoom(roomFromDb);
-        const relevnatStream = roomFromDb.participants.map((user:any)=>user.streamId);
-        setVideos(videos.filter((video:any)=>{
-          return relevnatStream.includes(video.stream.id);
-        }) )
+        const relevnatStream = roomFromDb.participants.map(
+          (user: any) => user.streamId
+        );
+        setVideos(
+          videos.filter((video: any) => {
+            return relevnatStream.includes(video.stream.id);
+          })
+        );
       })
       .catch((e) => {
         console.log("could not get room in VideoRoom Component", e);
       });
-      
   }, [rooms]);
-  
+
   //component renders:
   /*-------------------------------------------------------------------------------------*/
-
+  useEffect(() => {
+    console.log(videos, "videos");
+  }, [videos, myStream]);
   return (
     <div className="video-room">
       <h1>{room?.title}</h1>
 
       {videos?.map((video: any, i: number) => {
-        return <UserVideo key={i} muted={false} stream={video.stream} />;
+        return (
+          <>
+            <p style={{ color: "white" }}>other user</p>
+            <UserVideo key={i} muted={false} stream={video.stream} />
+          </>
+        );
       })}
 
       {myStream && <UserVideo muted={true} stream={myStream} />}
-      <button  className="leave-button" onClick={leaveRoom}>Leave</button>
-      <button  className="self-mute-button" onClick={selfMuteToggle}>Mute</button>
+      <button className="leave-button" onClick={leaveRoom}>
+        Leave
+      </button>
+      <button className="self-mute-button" onClick={selfMuteToggle}>
+        Mute
+      </button>
+      <button onClick={shareScreen}>sharescreen</button>
     </div>
   );
 
   //functions:
   /*-------------------------------------------------------------------------------------*/
+  async function shareScreen() {
+    //@ts-ignore
+    const screenMedia = await navigator.mediaDevices.getDisplayMedia({
+      cursor: true,
+    });
+    const screenTrack = screenMedia.getTracks()[0];
+    myStream.addTrack(screenTrack);
+  }
+
   function selfMuteToggle() {
     if (myStream.getTracks()[0].enabled === false) {
       myStream.getTracks()[0].enabled = true;
@@ -78,7 +102,6 @@ function VideoRoom() {
     }
     myStream.getTracks()[0].enabled = false;
   }
-
 
   function getCleanedUser(user: any) {
     return {
@@ -91,29 +114,28 @@ function VideoRoom() {
       //   ? new Date().getFullYear() - user.birthDate.getFullYear()
       //   : 22,
     };
-  };
-  
+  }
+
   async function createConnection(room: any) {
     console.log("inside create connection");
 
     //get user media
-    
+
     const myMedia: MediaStream = await getUserMedia();
-      setMyStream(myMedia);
-    
+    setMyStream(myMedia);
 
     //creating new peer
     const mypeer = new Peer();
-    
+
     //getting peer id
     mypeer.on("open", async (id) => {
-      user.peer= mypeer;
+      user.peer = mypeer;
       user.peerId = id;
       setUser({ ...user });
       const peerId = id;
       setPeerId(peerId);
       console.log("user", getCleanedUser(user));
-      
+
       //tell the server to update room participant in db and at other clients
       serverSocket.send(
         JSON.stringify({
@@ -140,25 +162,23 @@ function VideoRoom() {
         });
 
         //remove participant`s stream how left the room
-        call.on("close", () => {
-        });
-        
+        call.on("close", () => {});
+
         //recieving new participent stream
         call.on("stream", (remoteStream: any) => {
           // console.log("in the stream");
           // console.log(remoteStream);
-          
-          
+
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
-            ) {
-              videos.push({ stream: remoteStream, call: call });
-              setVideos([...videos]);
+          ) {
+            videos.push({ stream: remoteStream, call: call });
+            setVideos([...videos]);
           }
         });
         //sending my stream to new participant
-        
-          // console.log("iam answering yor call" , call);
+
+        // console.log("iam answering yor call" , call);
         call.answer(myMedia);
       });
 
@@ -167,25 +187,24 @@ function VideoRoom() {
 
       room.participants?.forEach((participent: any) => {
         //console.log("for each participants");
-        
+
         if (participent.peerId === peerId) return;
         // console.log("1");
         const call: any = mypeer.call(participent.peerId, myMedia);
         // console.log("call", call);
-          
-          
-          //unable to call
-          if (!call) {
-            console.log(
-              "no call created, participant:",
-              participent.peerId,
-              "myMedia:",
-              myMedia
-              );
-              return;
-            }
-            //handle err
-            call.on("error", (err: any) => {
+
+        //unable to call
+        if (!call) {
+          console.log(
+            "no call created, participant:",
+            participent.peerId,
+            "myMedia:",
+            myMedia
+          );
+          return;
+        }
+        //handle err
+        call.on("error", (err: any) => {
           console.log("error in the call", err);
         });
 
@@ -200,12 +219,11 @@ function VideoRoom() {
         });
         //recieving new participant stream
         call.on("stream", (remoteStream: any) => {
-          
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
-            ) {
-              videos.push({ stream: remoteStream, call: call });
-              setVideos([...videos]);
+          ) {
+            videos.push({ stream: remoteStream, call: call });
+            setVideos([...videos]);
           }
         });
       });
@@ -220,25 +238,23 @@ function VideoRoom() {
         video: true,
         audio: true,
       });
-      
+
       return media;
     } catch (e) {
-     
       try {
-          const media = await navigator.mediaDevices.getUserMedia({
-            video: false,
-            audio: true,
-          });
-          return media;
-        }
-        catch (e) {
-          // console.log("in the catch of the catch of usermedia", e.message);
-         
-            console.log("return nothing!!");
-            
-            return new MediaStream();
-          }
-        }
+        const media = await navigator.mediaDevices.getUserMedia({
+          video: false,
+          audio: true,
+        });
+        return media;
+      } catch (e) {
+        // console.log("in the catch of the catch of usermedia", e.message);
+
+        console.log("return nothing!!");
+
+        return new MediaStream();
+      }
+    }
   }
   /*-----------------------------------------------------------------------------------------*/
   async function leaveRoom() {
@@ -254,13 +270,13 @@ function VideoRoom() {
     );
     videos.forEach((video: any) => {
       console.log("closing the video");
-      
+
       video.call.close();
     });
-    user.peer.destroy()
-    myStream?.getTracks().forEach((track: any)=>{
-      track.stop()
-    })
+    user.peer.destroy();
+    myStream?.getTracks().forEach((track: any) => {
+      track.stop();
+    });
 
     history.push("/loby");
   }

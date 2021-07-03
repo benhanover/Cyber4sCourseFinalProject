@@ -38,7 +38,7 @@ export const Logout = (collections: Promise<beforeAll>) =>
       const rawResponse: any = new Promise((resolve) => {
         page.on("response", async (response) => {
           if (
-            (await response.url()) === "http://192.168.1.111:4000/user/logout" &&
+            (await response.url()) === "http://localhost:4000/user/logout" &&
             (await response.status()) === 200 &&
             response.ok() === true
           ) {
@@ -47,9 +47,11 @@ export const Logout = (collections: Promise<beforeAll>) =>
           // console.log(response.url(), 'status: ', response.status(), (await response.json()).message);
         });
       });
-      await page.click('.profile-menu-button');
-      const logOutButton: ElementHandle<Element> | null = await page.$(".logout-button");
-      if(logOutButton)  await logOutButton.click();
+      await page.click(".profile-menu-button");
+      const logOutButton: ElementHandle<Element> | null = await page.$(
+        ".logout-button"
+      );
+      if (logOutButton) await logOutButton.click();
       // expect(response.ok()).toBe(true);
       expect((await rawResponse).message).toBe(
         logsEnums.LOGGED_OUT_SUCCESSFULY
