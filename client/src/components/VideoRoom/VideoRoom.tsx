@@ -32,7 +32,7 @@ function VideoRoom() {
   const [myStream, setMyStream] = useState<any>();
   const [myVideoIsOn, setMyVideoIsOn] = useState<any>(true);
   const roomId = location.search.slice(8);
-
+  
   //hapens on 2 cases:
   //on componnent did mount:  get the room details and creat the peer js connection
   // on roomstate change: update  the room details from db
@@ -55,8 +55,6 @@ function VideoRoom() {
       
   }, [rooms]);
 
-  console.log("rerendered");
-  
   //component renders:
   /*-------------------------------------------------------------------------------------*/
 
@@ -72,8 +70,8 @@ function VideoRoom() {
       {myStream && <UserVideo muted={true} stream={myStream} userImage={user.profile.imageBlob} username="peerState"  isVideoOn={myVideoIsOn}  />}
       <button  className="leave-button" onClick={leaveRoom}>Leave</button>
       <button  className="self-mute-button" onClick={selfMuteToggle}>Mute</button>
-      <button  className="stop-self-video-button" onClick={selfVideoToggle}>stop Video</button>
-      <button  className="video-button" onClick={()=>getAllRemoteProfileImages()}>check image</button>
+      <button  className="stop-self-video-button" onClick={selfVideoToggle}>Stop Video</button>
+<button  className="share-screen-button" onClick={shareScreen}>Share Screen</button>
       </div>
       :
       null
@@ -82,17 +80,7 @@ function VideoRoom() {
   //functions:
   /*-------------------------------------------------------------------------------------*/
   
-  function getAllRemoteProfileImages(){
-    const userImages = room.participants.map((u: any) => {
-      console.log("user", u);
-      console.log("users streamId", u.streamId);
-      // const  user = getUserByStreamId(u.streamId)
-      return { username: u.user.username, imageBlob: u.user.profile.imageBlob, streamId: u.streamId }
-    });
-    console.log(userImages);
-    
-    return userImages;
-  }
+  
   
   function getUserByStreamId(streamId: any) {
   if (!room) {
@@ -110,6 +98,31 @@ function VideoRoom() {
   return user.user.profile.imageBlob
 }
 
+  async function shareScreen  (){
+    
+    //@ts-ignore
+    const screenMedia = await navigator.mediaDevices.getDisplayMedia({cursor:true});
+    const screenTrack = screenMedia.getTracks()[0];
+    videos.forEach((video:any) => {
+     let videoSender = video.call.peerConnection.getSenders().find((sender: any)=>{
+       return sender.track.kind === "video"
+     });
+     videoSender.replaceTrack(screenTrack);
+    });
+    screenTrack.onended= function(){
+      videos.forEach((video:any) => {
+        let videoSender = video.call.peerConnection.getSenders().find((sender: any)=>{
+          return sender.track.kind === "video"
+        });
+        videoSender.replaceTrack(myStream.getVideoTracks()[0]);
+       });
+    }
+  
+
+  }
+  
+  
+  
   function selfMuteToggle() {
     if (!myStream.getTracks()[0]) return;
     myStream.getTracks()[0].enabled = !myStream.getTracks()[0].enabled;
