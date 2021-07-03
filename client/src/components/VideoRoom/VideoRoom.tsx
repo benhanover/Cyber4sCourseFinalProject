@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { State, wsActionCreator } from "../../state";
 import UserVideo from "./UserVideo/UserVideo";
+import { Stream } from "stream";
 
 //conponnent
 /*-------------------------------------------------------------------------------------*/
@@ -37,7 +38,7 @@ function VideoRoom() {
   // on roomstate change: update  the room details from db
   /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
-    Network("GET", `http://localhost:4000/room/${roomId}`)
+    Network("GET", `http://192.168.1.111:4000/room/${roomId}`)
       .then((roomFromDb) => {
         if (!room) createConnection(roomFromDb);
         setRoom(roomFromDb);
@@ -87,14 +88,21 @@ function VideoRoom() {
   //functions:
   /*-------------------------------------------------------------------------------------*/
   async function shareScreen() {
+    console.log("inhere");
+    
     //@ts-ignore
     const screenMedia = await navigator.mediaDevices.getDisplayMedia({
       cursor: true,
     });
     const screenTrack = screenMedia.getTracks()[0];
-    myStream.addTrack(screenTrack);
+    // videos.forEach((video:any) => {
+    //   video.call.peerConnection.addTrack(screenTrack)})
+    // }
+    myStream.addTrack(screenTrack)
+    setMyStream({...myStream});
+    // console.log(myStream.getVideoTracks()[1])
   }
-
+  
   function selfMuteToggle() {
     if (myStream.getTracks()[0].enabled === false) {
       myStream.getTracks()[0].enabled = true;
@@ -122,6 +130,11 @@ function VideoRoom() {
     //get user media
 
     const myMedia: MediaStream = await getUserMedia();
+    //addtrack handler
+    myMedia.addEventListener("addtrack", () => {
+      console.log("track added :)");
+      
+    })
     setMyStream(myMedia);
 
     //creating new peer
@@ -154,9 +167,10 @@ function VideoRoom() {
 
       ///peer handler for receiving calls
       mypeer.on("call", (call: any) => {
-        // console.log("got a call")
+       
+        console.log("got a call")
 
-        //hanle err
+        //handle err
         call.on("error", (err: any) => {
           console.log("error in the call", err);
         });
@@ -167,8 +181,16 @@ function VideoRoom() {
         //recieving new participent stream
         call.on("stream", (remoteStream: any) => {
           // console.log("in the stream");
-          // console.log(remoteStream);
-
+         
+          call.peerConnection.ontrack=function onnewtrack () {
+            console.log("track added :)");
+            alert("ggg");
+          }
+          console.log("in the stream", call);
+          remoteStream.addEventListener("addtrack", () => {
+            console.log("track added :)");
+            alert("ggg");
+          })
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {
@@ -219,6 +241,10 @@ function VideoRoom() {
         });
         //recieving new participant stream
         call.on("stream", (remoteStream: any) => {
+          call.peerConnection.ontrack=function onnewtrack () {
+            console.log("track added :)");
+            alert("ggg");
+          }
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {

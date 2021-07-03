@@ -21,7 +21,7 @@ const LougoutButton: React.FC = () => {
     serverSocket.close();
     setUser(false);
     axios
-      .delete("http://localhost:4000/user/logout", {
+      .delete("http://192.168.1.111:4000/user/logout", {
         headers: { authorization: accessToken, refreshToken },
       })
       .then(() => {
