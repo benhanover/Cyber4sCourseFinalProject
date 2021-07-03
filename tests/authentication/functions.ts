@@ -6,7 +6,7 @@ import { errorEnums } from "../../server/src/enums/index";
 export async function doesTokensExist(page: Page): Promise<boolean> {
   try {
     const rawCookies: Protocol.Network.Cookie[] = await page.cookies(
-      "http://localhost/"
+      "http://192.168.1.111/"
     );
     const accessToken: string =
       rawCookies[0].name === "accessToken"

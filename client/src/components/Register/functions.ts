@@ -8,7 +8,7 @@ export function register(
   email: string,
   password: string
 ): Promise<AxiosResponse<any>> {
-  return axios.post("http://localhost:4000/user/register", {
+  return axios.post("http://192.168.1.111:4000/user/register", {
     username,
     firstName,
     lastName,
