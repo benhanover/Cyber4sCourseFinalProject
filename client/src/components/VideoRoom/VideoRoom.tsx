@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { State, wsActionCreator } from "../../state";
 import UserVideo from "./UserVideo/UserVideo";
-import OtherUserVideo from "./OtherUserVideo/OtherUserVideo";
 
 //conponnent
 /*-------------------------------------------------------------------------------------*/
@@ -118,34 +117,15 @@ function VideoRoom() {
   
   function selfVideoToggle() {
     if (!myStream.getVideoTracks()[0]) return;
-    // myStream.applyConstraints({video: false, audio:true})
-    // console.log(myStream.getVideoTracks()[0].getSettings())
-    // myStream.getVideoTracks()[0].start();
-    if (myStream.getVideoTracks()[0].enabled) {
-    // //   myStream.getVideoTracks()[0].stop();
-    // //   return;
-    //   myStream.getVideoTracks().emit("mute");
-    // videos.forEach((video: any) => {
-    //   const videosender = video.call.peerConnection.getSenders().find((sender: any)=>{
-    //     return sender.track.kind === "video"
-    //   });
-    //   videosender.track.stop();
-    //   videosender.track.dispatchEvent(new Event("ended"));
-    // });
-    }
-    // myStream.getVideoTracks()[0].resume();
-    
+    // if (myStream.getVideoTracks()[0].enabled) {
+    // }
+
     const newState = !myStream.getVideoTracks()[0].enabled;
     console.log(myStream.getVideoTracks()[0]);
     myStream.getVideoTracks()[0].enabled = newState;
     // console.log(myStream.getVideoTracks()[0]);
-    // // myStream.getVideoTracks()[0].pause();
     const videoState = myStream.getVideoTracks()[0].enabled
     setMyVideoIsOn(videoState);
-    // setMyVideoIsOn(false);
-
-    
-
   }
 
 
