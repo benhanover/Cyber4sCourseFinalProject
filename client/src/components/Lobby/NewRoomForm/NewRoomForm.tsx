@@ -127,6 +127,7 @@ function NewRoomForm() {
       isLocked,
       host,
     }; //host participents
+    console.log(newRoom);
 
     //  inputs cleanup
     cleanup();

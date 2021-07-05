@@ -68,6 +68,8 @@ const Lobby: React.FC = () => {
         break;
       case "new room was created":
         if (typeof messageData.message === "string") return;
+        console.log("got in", messageData.message, "and", rooms);
+
         addRoom(messageData.message);
         break;
       case "room deleted":

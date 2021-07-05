@@ -23,9 +23,9 @@ console.log(DB, "from the server");
 // middlewares
 app.use(express.json());
 app.use(cors());
-app.get('/test', (req, res) => {
-  res.send('IM ALIVE')
-})
+app.get("/test", (req, res) => {
+  res.send("IM ALIVE");
+});
 app.use("/user", users);
 app.use("/room", rooms);
 app.use(fallbacks);
@@ -64,6 +64,7 @@ wsServer.on("connection", async (clientSocket: any) => {
           Array.isArray(messageData.message)
         )
           return;
+        console.log("line 67 server", messageData.message);
         wsServer.emit("populate new room", messageData.message);
         console.log("creating new room");
         break;
@@ -128,6 +129,8 @@ wsServer.on("connection", async (clientSocket: any) => {
 //wsServer event listeners
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 wsServer.on("populate new room", (newRoom) => {
+  console.log("line 132 server", newRoom);
+
   wsServer.clients.forEach((client) => {
     client.send(
       JSON.stringify({
@@ -159,7 +162,7 @@ wsServer.on("send rooms to all", async () => {
 wsServer.on("close", () => {
   "connection closed";
 });
-console.log("Db" , DB)
+console.log("Db", DB);
 mongoose
   // .connect(`mongodb://${MONGO_SERVER}:27017/${DB}`, {
   .connect(`mongodb://localhost:27017/${DB}`, {
