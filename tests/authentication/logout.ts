@@ -38,7 +38,7 @@ export const Logout = (collections: Promise<beforeAll>) =>
       const rawResponse: any = new Promise((resolve) => {
         page.on("response", async (response) => {
           if (
-            (await response.url()) === "http://192.168.1.111:4000/user/logout" &&
+            (await response.url()) === "http://localhost:4000/user/logout" &&
             (await response.status()) === 200 &&
             response.ok() === true
           ) {

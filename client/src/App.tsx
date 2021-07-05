@@ -28,7 +28,7 @@ const App: React.FunctionComponent<{}> = () => {
   const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
 
   useEffect(() => {
-    Network("GET", "http://192.168.1.111:4000/user/validator")
+    Network("GET", "http://localhost:4000/user/validator")
       .then((res) => {
         if (!res) return;
         setUser(res.user);
@@ -55,7 +55,7 @@ const App: React.FunctionComponent<{}> = () => {
           <Route path="/lobby" component={Lobby} />
           <Route path="/room" component={VideoRoom} />
           <Route path="/my-profile" component={Profile} />
-          <Route path="/profile" component={OtherUserProfile} />
+          <Route exact path="/profile/:user" render={(props: any) => <OtherUserProfile user={props} />} />
           <Route path="*">
             <Redirect to="/lobby" />
           </Route>

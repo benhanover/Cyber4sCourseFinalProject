@@ -45,7 +45,7 @@ const Login: React.FC = () => {
     const password = passwordRef?.current?.value;
     cleanup();
     axios
-      .post("http://192.168.1.111:4000/user/login", { email, password })
+      .post("http://localhost:4000/user/login", { email, password })
       .then(({ data: response }) => {
         Cookies.set("accessToken", response.accessToken);
         Cookies.set("refreshToken", response.refreshToken);

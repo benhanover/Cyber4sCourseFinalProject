@@ -38,7 +38,7 @@ function VideoRoom() {
   // on roomstate change: update  the room details from db
   /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
-    Network("GET", `http://192.168.1.111:4000/room/${roomId}`)
+    Network("GET", `http://localhost:4000/room/${roomId}`)
       .then((roomFromDb) => {
         if (!room) createConnection(roomFromDb);
         setRoom(roomFromDb);
