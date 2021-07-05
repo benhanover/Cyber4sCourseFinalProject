@@ -54,7 +54,7 @@ wsServer.on("connection", async (clientSocket: any) => {
 
   //cadding event listeners
   clientSocket.on("message", async (messageBoxEvent: any) => {
-    console.log("received:", messageBoxEvent);
+    // console.log("received:", messageBoxEvent);
 
     const messageData: ImessageBox = JSON.parse(messageBoxEvent);
     switch (messageData.type) {
@@ -64,7 +64,6 @@ wsServer.on("connection", async (clientSocket: any) => {
           Array.isArray(messageData.message)
         )
           return;
-        saveRoom(messageData.message);
         wsServer.emit("populate new room", messageData.message);
         console.log("creating new room");
         break;
