@@ -42,18 +42,24 @@ function VideoRoom() {
       .then((roomFromDb) => {
         if (!room) createConnection(roomFromDb);
         setRoom(roomFromDb);
-        const relevnatStream = roomFromDb.participants.map((user:any)=>user.streamId);
+        const relevnatStream = roomFromDb.participants.map((user: any) => {
+          return user.streamId;
+          
+        });
         console.log("stream id in videos", relevnatStream)
         setVideos(videos.filter((video: any) => {
           return relevnatStream.includes(video.stream.id);
         }));
-        // setVideoImages(getAllRemoteProfileImages())
       })
       .catch((e) => {
         console.log("could not get room in VideoRoom Component", e);
       });
       
   }, [rooms]);
+useEffect(() => {
+ console.log("videos:", videos);
+ 
+}, [videos])
 
   //component renders:
   /*-------------------------------------------------------------------------------------*/
@@ -225,8 +231,8 @@ function VideoRoom() {
         //
         //recieving new participant stream
         call.on("stream", (remoteStream: any) => {
-          console.log("in the stream");
-          console.log("remoteStream", remoteStream, "call", call, "tracks", remoteStream.getVideoTracks()[0]?.enabled || remoteStream.getTracks()[0]?.enabled || null );
+          // console.log("in the stream");
+          // console.log("remoteStream", remoteStream, "call", call, "tracks", remoteStream.getVideoTracks()[0]?.enabled || remoteStream.getTracks()[0]?.enabled || null );
           
           
           if (
@@ -276,14 +282,18 @@ function VideoRoom() {
           console.log("removing participant video");
           setVideos(
             videos.filter((video: any) => {
+              if (video.call.connectionId === call.connectionId) {
+                console.log("removed this call with this connectionId:", call.connectionId);
+                
+              }
               return video.call.connectionId !== call.connectionId;
             })
           );
         });
         //recieving new participant stream
         call.on("stream", (remoteStream: any) => {
-          console.log("stream of creating call");
-          console.log("remoteStream", remoteStream, "call", call, "tracks", remoteStream.getVideoTracks()[0]?.enabled || remoteStream.getTracks()[0]?.enabled || null );
+          // console.log("stream of creating call");
+          // console.log("remoteStream", remoteStream, "call", call, "tracks", remoteStream.getVideoTracks()[0]?.enabled || remoteStream.getTracks()[0]?.enabled || null );
           
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)

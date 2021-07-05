@@ -63,8 +63,12 @@ export const registerUser = async (user: Iuser): Promise<false | Iuser> => {
 //   used in: roomControllers | saves a given room in db
 export const saveRoom = async (room: Iroom): Promise<Iroom | false> => {
   try {
-    console.log("room.host:", room.host);
-
+    // console.log("room.host:", room.host);
+    const hostRooms = await Room.find({ host: room.host }, ['title']);
+    if (hostRooms[0] && hostRooms.some(r => room.title === r.title )) {
+      console.log("Host already has a room with this title");
+      return false;
+    }
     const updatedRoom: Iroom = await Room.create(room);
     if (Boolean(updatedRoom)) return updatedRoom;
     console.log(errorEnums.FAILED_ADDING_DATA);
