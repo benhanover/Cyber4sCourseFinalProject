@@ -1,20 +1,21 @@
 // import libraries
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 
 // import functions 
 import { getUserProfile } from './function';
 
-const OtherUserProfile: React.FC = () => {
+// import interfaces
+import {props} from './interfaces/interfaces';
+
+const OtherUserProfile: React.FC<props> = ({user}) => {
   const [userProfile, setUserProfile] = useState<any>();
-  const location = useLocation();
+  const userWithoutTypescriptProblems: any = user; 
   useEffect(() => {
-    getUserProfile(location.search.slice(10))
+    getUserProfile(userWithoutTypescriptProblems.match.params.user)
       .then((res) => {
-        console.log(res);
         setUserProfile(res);
       })
-  }, [])
+  }, [userWithoutTypescriptProblems])
   return (
     <div>
       <img src={userProfile?.profile.imageBlob} />

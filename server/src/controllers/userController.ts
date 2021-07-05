@@ -278,7 +278,6 @@ export const getAllUsers = (async (req: Request, res: Response): Promise<void> =
 /*---------------------------------------------------------------------------------------------------------- */
 
 export const getUserProfile = async (req: Request, res: Response):Promise<void> => {
-  // const { username }: { username: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] | undefined } = req.query
   const { username } = req.query
   const user = await getUser(username);
   user.password = 'Not Today :)'
