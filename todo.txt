@@ -9,10 +9,18 @@ remove variables from process env
 
 TODO: on ws connection: create a {socketId, socket} and push to db
 
+Bugs:
+ - duplicate videos. 
+ - getusermedia err on join room
+ - error on leave.
+ - room renders duplicate
+ - cant find user's profile in the otherUserComponent
+ - check why user._id in user state (client) doesn't exist all the time.{to check the user after login , register and refresh(app)-client}.
+ -  unknown mongo error when creating a room
 
 V leave room
 V mute
-  stop video
+V stop video
   share screen
   change host
   lock room + limit
