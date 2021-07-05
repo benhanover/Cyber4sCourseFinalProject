@@ -5,6 +5,10 @@ import { useHistory } from 'react-router-dom';
 // import functions
 import { getAllUsers, filterSearchedList } from './fuctions';
 
+// redux
+import { useSelector } from "react-redux";
+import { State } from "../../state";
+
 // import types
 import { Iuser } from './interfaces'
 
@@ -12,6 +16,8 @@ import { Iuser } from './interfaces'
 import './SearchUser.css'
 
 const SearchUser: React.FC = () => {
+
+  const { user } = useSelector((state: State) => state.ws);
   const allUserRef = useRef<Iuser[]>();
   const searchRef = useRef<any>();
   const [filteredUsers, setFilteredUsers] = useState<Iuser[]>();
@@ -20,7 +26,7 @@ const SearchUser: React.FC = () => {
   useEffect(() => {
     getAllUsers()
       .then((users: any) => {
-        allUserRef.current = users;
+        allUserRef.current = users.filter((filterUser: any) => filterUser.username !== user.username);
       })
   }, [])
 
@@ -50,7 +56,9 @@ const SearchUser: React.FC = () => {
               return (<li key={i} onClick={() => {
                 searchRef.current.value = ""; 
                 setFilteredUsers([]);
-                history.push(`/profile?username=${user.username}`)}
+                // history.push(`/profile?username=${user.username}`)    
+                history.push(`/profile/${user.username}`)    
+              }
               }>{user.username}</li>);
             })
           }

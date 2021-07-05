@@ -1,7 +1,7 @@
 import Network from '../../utils/network';
 
 export const getAllUsers = () => {
-  return Network('GET', 'http://192.168.1.111:4000/user/get-all')
+  return Network('GET', 'http://localhost:4000/user/get-all')
   .then((res) => {
     return res
   });
