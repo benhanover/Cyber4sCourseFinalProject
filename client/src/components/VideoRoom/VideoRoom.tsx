@@ -57,6 +57,9 @@ function VideoRoom() {
         console.log("could not get room in VideoRoom Component", e);
       });
   }, [rooms]);
+  useEffect(() => {
+    console.log("videos:", videos);
+  }, [videos]);
 
   //component renders:
   /*-------------------------------------------------------------------------------------*/
@@ -282,6 +285,12 @@ function VideoRoom() {
           console.log("removing participant video");
           setVideos(
             videos.filter((video: any) => {
+              if (video.call.connectionId === call.connectionId) {
+                console.log(
+                  "removed this call with this connectionId:",
+                  call.connectionId
+                );
+              }
               return video.call.connectionId !== call.connectionId;
             })
           );

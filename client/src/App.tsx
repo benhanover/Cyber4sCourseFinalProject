@@ -54,7 +54,11 @@ const App: React.FunctionComponent<{}> = () => {
             <Route path="/lobby" component={Lobby} />
             <Route path="/room" component={VideoRoom} />
             <Route path="/my-profile" component={Profile} />
-            <Route path="/profile" component={OtherUserProfile} />
+            <Route
+              exact
+              path="/profile/:user"
+              render={(props: any) => <OtherUserProfile user={props} />}
+            />
             <Route path="*">
               <Redirect to="/lobby" />
             </Route>

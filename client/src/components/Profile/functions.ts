@@ -24,9 +24,6 @@ export const updateDetailsByField = async (
       // if (!promptRes) return;
       console.log("why are you here? ehh?");
 
-      Cookies.remove("accessToken");
-      Cookies.remove("refreshToken");
-
       const { data: response } = await axios.put(
         "http://localhost:4000/user/update",
         { place, field, update },

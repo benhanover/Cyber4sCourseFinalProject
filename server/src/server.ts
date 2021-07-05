@@ -23,10 +23,12 @@ console.log(DB, "from the server");
 // middlewares
 app.use(express.json());
 app.use(cors());
+app.get('/test', (req, res) => {
+  res.send('IM ALIVE')
+})
 app.use("/user", users);
 app.use("/room", rooms);
 app.use(fallbacks);
-
 /*---------------------------------------------------------------------------------------------------------- */
 
 import {
@@ -52,7 +54,7 @@ wsServer.on("connection", async (clientSocket: any) => {
 
   //cadding event listeners
   clientSocket.on("message", async (messageBoxEvent: any) => {
-    console.log("received:", messageBoxEvent);
+    // console.log("received:", messageBoxEvent);
 
     const messageData: ImessageBox = JSON.parse(messageBoxEvent);
     switch (messageData.type) {
@@ -157,9 +159,10 @@ wsServer.on("send rooms to all", async () => {
 wsServer.on("close", () => {
   "connection closed";
 });
-
+console.log("Db" , DB)
 mongoose
-  .connect(`mongodb://${MONGO_SERVER}:27017/${DB}`, {
+  // .connect(`mongodb://${MONGO_SERVER}:27017/${DB}`, {
+  .connect(`mongodb://localhost:27017/${DB}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
