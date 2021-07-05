@@ -1,9 +1,9 @@
 // import libraries
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import React, { useRef } from 'react';
-import { useHistory } from 'react-router-dom';
-import './Login.css'
+import axios from "axios";
+import Cookies from "js-cookie";
+import React, { useRef } from "react";
+import { useHistory } from "react-router-dom";
+import "./Login.css";
 // redux shit
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -19,11 +19,18 @@ const Login: React.FC = () => {
 
   return (
     <div className="login-form-container">
-      <button className='register-button button' onClick={() => history.push('/register')}>Register</button>
-      <div className='login-container'>
+      <button
+        className="register-button button"
+        onClick={() => history.push("/register")}
+      >
+        Register
+      </button>
+      <div className="login-container">
         <input ref={emailRef} placeholder="Email"></input>
         <input ref={passwordRef} placeholder="Password"></input>
-        <button className='login-button button' onClick={submitLogin}>Login</button>
+        <button className="login-button button" onClick={submitLogin}>
+          Login
+        </button>
       </div>
     </div>
   );
@@ -45,7 +52,7 @@ const Login: React.FC = () => {
     const password = passwordRef?.current?.value;
     cleanup();
     axios
-      .post("http://192.168.1.111:4000/user/login", { email, password })
+      .post("http://localhost:4000/user/login", { email, password })
       .then(({ data: response }) => {
         Cookies.set("accessToken", response.accessToken);
         Cookies.set("refreshToken", response.refreshToken);

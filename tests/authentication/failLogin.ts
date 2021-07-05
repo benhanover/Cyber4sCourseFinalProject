@@ -34,7 +34,7 @@ export const FailLogin = (collections: Promise<beforeAll>) =>
       const testResponse1: any = new Promise((resolve) => {
         page.on("response", async (response) => {
           if (
-            (await response.url()) === "http://192.168.1.111:4000/user/login" &&
+            (await response.url()) === "http://localhost:4000/user/login" &&
             (await response.status()) === 409 &&
             (await response.json()).message === errorEnums.WRONG_CREDENTIALS
           ) {
@@ -46,14 +46,19 @@ export const FailLogin = (collections: Promise<beforeAll>) =>
       });
 
       // rediret to login page
-      const loginButtonFromRegPage: ElementHandle<Element> | null = await page.$(".login-btn");
-      if(loginButtonFromRegPage)  await loginButtonFromRegPage.click();
+      const loginButtonFromRegPage: ElementHandle<Element> | null =
+        await page.$(".login-btn");
+      if (loginButtonFromRegPage) await loginButtonFromRegPage.click();
 
-      await page.waitForSelector('.login-container');  
-      const inputs: ElementHandle<Element>[] = await page.$$('.login-container > input');
+      await page.waitForSelector(".login-container");
+      const inputs: ElementHandle<Element>[] = await page.$$(
+        ".login-container > input"
+      );
 
-      await fillFormWithMockData(page, inputs,[ mockData.loginTest[0] , "1234"])
-      const loginButton: ElementHandle<Element> |null = await page.$('.login-button');
+      await fillFormWithMockData(page, inputs, [mockData.loginTest[0], "1234"]);
+      const loginButton: ElementHandle<Element> | null = await page.$(
+        ".login-button"
+      );
       await loginButton?.click();
       expect(await testResponse1).toBe(true);
       const tokensExist1: boolean = await doesTokensExist(page);
@@ -63,7 +68,7 @@ export const FailLogin = (collections: Promise<beforeAll>) =>
       const testResponse2: any = new Promise((resolve) => {
         page.on("response", async (response) => {
           if (
-            (await response.url()) === "http://192.168.1.111:4000/user/login" &&
+            (await response.url()) === "http://localhost:4000/user/login" &&
             (await response.status()) === 409 &&
             (await response.json()).message === errorEnums.NO_SUCH_USER
           ) {
