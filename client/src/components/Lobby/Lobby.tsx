@@ -3,6 +3,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import './Lobby.css'
+
+// import enums
+import { enums } from "../../utils/enums"
+
 // import types
 import { ImessageBox, Iroom } from "./interfaces";
 // import redux-states
@@ -28,7 +32,7 @@ const Lobby: React.FC = () => {
   );
   useEffect(() => {
     // create connection to the websocket server
-    const newWS = new WebSocket("ws://localhost:4000");
+    const newWS = new WebSocket(`ws://${enums.wsUrl}`);
     newWS.onopen = () => {
       console.log("connected to server");
     };

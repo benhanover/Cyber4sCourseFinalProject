@@ -4,6 +4,10 @@ import Cookies from 'js-cookie';
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import './Login.css'
+
+// import enums
+import { enums } from "../../utils/enums"
+
 // redux shit
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -45,7 +49,7 @@ const Login: React.FC = () => {
     const password = passwordRef?.current?.value;
     cleanup();
     axios
-      .post("http://localhost:4000/user/login", { email, password })
+      .post(`${enums.baseUrl}/user/login`, { email, password })
       .then(({ data: response }) => {
         Cookies.set("accessToken", response.accessToken);
         Cookies.set("refreshToken", response.refreshToken);

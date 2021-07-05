@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from "axios";
 
+// import enums
+import { enums } from "../../utils/enums"
+
+
 export function register(
   username: string,
   firstName: string,
@@ -8,7 +12,7 @@ export function register(
   email: string,
   password: string
 ): Promise<AxiosResponse<any>> {
-  return axios.post("http://localhost:4000/user/register", {
+  return axios.post(`${enums.baseUrl}/user/register`, {
     username,
     firstName,
     lastName,

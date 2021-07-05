@@ -10,6 +10,9 @@ import { bindActionCreators } from "redux";
 import { State, wsActionCreator } from "../../state";
 import UserVideo from "./UserVideo/UserVideo";
 
+// import enums
+import { enums } from "../../utils/enums";
+
 //conponnent
 /*-------------------------------------------------------------------------------------*/
 
@@ -38,18 +41,16 @@ function VideoRoom() {
   // on roomstate change: update  the room details from db
   /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
-    Network("GET", `http://localhost:4000/room/${roomId}`)
+    console.log('useEffect rooms:', videos)
+    Network("GET", `${enums.baseUrl}/room/${roomId}`)
       .then((roomFromDb) => {
         if (!room) createConnection(roomFromDb);
         setRoom(roomFromDb);
-        const relevnatStream = roomFromDb.participants.map((user: any) => {
-          return user.streamId;
-          
-        });
-        console.log("stream id in videos", relevnatStream)
-        setVideos(videos.filter((video: any) => {
-          return relevnatStream.includes(video.stream.id);
-        }));
+        const participantsStreams = roomFromDb.participants.map((participant: any) => participant.streamId);
+        console.log("stream id in videos", participantsStreams)
+
+        // clear all leave participants. bad idea.
+        setVideos(videos.filter((video: any) =>  participantsStreams.includes(video.stream.id)));
       })
       .catch((e) => {
         console.log("could not get room in VideoRoom Component", e);
@@ -57,7 +58,7 @@ function VideoRoom() {
       
   }, [rooms]);
 useEffect(() => {
- console.log("videos:", videos);
+ console.log("useEffect videos:", videos);
  
 }, [videos])
 
@@ -77,7 +78,7 @@ useEffect(() => {
       <button  className="leave-button" onClick={leaveRoom}>Leave</button>
       <button  className="self-mute-button" onClick={selfMuteToggle}>Mute</button>
       <button  className="stop-self-video-button" onClick={selfVideoToggle}>Stop Video</button>
-<button  className="share-screen-button" onClick={shareScreen}>Share Screen</button>
+      <button  className="share-screen-button" onClick={shareScreen}>Share Screen</button>
       </div>
       :
       null
@@ -167,39 +168,42 @@ useEffect(() => {
     //get user media
 
     // const myMedia: MediaStream = await getUserMedia();
-    let myMedia: MediaStream = new MediaStream();
-    myMedia.onaddtrack = (e) => {
-      console.log('track added');
-    }
+    let myMedia: MediaStream | undefined;
+    
     
     
     myMedia = await getUserMedia();
-    myMedia.getVideoTracks()[0].addEventListener('muted' , () => {
-      console.log("muted");
+    if (!myMedia) {
+      console.log("no myMedia", myMedia);
+      return;
+    }
+    setMyStream(myMedia);
     
-  });
-    myMedia.getVideoTracks()[0].addEventListener('unmuted', () => {
-      console.log("unmuted");
-    });
     
-    myMedia.addEventListener("addtrack", () => {
-      console.log("event listener add track");
-    });
-      setMyStream(myMedia);
-    
-
     //creating new peer
     const mypeer = new Peer();
     
     //getting peer id;
     mypeer.on("open", async (id) => {
+      if (!myMedia) {
+        console.log("no myMedia", myMedia);
+        return;
+      }
+      // if (!myMedia === false) {
+      //   console.log("no myMedia", myMedia);
+      //   return;
+      // }
       user.peer= mypeer;
       user.peerId = id;
       setUser({ ...user });
       const peerId = id;
       setPeerId(peerId);
       console.log("user", getCleanedUser(user));
-      
+      console.log("myMedia", myMedia);
+      let mediaStreamId = myMedia.id;
+      if (mediaStreamId.match(/^{.+}$/)) {
+        mediaStreamId = mediaStreamId.slice(1, -1);
+      }
       //tell the server to update room participant in db and at other clients
       serverSocket.send(
         JSON.stringify({
@@ -207,7 +211,7 @@ useEffect(() => {
           message: {
             participant: {
               peerId: peerId,
-              streamId: myMedia.id,
+              streamId: mediaStreamId,
               user: getCleanedUser(user),
             }, // username will be changed to profile.
             roomId: room._id,
@@ -227,6 +231,16 @@ useEffect(() => {
 
         //remove participant`s stream how left the room
         call.on("close", () => {
+          // console.log("removing participant video");
+          // setVideos(
+          //   videos.filter((video: any) => {
+          //     if (video.call.connectionId === call.connectionId) {
+          //       console.log("removed this call with this connectionId:", call.connectionId);
+                
+          //     }
+          //     return video.call.connectionId !== call.connectionId;
+          //   })
+          // );
         });
         //
         //recieving new participant stream
@@ -238,7 +252,7 @@ useEffect(() => {
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {
-            
+            // participant create a call with this this one.
             videos.push({ stream: remoteStream, call: call, isVideoOn: remoteStream.getVideoTracks()[0]?.enabled });
               setVideos([...videos]);
           }
@@ -255,7 +269,10 @@ useEffect(() => {
 
       room.participants?.forEach((participant: any) => {
         //console.log("for each participants");
-        
+        if (!myMedia) {
+          console.log("no myMedia", myMedia);
+          return;
+        }
         if (participant.peerId === peerId) return;
         // console.log("1");
         const call: any = mypeer.call(participant.peerId, myMedia);
@@ -279,16 +296,16 @@ useEffect(() => {
 
         //remove participant`s stream how left the room
         call.on("close", () => {
-          console.log("removing participant video");
-          setVideos(
-            videos.filter((video: any) => {
-              if (video.call.connectionId === call.connectionId) {
-                console.log("removed this call with this connectionId:", call.connectionId);
+          // console.log("removing participant video");
+          // setVideos(
+          //   videos.filter((video: any) => {
+          //     if (video.call.connectionId === call.connectionId) {
+          //       console.log("removed this call with this connectionId:", call.connectionId);
                 
-              }
-              return video.call.connectionId !== call.connectionId;
-            })
-          );
+          //     }
+          //     return video.call.connectionId !== call.connectionId;
+          //   })
+          // );
         });
         //recieving new participant stream
         call.on("stream", (remoteStream: any) => {
@@ -298,7 +315,7 @@ useEffect(() => {
           if (
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {
-            
+            // participant answered this user's call with media.
               videos.push({ stream: remoteStream, call: call, isVideoOn: remoteStream.getVideoTracks()[0]?.enabled});
               setVideos([...videos]);
           }
@@ -330,7 +347,8 @@ useEffect(() => {
   }
 
   /*-----------------------------------------------------------------------------------*/
-  async function getUserMedia(): Promise<MediaStream> {
+  async function getUserMedia(): Promise<MediaStream | undefined> {
+    console.log('getting user media')
     try {
       const media = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -354,13 +372,14 @@ useEffect(() => {
          
             console.log("return nothing!!");
             
-            return new MediaStream();
+            return;
           }
         }
   }
   /*-----------------------------------------------------------------------------------------*/
-  async function leaveRoom() {
+  async function leaveRoom() { 
     console.log(roomId, peerId, user.peerId, "check");
+    console.log(videos);
     serverSocket.send(
       JSON.stringify({
         type: "leave room",
@@ -370,6 +389,7 @@ useEffect(() => {
         },
       })
     );
+
     videos.forEach((video: any) => {
       console.log("closing the video");
       

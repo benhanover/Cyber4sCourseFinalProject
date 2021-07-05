@@ -1,7 +1,11 @@
 import Network from '../../utils/network';
 
+
+// import enums
+import { enums } from "../../utils/enums"
+
 export const getAllUsers = () => {
-  return Network('GET', 'http://localhost:4000/user/get-all')
+  return Network('GET', `${enums.baseUrl}/user/get-all`)
   .then((res) => {
     return res
   });

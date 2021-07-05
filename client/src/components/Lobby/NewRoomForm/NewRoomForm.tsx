@@ -4,6 +4,9 @@ import { State } from "../../../state";
 import Network from "../../../utils/network";
 import { Iroom } from "../interfaces";
 
+// import enums
+import { enums } from "../../../utils/enums"
+
 // import css
 import './NewRoomForm.css';
 
@@ -103,7 +106,7 @@ function NewRoomForm() {
     cleanup();
 
     // creates new room in db
-    Network("POST", "http://localhost:4000/room/new", newRoom)
+    Network("POST", `${enums.baseUrl}/room/new`, newRoom)
       .then((response) => {
         const newRoom: Iroom = response.newRoom;
 

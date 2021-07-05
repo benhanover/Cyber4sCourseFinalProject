@@ -1,5 +1,8 @@
 import Cookies from 'js-cookie';
 
+// import enums
+import { enums } from "../../utils/enums"
+
 // import network
 import Network from '../../utils/network';
 import axios from 'axios';
@@ -25,12 +28,12 @@ export const updateDetailsByField  = async (fieldAndLocation: Ifield | boolean, 
       Cookies.remove('accessToken');
       Cookies.remove('refreshToken');
 
-      const { data: response } = await axios.put('http://localhost:4000/user/update', { place, field, update }, { headers: { authorization: accessToken, refreshToken } });
+      const { data: response } = await axios.put(`${enums.baseUrl}/user/update`, { place, field, update }, { headers: { authorization: accessToken, refreshToken } });
       Cookies.set('accessToken', response.accessToken);
       Cookies.set('refreshToken', response.refreshToken);
     }
     else {
-      return Network('PUT', 'http://localhost:4000/user/update', { place, field, update })
+      return Network('PUT', `${enums.baseUrl}/user/update`, { place, field, update })
     }
 } catch (e) {  
       console.log('Profile > functions.ts > updatedDetailsByField');

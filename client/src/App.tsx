@@ -16,9 +16,11 @@ import { bindActionCreators } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import { State, wsActionCreator } from "./state";
 
+// import enums
+import { enums } from "./utils/enums";
+  
 // network
 import Network from "./utils/network";
-
 // import css
 import "./App.css";
 
@@ -26,9 +28,9 @@ const App: React.FunctionComponent<{}> = () => {
   const { user } = useSelector((state: State) => state.ws);
   const dispatch = useDispatch();
   const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
-
+  
   useEffect(() => {
-    Network("GET", "http://localhost:4000/user/validator")
+    Network("GET", `${enums.baseUrl}/user/validator`)
       .then((res) => {
         if (!res) return;
         setUser(res.user);

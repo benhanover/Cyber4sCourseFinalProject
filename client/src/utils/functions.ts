@@ -2,6 +2,9 @@ import Cookies from "js-cookie";
 import Network from "./network";
 import axios, { AxiosResponse, Method } from "axios";
 
+// import enums
+import { enums } from "../utils/enums"
+
 export const recreateAccessToken = async (
   method: Method,
   endpoint: string,
@@ -10,7 +13,7 @@ export const recreateAccessToken = async (
   const refreshToken = Cookies.get("refreshToken");
   try {
     const { data: response } = await axios.get(
-      "http://localhost:4000/user/refreshToken",
+      `${enums.baseUrl}/user/refreshToken`,
       {
         headers: { refreshtoken: refreshToken },
       }
