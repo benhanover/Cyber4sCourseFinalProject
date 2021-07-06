@@ -15,7 +15,7 @@
 // //  connection listener
 // wsServer.on('connection', (clientSocket: any) => {
 //     console.log("connected!");
-    
+
 //     // const rooms = await getRooms();
 //     clientSocket.send({type: "rooms", message: "rooms" });
 //     //connection is up, let's add a simple simple event
@@ -26,7 +26,7 @@
 //         clientSocket.send(`Hello, you sent -> ${message}`);
 //     });
 
-//     //send immediatly a feedback to the incoming connection    
+//     //send immediatly a feedback to the incoming connection
 //     clientSocket.send('Hi there, I am a WebSocket server');
 // });
 // wsServer.on('close', () => {

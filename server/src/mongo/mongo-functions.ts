@@ -64,13 +64,14 @@ export const registerUser = async (user: Iuser): Promise<false | Iuser> => {
 export const saveRoom = async (room: Iroom): Promise<Iroom | false> => {
   try {
     // console.log("room.host:", room.host);
-    const hostRooms = await Room.find({ host: room.host }, ['title']);
-    if (hostRooms[0] && hostRooms.some(r => room.title === r.title )) {
+    const hostRooms = await Room.find({ host: room.host }, ["title"]);
+    if (hostRooms[0] && hostRooms.some((r) => room.title === r.title)) {
       console.log("Host already has a room with this title");
       return false;
     }
     const updatedRoom: Iroom = await Room.create(room);
-    if (Boolean(updatedRoom)) return updatedRoom;
+    console.log("mongofunction line 73 ", updatedRoom);
+    if (Boolean(updatedRoom._id)) return updatedRoom;
     console.log(errorEnums.FAILED_ADDING_DATA);
     return false;
   } catch (e: unknown) {
@@ -283,18 +284,23 @@ export const removePartecipentfromRoom = async (
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in: userController update | change field in the profile
-export const updateUserByField = async (email: string, place: string, fieldToUpdate: string, contentOfTheUpdate: unknown) => {
+export const updateUserByField = async (
+  email: string,
+  place: string,
+  fieldToUpdate: string,
+  contentOfTheUpdate: unknown
+) => {
   try {
-    const user = await User.findOne({email: email});
-    switch(place) {
-      case 'user': 
+    const user = await User.findOne({ email: email });
+    switch (place) {
+      case "user":
         user[fieldToUpdate] = contentOfTheUpdate;
         break;
-      case 'profile':
+      case "profile":
         user.profile[fieldToUpdate] = contentOfTheUpdate;
         break;
-      default: 
-        console.log('mongo-functions updateUserByField default in switch');
+      default:
+        console.log("mongo-functions updateUserByField default in switch");
     }
     await user.save();
     return user;
@@ -302,18 +308,23 @@ export const updateUserByField = async (email: string, place: string, fieldToUpd
     console.log(e);
     return false;
   }
-}
+};
 /*---------------------------------------------------------------------------------------------------------- */
-export const updateEmailOrUsername = async (email: string, place: string, field: string, update: string) => {
-  console.log(email, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+export const updateEmailOrUsername = async (
+  email: string,
+  place: string,
+  field: string,
+  update: string
+) => {
+  console.log(email, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   const users = await User.find();
   const userExist = users.find((user) => user[field] === update);
-  if(userExist) return false;
-  const user = await User.findOne({email});
+  if (userExist) return false;
+  const user = await User.findOne({ email });
   user[field] = update;
   await user.save();
-  return user; 
-} 
+  return user;
+};
 
 /*---------------------------------------------------------------------------------------------------------- */
 // used in userController getAllUsers | get all users from the database
@@ -333,7 +344,7 @@ export const getUser = async (username: any) => {
   } catch (e) {
     console.log(e);
   }
-}
+};
 //find many document from a model
 /*---------------------------------------------------------------------------------------------------------- */
 export const findManyDocuments = async (
@@ -350,15 +361,15 @@ export const findManyDocuments = async (
     };
   }
   try {
-    const Documents: Umodels[] = await model.find(
-      {[field]:{ $in: contentsArray} });
-    
+    const Documents: Umodels[] = await model.find({
+      [field]: { $in: contentsArray },
+    });
 
-    return  Documents
-      ?  Documents
+    return Documents
+      ? Documents
       : { return: false, message: modelString + errorEnums.NOT_FOUND };
   } catch (e: unknown) {
     console.log(errorEnums.FAILED_GETTING_DATA + e);
     return { return: false, message: errorEnums.FAILED_GETTING_DATA + e };
   }
-}
+};
