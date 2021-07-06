@@ -127,7 +127,6 @@ function NewRoomForm() {
       isLocked,
       host,
     }; //host participents
-    console.log(newRoom);
 
     //  inputs cleanup
     cleanup();
@@ -138,6 +137,7 @@ function NewRoomForm() {
         const newRoom: Iroom = response.newRoom;
 
         //  sends a WebSocket message to pass the new room to all connected sockets.
+        console.log("inside create room before sending to ws server");
         serverSocket.send(
           JSON.stringify({ type: "creating new room", message: newRoom })
         );

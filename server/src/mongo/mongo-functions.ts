@@ -71,7 +71,7 @@ export const saveRoom = async (room: Iroom): Promise<Iroom | false> => {
     }
     const updatedRoom: Iroom = await Room.create(room);
     console.log("mongofunction line 73 ", updatedRoom);
-    if (Boolean(updatedRoom)) return updatedRoom;
+    if (Boolean(updatedRoom._id)) return updatedRoom;
     console.log(errorEnums.FAILED_ADDING_DATA);
     return false;
   } catch (e: unknown) {

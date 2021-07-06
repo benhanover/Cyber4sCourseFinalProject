@@ -17,7 +17,7 @@ import { ReactElement } from "react";
 const Lobby: React.FC = () => {
   const dispatch = useDispatch();
   const { ws, rooms } = useSelector((state: State) => state);
-  const { user, chosenRoom } = ws;
+  const { user, chosenRoom, serverSocket } = ws;
   const { setWS, setUser } = bindActionCreators(
     { ...wsActionCreator },
     dispatch
@@ -33,6 +33,7 @@ const Lobby: React.FC = () => {
 
   useEffect(() => {
     // create connection to the websocket server
+    if (serverSocket) return;
     const newWS = new WebSocket("ws://localhost:4000");
     newWS.onopen = () => {
       console.log("connected to server");
