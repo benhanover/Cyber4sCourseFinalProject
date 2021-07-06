@@ -68,7 +68,9 @@ function VideoRoom() {
     <div className="video-room">
       {noUserDevices && (
         <div>
-          <h1>you must give premition to media devices, at list audio</h1>
+          <h1 style={{ color: "white" }}>
+            you must give premition to media devices, at list audio
+          </h1>
           <button
             onClick={(e) => {
               createConnection(room);
@@ -112,9 +114,11 @@ function VideoRoom() {
       <button className="stop-self-video-button" onClick={selfVideoToggle}>
         Stop Video
       </button>
-      <button className="share-screen-button" onClick={shareScreen}>
-        Share Screen
-      </button>
+      {myStream?.getVideoTracks()[0] && (
+        <button className="share-screen-button" onClick={shareScreen}>
+          Share Screen
+        </button>
+      )}
     </div>
   ) : null;
 
@@ -138,6 +142,7 @@ function VideoRoom() {
   }
 
   async function shareScreen() {
+    if (!myStream.getVideoTracks()[0]) return;
     //@ts-ignore
     const screenMedia = await navigator.mediaDevices.getDisplayMedia({
       cursor: true,
@@ -205,7 +210,7 @@ function VideoRoom() {
       SetNoUserDevices(true);
       return;
     }
-
+    SetNoUserDevices(false);
     setMyStream(myMedia);
 
     //creating new peer
