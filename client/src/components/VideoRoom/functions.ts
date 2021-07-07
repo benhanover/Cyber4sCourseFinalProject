@@ -93,7 +93,6 @@ export const getCleanedUser = (user: any) => {
     );
 
     videos.forEach((video: any) => {
-      console.log("closing the video");
       
       video.call.close();
     });

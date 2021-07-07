@@ -31,11 +31,12 @@ const Lobby: React.FC = () => {
     dispatch
   );
 
-  useEffect(() => {
-    console.log("rooms had change", rooms);
-  }, [rooms]);
+  // useEffect(() => {
+  //   console.log("rooms had change", rooms);
+  // }, [rooms]);
 
   useEffect(() => {
+    if (serverSocket) return;
     // create connection to the websocket server
     const newWS = new WebSocket(`ws://${enums.wsUrl}`);
     newWS.onopen = () => {
@@ -65,7 +66,7 @@ const Lobby: React.FC = () => {
 
     switch (messageData.type) {
       case "rooms":
-        // console.log("rooms", rooms);
+        // console.log("rooms", messageData.message);
         if (typeof messageData.message === "string") return;
         setRooms(messageData.message);
         break;

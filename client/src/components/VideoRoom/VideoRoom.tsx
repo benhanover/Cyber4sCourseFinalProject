@@ -15,6 +15,8 @@ import { State, wsActionCreator } from "../../state";
 // import enums
 import { enums } from "../../utils/enums";
 
+import Network from "../../utils/network";
+
 /*-------------------------------------------------------------------------------------*/
 //components
 import UserVideo from "./UserVideo/UserVideo";
@@ -50,21 +52,17 @@ function VideoRoom() {
   // on roomstate change: update  the room details from db
   /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
-    console.log('--------IN THE USE EFFECT--------');
-    
-    const currentRoom = rooms.find((room: any) => room._id === roomId);
-    if (!room) { createConnection(currentRoom) 
-      console.log('bla');
+    const zz = async () => {
       
-      setRoom(currentRoom);
-      return
-    } else {
-      console.log('from useEffect')
-      let testVideos = [...getVideos(videos, myStream, room)];
-      console.log(testVideos);
-      setVideos(testVideos);
+      const currentRoom = rooms.find((room: any) => room._id === roomId);
+      if (!room) { createConnection(currentRoom) 
+      } else if (currentRoom?.participants.length - 1 < videos.length) {
+        let testVideos = [... await getVideos(videos, myStream)];
+        setVideos(testVideos);
+      }
+      setRoom({...currentRoom});
     }
-    setRoom({...currentRoom});
+    zz();
     }, [rooms]);
   
   //component renders:
@@ -93,8 +91,6 @@ function VideoRoom() {
 
 
         {videos?.map((video: any, i: number) => {
-          console.log('videossssssssssssssssss')
-          console.log(videos)
           return <UserVideo key={i} muted={false} stream={video.stream} username="video.username" userImage={getUserByStreamId(room, video.call._remoteStream.id)} isVideoOn={video.isVideoOn} />;
         })
       }
@@ -117,7 +113,7 @@ function VideoRoom() {
   async function createConnection(room: any) {
     let myMedia: MediaStream | undefined = await getUserMedia();
     if (!myMedia) {
-      // console.log("no myMedia", myMedia);
+      console.log("no myMedia", myMedia);
       return;
     }
     setMyStream(myMedia);
@@ -126,7 +122,7 @@ function VideoRoom() {
     const mypeer = new Peer();
     mypeer.on("open", async (id) => {
       if (!myMedia) {
-        // console.log("no myMedia", myMedia);
+        console.log("no myMedia", myMedia);
         return;
       }
       user.peer= mypeer;
@@ -162,23 +158,15 @@ function VideoRoom() {
         });
 
         //recieving new participant stream
-        call.on("stream", (remoteStream: any) => {
-          // console.log("in the stream");
-          // console.log("remoteStream", remoteStream, "call", call, "tracks", remoteStream.getVideoTracks()[0]?.enabled || remoteStream.getTracks()[0]?.enabled || null );
+        call.on("stream", async (remoteStream: any) => {
           
           if (!videos.some((video: any) => video.stream.id === remoteStream.id)) {
-            console.log('videos before adding stream', videos);
-            console.log(videos.length);
             // participant create a call with this this one.
             videos.push({ stream: remoteStream, call: call, isVideoOn: remoteStream.getVideoTracks()[0]?.enabled });
-      console.log('2')
               if(!room) {
-                console.log('no myStream');
                 setVideos([...videos]);
               } else {
-                console.log('from 160')
-                let testVideos = [...getVideos(videos, myMedia, rooms.find((room: any) => room._id === roomId))];
-                console.log(testVideos);
+                let testVideos = [... (await getVideos(videos, myMedia))];
                 setVideos(testVideos);
               }
           }
@@ -192,9 +180,8 @@ function VideoRoom() {
       if (!room.participants) return;
 
       room.participants?.forEach((participant: any) => {
-        //console.log("for each participants");
         if (!myMedia) {
-          // console.log("no myMedia", myMedia);
+          console.log("no myMedia", myMedia);
           return;
         }
         if (participant.peerId === peerId) return;
@@ -220,22 +207,14 @@ function VideoRoom() {
 
         });
         //recieving new participant stream
-        call.on("stream", (remoteStream: any) => {
-          // console.log("stream of creating call");
-          // console.log("remoteStream", remoteStream, "call", call, "tracks", remoteStream.getVideoTracks()[0]?.enabled || remoteStream.getTracks()[0]?.enabled || null );
+        call.on("stream", async (remoteStream: any) => {
           if (!videos.some((video: any) => video.stream.id === remoteStream.id)) {
-            console.log('videos before adding stream2', videos);
             // participant answered this user's call with media.
               videos.push({ stream: remoteStream, call: call, isVideoOn: remoteStream.getVideoTracks()[0]?.enabled});
-      console.log('3')
-
           if(!room) {
-            console.log('no myStream');
             setVideos([...videos]);
           } else {
-            console.log('from 225')
-            let testVideos = [...getVideos(videos, myMedia, rooms.find((room: any) => room._id === roomId))];
-            console.log(testVideos);
+            let testVideos = [... (await getVideos(videos, myMedia))];
             setVideos(testVideos); 
           }
           }
@@ -243,30 +222,30 @@ function VideoRoom() {
       });
     });
   }
-  function getVideos(updatedVideos: any, myStream: any, room: any){
-    console.log("room", room)
-    console.log('room participants', room.participants);
-    console.log("myStream", myStream)
-    console.log("updatedVideos", updatedVideos)
-    const participantsStreams: any[] = [];
-    room?.participants.forEach((participant: any) => {
-      if(myStream.id !== participant.streamId) {
-        participantsStreams.push(participant.streamId);
-      }
-    });
-    
-    const tempVideos = updatedVideos.filter((video: any) => {
-      let mediaStreamId = video.stream.id;
-      if (mediaStreamId.match(/^{.+}$/)) {
-        mediaStreamId = mediaStreamId.slice(1, -1);
-      }
+  async function getVideos(updatedVideos: any, myStream: any) {
+
+    try {
+      const roomFromDb = await Network("GET", `http://localhost:4000/room/${roomId}`);
+      const participantsStreams: any[] = [];
+      roomFromDb?.participants.forEach((participant: any) => {
+        if(myStream.id !== participant.streamId) {
+          participantsStreams.push(participant.streamId);
+        }
+      });
       
-      return participantsStreams.includes(mediaStreamId)
-    });
-    
-    
-    // console.log("tempVideos", tempVideos)
-        return tempVideos
+      const tempVideos = updatedVideos.filter((video: any) => {
+        let mediaStreamId = video.stream.id;
+        if (mediaStreamId.match(/^{.+}$/)) {
+          mediaStreamId = mediaStreamId.slice(1, -1);
+        }
+        
+        return participantsStreams.includes(mediaStreamId)
+      });
+      
+          return tempVideos
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 export default VideoRoom;
