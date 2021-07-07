@@ -1,11 +1,14 @@
+@import '../../Common/styles/themeColors.scss';
+
+
 .room{
     position: relative;
-    background-color: rgb(196, 223, 255);
+    background-color: $divBackgroundColor;
     border-radius: 5px;
-    border:rgba($color: #ffff68, $alpha: 0.6);
+    border: 1px solid rgba($color: black, $alpha: 0.1);
     width: 15rem;
     margin: 0.3rem;
-    border-radius: 10px;
+    border-radius: 5px;
     .title{
         font-weight: bolder;
         padding: 0.3rem;

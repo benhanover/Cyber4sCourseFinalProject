@@ -1,3 +1,8 @@
+.lobby {
+  background-color: #f3f3f3;
+  min-height: 100%;
+}
+
 .rooms-container {
   display: -webkit-box;
   display: -ms-flexbox;

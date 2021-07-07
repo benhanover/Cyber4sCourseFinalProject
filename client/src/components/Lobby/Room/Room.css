@@ -1,11 +1,11 @@
 .room {
   position: relative;
-  background-color: #c4dfff;
+  background-color: white;
   border-radius: 5px;
-  border: rgba(255, 255, 104, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   width: 15rem;
   margin: 0.3rem;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .room .title {

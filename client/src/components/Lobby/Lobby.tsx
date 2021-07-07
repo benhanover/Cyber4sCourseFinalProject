@@ -88,7 +88,7 @@ const Lobby: React.FC = () => {
     }
   }
   return (
-    <>
+    <div className="lobby">
       {chosenRoomDisplay(chosenRoom)}
       <NewRoomForm />
       <div className="rooms-container">
@@ -97,7 +97,7 @@ const Lobby: React.FC = () => {
           return <Room key={i} room={room} chosen={false} />;
         })}
       </div>
-    </>
+    </div>
   );
 
   function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null {
