@@ -23,13 +23,20 @@ import UserVideo from "./UserVideo/UserVideo";
 
 /*-------------------------------------------------------------------------------------*/
 // import functions
-import { getUserByStreamId, shareScreen, selfMuteToggle, selfVideoToggle, getCleanedUser, getUserMedia, leaveRoom } from './functions';
+import {
+  getUserByStreamId,
+  shareScreen,
+  selfMuteToggle,
+  selfVideoToggle,
+  getCleanedUser,
+  getUserMedia,
+  leaveRoom,
+} from "./functions";
 /*-------------------------------------------------------------------------------------*/
 // import peer functions
 // import { getPeerId } from './peer'
 
 function VideoRoom() {
-
   const { serverSocket, user } = useSelector((state: State) => state.ws);
   const { rooms } = useSelector((state: State) => state);
   const dispatch = useDispatch();
@@ -53,69 +60,114 @@ function VideoRoom() {
   /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
     const zz = async () => {
-      
       const currentRoom = rooms.find((room: any) => room._id === roomId);
-      if (!room) { createConnection(currentRoom) 
+      if (!room) {
+        createConnection(currentRoom);
       } else if (currentRoom?.participants.length - 1 < videos.length) {
-        let testVideos = [... await getVideos(videos, myStream)];
+        let testVideos = [...(await getVideos(videos, myStream))];
         setVideos(testVideos);
       }
-      setRoom({...currentRoom});
-    }
+      setRoom({ ...currentRoom });
+    };
     zz();
-    }, [rooms]);
-  
+  }, [rooms]);
+
   //component renders:
   /*-------------------------------------------------------------------------------------*/
 
   return (
     <>
-    {
-    videos && room && 
-    <div className="video-room">
+      {videos && room && (
+        <div className="video-room">
+          {noUserDevices && (
+            <div>
+              <h1 style={{ color: "white" }}>
+                you must give premition to media devices, at list audio
+              </h1>
+              <button
+                onClick={(e) => {
+                  createConnection(room);
+                }}
+              >
+                try again
+              </button>
+            </div>
+          )}
 
-
-{noUserDevices && (
-        <div>
-          <h1>you must give premition to media devices, at list audio</h1>
+          {videos?.map((video: any, i: number) => {
+            return (
+              <UserVideo
+                key={i}
+                muted={false}
+                stream={video.stream}
+                username="video.username"
+                userImage={getUserByStreamId(room, video.call._remoteStream.id)}
+                isVideoOn={video.isVideoOn}
+              />
+            );
+          })}
+          {myStream && (
+            <UserVideo
+              muted={true}
+              stream={myStream}
+              userImage={user.profile.imageBlob}
+              username="peerState"
+              isVideoOn={myVideoIsOn}
+            />
+          )}
           <button
-            onClick={(e) => {
-              createConnection(room);
+            className="leave-button"
+            onClick={() => {
+              leaveRoom(
+                roomId,
+                peerId,
+                serverSocket,
+                videos,
+                user,
+                myStream,
+                room
+              );
+              history.push("/lobby");
             }}
           >
-            try again
+            Leave
           </button>
+          <button
+            className="self-mute-button"
+            onClick={() => selfMuteToggle(myStream)}
+          >
+            Mute
+          </button>
+          <button
+            className="stop-self-video-button"
+            onClick={() => setMyVideoIsOn(selfVideoToggle(myStream))}
+          >
+            Stop Video
+          </button>
+          {myStream?.getVideoTracks()[0] && (
+            <button
+              className="share-screen-button"
+              onClick={async () => await shareScreen(videos, myStream)}
+            >
+              Share Screen
+            </button>
+          )}
         </div>
       )}
-
-
-
-        {videos?.map((video: any, i: number) => {
-          return <UserVideo key={i} muted={false} stream={video.stream} username="video.username" userImage={getUserByStreamId(room, video.call._remoteStream.id)} isVideoOn={video.isVideoOn} />;
-        })
-      }
-      {myStream && <UserVideo muted={true} stream={myStream} userImage={user.profile.imageBlob} username="peerState"  isVideoOn={myVideoIsOn}  />}
-      <button  className="leave-button" onClick={() => {
-        leaveRoom(roomId, peerId, serverSocket, videos, user, myStream, room);
-        history.push('/lobby');
-      }}>Leave</button>
-      <button  className="self-mute-button" onClick={() => selfMuteToggle(myStream)}>Mute</button>
-      <button  className="stop-self-video-button" onClick={() => setMyVideoIsOn(selfVideoToggle(myStream))}>Stop Video</button>
-      <button  className="share-screen-button" onClick={() => shareScreen(videos, myStream)}>Share Screen</button>
-      </div>
-    }
     </>
   );
 
   //functions:
   /*-------------------------------------------------------------------------------------*/
-  
+
   async function createConnection(room: any) {
     let myMedia: MediaStream | undefined = await getUserMedia();
     if (!myMedia) {
       console.log("no myMedia", myMedia);
+      SetNoUserDevices(true);
       return;
     }
+    SetNoUserDevices(false);
     setMyStream(myMedia);
 
     //creating new peer
@@ -125,7 +177,7 @@ function VideoRoom() {
         console.log("no myMedia", myMedia);
         return;
       }
-      user.peer= mypeer;
+      user.peer = mypeer;
       user.peerId = id;
       setUser({ ...user });
       const peerId = id;
@@ -159,16 +211,21 @@ function VideoRoom() {
 
         //recieving new participant stream
         call.on("stream", async (remoteStream: any) => {
-          
-          if (!videos.some((video: any) => video.stream.id === remoteStream.id)) {
+          if (
+            !videos.some((video: any) => video.stream.id === remoteStream.id)
+          ) {
             // participant create a call with this this one.
-            videos.push({ stream: remoteStream, call: call, isVideoOn: remoteStream.getVideoTracks()[0]?.enabled });
-              if(!room) {
-                setVideos([...videos]);
-              } else {
-                let testVideos = [... (await getVideos(videos, myMedia))];
-                setVideos(testVideos);
-              }
+            videos.push({
+              stream: remoteStream,
+              call: call,
+              isVideoOn: remoteStream.getVideoTracks()[0]?.enabled,
+            });
+            if (!room) {
+              setVideos([...videos]);
+            } else {
+              let testVideos = [...(await getVideos(videos, myMedia))];
+              setVideos(testVideos);
+            }
           }
         });
 
@@ -204,45 +261,52 @@ function VideoRoom() {
         //remove participant`s stream how left the room
         call.on("close", () => {
           //WORKS
-
         });
         //recieving new participant stream
         call.on("stream", async (remoteStream: any) => {
-          if (!videos.some((video: any) => video.stream.id === remoteStream.id)) {
+          if (
+            !videos.some((video: any) => video.stream.id === remoteStream.id)
+          ) {
             // participant answered this user's call with media.
-              videos.push({ stream: remoteStream, call: call, isVideoOn: remoteStream.getVideoTracks()[0]?.enabled});
-          if(!room) {
-            setVideos([...videos]);
-          } else {
-            let testVideos = [... (await getVideos(videos, myMedia))];
-            setVideos(testVideos); 
-          }
+            videos.push({
+              stream: remoteStream,
+              call: call,
+              isVideoOn: remoteStream.getVideoTracks()[0]?.enabled,
+            });
+            if (!room) {
+              setVideos([...videos]);
+            } else {
+              let testVideos = [...(await getVideos(videos, myMedia))];
+              setVideos(testVideos);
+            }
           }
         });
       });
     });
   }
   async function getVideos(updatedVideos: any, myStream: any) {
-
     try {
-      const roomFromDb = await Network("GET", `http://localhost:4000/room/${roomId}`);
+      const roomFromDb = await Network(
+        "GET",
+        `http://localhost:4000/room/${roomId}`
+      );
       const participantsStreams: any[] = [];
       roomFromDb?.participants.forEach((participant: any) => {
-        if(myStream.id !== participant.streamId) {
+        if (myStream.id !== participant.streamId) {
           participantsStreams.push(participant.streamId);
         }
       });
-      
+
       const tempVideos = updatedVideos.filter((video: any) => {
         let mediaStreamId = video.stream.id;
         if (mediaStreamId.match(/^{.+}$/)) {
           mediaStreamId = mediaStreamId.slice(1, -1);
         }
-        
-        return participantsStreams.includes(mediaStreamId)
+
+        return participantsStreams.includes(mediaStreamId);
       });
-      
-          return tempVideos
+
+      return tempVideos;
     } catch (e) {
       console.log(e);
     }

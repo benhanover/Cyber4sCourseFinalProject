@@ -29,6 +29,7 @@ outer room chat
 inroom chat
 add user as friend
 block user
+if 1 user sharescreen, then another user get in the room he dont see the shared screen
 
 
 # cleanup ws+peer
