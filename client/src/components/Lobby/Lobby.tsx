@@ -87,7 +87,8 @@ const Lobby: React.FC = () => {
         break;
     }
   }
-
+  console.log(chosenRoom);
+  
   return (
     <>
       {chosenRoomDisplay(chosenRoom)}
