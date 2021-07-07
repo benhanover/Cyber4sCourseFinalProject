@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { wsActionCreator, State, roomsActionCreator } from "../../../state";
 import { IroomProps } from "./interfaces";
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import { useHistory } from "react-router-dom";
 import "./Room.css";
 import { setRooms } from "../../../state/action-creators/roomsActionCreator";
@@ -14,11 +15,14 @@ import { convertCompilerOptionsFromJson } from "typescript";
 
 // import enums
 import { enums } from '../../../utils/enums';
+import { Tooltip } from "@material-ui/core";
+import { Category } from "@material-ui/icons";
 
 const Room: FC<IroomProps> = ({ room, chosen }) => {
   const dispatch = useDispatch();
   const { chosenRoom } = useSelector((state: State) => state.ws);
   const [errorDiv, setErrorDiv] = useState<any>(false);
+  const [showParticipants, setShowParticipants] = useState<string>('');
   const rooms = useSelector((state: State) => state.rooms);
   const { setChosenRoom } = bindActionCreators(
     { ...wsActionCreator },
@@ -51,6 +55,7 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
           {chosenRoom.participants.length > 0
             ?
             <div className="room-participants">
+              <PeopleAltIcon />
               <p key={6} className="limit">{ chosenRoom.participants.length}/{chosenRoom.limit}</p>
               {chosenRoom.participants.map((profile: any, i: number) => <p key={i} className="username">{profile.username}</p>)}
             </div>
@@ -78,12 +83,34 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
     );
   }
   return (
-    <div className="room" onClick={() => chosenRoom !== room ? setChosenRoom(room) : setChosenRoom(null)}>
+    <div className="room">
+
+    <div className="room-details" onClick={() => chosenRoom !== room ? setChosenRoom(room) : setChosenRoom(null)}>
+      <Tooltip title={"Room Subject" } placement="top-start">
+        <p className="subject"><Category className="category-icon icon" />{`${room.subject} > ${room.subSubject}`}</p>
+        </Tooltip>
       <p className="title">{room.title}</p>
-      <p className="subject">{`${room.subject} > ${room.subSubject}`}</p>
       <p className="description">{room.description}</p>
-      <p className="limit">{ room.participants.length}/{room.limit}</p>
-      <p className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
+              
+      <Tooltip title={room.participants.length+" users of "+room.limit + " are currently in this room" } placement="top">
+      <p className="limit"><PeopleAltIcon className="people-icon icon" />{ room.participants.length}/{room.limit}</p>
+          </Tooltip>
+      </div>
+        
+        <div className={`small-participants-display-container ${showParticipants}`}>
+        <div className="blur-div"></div>
+        {room.participants.map((participant: any) => {
+          return <div className="small-participant">
+            <div className="profile-left">
+
+            <img className="profile-image" src={participant.user.profile.imageBlob} alt="" />
+            <p className="profile-username">{participant.user.username}</p>
+            </div>
+            <div className="profile-age-container"><p className="profile-age">{participant.user.age}</p> <p className="profile-years-old">years old</p></div>
+          </div>
+        })}
+          </div>
+    <div className="show-participants-button" onClick={()=>setShowParticipants(showParticipants===''?'active': '' )}>Show Participants</div>
     </div>
   );
   async function goToRoom(roomId: string | undefined, password?: any) {
