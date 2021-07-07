@@ -12,6 +12,9 @@ import Network from '../../../utils/network';
 import ProfileTicket from './ProfileTicket/ProfileTicket';
 import { convertCompilerOptionsFromJson } from "typescript";
 
+// import enums
+import { enums } from '../../../utils/enums';
+
 const Room: FC<IroomProps> = ({ room, chosen }) => {
   const dispatch = useDispatch();
   const { chosenRoom } = useSelector((state: State) => state.ws);
@@ -28,21 +31,28 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
       setChosenRoom(null);
     };
   }, []);
+
+  //  keeps chosenRoom updated.
+  useEffect(() => {
+  if (!chosenRoom || chosenRoom._id !== room?._id) return;
+    setChosenRoom({ ...room })
+}, [rooms])
+
   if (chosen) {
     return (
       <div className="chosen-background" onClick={(e)=> setChosenRoom(null)}>
         <div key={42} className="chosen room" onClick={(e) => e.stopPropagation()}>
           <span key={1} className="close-chosen-button" onClick={() => setChosenRoom(null)}>X</span>
-          <p key={2} className="title">{room.title}</p>
-          <p key={3} className="subject">{`${room.subject} > ${room.subSubject}`}</p>
-          <p key={5} className="description">{room.description}</p>
-          <p key={7} className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
-          <ProfileTicket participants={room.participants}/>
-          {room.participants.length > 0
+          <p key={2} className="title">{chosenRoom.title}</p>
+          <p key={3} className="subject">{`${chosenRoom.subject} > ${chosenRoom.subSubject}`}</p>
+          <p key={5} className="description">{chosenRoom.description}</p>
+          <p key={7} className="isLocked">{chosenRoom.isLocked ? "Locked" : "opened"}</p>
+          <ProfileTicket participants={chosenRoom.participants}/>
+          {chosenRoom.participants.length > 0
             ?
             <div className="room-participants">
-              <p key={6} className="limit">{ room.participants.length}/{room.limit}</p>
-              {room.participants.map((profile: any, i: number) => <p key={i} className="username">{profile.username}</p>)}
+              <p key={6} className="limit">{ chosenRoom.participants.length}/{chosenRoom.limit}</p>
+              {chosenRoom.participants.map((profile: any, i: number) => <p key={i} className="username">{profile.username}</p>)}
             </div>
             : null
           }
@@ -82,7 +92,7 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
       return;
     }
     if(room.isLocked) {
-      const isPasswordValid = await Network("POST", 'http://localhost:4000/room/valid-password', {roomId, password})
+      const isPasswordValid = await Network("POST", `${enums.baseUrl}/room/valid-password`, {roomId, password})
       if(!isPasswordValid) {
         setErrorDiv('Password Is Inccorect');
         return

@@ -10,10 +10,11 @@ remove variables from process env
 TODO: on ws connection: create a {socketId, socket} and push to db
 
 Bugs:
- - getusermedia err on join room
- - error on leave. enter video room with no video 
+ - otheruser doesnt render on rejoin. enter video room with no video 
 
 
+TODO:
+  - filter full rooms && closed room + funcionality
 
 V leave room
 V mute
@@ -28,6 +29,7 @@ outer room chat
 inroom chat
 add user as friend
 block user
+if 1 user sharescreen, then another user get in the room he dont see the shared screen
 
 
 # cleanup ws+peer
