@@ -9,6 +9,8 @@ export interface Iroom {
   participants: any[];
   limit: number;
   isLocked: boolean;
+  roomPassword: string;
+
 }
 
 /*---------------------------------------------------------------------------------------------------------- */
