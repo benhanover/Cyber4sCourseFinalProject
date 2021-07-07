@@ -18,36 +18,30 @@ import './SearchUser.css'
 const SearchUser: React.FC = () => {
 
   const { user } = useSelector((state: State) => state.ws);
+  const [filteredUsers, setFilteredUsers] = useState<Iuser[]>();
   const allUserRef = useRef<Iuser[]>();
   const searchRef = useRef<any>();
-  const [filteredUsers, setFilteredUsers] = useState<Iuser[]>();
   const history = useHistory();
 
   useEffect(() => {
     getAllUsers()
       .then((users: any) => {
         allUserRef.current = users.filter((filterUser: any) => filterUser.username !== user.username);
-      })
-  }, [])
+      });
+  }, []);
 
-  const filterTable = (e: any) => {
-    const str = e.target.value;
-    setTimeout(() => {
-      if(e.target.value === str) {
-        setFilteredUsers(filterSearchedList(allUserRef.current, str))
-      }
-    }, 200);
-  }
 
   return (
     <div className="search-user"
-      // onMouseLeave={() => setTimeout(() => { setFilteredUsers([]) }, 1000)}
+      // onMouseLeave={() => setTimeout(() => { setFilteredUsers([]) }, 300)}
     >
       <input ref={searchRef}
-      //   onBlur={(e) => {
-      //   e.target.value = ""; setFilteredUsers([])
-      // }} 
-      onChange={(e) => filterTable(e)} placeholder='Search For A User..' />
+        onBlur={(e) => {
+          e.target.value = "";
+          setFilteredUsers([]);
+      }} 
+      // onChange={(e) => filterTable(e)} placeholder='Search For A User..' />
+      onChange={(e) =>  setFilteredUsers(filterSearchedList(allUserRef.current, e.target.value))} placeholder='Search For A User..' />
       {
         filteredUsers &&
         <ul className="results">

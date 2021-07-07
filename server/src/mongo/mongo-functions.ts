@@ -64,8 +64,8 @@ export const registerUser = async (user: Iuser): Promise<false | Iuser> => {
 export const saveRoom = async (room: Iroom): Promise<Iroom | false> => {
   try {
     // console.log("room.host:", room.host);
-    const hostRooms = await Room.find({ host: room.host }, ["title"]);
-    if (hostRooms[0] && hostRooms.some((r) => room.title === r.title)) {
+    const hostRooms = await Room.find({ host: room.host }, ['title']);
+    if (hostRooms[0] && hostRooms.some(r => room.title === r.title )) {
       console.log("Host already has a room with this title");
       return false;
     }
@@ -266,15 +266,8 @@ export const removePartecipentfromRoom = async (
       return user.peerId !== participant.peerId;
     });
     room.participants = modifiedParticipants;
-    room
-      .save()
-      .then((result: any) =>
-        console.log("removed participant from db succesfuly", result)
-      )
-      .catch((e: any) => {
-        console.log(" failed to removed participant from db", e);
-        return e;
-      });
+    await room
+      .save();
     return modifiedParticipants;
   } catch (e) {
     console.log(e, "cuoldnt find room");
@@ -310,13 +303,7 @@ export const updateUserByField = async (
   }
 };
 /*---------------------------------------------------------------------------------------------------------- */
-export const updateEmailOrUsername = async (
-  email: string,
-  place: string,
-  field: string,
-  update: string
-) => {
-  console.log(email, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+export const updateEmailOrUsername = async (email: string, place: string, field: string, update: string) => {
   const users = await User.find();
   const userExist = users.find((user) => user[field] === update);
   if (userExist) return false;

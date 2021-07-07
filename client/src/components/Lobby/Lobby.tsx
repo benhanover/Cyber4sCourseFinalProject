@@ -2,7 +2,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import "./Lobby.css";
+import './Lobby.css'
+
+// import enums
+import { enums } from "../../utils/enums"
+
 // import types
 import { ImessageBox, Iroom } from "./interfaces";
 // import redux-states
@@ -27,14 +31,14 @@ const Lobby: React.FC = () => {
     dispatch
   );
 
-  useEffect(() => {
-    console.log("rooms had change", rooms);
-  }, [rooms]);
+  // useEffect(() => {
+  //   console.log("rooms had change", rooms);
+  // }, [rooms]);
 
   useEffect(() => {
-    // create connection to the websocket server
     if (serverSocket) return;
-    const newWS = new WebSocket("ws://localhost:4000");
+    // create connection to the websocket server
+    const newWS = new WebSocket(`ws://${enums.wsUrl}`);
     newWS.onopen = () => {
       console.log("connected to server");
     };
@@ -62,8 +66,7 @@ const Lobby: React.FC = () => {
 
     switch (messageData.type) {
       case "rooms":
-        // console.log("rooms", rooms);
-
+        // console.log("rooms", messageData.message);
         if (typeof messageData.message === "string") return;
         setRooms(messageData.message);
         break;

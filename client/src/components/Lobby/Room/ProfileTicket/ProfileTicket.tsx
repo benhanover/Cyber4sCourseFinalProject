@@ -3,7 +3,6 @@ import Network from "../../../../utils/network";
 import { IprofileTicket } from "./interfaces";
 import { useHistory } from "react-router";
 const ProfileTicket: React.FC<IprofileTicket> = ({ participants }) => {
-  console.log(participants, "fffff");
   const history = useHistory();
   return (
     <div>
