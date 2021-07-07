@@ -1,4 +1,4 @@
-import Network from '../../utils/network';
+import Network from "../../utils/network";
 
 // import enums
 import { enums } from "../../utils/enums"
@@ -8,5 +8,4 @@ export const getUserProfile = (username: any) => {
   .then((res) => {
     return res
   });
-}
-
+};

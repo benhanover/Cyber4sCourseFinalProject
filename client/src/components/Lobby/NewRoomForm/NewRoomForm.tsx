@@ -8,24 +8,31 @@ import { Iroom } from "../interfaces";
 import { enums } from "../../../utils/enums"
 
 // import css
-import './NewRoomForm.css';
+import "./NewRoomForm.css";
 
 function NewRoomForm() {
-    const { serverSocket, user } = useSelector((state: State) => state.ws)
-    //  creates all refs for the form's inputs
-    const subjectRef = useRef<HTMLSelectElement | null>(null);
-    const subSubjectRef = useRef<HTMLInputElement | null>(null);
-    const titleRef = useRef<HTMLInputElement | null>(null);
-    const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
-    const limitRef = useRef<HTMLInputElement | null>(null);
-    const isLockedRef = useRef<HTMLInputElement | null>(null);
+  //redux states
+  const { serverSocket, user } = useSelector((state: State) => state.ws);
+
+  //  creates all refs for the form's inputs
+  const subjectRef = useRef<HTMLSelectElement | null>(null);
+  const subSubjectRef = useRef<HTMLInputElement | null>(null);
+  const titleRef = useRef<HTMLInputElement | null>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
+  const limitRef = useRef<HTMLInputElement | null>(null);
+  const isLockedRef = useRef<HTMLInputElement | null>(null);
 
   return (
-    <div className='form-container'>
-      <form className="new-room-form" >
+    <div className="form-container">
+      <form className="new-room-form">
         <h3>Create New Room</h3>
-        <div className='form-content'>
-          <input className='new-room-form-title-input' ref={titleRef} placeholder="title" required />
+        <div className="form-content">
+          <input
+            className="new-room-form-title-input"
+            ref={titleRef}
+            placeholder="title"
+            required
+          />
           <div>
             <select ref={subjectRef} required>
               <option value="Math">Math</option>
@@ -33,32 +40,54 @@ function NewRoomForm() {
             </select>
             <input ref={subSubjectRef} placeholder="subSubject" required />
           </div>
-          <textarea className='new-room-form-description' ref={descriptionRef} placeholder="description" required />
+          <textarea
+            className="new-room-form-description"
+            ref={descriptionRef}
+            placeholder="description"
+            required
+          />
           <div>
-            <input className='limit-input' type="number" ref={limitRef} placeholder="limit" min="2" max="4" defaultValue="4" required />
+            <input
+              className="limit-input"
+              type="number"
+              ref={limitRef}
+              placeholder="limit"
+              min="2"
+              max="4"
+              defaultValue="4"
+              required
+            />
             <label>Private</label>
-            <input type="checkbox" ref={isLockedRef} placeholder="isLocked" defaultValue="0" required />
+            <input
+              type="checkbox"
+              ref={isLockedRef}
+              placeholder="isLocked"
+              defaultValue="0"
+              required
+            />
           </div>
-
         </div>
-        <button className='button' onClick={createNewRoom}>Create Room</button>
+        <button className="button" onClick={createNewRoom}>
+          Create Room
+        </button>
       </form>
-    </div>);
+    </div>
+  );
 
-//      Functions
+  //      Functions
   /*------------------------------------------------------------------------------------------------------*/
   // cleanup
   function cleanup(): void {
-  if (
-    !(
-      subjectRef?.current &&
-      subSubjectRef?.current &&
-      titleRef?.current &&
-      descriptionRef?.current &&
-      limitRef?.current &&
-      isLockedRef?.current
-    )    
-)
+    if (
+      !(
+        subjectRef?.current &&
+        subSubjectRef?.current &&
+        titleRef?.current &&
+        descriptionRef?.current &&
+        limitRef?.current &&
+        isLockedRef?.current
+      )
+    )
       return;
     subjectRef.current.value = "Math";
     subSubjectRef.current.value = "";
@@ -111,6 +140,7 @@ function NewRoomForm() {
         const newRoom: Iroom = response.newRoom;
 
         //  sends a WebSocket message to pass the new room to all connected sockets.
+        console.log("inside create room before sending to ws server");
         serverSocket.send(
           JSON.stringify({ type: "creating new room", message: newRoom })
         );

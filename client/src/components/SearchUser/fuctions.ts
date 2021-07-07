@@ -1,4 +1,4 @@
-import Network from '../../utils/network';
+import Network from "../../utils/network";
 
 
 // import enums
@@ -9,7 +9,7 @@ export const getAllUsers = () => {
   .then((res) => {
     return res
   });
-}
+};
 
 export const filterSearchedList = (list: any, str: any) => {
   if (!str) return;

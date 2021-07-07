@@ -12,11 +12,9 @@ TODO: on ws connection: create a {socketId, socket} and push to db
 Bugs:
  - duplicate videos. 
  - getusermedia err on join room
- - error on leave.
- - room renders duplicate
- - cant find user's profile in the otherUserComponent
- - check why user._id in user state (client) doesn't exist all the time.{to check the user after login , register and refresh(app)-client}.
- -  unknown mongo error when creating a room
+ - error on leave. enter video room with no video 
+- check why user._id in user state (client) doesn't exist all the time.{to check the user after login , register and refresh(app)-client}.
+
 
 V leave room
 V mute

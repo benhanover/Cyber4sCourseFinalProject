@@ -43,7 +43,8 @@ function VideoRoom() {
   const [myStream, setMyStream] = useState<any>();
   const [myVideoIsOn, setMyVideoIsOn] = useState<any>(true);
   const roomId = location.search.slice(8);
-  
+  const [noUserDevices, SetNoUserDevices] = useState<boolean>(false);
+
   //hapens on 2 cases:
   //on componnent did mount:  get the room details and creat the peer js connection
   // on roomstate change: update  the room details from db
@@ -74,6 +75,23 @@ function VideoRoom() {
     {
     videos && room && 
     <div className="video-room">
+
+
+{noUserDevices && (
+        <div>
+          <h1>you must give premition to media devices, at list audio</h1>
+          <button
+            onClick={(e) => {
+              createConnection(room);
+            }}
+          >
+            try again
+          </button>
+        </div>
+      )}
+
+
+
         {videos?.map((video: any, i: number) => {
           console.log('videossssssssssssssssss')
           console.log(videos)
@@ -138,9 +156,7 @@ function VideoRoom() {
 
       ///peer handler for receiving calls
       mypeer.on("call", (call: any) => {
-        // console.log("got a call")
-
-        //hanle err
+        //handle err
         call.on("error", (err: any) => {
           console.log("error in the call", err);
         });
@@ -167,11 +183,9 @@ function VideoRoom() {
               }
           }
         });
+
         //sending my stream to new participant
-        
-        // console.log("myMedia", myMedia);
         call.answer(myMedia);
-          // console.log("iam answering yor call" , call);
       });
 
       //calling others
@@ -184,23 +198,19 @@ function VideoRoom() {
           return;
         }
         if (participant.peerId === peerId) return;
-        // console.log("1");
         const call: any = mypeer.call(participant.peerId, myMedia);
-        // console.log("call", call);
-          
-          
-          //unable to call
-          if (!call) {
-            console.log(
-              "no call created, participant:",
-              participant.peerId,
-              "myMedia:",
-              myMedia
-              );
-              return;
-            }
-            //handle err
-            call.on("error", (err: any) => {
+        //unable to call
+        if (!call) {
+          console.log(
+            "no call created, to participant:",
+            participant.peerId,
+            "myMedia:",
+            myMedia
+          );
+          return;
+        }
+        //handle err
+        call.on("error", (err: any) => {
           console.log("error in the call", err);
         });
 

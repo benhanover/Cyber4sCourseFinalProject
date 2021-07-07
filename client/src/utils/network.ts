@@ -31,17 +31,19 @@ async function Network(
     })
     .catch(async (e) => {
       if (!e.response) {
-        if (e.message === "Network Error" || e.message === "Request failed with status code 413") {
-          return "Image too big, please try a smaller one.."
+        if (
+          e.message === "Network Error" ||
+          e.message === "Request failed with status code 413"
+        ) {
+          return "Image too big, please try a smaller one..";
         }
       }
       switch (e.response.status) {
         case 401:
           return await recreateAccessToken(method, endpoint, body);
         default:
-          console.log('default from Network function');
+          console.log("default from Network function");
           console.log(e.response.data);
-          
       }
       return e.message;
     });
