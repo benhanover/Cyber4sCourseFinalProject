@@ -92,7 +92,10 @@ const Lobby: React.FC = () => {
       {chosenRoomDisplay(chosenRoom)}
       <NewRoomForm />
       <div className="rooms-container">
-        {rooms?.map((room: Iroom | null, i: number) => {
+        {rooms.length > 0 &&
+        rooms
+        ?.filter((room: any) => room?.isClosed === false && room.participants.length < room.limit)
+        .map((room: Iroom | null, i: number) => {
           if (!room) return;
           return <Room key={i} room={room} chosen={false} />;
         })}

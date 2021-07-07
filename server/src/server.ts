@@ -37,6 +37,7 @@ import {
   removePartecipentfromRoom,
   saveRoom,
   updateDocument,
+  closeRoom,
 } from "./mongo/mongo-functions";
 import WebSocket from "ws";
 import { ImessageBox } from "./ws/interfaces";
@@ -118,6 +119,10 @@ wsServer.on("connection", async (clientSocket: any) => {
         console.log("after if there are participent");
         wsServer.emit("send rooms to all", messageData.message);
         break;
+      case "close room":
+          await closeRoom(messageData.message.roomId, messageData.message.value);
+          wsServer.emit("send rooms to all");
+          break;
       default:
         console.log("in ws default", messageData.type);
 
