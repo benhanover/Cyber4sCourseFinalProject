@@ -12,6 +12,11 @@ TODO: on ws connection: create a {socketId, socket} and push to db
 Bugs:
  - otheruser doesnt render on rejoin. enter video room with no video 
 
+ 
+ -if 1 user sharescreen, then another user get in the room he dont see the shared screen
+ - errors. enter videoroom with no video 
+- check why user._id in user state (client) doesn't exist all the time.{to check the user after login , register and refresh(app)-client}.
+-update chosen room acording to realTime changes
 
 TODO:
   - filter full rooms && closed room + funcionality
@@ -29,21 +34,20 @@ outer room chat
 inroom chat
 add user as friend
 block user
-if 1 user sharescreen, then another user get in the room he dont see the shared screen
+
 
 
 # cleanup ws+peer
 # make limit to room.
-3. otherUser's profile doesnt change on the second click.
+
 5. validation for inputs
 
-9. joined participants somehow send stream twice
 8. improve redirection to VideoRoom and profiles (route).
-6. make chosen room participants update on realtime.
-# unknown mongo error when creating a room
+
+
 3. detect the reason that cause the mongo db to lack data(collections)
 2. server peer of our own
-1. check why user._id in user state (client) doesn't exist all the time.{to check the user after login , register and refresh(app)-client}
+
 
 
 //  DataConnection:
