@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { State } from "../../../state";
 import Network from "../../../utils/network";
 import { Iroom } from "../interfaces";
-
+import { useHistory } from "react-router-dom";
 // import enums
-import { enums } from "../../../utils/enums"
+import { enums } from "../../../utils/enums";
 
 // import css
 import "./NewRoomForm.css";
@@ -21,6 +21,7 @@ function NewRoomForm() {
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
   const limitRef = useRef<HTMLInputElement | null>(null);
   const isLockedRef = useRef<HTMLInputElement | null>(null);
+  const history = useHistory();
 
   return (
     <div className="form-container">
@@ -136,14 +137,21 @@ function NewRoomForm() {
 
     // creates new room in db
     Network("POST", `${enums.baseUrl}/room/new`, newRoom)
-      .then((response) => {
+      .then(async (response) => {
         const newRoom: Iroom = response.newRoom;
 
         //  sends a WebSocket message to pass the new room to all connected sockets.
-        console.log("inside create room before sending to ws server");
-        serverSocket.send(
+        console.log(
+          "inside create room before sending to ws server , response:",
+          response,
+          "newroom",
+          newRoom
+        );
+        await serverSocket.send(
           JSON.stringify({ type: "creating new room", message: newRoom })
         );
+        console.log(newRoom._id);
+        //history.push("/room?roomId=" + newRoom._id);
       })
       .catch(console.log);
   }

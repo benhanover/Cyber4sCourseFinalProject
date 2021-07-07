@@ -67,6 +67,13 @@ wsServer.on("connection", async (clientSocket: any) => {
         console.log("line 67 server", messageData.message);
         wsServer.emit("populate new room", messageData.message);
         console.log("creating new room");
+        clientSocket.send(
+          JSON.stringify({
+            type: "the room you created  is ready",
+            message: messageData.message._id,
+          })
+        );
+
         break;
       case "lock room":
         console.log("in the lock room!!");

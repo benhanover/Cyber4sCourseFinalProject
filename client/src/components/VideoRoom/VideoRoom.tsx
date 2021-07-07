@@ -53,6 +53,7 @@ function VideoRoom() {
   const [myStream, setMyStream] = useState<any>();
   const [myVideoIsOn, setMyVideoIsOn] = useState<any>(true);
   const roomId = location.search.slice(8);
+  console.log(roomId, "video room");
   const [noUserDevices, SetNoUserDevices] = useState<boolean>(false);
 
   //hapens on 2 cases:

@@ -2,10 +2,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import './Lobby.css'
-
+import "./Lobby.css";
+import { useHistory } from "react-router-dom";
 // import enums
-import { enums } from "../../utils/enums"
+import { enums } from "../../utils/enums";
 
 // import types
 import { ImessageBox, Iroom } from "./interfaces";
@@ -26,6 +26,7 @@ const Lobby: React.FC = () => {
     { ...wsActionCreator },
     dispatch
   );
+  const history = useHistory();
   const { setRooms, addRoom, removeRoom } = bindActionCreators(
     { ...roomsActionCreator },
     dispatch
@@ -83,12 +84,15 @@ const Lobby: React.FC = () => {
         user.mySocket = messageData.message;
         setUser(user);
         break;
+      case "the room you created  is ready":
+        history.push("/room?roomId=" + messageData.message);
+        break;
       default:
         break;
     }
   }
   console.log(chosenRoom);
-  
+
   return (
     <>
       {chosenRoomDisplay(chosenRoom)}
