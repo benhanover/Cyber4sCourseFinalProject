@@ -66,7 +66,6 @@ export const getCleanedUser = (user: any) => {
 /*-------------------------------------------------------------------------------------*/
 
   export const getUserMedia = async (): Promise<MediaStream | undefined> => {
-    console.log('getting user media')
     try {
       return await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
     } catch (e) {
@@ -83,8 +82,6 @@ export const getCleanedUser = (user: any) => {
 
 /*-------------------------------------------------------------------------------------*/
   export const leaveRoom = async (roomId: any, peerId: any, serverSocket: any, videos: any, user: any, myStream: any, room: any) => {
-    console.log(roomId, peerId, user.peerId, "check");
-    console.log(videos);
     serverSocket.send(
       JSON.stringify({
         type: "leave room",

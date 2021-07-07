@@ -145,6 +145,7 @@ wsServer.on("delete room for all", (room) => {
 });
 wsServer.on("send rooms to all", async () => {
   const rooms = await getRooms();
+  console.log("rooms in send rooms to all", rooms);
   wsServer.clients.forEach((client) => {
     client.send(
       JSON.stringify({

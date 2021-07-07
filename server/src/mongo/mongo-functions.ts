@@ -265,15 +265,8 @@ export const removePartecipentfromRoom = async (
       return user.peerId !== participant.peerId;
     });
     room.participants = modifiedParticipants;
-    room
-      .save()
-      .then((result: any) =>
-        console.log("removed participant from db succesfuly", result)
-      )
-      .catch((e: any) => {
-        console.log(" failed to removed participant from db", e);
-        return e;
-      });
+    await room
+      .save();
     return modifiedParticipants;
   } catch (e) {
     console.log(e, "cuoldnt find room");
@@ -305,7 +298,6 @@ export const updateUserByField = async (email: string, place: string, fieldToUpd
 }
 /*---------------------------------------------------------------------------------------------------------- */
 export const updateEmailOrUsername = async (email: string, place: string, field: string, update: string) => {
-  console.log(email, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
   const users = await User.find();
   const userExist = users.find((user) => user[field] === update);
   if(userExist) return false;

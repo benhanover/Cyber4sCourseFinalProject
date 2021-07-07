@@ -61,7 +61,6 @@ const Lobby: React.FC = () => {
     switch (messageData.type) {
       case "rooms":
         // console.log("rooms", rooms);
-
         if (typeof messageData.message === "string") return;
         setRooms(messageData.message);
         break;
