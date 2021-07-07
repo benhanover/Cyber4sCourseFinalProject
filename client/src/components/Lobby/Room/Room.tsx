@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { wsActionCreator, State, roomsActionCreator } from "../../../state";
@@ -6,18 +6,22 @@ import { IroomProps } from "./interfaces";
 import { useHistory } from "react-router-dom";
 import "./Room.css";
 import { setRooms } from "../../../state/action-creators/roomsActionCreator";
+import Network from '../../../utils/network';
 
 // import components
 import ProfileTicket from './ProfileTicket/ProfileTicket';
+import { convertCompilerOptionsFromJson } from "typescript";
 
 const Room: FC<IroomProps> = ({ room, chosen }) => {
   const dispatch = useDispatch();
   const { chosenRoom } = useSelector((state: State) => state.ws);
+  const [errorDiv, setErrorDiv] = useState<any>(false);
   const rooms = useSelector((state: State) => state.rooms);
   const { setChosenRoom } = bindActionCreators(
     { ...wsActionCreator },
     dispatch
   );
+  const roomPasswordRef = useRef<HTMLInputElement | null >(null);
   const history = useHistory();
   useEffect(() => {
     return () => {
@@ -42,7 +46,23 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
             </div>
             : null
           }
-          <button key={9} className="button" onClick={() => goToRoom(room._id)}>Join Room</button>
+          {room.isLocked && 
+            <input placeholder='Room Password' ref={roomPasswordRef}/>
+
+          }
+          <button key={9} className="button" onClick={() => {
+            if (!roomPasswordRef.current) {
+              goToRoom(room._id);
+            } else {
+              goToRoom(room._id, roomPasswordRef.current.value)
+            }
+            }}>Join Room</button>
+            {
+              errorDiv &&
+              <div>
+                <p>{errorDiv}</p>
+              </div>
+            }
         </div>
       </div>
     );
@@ -56,7 +76,18 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
       <p className="isLocked">{room.isLocked ? "Locked" : "opened"}</p>
     </div>
   );
-  function goToRoom(roomId: string | undefined) {
+  async function goToRoom(roomId: string | undefined, password?: any) {
+    if(room.participants.length >= room.limit) {
+      setErrorDiv('Room Is Full');
+      return;
+    }
+    if(room.isLocked) {
+      const isPasswordValid = await Network("POST", 'http://localhost:4000/room/valid-password', {roomId, password})
+      if(!isPasswordValid) {
+        setErrorDiv('Password Is Inccorect');
+        return
+      }
+    }
     if (!roomId) return;
     // console.log(roomId);
     history.push("/room?roomId=" + roomId);

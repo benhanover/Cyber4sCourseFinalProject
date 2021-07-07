@@ -10,16 +10,15 @@ remove variables from process env
 TODO: on ws connection: create a {socketId, socket} and push to db
 
 Bugs:
- - duplicate videos. 
  - getusermedia err on join room
  - error on leave. enter video room with no video 
-- check why user._id in user state (client) doesn't exist all the time.{to check the user after login , register and refresh(app)-client}.
+
 
 
 V leave room
 V mute
 V stop video
-  share screen
+V  share screen
   change host
   lock room + limit
 

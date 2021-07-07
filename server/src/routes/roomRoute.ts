@@ -5,7 +5,7 @@ import { Router, Request, Response } from 'express';
 import { Iroom } from '../types/index';
 
 // import controllers
-import { createRoom, getAllRooms, getRoom } from '../controllers/roomController';
+import { createRoom, getAllRooms, getRoom, validatedRoomPassword } from '../controllers/roomController';
 
 // import middlewares
 // use this before any reqest besides login/register
@@ -18,5 +18,6 @@ rooms.use(accessTokenValidator);
 rooms.get('/all', getAllRooms);
 rooms.post('/new', createRoom);
 rooms.get('/:roomId' ,getRoom );
+rooms.post('/valid-password', validatedRoomPassword)
 
 export default rooms;

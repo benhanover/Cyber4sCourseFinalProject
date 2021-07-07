@@ -12,5 +12,6 @@ const roomSchema = new Schema<Iroom>({
   participants: [participantsSchema], //////////
   limit: Number,
   isLocked: Boolean,
+  roomPassword: String,
 });
 export default roomSchema;

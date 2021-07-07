@@ -13,6 +13,7 @@ export enum errorEnums {
   REGISTER_FAILED = 'Could Not Register ',
   NO_SUCH_USER = 'User Does Not Exist',
   FAILED_CREATE_ROOM = 'Could Not Create A New Room',
+  ROOM_TITLE_IS_USED = 'Room Title Is Taken',
   CATFISH = 'Catfish Detected',
   FORBIDDEN = 'Forbidden Ruquest ',
   EMAIL_TAKEN = 'Email Already Exist',

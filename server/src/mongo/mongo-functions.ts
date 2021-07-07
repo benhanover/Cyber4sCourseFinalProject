@@ -360,3 +360,12 @@ export const findManyDocuments = async (
     return { return: false, message: errorEnums.FAILED_GETTING_DATA + e };
   }
 };
+
+/*---------------------------------------------------------------------------------------------------------- */
+export const isRoomPasswordValid = async (roomId: any, password: any) => {
+  try {
+    return await Room.findOne({_id: roomId})
+  } catch(e) {
+    console.log(e);
+  }
+} 

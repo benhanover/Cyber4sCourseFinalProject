@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { State } from "../../../state";
 import Network from "../../../utils/network";
@@ -20,7 +20,9 @@ function NewRoomForm() {
   const titleRef = useRef<HTMLInputElement | null>(null);
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
   const limitRef = useRef<HTMLInputElement | null>(null);
-  const isLockedRef = useRef<HTMLInputElement | null>(null);
+  const [isLocked, setIsLocked] = useState<any>(false);
+  const roomPasswordRef = useRef<HTMLInputElement | null>(null);
+  const [errorDiv, setErrorDiv] = useState<any>(false);
 
   return (
     <div className="form-container">
@@ -32,6 +34,7 @@ function NewRoomForm() {
             ref={titleRef}
             placeholder="title"
             required
+            onFocus={() => setErrorDiv(false)}
           />
           <div>
             <select ref={subjectRef} required>
@@ -55,21 +58,31 @@ function NewRoomForm() {
               min="2"
               max="4"
               defaultValue="4"
+              onFocus={() => setErrorDiv(false)}
               required
             />
-            <label>Private</label>
-            <input
+            <label onClick={() => !isLocked ? setIsLocked(true) : setIsLocked(false)}>Private</label>
+            {/* <input
               type="checkbox"
-              ref={isLockedRef}
+              onClick={() => !isLocked ? setIsLocked(true) : setIsLocked(false)}
               placeholder="isLocked"
               defaultValue="0"
               required
-            />
+            /> */}
+            {isLocked &&
+            <input placeholder='Room Password' ref={roomPasswordRef} onFocus={() => setErrorDiv(false)} />
+            }
           </div>
         </div>
         <button className="button" onClick={createNewRoom}>
           Create Room
         </button>
+        {
+          errorDiv &&
+          <div>
+            <p>{errorDiv}</p>
+          </div>
+        }
       </form>
     </div>
   );
@@ -85,38 +98,52 @@ function NewRoomForm() {
         titleRef?.current &&
         descriptionRef?.current &&
         limitRef?.current &&
-        isLockedRef?.current
+        roomPasswordRef?.current
       )
     )
-      return;
+    return;
     subjectRef.current.value = "Math";
     subSubjectRef.current.value = "";
     titleRef.current.value = "";
     descriptionRef.current.value = "";
-    limitRef.current.value = "";
-    isLockedRef.current.checked = false;
+    limitRef.current.value = "2";
+    roomPasswordRef.current.value = "";
   }
 
   //  creates a new room.
   function createNewRoom(e: any) {
     e.preventDefault();
-
+    
     if (
       !subjectRef?.current &&
       !subSubjectRef?.current &&
       !titleRef?.current &&
       !descriptionRef?.current &&
-      !limitRef?.current &&
-      !isLockedRef?.current
-    )
+      !limitRef?.current
+      )
       return;
 
+    if(isLocked) {
+      if(roomPasswordRef.current && !roomPasswordRef.current.value) {
+        setErrorDiv('Cant Lock Room Without A Password')
+        return
+      }
+    }
+    if(limitRef.current) {
+      if(limitRef.current.value !== '2' &&  limitRef.current.value !== '3' && limitRef.current.value !== '4') {
+        setErrorDiv('Cannot Only Create Room For 2, 3, 4 People.');
+        return
+    }
+    }
+
+      
     const subject: string = subjectRef.current?.value!;
     const subSubject: string = subSubjectRef.current?.value!;
     const title: string = titleRef.current?.value!;
     const description: string = descriptionRef.current?.value!;
     const limit: number = Number(limitRef.current?.value)!;
-    const isLocked: boolean = isLockedRef.current?.checked!;
+    // const isLocked: boolean = isLockedRef.current?.checked!;
+    const roomPassword: string = roomPasswordRef.current?.value!;
     const host: any = JSON.stringify({
       userId: user._id,
       userSocket: user.mySocket,
@@ -128,6 +155,7 @@ function NewRoomForm() {
       description,
       limit,
       isLocked,
+      roomPassword,
       host,
     }; //host participents
 
@@ -137,15 +165,17 @@ function NewRoomForm() {
     // creates new room in db
     Network("POST", `${enums.baseUrl}/room/new`, newRoom)
       .then((response) => {
+        if(response === 'Room Title Is Taken') {
+          setErrorDiv(response);
+        }
         const newRoom: Iroom = response.newRoom;
-
-        //  sends a WebSocket message to pass the new room to all connected sockets.
-        console.log("inside create room before sending to ws server");
         serverSocket.send(
           JSON.stringify({ type: "creating new room", message: newRoom })
         );
       })
-      .catch(console.log);
+      .catch ((e) => {
+        console.log(e);
+      })
   }
 }
 

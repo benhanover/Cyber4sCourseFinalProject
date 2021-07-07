@@ -38,7 +38,7 @@ export const selfMuteToggle = (myStream: any): any => {
 
   /*-------------------------------------------------------------------------------------*/
 export const selfVideoToggle = (myStream: any): any => {
-  if (!myStream.getVideoTracks()[0]) return;
+  if (!myStream) return;
   // if (myStream.getVideoTracks()[0].enabled) {
   // }
 
