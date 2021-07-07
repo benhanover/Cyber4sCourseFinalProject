@@ -68,6 +68,7 @@ export const getCleanedUser = (user: any) => {
     firstname: user.firstName,
     lastname: user.lastName,
     age: 22,
+    _id: user._id,
     // age: user.birthDate
     //   ? new Date().getFullYear() - user.birthDate.getFullYear()
     //   : 22,
@@ -95,7 +96,8 @@ export const getUserMedia = async (): Promise<MediaStream | undefined> => {
     }
   }
 };
-
+/*-------------------------------------------------------------------------------------*/
+// const changehost = (room) => {};
 /*-------------------------------------------------------------------------------------*/
 export const leaveRoom = async (
   roomId: any,
@@ -106,12 +108,23 @@ export const leaveRoom = async (
   myStream: any,
   room: any
 ) => {
+  console.log(room, "user", user);
+  // let newHost = null;
+  // if (user._id === room.host.userId) {
+  //   try{
+  //     newHost = await changehost(room);
+
+  //   }catch{
+  //     newHost = room.participants.filter(participant => participant._id !== user._id)[0];
+  //   }
+  // }
   serverSocket.send(
     JSON.stringify({
       type: "leave room",
       message: {
         participant: { roomId, peerId: user.peerId },
         participants: room.participants,
+        // newHost,
       },
     })
   );
@@ -126,12 +139,13 @@ export const leaveRoom = async (
 };
 
 /*-------------------------------------------------------------------------------------*/
-export async function getVideos(updatedVideos: any, myStream: any, roomId: string) {
+export async function getVideos(
+  updatedVideos: any,
+  myStream: any,
+  roomId: string
+) {
   try {
-    const roomFromDb = await Network(
-      "GET",
-      `${enums.baseUrl}/room/${roomId}`
-      );
+    const roomFromDb = await Network("GET", `${enums.baseUrl}/room/${roomId}`);
     const participantsStreams: any[] = [];
     roomFromDb?.participants.forEach((participant: any) => {
       if (myStream.id !== participant.streamId) {

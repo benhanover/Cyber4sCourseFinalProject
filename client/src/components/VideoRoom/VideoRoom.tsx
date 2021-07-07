@@ -1,7 +1,7 @@
 //imports
 /*-------------------------------------------------------------------------------------*/
 import "./VideoRoom.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Peer from "peerjs";
 
@@ -55,6 +55,7 @@ function VideoRoom() {
   const roomId = location.search.slice(8);
   console.log(roomId, "video room");
   const [noUserDevices, SetNoUserDevices] = useState<boolean>(false);
+  const [chooseNewHost, SetchooseNewHost] = useState<any>(null);
 
   //hapens on 2 cases:
   //on componnent did mount:  get the room details and creat the peer js connection
@@ -120,16 +121,20 @@ function VideoRoom() {
           <button
             className="leave-button"
             onClick={() => {
-              leaveRoom(
-                roomId,
-                peerId,
-                serverSocket,
-                videos,
-                user,
-                myStream,
-                room
-              );
-              history.push("/lobby");
+              if (user._id !== room.host.userId) {
+                leaveRoom(
+                  roomId,
+                  peerId,
+                  serverSocket,
+                  videos,
+                  user,
+                  myStream,
+                  room
+                );
+                history.push("/lobby");
+              } else {
+                SetchooseNewHost(true);
+              }
             }}
           >
             Leave
@@ -153,6 +158,39 @@ function VideoRoom() {
             >
               Share Screen
             </button>
+          )}
+          {chooseNewHost && (
+            <div className="choose-host-box">
+              {room.participants.map((participant: any) => {
+                console.log(participant._id, user._id, participant);
+
+                if (participant._id !== user._id) {
+                  return (
+                    <div
+                      className="host-choise"
+                      onClick={() => {
+                        leaveRoom(
+                          roomId,
+                          peerId,
+                          serverSocket,
+                          videos,
+                          user,
+                          myStream,
+                          room
+                        );
+                        history.push("/lobby");
+                      }}
+                    >
+                      <p> {participant.username}</p>
+                      <img
+                        src={participant.user.profile.imageBlob}
+                        alt="user image"
+                      />
+                    </div>
+                  );
+                }
+              })}
+            </div>
           )}
         </div>
       )}

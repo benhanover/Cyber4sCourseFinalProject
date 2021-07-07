@@ -2,9 +2,8 @@ import { Schema } from "mongoose";
 import { Iroom } from "../../types";
 import participantsSchema from "./participantsSchema";
 
-
 const roomSchema = new Schema<Iroom>({
-  host: String,
+  host: { userId: String, userSocket: String },
   subject: String,
   subSubject: String,
   title: String,

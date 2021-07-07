@@ -118,10 +118,10 @@ function NewRoomForm() {
     const description: string = descriptionRef.current?.value!;
     const limit: number = Number(limitRef.current?.value)!;
     const isLocked: boolean = isLockedRef.current?.checked!;
-    const host: any = JSON.stringify({
+    const host: any = {
       userId: user._id,
       userSocket: user.mySocket,
-    });
+    };
     const newRoom: Iroom = {
       subject,
       subSubject,
@@ -131,6 +131,7 @@ function NewRoomForm() {
       isLocked,
       host,
     }; //host participents
+    console.log(newRoom);
 
     //  inputs cleanup
     cleanup();
@@ -150,8 +151,7 @@ function NewRoomForm() {
         await serverSocket.send(
           JSON.stringify({ type: "creating new room", message: newRoom })
         );
-        console.log(newRoom._id);
-        //history.push("/room?roomId=" + newRoom._id);
+        console.log(newRoom);
       })
       .catch(console.log);
   }
