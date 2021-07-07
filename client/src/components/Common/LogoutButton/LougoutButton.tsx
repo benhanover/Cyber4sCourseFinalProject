@@ -3,6 +3,9 @@ import React from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
+// import enums
+import { enums } from "../../../utils/enums"
+
 //import redux
 import { bindActionCreators } from "redux";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +24,7 @@ const LougoutButton: React.FC = () => {
     serverSocket.close();
     setUser(false);
     axios
-      .delete("http://localhost:4000/user/logout", {
+      .delete(`${enums.baseUrl}/user/logout`, {
         headers: { authorization: accessToken, refreshToken },
       })
       .then(() => {

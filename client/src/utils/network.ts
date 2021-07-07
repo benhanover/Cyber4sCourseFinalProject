@@ -24,7 +24,7 @@ async function Network(
   return axios(options) //awawit
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
-        // if (endpoint === 'http://localhost:4000/user/validator') return true;
+        // if (endpoint === `${enums.baseUrl}/user/validator`) return true;
 
         return response.data;
       }

@@ -1,5 +1,8 @@
 import Cookies from "js-cookie";
 
+// import enums
+import { enums } from "../../utils/enums"
+
 // import network
 import Network from "../../utils/network";
 import axios from "axios";
@@ -8,10 +11,7 @@ import axios from "axios";
 import { Ifield } from "./interfaces";
 
 // fieldAndLocation = {place: , field}
-export const updateDetailsByField = async (
-  fieldAndLocation: Ifield | boolean,
-  update: any
-): Promise<any> => {
+export const updateDetailsByField = async (fieldAndLocation: Ifield | boolean,update: any): Promise<any> => {
   if (typeof fieldAndLocation === "boolean") return;
   const { place, field } = fieldAndLocation;
   try {
@@ -24,25 +24,18 @@ export const updateDetailsByField = async (
       // if (!promptRes) return;
       console.log("why are you here? ehh?");
 
-      const { data: response } = await axios.put(
-        "http://localhost:4000/user/update",
-        { place, field, update },
-        { headers: { authorization: accessToken, refreshToken } }
-      );
-      Cookies.set("accessToken", response.accessToken);
-      Cookies.set("refreshToken", response.refreshToken);
-    } else {
-      return Network("PUT", "http://localhost:4000/user/update", {
-        place,
-        field,
-        update,
-      });
+      const { data: response } = await axios.put(`${enums.baseUrl}/user/update`, { place, field, update }, { headers: { authorization: accessToken, refreshToken } });
+      Cookies.set('accessToken', response.accessToken);
+      Cookies.set('refreshToken', response.refreshToken);
     }
-  } catch (e) {
-    console.log("Profile > functions.ts > updatedDetailsByField");
-    console.log(e);
+    else {
+      return Network('PUT', `${enums.baseUrl}/user/update`, { place, field, update })
+    }
+} catch (e) {  
+      console.log('Profile > functions.ts > updatedDetailsByField');
+      console.log(e);
+    };
   }
-};
 
 export async function fileSelectedHandler(e: any): Promise<any> {
   return new Promise((resolve, reject) => {
