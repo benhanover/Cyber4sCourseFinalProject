@@ -31,6 +31,7 @@ import {
   getCleanedUser,
   getUserMedia,
   leaveRoom,
+  getVideos,
 } from "./functions";
 /*-------------------------------------------------------------------------------------*/
 // import peer functions
@@ -64,7 +65,7 @@ function VideoRoom() {
       if (!room) {
         createConnection(currentRoom);
       } else if (currentRoom?.participants.length - 1 < videos.length) {
-        let testVideos = [...(await getVideos(videos, myStream))];
+        let testVideos = [...(await getVideos(videos, myStream, roomId))];
         setVideos(testVideos);
       }
       setRoom({ ...currentRoom });
@@ -223,7 +224,7 @@ function VideoRoom() {
             if (!room) {
               setVideos([...videos]);
             } else {
-              let testVideos = [...(await getVideos(videos, myMedia))];
+              let testVideos = [...(await getVideos(videos, myMedia, roomId))];
               setVideos(testVideos);
             }
           }
@@ -276,40 +277,13 @@ function VideoRoom() {
             if (!room) {
               setVideos([...videos]);
             } else {
-              let testVideos = [...(await getVideos(videos, myMedia))];
+              let testVideos = [...(await getVideos(videos, myMedia, roomId))];
               setVideos(testVideos);
             }
           }
         });
       });
     });
-  }
-  async function getVideos(updatedVideos: any, myStream: any) {
-    try {
-      const roomFromDb = await Network(
-        "GET",
-        `http://localhost:4000/room/${roomId}`
-      );
-      const participantsStreams: any[] = [];
-      roomFromDb?.participants.forEach((participant: any) => {
-        if (myStream.id !== participant.streamId) {
-          participantsStreams.push(participant.streamId);
-        }
-      });
-
-      const tempVideos = updatedVideos.filter((video: any) => {
-        let mediaStreamId = video.stream.id;
-        if (mediaStreamId.match(/^{.+}$/)) {
-          mediaStreamId = mediaStreamId.slice(1, -1);
-        }
-
-        return participantsStreams.includes(mediaStreamId);
-      });
-
-      return tempVideos;
-    } catch (e) {
-      console.log(e);
-    }
   }
 }
 export default VideoRoom;

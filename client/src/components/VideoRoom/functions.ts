@@ -1,3 +1,6 @@
+import { enums } from "../../utils/enums";
+import Network from "../../utils/network";
+
 /*-------------------------------------------------------------------------------------*/
 export const getUserByStreamId = (room: any, streamId: any): any => {
   if (!room) {
@@ -121,3 +124,32 @@ export const leaveRoom = async (
     track.stop();
   });
 };
+
+/*-------------------------------------------------------------------------------------*/
+export async function getVideos(updatedVideos: any, myStream: any, roomId: string) {
+  try {
+    const roomFromDb = await Network(
+      "GET",
+      `${enums.baseUrl}/room/${roomId}`
+      );
+    const participantsStreams: any[] = [];
+    roomFromDb?.participants.forEach((participant: any) => {
+      if (myStream.id !== participant.streamId) {
+        participantsStreams.push(participant.streamId);
+      }
+    });
+
+    const tempVideos = updatedVideos.filter((video: any) => {
+      let mediaStreamId = video.stream.id;
+      if (mediaStreamId.match(/^{.+}$/)) {
+        mediaStreamId = mediaStreamId.slice(1, -1);
+      }
+
+      return participantsStreams.includes(mediaStreamId);
+    });
+
+    return tempVideos;
+  } catch (e) {
+    console.log(e);
+  }
+}
