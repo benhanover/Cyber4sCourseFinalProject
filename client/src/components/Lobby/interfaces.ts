@@ -9,6 +9,7 @@ export interface Iroom {
   limit: number;
   isLocked?: boolean;
   roomPassword?: string;
+  isClosed?: boolean;
 }
 
 export interface ImessageBox {

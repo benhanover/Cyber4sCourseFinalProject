@@ -369,3 +369,18 @@ export const isRoomPasswordValid = async (roomId: any, password: any) => {
     console.log(e);
   }
 } 
+/*---------------------------------------------------------------------------------------------------------- */
+
+
+export const closeRoom = async(roomId: any, value: any) => {
+  console.log('im here');
+  
+  try {
+    const room = await Room.findOne({_id: roomId});
+    room.isClosed = value;
+    console.log(room);
+    await room.save();
+  } catch(e) {
+    console.log(e)
+  }
+}
