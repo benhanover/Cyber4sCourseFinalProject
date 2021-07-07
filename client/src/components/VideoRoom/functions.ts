@@ -153,3 +153,10 @@ export async function getVideos(updatedVideos: any, myStream: any, roomId: strin
     console.log(e);
   }
 }
+/*-------------------------------------------------------------------------------------*/
+
+export const closeRoom = (serverSocket: any, roomId: any, isClosed: boolean) => {
+  console.log(isClosed)
+  serverSocket.send(JSON.stringify({type: 'close room', message: {roomId, value: !isClosed}}))
+}
+
