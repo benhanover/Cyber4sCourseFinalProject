@@ -34,7 +34,7 @@ import {
 } from "../mongo/mongo-functions";
 
 // import aws functions
-import { uploadImage, getFileStream } from '../aws-sdk/index';
+import { uploadImage } from '../aws-sdk/index';
 
 // import { uploadToS3 } from "../aws-sdk/index2";
 
