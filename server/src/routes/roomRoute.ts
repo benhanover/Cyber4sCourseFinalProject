@@ -9,6 +9,7 @@ import {
   createRoom,
   getAllRooms,
   getRoom,
+  validatedRoomPassword,
 } from "../controllers/roomController";
 
 // import middlewares
@@ -22,6 +23,6 @@ rooms.use(accessTokenValidator);
 rooms.get("/all", getAllRooms);
 rooms.post("/new", createRoom);
 rooms.get("/:roomId", getRoom);
-//delete
+rooms.post("/valid-password", validatedRoomPassword);
 
 export default rooms;

@@ -7,7 +7,9 @@ export interface Iroom {
   description: string;
   participants?: any;
   limit: number;
-  isLocked: boolean;
+  isLocked?: boolean;
+  roomPassword?: string;
+  isClosed?: boolean;
 }
 
 export interface ImessageBox {

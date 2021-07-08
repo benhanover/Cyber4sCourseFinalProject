@@ -15,6 +15,8 @@ import { State, wsActionCreator } from "../../state";
 // import enums
 import { enums } from "../../utils/enums";
 
+/*-------------------------------------------------------------------------------------*/
+
 import Network from "../../utils/network";
 
 /*-------------------------------------------------------------------------------------*/
@@ -32,6 +34,7 @@ import {
   getUserMedia,
   leaveRoom,
   getVideos,
+  closeRoom,
 } from "./functions";
 /*-------------------------------------------------------------------------------------*/
 // import peer functions
@@ -48,6 +51,7 @@ function VideoRoom() {
   const history = useHistory();
   const location = useLocation();
   const [room, setRoom] = useState<any>();
+  const [isClosedButtonName, setIsClosedButtonName] = useState<any>("");
   const [peerId, setPeerId] = useState<any>();
   const [videos, setVideos] = useState<any>([]);
   const [myStream, setMyStream] = useState<any>();
@@ -62,8 +66,11 @@ function VideoRoom() {
   // on roomstate change: update  the room details from db
   /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
-    const zz = async () => {
+    const runAsyncFunction = async () => {
       const currentRoom = rooms.find((room: any) => room?._id === roomId);
+      currentRoom?.isClosed
+        ? setIsClosedButtonName("Open Room")
+        : setIsClosedButtonName("Close Room");
       if (!room) {
         createConnection(currentRoom);
       } else if (currentRoom?.participants.length - 1 < videos.length) {
@@ -72,7 +79,7 @@ function VideoRoom() {
       }
       setRoom({ ...currentRoom });
     };
-    zz();
+    runAsyncFunction();
   }, [rooms]);
 
   //component renders:
@@ -174,6 +181,11 @@ function VideoRoom() {
               })}
             </div>
           )}
+          <button
+            onClick={() => closeRoom(serverSocket, roomId, room.isClosed)}
+          >
+            {isClosedButtonName}
+          </button>
         </div>
       )}
     </>

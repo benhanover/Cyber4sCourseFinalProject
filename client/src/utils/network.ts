@@ -34,16 +34,25 @@ async function Network(
         if (
           e.message === "Network Error" ||
           e.message === "Request failed with status code 413"
-        ) {
-          return "Image too big, please try a smaller one..";
+          ) {
+            return "Image too big, please try a smaller one..";
+          }
         }
-      }
-      switch (e.response.status) {
-        case 401:
-          return await recreateAccessToken(method, endpoint, body);
-        default:
-          console.log("default from Network function");
-          console.log(e.response.data);
+        
+        switch (e.response.status) {
+          case 401:
+            if(e.response.data === false) {
+              return false;
+            }
+            return await recreateAccessToken(method, endpoint, body);
+          case 500:
+            if(e.response.data === 'Room Title Is Taken') {
+              return 'Room Title Is Taken';
+            }
+            break;
+          default:
+            console.log("default from Network function");
+            console.log(e.response.data);
       }
       return e.message;
     });

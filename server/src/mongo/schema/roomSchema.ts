@@ -8,8 +8,10 @@ const roomSchema = new Schema<Iroom>({
   subSubject: String,
   title: String,
   description: String,
-  participants: [participantsSchema], //////////
+  participants: [participantsSchema],
   limit: Number,
   isLocked: Boolean,
+  isClosed: {type: Boolean, default: false},
+  roomPassword: String,
 });
 export default roomSchema;

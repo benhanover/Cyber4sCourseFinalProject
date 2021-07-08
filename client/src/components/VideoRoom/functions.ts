@@ -49,7 +49,7 @@ export const selfMuteToggle = (myStream: any): any => {
 
 /*-------------------------------------------------------------------------------------*/
 export const selfVideoToggle = (myStream: any): any => {
-  if (!myStream.getVideoTracks()[0]) return;
+  if (!myStream) return;
   // if (myStream.getVideoTracks()[0].enabled) {
   // }
 
@@ -165,3 +165,18 @@ export async function getVideos(
     console.log(e);
   }
 }
+/*-------------------------------------------------------------------------------------*/
+
+export const closeRoom = (
+  serverSocket: any,
+  roomId: any,
+  isClosed: boolean
+) => {
+  console.log(isClosed);
+  serverSocket.send(
+    JSON.stringify({
+      type: "close room",
+      message: { roomId, value: !isClosed },
+    })
+  );
+};
