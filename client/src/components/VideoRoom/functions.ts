@@ -109,12 +109,14 @@ export const leaveRoom = async (
   room: any,
   newHostId: any = null
 ) => {
-  console.log(room, "user", user);
-  if (newHostId !== null && !newHostId) {
+  console.log("new host", newHostId, user, room);
+  if (!newHostId || newHostId === enums.defaultHost) {
     newHostId = room.participants.filter((participant: any) => {
       return user._id !== participant.user._id;
-    })[0];
+    })[0].user._id;
   }
+  if (newHostId === enums.dontChangeHost) newHostId = false;
+  console.log("new host", newHostId);
   //weird
   serverSocket.send(
     JSON.stringify({

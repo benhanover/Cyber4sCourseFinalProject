@@ -148,12 +148,14 @@ function VideoRoom() {
               Share Screen
             </button>
           )}
-          {chooseNewHost && (
+          {chooseNewHost && room.participants.length > 1 && (
             <div className="choose-host-box">
-              {room.participants.map((participant: any) => {
+              <p>plese chose a new host for the room</p>
+              {room.participants.map((participant: any, index: number) => {
                 if (participant.user._id !== user._id) {
                   return (
                     <div
+                      key={index}
                       className="host-choise"
                       onClick={() => {
                         leaveRoom(
@@ -179,6 +181,31 @@ function VideoRoom() {
                   );
                 }
               })}
+              <button
+                onClick={() => {
+                  SetchooseNewHost(false);
+                }}
+              >
+                cansel
+              </button>
+              <button
+                onClick={() => {
+                  leaveRoom(
+                    roomId,
+                    peerId,
+                    serverSocket,
+                    videos,
+                    user,
+                    myStream,
+                    room,
+                    enums.defaultHost
+                  );
+                  SetchooseNewHost(false);
+                  history.push("/lobby");
+                }}
+              >
+                choose for me
+              </button>
             </div>
           )}
           <button
@@ -194,8 +221,20 @@ function VideoRoom() {
   //functions:
   /*-------------------------------------------------------------------------------------*/
   function handleLeaveBuuton() {
+    console.log(room.participants, ":users in room");
     if (user._id !== room.host.userId) {
-      leaveRoom(roomId, peerId, serverSocket, videos, user, myStream, room);
+      console.log(1);
+
+      leaveRoom(
+        roomId,
+        peerId,
+        serverSocket,
+        videos,
+        user,
+        myStream,
+        room,
+        enums.dontChangeHost
+      );
       history.push("/lobby");
     } else if (
       room.participants.length === 1 &&
@@ -207,7 +246,7 @@ function VideoRoom() {
           message: room._id,
         })
       );
-      //make shur there are no open calls
+      //make shure there are no open calls
       videos.forEach((video: any) => {
         video.call.close();
       });
