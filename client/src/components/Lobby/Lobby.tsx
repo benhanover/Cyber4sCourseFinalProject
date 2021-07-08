@@ -1,5 +1,5 @@
 // import libraries
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import './Lobby.css'
@@ -13,6 +13,7 @@ import { ImessageBox, Iroom } from "./interfaces";
 import { wsActionCreator, roomsActionCreator, State } from "../../state/index";
 import NewRoomForm from "./NewRoomForm/NewRoomForm";
 import Room from "./Room/Room";
+import JoinRoomFilter from './JoinRoomFilter/JoinRoomFilter';
 import { ReactElement } from "react";
 
 /*================================================================================================*/
@@ -22,18 +23,19 @@ const Lobby: React.FC = () => {
   const dispatch = useDispatch();
   const { ws, rooms } = useSelector((state: State) => state);
   const { user, chosenRoom, serverSocket } = ws;
-  const { setWS, setUser } = bindActionCreators(
-    { ...wsActionCreator },
-    dispatch
-  );
-  const { setRooms, addRoom, removeRoom } = bindActionCreators(
-    { ...roomsActionCreator },
-    dispatch
-  );
+  const { setWS, setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
+  const { setRooms, addRoom, removeRoom } = bindActionCreators({ ...roomsActionCreator }, dispatch);
+  const [showCreateRoom, setShowCreateRoom] = useState<any>(false);
 
-  // useEffect(() => {
-  //   console.log("rooms had change", rooms);
-  // }, [rooms]);
+  const [joinFormStateManager, setJoinFormStateManager] = useState<any>(
+    {
+      subject: 'Math',
+      subSubject: '',
+      search: '',
+      limit: '',
+      isLocked: false
+    }
+  );
 
   useEffect(() => {
     if (serverSocket) return;
@@ -43,18 +45,13 @@ const Lobby: React.FC = () => {
       console.log("connected to server");
     };
 
-    // // message handler
     newWS.onmessage = messageHandler;
-
-    //set the state
     setWS(newWS);
-
-    //cleanup
-    // return () => {
-    //   newWS.close()
-
-    // }
   }, []);
+
+  // useEffect(() => {
+  //   console.log(joinFormStateManager);
+  // }, [joinFormStateManager])
 
   // Functions
   /*------------------------------------------------------------------------------------------------------*/
@@ -62,7 +59,6 @@ const Lobby: React.FC = () => {
   // handles all message events from the server
   function messageHandler(messageBoxEvent: MessageEvent<string>) {
     const messageData: ImessageBox = JSON.parse(messageBoxEvent.data);
-    // console.log("in message hendler");
 
     switch (messageData.type) {
       case "rooms":
@@ -89,12 +85,29 @@ const Lobby: React.FC = () => {
   }
   return (
     <>
+        <JoinRoomFilter  joinFormStateManager={joinFormStateManager} setJoinFormStateManager={setJoinFormStateManager} />
+      { showCreateRoom &&
+         <NewRoomForm />
+      }
+      <button onClick={() => setShowCreateRoom(!showCreateRoom)}>Create Room</button>
       {chosenRoomDisplay(chosenRoom)}
-      <NewRoomForm />
+      {/* <NewRoomForm /> */}
       <div className="rooms-container">
         {rooms.length > 0 &&
         rooms
         ?.filter((room: any) => room?.isClosed === false && room.participants.length < room.limit)
+        .filter((room: any) => {
+          console.log(room)
+          console.log(joinFormStateManager)
+          if (
+            (room.subject === joinFormStateManager.subject || joinFormStateManager.subject === "") &&
+            (room.subSubject.match(joinFormStateManager.subSubject) || joinFormStateManager.subSubject === "") &&
+            (room.limit === Number(joinFormStateManager.limit) || joinFormStateManager.limit === "") &&
+            (room.isLocked === joinFormStateManager.isLocked) &&
+            (room.title.match(joinFormStateManager.search)  || joinFormStateManager.search === "" || room.description.match(joinFormStateManager.search))
+          ) 
+            return true
+        })
         .map((room: Iroom | null, i: number) => {
           if (!room) return;
           return <Room key={i} room={room} chosen={false} />;

@@ -13,7 +13,6 @@ import "./NewRoomForm.css";
 function NewRoomForm() {
   //redux states
   const { serverSocket, user } = useSelector((state: State) => state.ws);
-
   //  creates all refs for the form's inputs
   const subjectRef = useRef<HTMLSelectElement | null>(null);
   const subSubjectRef = useRef<HTMLInputElement | null>(null);
@@ -62,13 +61,6 @@ function NewRoomForm() {
               required
             />
             <label onClick={() => !isLocked ? setIsLocked(true) : setIsLocked(false)}>Private</label>
-            {/* <input
-              type="checkbox"
-              onClick={() => !isLocked ? setIsLocked(true) : setIsLocked(false)}
-              placeholder="isLocked"
-              defaultValue="0"
-              required
-            /> */}
             {isLocked &&
             <input placeholder='Room Password' ref={roomPasswordRef} onFocus={() => setErrorDiv(false)} />
             }
