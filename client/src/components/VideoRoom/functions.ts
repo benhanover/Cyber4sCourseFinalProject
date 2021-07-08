@@ -111,8 +111,6 @@ export const leaveRoom = async (
 ) => {
   console.log("new host", newHostId, user, room);
   if (!newHostId || newHostId === enums.defaultHost) {
-    console.log("inside");
-
     newHostId = room.participants.filter((participant: any) => {
       return user._id !== participant.user._id;
     })[0].user._id;

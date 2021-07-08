@@ -240,7 +240,6 @@ function VideoRoom() {
       room.participants.length === 1 &&
       room.participants[0].user._id === user._id
     ) {
-      console.log(2);
       serverSocket.send(
         JSON.stringify({
           type: "delete room",
@@ -257,7 +256,6 @@ function VideoRoom() {
       });
       history.push("/lobby");
     } else {
-      console.log(3);
       SetchooseNewHost(true);
     }
   }
