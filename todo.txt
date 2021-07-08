@@ -10,7 +10,7 @@ remove variables from process env
 TODO: on ws connection: create a {socketId, socket} and push to db
 
 Bugs:
- 
+ -enter withpt video but with sound eerors , cant get this user profile image
  -if 1 user sharescreen, then another user get in the room he dont see the shared screen
  - errors. enter videoroom with no video 
 - check why user._id in user state (client) doesn't exist all the time.{to check the user after login , register and refresh(app)-client}.

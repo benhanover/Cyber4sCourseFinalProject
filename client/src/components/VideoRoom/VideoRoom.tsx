@@ -118,45 +118,7 @@ function VideoRoom() {
               isVideoOn={myVideoIsOn}
             />
           )}
-          <button
-            className="leave-button"
-            onClick={() => {
-              if (user._id !== room.host.userId) {
-                leaveRoom(
-                  roomId,
-                  peerId,
-                  serverSocket,
-                  videos,
-                  user,
-                  myStream,
-                  room
-                );
-                history.push("/lobby");
-              } else if (
-                room.participants.length === 1 &&
-                room.participants[0].user._id === user._id
-              ) {
-                console.log("inside here delete the room");
-                serverSocket.send(
-                  JSON.stringify({
-                    type: "delete room",
-                    message: room._id,
-                  })
-                );
-                //m
-                videos.forEach((video: any) => {
-                  video.call.close();
-                });
-                user.peer.destroy();
-                myStream?.getTracks().forEach((track: any) => {
-                  track.stop();
-                });
-                history.push("/lobby");
-              } else {
-                SetchooseNewHost(true);
-              }
-            }}
-          >
+          <button className="leave-button" onClick={handleLeaveBuuton}>
             Leave
           </button>
           <button
@@ -182,13 +144,6 @@ function VideoRoom() {
           {chooseNewHost && (
             <div className="choose-host-box">
               {room.participants.map((participant: any) => {
-                console.log(
-                  participant.user._id,
-                  user._id,
-                  participant.user.username,
-                  room
-                );
-
                 if (participant.user._id !== user._id) {
                   return (
                     <div
@@ -226,7 +181,34 @@ function VideoRoom() {
 
   //functions:
   /*-------------------------------------------------------------------------------------*/
-
+  function handleLeaveBuuton() {
+    if (user._id !== room.host.userId) {
+      leaveRoom(roomId, peerId, serverSocket, videos, user, myStream, room);
+      history.push("/lobby");
+    } else if (
+      room.participants.length === 1 &&
+      room.participants[0].user._id === user._id
+    ) {
+      serverSocket.send(
+        JSON.stringify({
+          type: "delete room",
+          message: room._id,
+        })
+      );
+      //make shur there are no open calls
+      videos.forEach((video: any) => {
+        video.call.close();
+      });
+      user.peer.destroy();
+      myStream?.getTracks().forEach((track: any) => {
+        track.stop();
+      });
+      history.push("/lobby");
+    } else {
+      SetchooseNewHost(true);
+    }
+  }
+  /*---------------------------------------------------------------------------------------------*/
   async function createConnection(room: any) {
     let myMedia: MediaStream | undefined = await getUserMedia();
     if (!myMedia) {
