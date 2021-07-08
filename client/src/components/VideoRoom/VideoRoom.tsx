@@ -63,7 +63,7 @@ function VideoRoom() {
   /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
     const zz = async () => {
-      const currentRoom = rooms.find((room: any) => room._id === roomId);
+      const currentRoom = rooms.find((room: any) => room?._id === roomId);
       if (!room) {
         createConnection(currentRoom);
       } else if (currentRoom?.participants.length - 1 < videos.length) {
@@ -132,6 +132,26 @@ function VideoRoom() {
                   room
                 );
                 history.push("/lobby");
+              } else if (
+                room.participants.length === 1 &&
+                room.participants[0].user._id === user._id
+              ) {
+                console.log("inside here delete the room");
+                serverSocket.send(
+                  JSON.stringify({
+                    type: "delete room",
+                    message: room._id,
+                  })
+                );
+                //m
+                videos.forEach((video: any) => {
+                  video.call.close();
+                });
+                user.peer.destroy();
+                myStream?.getTracks().forEach((track: any) => {
+                  track.stop();
+                });
+                history.push("/lobby");
               } else {
                 SetchooseNewHost(true);
               }
@@ -162,9 +182,14 @@ function VideoRoom() {
           {chooseNewHost && (
             <div className="choose-host-box">
               {room.participants.map((participant: any) => {
-                console.log(participant._id, user._id, participant);
+                console.log(
+                  participant.user._id,
+                  user._id,
+                  participant.user.username,
+                  room
+                );
 
-                if (participant._id !== user._id) {
+                if (participant.user._id !== user._id) {
                   return (
                     <div
                       className="host-choise"
@@ -176,12 +201,14 @@ function VideoRoom() {
                           videos,
                           user,
                           myStream,
-                          room
+                          room,
+                          participant.user._id
                         );
+                        SetchooseNewHost(false);
                         history.push("/lobby");
                       }}
                     >
-                      <p> {participant.username}</p>
+                      <p> {participant.user.username}</p>
                       <img
                         src={participant.user.profile.imageBlob}
                         alt="user image"

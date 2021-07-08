@@ -34,9 +34,10 @@ app.use(fallbacks);
 import {
   findDocument,
   getRooms,
-  removePartecipentfromRoom,
+  removePartecipentfromRoomAndChangeHost,
   saveRoom,
   updateDocument,
+  deleteRoom,
 } from "./mongo/mongo-functions";
 import WebSocket from "ws";
 import { ImessageBox } from "./ws/interfaces";
@@ -79,30 +80,29 @@ wsServer.on("connection", async (clientSocket: any) => {
         console.log("in the lock room!!");
         break;
       case "delete room": //havent been tested
+        await deleteRoom(messageData.message);
+
         wsServer.emit("delete room for all", messageData.message);
 
-        // wsServer.clients.forEach((client) => {
-        //   client.send(
-        //     JSON.stringify({ type: "room deleted", message: messageData })
-        //   );
-        // });
-        //log the received message and send it back to the client
         break;
       case "leave room":
-        // console.log("testttttttttttttttttttt", messageData.message);
+        //case 1: delete room
+        //case 2: change host
 
-        //remove the participent from room db
-        const isRemoved = await removePartecipentfromRoom(
+        //remove the participent from room db//change host
+        const isRemoved = await removePartecipentfromRoomAndChangeHost(
           messageData.message.participant.roomId,
-          messageData.message.participant
+          messageData.message.participant,
+          messageData.message.newHostId
         );
-        // console.log(isRemoved, "isremoved!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        console.log(isRemoved, "isremoved!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (!isRemoved) {
           console.log("could not remove participant from db");
           return;
         }
         wsServer.emit("send rooms to all");
         break;
+
       case "join room":
         console.log(
           `${messageData.message.username} joined to room ${messageData.message.roomId} using the new peer: ${messageData.message.participant.peerId} and the stream with if: ${messageData.message.participant.streamId}`

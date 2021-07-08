@@ -106,25 +106,23 @@ export const leaveRoom = async (
   videos: any,
   user: any,
   myStream: any,
-  room: any
+  room: any,
+  newHostId: any = null
 ) => {
   console.log(room, "user", user);
-  // let newHost = null;
-  // if (user._id === room.host.userId) {
-  //   try{
-  //     newHost = await changehost(room);
-
-  //   }catch{
-  //     newHost = room.participants.filter(participant => participant._id !== user._id)[0];
-  //   }
-  // }
+  if (newHostId !== null && !newHostId) {
+    newHostId = room.participants.filter((participant: any) => {
+      return user._id !== participant.user._id;
+    })[0];
+  }
+  //weird
   serverSocket.send(
     JSON.stringify({
       type: "leave room",
       message: {
         participant: { roomId, peerId: user.peerId },
         participants: room.participants,
-        // newHost,
+        newHostId,
       },
     })
   );
