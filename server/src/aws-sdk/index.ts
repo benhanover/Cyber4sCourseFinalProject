@@ -11,38 +11,18 @@ const s3 = new AWS.S3({
 
 
 
-export function uploadImage(file: any) {
+export function uploadImage(file: any, username: string) {
   const fileStream = fs.createReadStream(file.path);
 
   const uploadParams = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
     Body: fileStream,
-    Key: file.filename,
+    Key: username,
     ACL: 'public-read',
     ContentType: 'image/png',
   }
   return s3.upload(uploadParams).promise();
 }
 
-export function getFileStream(fileKey: any) {
-  const downloadParams = {
-    Key: fileKey,
-    Bucket: process.env.AWS_S3_BUCKET_NAME
-  }
-  return s3.getObject(downloadParams).createReadStream();
-}
-
-// export
-// export const uploadToS3 = async (data: string, username: string) => {
-//   const name = 'default' + '.png';
-//   await s3.putObject({
-//     Key: name,
-//     Bucket: process.env.AWS_S3_BUCKET_NAME,
-//     ContentType: 'image/png',
-//     Body: data,
-//     ACL: 'public-read',
-//   }).promise();
-//   return `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${username}`;
-// };
 
 

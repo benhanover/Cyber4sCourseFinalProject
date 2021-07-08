@@ -61,12 +61,12 @@ const Profile: React.FC = () => {
           })} onClick={() => setError(null)}/>
           {error && <p className="error">{error}</p>}
           <button onClick={async () => {
-            const response: any = await saveImageToS3(imgFile);
+            const response: any = await saveImageToS3(imgFile, user.username);
             await updateDetailsByField({place: 'profile', field: 'img'}, response.data.imageUrl);
-            user.profile.img = response.data.imageUrl;
-            setUser({...user});
           }
           }>save</button>
+
+
           <label onClick={() => setFieldToUpdate({place: 'user', field: 'username'})}>username</label>
           <p>{user.username}</p>
           <label onClick={() => setFieldToUpdate({place: 'user', field: 'password'})}>password</label>

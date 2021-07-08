@@ -50,11 +50,11 @@ export async function fileSelectedHandler(e: any): Promise<any> {
   });
 }
 
-export const saveImageToS3 = async (imgFile: any) => {
+export const saveImageToS3 = async (imgFile: any, username: any) => {
   const formData = new FormData();
   formData.append('image', imgFile);
   try {
-    return axios.post(`${enums.baseUrl}/user/images`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+    return axios.post(`${enums.baseUrl}/user/images`, formData, {headers: {'Content-Type': 'multipart/form-data', 'username': username}})
   } catch(e) {
     console.log(e);
   }

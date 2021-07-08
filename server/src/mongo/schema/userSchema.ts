@@ -23,10 +23,9 @@ const userSchema = new Schema<Iuser>({
     relationship: { type: String, default: 'Change me:)' },
     activeTime: { type: String, default: 'Change me:)' },
     gender: { type: String, default: 'We Accept Anyone Around Here:)'},
-    img: {type: String, default: 'https://roomie-profile-images.s3.amazonaws.com/066c538516db381360a2ab53a8c39fa8'}
+    img: {type: String, default: 'https://roomie-profile-images.s3.amazonaws.com/default'}
   }
 });
 
 export default userSchema;
-// profile: profileSchema,
 
