@@ -68,6 +68,7 @@ export const getCleanedUser = (user: any) => {
     firstname: user.firstName,
     lastname: user.lastName,
     age: 22,
+    _id: user._id,
     // age: user.birthDate
     //   ? new Date().getFullYear() - user.birthDate.getFullYear()
     //   : 22,
@@ -95,7 +96,8 @@ export const getUserMedia = async (): Promise<MediaStream | undefined> => {
     }
   }
 };
-
+/*-------------------------------------------------------------------------------------*/
+// const changehost = (room) => {};
 /*-------------------------------------------------------------------------------------*/
 export const leaveRoom = async (
   roomId: any,
@@ -104,14 +106,25 @@ export const leaveRoom = async (
   videos: any,
   user: any,
   myStream: any,
-  room: any
+  room: any,
+  newHostId: any = null
 ) => {
+  console.log("new host", newHostId, user, room);
+  if (!newHostId || newHostId === enums.defaultHost) {
+    newHostId = room.participants.filter((participant: any) => {
+      return user._id !== participant.user._id;
+    })[0].user._id;
+  }
+  if (newHostId === enums.dontChangeHost) newHostId = false;
+  console.log("new host", newHostId);
+  //weird
   serverSocket.send(
     JSON.stringify({
       type: "leave room",
       message: {
         participant: { roomId, peerId: user.peerId },
         participants: room.participants,
+        newHostId,
       },
     })
   );
@@ -126,12 +139,13 @@ export const leaveRoom = async (
 };
 
 /*-------------------------------------------------------------------------------------*/
-export async function getVideos(updatedVideos: any, myStream: any, roomId: string) {
+export async function getVideos(
+  updatedVideos: any,
+  myStream: any,
+  roomId: string
+) {
   try {
-    const roomFromDb = await Network(
-      "GET",
-      `${enums.baseUrl}/room/${roomId}`
-      );
+    const roomFromDb = await Network("GET", `${enums.baseUrl}/room/${roomId}`);
     const participantsStreams: any[] = [];
     roomFromDb?.participants.forEach((participant: any) => {
       if (myStream.id !== participant.streamId) {
@@ -155,8 +169,16 @@ export async function getVideos(updatedVideos: any, myStream: any, roomId: strin
 }
 /*-------------------------------------------------------------------------------------*/
 
-export const closeRoom = (serverSocket: any, roomId: any, isClosed: boolean) => {
-  console.log(isClosed)
-  serverSocket.send(JSON.stringify({type: 'close room', message: {roomId, value: !isClosed}}))
-}
-
+export const closeRoom = (
+  serverSocket: any,
+  roomId: any,
+  isClosed: boolean
+) => {
+  console.log(isClosed);
+  serverSocket.send(
+    JSON.stringify({
+      type: "close room",
+      message: { roomId, value: !isClosed },
+    })
+  );
+};

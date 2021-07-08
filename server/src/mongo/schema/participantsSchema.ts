@@ -9,6 +9,7 @@ const participantsSchema = new Schema({
     age: Number,
     birthDate: Date,
     username: String,
+    _id: String,
     profile: {
       address: { type: String, default: "Change me:)" },
       status: { type: String, default: "Change me:)" },

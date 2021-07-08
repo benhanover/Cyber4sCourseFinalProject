@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import './Lobby.css'
-
+import "./Lobby.css";
+import { useHistory } from "react-router-dom";
 // import enums
-import { enums } from "../../utils/enums"
+import { enums } from "../../utils/enums";
 
 // import types
 import { ImessageBox, Iroom } from "./interfaces";
@@ -13,7 +13,7 @@ import { ImessageBox, Iroom } from "./interfaces";
 import { wsActionCreator, roomsActionCreator, State } from "../../state/index";
 import NewRoomForm from "./NewRoomForm/NewRoomForm";
 import Room from "./Room/Room";
-import JoinRoomFilter from './JoinRoomFilter/JoinRoomFilter';
+import JoinRoomFilter from "./JoinRoomFilter/JoinRoomFilter";
 import { ReactElement } from "react";
 
 /*================================================================================================*/
@@ -23,19 +23,23 @@ const Lobby: React.FC = () => {
   const dispatch = useDispatch();
   const { ws, rooms } = useSelector((state: State) => state);
   const { user, chosenRoom, serverSocket } = ws;
-  const { setWS, setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
-  const { setRooms, addRoom, removeRoom } = bindActionCreators({ ...roomsActionCreator }, dispatch);
-  const [showCreateRoom, setShowCreateRoom] = useState<any>(false);
-
-  const [joinFormStateManager, setJoinFormStateManager] = useState<any>(
-    {
-      subject: 'Math',
-      subSubject: '',
-      search: '',
-      limit: '',
-      isLocked: false
-    }
+  const { setWS, setUser } = bindActionCreators(
+    { ...wsActionCreator },
+    dispatch
   );
+  const { setRooms, addRoom, removeRoom } = bindActionCreators(
+    { ...roomsActionCreator },
+    dispatch
+  );
+  const [showCreateRoom, setShowCreateRoom] = useState<any>(false);
+  const history = useHistory();
+  const [joinFormStateManager, setJoinFormStateManager] = useState<any>({
+    subject: "Math",
+    subSubject: "",
+    search: "",
+    limit: "",
+    isLocked: false,
+  });
 
   useEffect(() => {
     if (serverSocket) return;
@@ -79,17 +83,23 @@ const Lobby: React.FC = () => {
         user.mySocket = messageData.message;
         setUser(user);
         break;
+      case "the room you created  is ready":
+        history.push("/room?roomId=" + messageData.message);
+        break;
       default:
         break;
     }
   }
   return (
     <>
-        <JoinRoomFilter  joinFormStateManager={joinFormStateManager} setJoinFormStateManager={setJoinFormStateManager} />
-      { showCreateRoom &&
-         <NewRoomForm />
-      }
-      <button onClick={() => setShowCreateRoom(!showCreateRoom)}>Create Room</button>
+      <JoinRoomFilter
+        joinFormStateManager={joinFormStateManager}
+        setJoinFormStateManager={setJoinFormStateManager}
+      />
+      {showCreateRoom && <NewRoomForm />}
+      <button onClick={() => setShowCreateRoom(!showCreateRoom)}>
+        Create Room
+      </button>
       {chosenRoomDisplay(chosenRoom)}
       {/* <NewRoomForm /> */}
       <div className="rooms-container">
