@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { State, wsActionCreator } from '../../state';
 
 // import functions
-import { updateDetailsByField, fileSelectedHandler } from './functions';
+import { updateDetailsByField, fileSelectedHandler, saveImageToS3 } from './functions';
 import './Profile.css';
 
 // import interfaces
@@ -21,12 +21,10 @@ const Profile: React.FC = () => {
   // states
   const [fieldToUpdate, setFieldToUpdate] = useState<Ifield | boolean>(false);
   const [error, setError] = useState<string | null>();
-  const [imgBlob, setImgBlob] = useState<any>(user.profile.imageBlob);
-
+  const [imgFile, setImgFile] = useState<any>();
   // refs
   const profileUpdateRef = useRef<HTMLInputElement>(null);
-  const imageBufferRef = useRef<any>(null); 
-  
+ 
   return (
       <div className="my-profile-container">
         <div className="my-profile">
@@ -49,24 +47,26 @@ const Profile: React.FC = () => {
               }}>update</button>
             </div>
           }
-
-
-          {/* update images */}
+          
           <label> change image: </label>
-          <img className="new-profile-image" src={imgBlob} alt="profile" />
-          <input type='file' accept='image/*' onChange={async (e) => setImgBlob(await fileSelectedHandler(e))} onClick={() => setError(null)}/>
+          <img className="new-profile-image" src={user.profile.img} alt="profile" />
+          <input type='file' accept='image/*' onChange={(async e => {
+            if(e.target.files) {
+              setImgFile(e.target.files[0]);
+              const blobBeforeSave = await fileSelectedHandler(e);
+              console.log(blobBeforeSave);
+              user.profile.img = blobBeforeSave;
+              setUser({...user})
+            }
+          })} onClick={() => setError(null)}/>
           {error && <p className="error">{error}</p>}
           <button onClick={async () => {
-            const updated =  await updateDetailsByField({place: 'profile' , field: 'imageBlob'}, imgBlob);
-            if (typeof updated === 'string') {
-              console.log('IM IN THE IFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF')
-              setError(updated);
-              return;
-            }
-            setUser(updated);
+            const response: any = await saveImageToS3(imgFile);
+            await updateDetailsByField({place: 'profile', field: 'img'}, response.data.imageUrl);
+            user.profile.img = response.data.imageUrl;
+            setUser({...user});
           }
           }>save</button>
-
           <label onClick={() => setFieldToUpdate({place: 'user', field: 'username'})}>username</label>
           <p>{user.username}</p>
           <label onClick={() => setFieldToUpdate({place: 'user', field: 'password'})}>password</label>
@@ -98,8 +98,9 @@ const Profile: React.FC = () => {
           <p>{user.profile.gender}</p>
         </div>
       </div>
-
   );
+  // functions
+  
 }
 
 

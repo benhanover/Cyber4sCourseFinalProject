@@ -97,8 +97,6 @@ const Lobby: React.FC = () => {
         rooms
         ?.filter((room: any) => room?.isClosed === false && room.participants.length < room.limit)
         .filter((room: any) => {
-          console.log(room)
-          console.log(joinFormStateManager)
           if (
             (room.subject === joinFormStateManager.subject || joinFormStateManager.subject === "") &&
             (room.subSubject.match(joinFormStateManager.subSubject) || joinFormStateManager.subSubject === "") &&

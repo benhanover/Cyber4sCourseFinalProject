@@ -116,7 +116,7 @@ function VideoRoom() {
             <UserVideo
               muted={true}
               stream={myStream}
-              userImage={user.profile.imageBlob}
+              userImage={user.profile.img}
               username="peerState"
               isVideoOn={myVideoIsOn}
             />
