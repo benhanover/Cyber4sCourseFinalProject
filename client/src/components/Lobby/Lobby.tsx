@@ -104,33 +104,22 @@ const Lobby: React.FC = () => {
       {/* <NewRoomForm /> */}
       <div className="rooms-container">
         {rooms.length > 0 &&
-          rooms
-            ?.filter(
-              (room: any) =>
-                room?.isClosed === false &&
-                room.participants.length < room.limit
-            )
-            .filter((room: any) => {
-              console.log(room);
-              console.log(joinFormStateManager);
-              if (
-                (room.subject === joinFormStateManager.subject ||
-                  joinFormStateManager.subject === "") &&
-                (room.subSubject.match(joinFormStateManager.subSubject) ||
-                  joinFormStateManager.subSubject === "") &&
-                (room.limit === Number(joinFormStateManager.limit) ||
-                  joinFormStateManager.limit === "") &&
-                room.isLocked === joinFormStateManager.isLocked &&
-                (room.title.match(joinFormStateManager.search) ||
-                  joinFormStateManager.search === "" ||
-                  room.description.match(joinFormStateManager.search))
-              )
-                return true;
-            })
-            .map((room: Iroom | null, i: number) => {
-              if (!room) return;
-              return <Room key={i} room={room} chosen={false} />;
-            })}
+        rooms
+        ?.filter((room: any) => room?.isClosed === false && room.participants.length < room.limit)
+        .filter((room: any) => {
+          if (
+            (room.subject === joinFormStateManager.subject || joinFormStateManager.subject === "") &&
+            (room.subSubject.match(joinFormStateManager.subSubject) || joinFormStateManager.subSubject === "") &&
+            (room.limit === Number(joinFormStateManager.limit) || joinFormStateManager.limit === "") &&
+            (room.isLocked === joinFormStateManager.isLocked) &&
+            (room.title.match(joinFormStateManager.search)  || joinFormStateManager.search === "" || room.description.match(joinFormStateManager.search))
+          ) 
+            return true
+        })
+        .map((room: Iroom | null, i: number) => {
+          if (!room) return;
+          return <Room key={i} room={room} chosen={false} />;
+        })}
       </div>
     </>
   );

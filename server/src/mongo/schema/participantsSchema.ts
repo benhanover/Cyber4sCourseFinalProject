@@ -19,7 +19,6 @@ const participantsSchema = new Schema({
       relationship: { type: String, default: "Change me:)" },
       activeTime: { type: String, default: "Change me:)" },
       gender: { type: String, default: "We Accept Anyone Around Here:)" },
-      imageBlob: { type: String },
     },
   },
 });

@@ -15,7 +15,7 @@ const ProfileTicket: React.FC<IprofileTicket> = ({ participants }) => {
                 e.preventDefault();
                 history.push(`/profile?username=${item.user.username}`);
               }}
-              src={item.user.profile.imageBlob}
+              src={item.user.profile.img}
             ></img>
             <p>{item.user.username}</p>
           </li>

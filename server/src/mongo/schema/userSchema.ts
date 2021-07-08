@@ -13,6 +13,22 @@ const userSchema = new Schema<Iuser>({
   friendList: [String],
   blackList: [String],
   profile: {
+<<<<<<< HEAD
+    address: { type: String, default: 'Change me:)' },
+    status: { type: String, default: 'Change me:)' },
+    about: { type: String, default: 'Change me:)' },
+    intrests: { type: String, default: 'Change me:)' },
+    hobbys: { type: String, default: 'Change me:)' },
+    relationship: { type: String, default: 'Change me:)' },
+    activeTime: { type: String, default: 'Change me:)' },
+    gender: { type: String, default: 'We Accept Anyone Around Here:)'},
+    img: {type: String, default: 'https://roomie-profile-images.s3.amazonaws.com/default'}
+  }
+});
+
+export default userSchema;
+
+=======
     address: { type: String, default: "Change me:)" },
     status: { type: String, default: "Change me:)" },
     about: { type: String, default: "Change me:)" },
@@ -31,3 +47,4 @@ const userSchema = new Schema<Iuser>({
 
 export default userSchema;
 // profile: profileSchema,
+>>>>>>> fea53bf6aaf09d523fa0d2311b8ac26bbd3fd05f

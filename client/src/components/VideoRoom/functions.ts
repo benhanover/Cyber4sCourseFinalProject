@@ -9,7 +9,7 @@ export const getUserByStreamId = (room: any, streamId: any): any => {
   }
   const user = room.participants.find((u: any) => u.streamId === streamId);
   if (!user) return;
-  return user.user.profile.imageBlob;
+  return user.user.profile.img;
 };
 
 /*-------------------------------------------------------------------------------------*/
