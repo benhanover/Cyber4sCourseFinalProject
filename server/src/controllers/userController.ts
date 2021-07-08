@@ -365,7 +365,7 @@ export const getUserProfile = async (
 export const saveImageToS3 = async (req: any, res: Response): Promise<void> => {
   const username = req.headers['username'];
   const img = req.file;
-  const result = await uploadImage(img, username);
+  const result = await uploadImage(img, username, img.mimetype);
   await unlinkFile(img.path)
   res.send({imageUrl: result.Location}); 
 }

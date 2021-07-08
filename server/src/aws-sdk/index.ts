@@ -11,7 +11,7 @@ const s3 = new AWS.S3({
 
 
 
-export function uploadImage(file: any, username: string) {
+export function uploadImage(file: any, username: string, type: string) {
   const fileStream = fs.createReadStream(file.path);
 
   const uploadParams = {
@@ -19,7 +19,7 @@ export function uploadImage(file: any, username: string) {
     Body: fileStream,
     Key: username,
     ACL: 'public-read',
-    ContentType: 'image/png',
+    ContentType: type,
   }
   return s3.upload(uploadParams).promise();
 }
