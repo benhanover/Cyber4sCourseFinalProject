@@ -16,7 +16,7 @@ const roomReducer = (state: Array<Iroom | null> = [], action: any) => {
       console.log(" inside reducer the  after state: ", state);
       break;
     case "removeRoom":
-      const roomIndex = state.findIndex((room) => action.payload);
+      const roomIndex = state.findIndex((room) => room?._id === action.payload);
       state[roomIndex] = null;
       break;
     default:

@@ -10,6 +10,7 @@ remove variables from process env
 TODO: on ws connection: create a {socketId, socket} and push to db
 
 Bugs:
+ -enter withpt video but with sound eerors , cant get this user profile image
  - otheruser doesnt render on rejoin. enter video room with no video 
 
  

@@ -1,7 +1,7 @@
 //imports
 /*-------------------------------------------------------------------------------------*/
 import "./VideoRoom.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Peer from "peerjs";
 
@@ -51,13 +51,15 @@ function VideoRoom() {
   const history = useHistory();
   const location = useLocation();
   const [room, setRoom] = useState<any>();
-  const [isClosedButtonName, setIsClosedButtonName] = useState<any>('');
+  const [isClosedButtonName, setIsClosedButtonName] = useState<any>("");
   const [peerId, setPeerId] = useState<any>();
   const [videos, setVideos] = useState<any>([]);
   const [myStream, setMyStream] = useState<any>();
   const [myVideoIsOn, setMyVideoIsOn] = useState<any>(true);
   const roomId = location.search.slice(8);
+  console.log(roomId, "video room");
   const [noUserDevices, SetNoUserDevices] = useState<boolean>(false);
+  const [chooseNewHost, SetchooseNewHost] = useState<any>(null);
 
   //hapens on 2 cases:
   //on componnent did mount:  get the room details and creat the peer js connection
@@ -65,8 +67,10 @@ function VideoRoom() {
   /*-------------------------------------------------------------------------------------*/
   useEffect(() => {
     const runAsyncFunction = async () => {
-      const currentRoom = rooms.find((room: any) => room._id === roomId);
-      currentRoom?.isClosed ? setIsClosedButtonName('Open Room') : setIsClosedButtonName('Close Room')
+      const currentRoom = rooms.find((room: any) => room?._id === roomId);
+      currentRoom?.isClosed
+        ? setIsClosedButtonName("Open Room")
+        : setIsClosedButtonName("Close Room");
       if (!room) {
         createConnection(currentRoom);
       } else if (currentRoom?.participants.length - 1 < videos.length) {
@@ -121,21 +125,7 @@ function VideoRoom() {
               isVideoOn={myVideoIsOn}
             />
           )}
-          <button
-            className="leave-button"
-            onClick={() => {
-              leaveRoom(
-                roomId,
-                peerId,
-                serverSocket,
-                videos,
-                user,
-                myStream,
-                room
-              );
-              history.push("/lobby");
-            }}
-          >
+          <button className="leave-button" onClick={handleLeaveBuuton}>
             Leave
           </button>
           <button
@@ -158,7 +148,44 @@ function VideoRoom() {
               Share Screen
             </button>
           )}
-          <button onClick={() => closeRoom(serverSocket, roomId, room.isClosed)}>{isClosedButtonName}</button>
+          {chooseNewHost && (
+            <div className="choose-host-box">
+              {room.participants.map((participant: any) => {
+                if (participant.user._id !== user._id) {
+                  return (
+                    <div
+                      className="host-choise"
+                      onClick={() => {
+                        leaveRoom(
+                          roomId,
+                          peerId,
+                          serverSocket,
+                          videos,
+                          user,
+                          myStream,
+                          room,
+                          participant.user._id
+                        );
+                        SetchooseNewHost(false);
+                        history.push("/lobby");
+                      }}
+                    >
+                      <p> {participant.user.username}</p>
+                      <img
+                        src={participant.user.profile.imageBlob}
+                        alt="user image"
+                      />
+                    </div>
+                  );
+                }
+              })}
+            </div>
+          )}
+          <button
+            onClick={() => closeRoom(serverSocket, roomId, room.isClosed)}
+          >
+            {isClosedButtonName}
+          </button>
         </div>
       )}
     </>
@@ -166,7 +193,34 @@ function VideoRoom() {
 
   //functions:
   /*-------------------------------------------------------------------------------------*/
-
+  function handleLeaveBuuton() {
+    if (user._id !== room.host.userId) {
+      leaveRoom(roomId, peerId, serverSocket, videos, user, myStream, room);
+      history.push("/lobby");
+    } else if (
+      room.participants.length === 1 &&
+      room.participants[0].user._id === user._id
+    ) {
+      serverSocket.send(
+        JSON.stringify({
+          type: "delete room",
+          message: room._id,
+        })
+      );
+      //make shur there are no open calls
+      videos.forEach((video: any) => {
+        video.call.close();
+      });
+      user.peer.destroy();
+      myStream?.getTracks().forEach((track: any) => {
+        track.stop();
+      });
+      history.push("/lobby");
+    } else {
+      SetchooseNewHost(true);
+    }
+  }
+  /*---------------------------------------------------------------------------------------------*/
   async function createConnection(room: any) {
     let myMedia: MediaStream | undefined = await getUserMedia();
     if (!myMedia) {
