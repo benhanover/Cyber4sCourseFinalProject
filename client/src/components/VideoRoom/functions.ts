@@ -68,6 +68,7 @@ export const getCleanedUser = (user: any) => {
     firstname: user.firstName,
     lastname: user.lastName,
     age: 22,
+    friendList: user.friendList
     // age: user.birthDate
     //   ? new Date().getFullYear() - user.birthDate.getFullYear()
     //   : 22,

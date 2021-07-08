@@ -9,7 +9,7 @@
       -ms-flex-align: center;
           align-items: center;
   background-color: #016367;
-  height: 2.5rem;
+  height: 2rem;
 }
 
 .navbar .logo {
@@ -33,8 +33,6 @@
   height: 1.8rem;
   margin-right: 1rem;
   border-radius: 50%;
-  background-color: white;
-  cursor: pointer;
 }
 
 .navbar .options .profile-menu-container .profile-menu {

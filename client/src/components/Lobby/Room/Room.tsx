@@ -47,20 +47,21 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
       <div className="chosen-background" onClick={(e)=> setChosenRoom(null)}>
         <div key={42} className="chosen room" onClick={(e) => e.stopPropagation()}>
           <span key={1} className="close-chosen-button" onClick={() => setChosenRoom(null)}>X</span>
+          <Tooltip title={"Room Subject"} placement="top-start">
+            <p key={3} className="subject"><Category className="category-icon icon" />{`${chosenRoom.subject} > ${chosenRoom.subSubject}`}
+            </p>
+          </Tooltip>
           <p key={2} className="title">{chosenRoom.title}</p>
-          <p key={3} className="subject">{`${chosenRoom.subject} > ${chosenRoom.subSubject}`}</p>
-          <p key={5} className="description">{chosenRoom.description}</p>
-          <p key={7} className="isLocked">{chosenRoom.isLocked ? "Locked" : "opened"}</p>
+          <p key={5} className="description">{chosenRoom.description}<div></div></p>
+          <div className="room-participants">
           <ProfileTicket participants={chosenRoom.participants}/>
-          {chosenRoom.participants.length > 0
+          {/* {chosenRoom.participants.length > 0
             ?
-            <div className="room-participants">
-              <PeopleAltIcon />
-              <p key={6} className="limit">{ chosenRoom.participants.length}/{chosenRoom.limit}</p>
-              {chosenRoom.participants.map((profile: any, i: number) => <p key={i} className="username">{profile.username}</p>)}
-            </div>
+              {/* <p key={6} className="limit">{ chosenRoom.participants.length}/{chosenRoom.limit}</p> */}
+              {/* {chosenRoom.participants.map((profile: any, i: number) => <p key={i} className="username">{profile.username}</p>)} 
             : null
-          }
+          */}
+          </div>
           {room.isLocked && 
             <input placeholder='Room Password' ref={roomPasswordRef}/>
 
@@ -90,7 +91,7 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
         <p className="subject"><Category className="category-icon icon" />{`${room.subject} > ${room.subSubject}`}</p>
         </Tooltip>
       <p className="title">{room.title}</p>
-      <p className="description">{room.description}</p>
+      {/* <p className="description">{room.description}</p> */}
               
       <Tooltip title={room.participants.length+" users of "+room.limit + " are currently in this room" } placement="top">
       <p className="limit"><PeopleAltIcon className="people-icon icon" />{ room.participants.length}/{room.limit}</p>
@@ -99,8 +100,8 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
         
         <div className={`small-participants-display-container ${showParticipants}`}>
         <div className="blur-div"></div>
-        {room.participants.map((participant: any) => {
-          return <div className="small-participant">
+        {room.participants.map((participant: any, i: number) => {
+          return <div key={i} className="small-participant">
             <div className="profile-left">
 
             <img className="profile-image" src={participant.user.profile.imageBlob} alt="" />

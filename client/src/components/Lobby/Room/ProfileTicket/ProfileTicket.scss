@@ -1,0 +1,17 @@
+@import '../../../Common/styles/themeColors.scss';
+.profile-ticket-container{
+    .profile-ticket{
+        margin-bottom: 1.5rem;
+        background-color: $spicyColor;
+        border-radius: 10px;
+        box-shadow: $shadowBoxDetails;
+        list-style-type: none;
+        // display: flex;
+        padding: 2rem;
+        img{
+            height: 5rem;
+            border-radius: 50%;
+            background-color: $divBackgroundColor;
+        }
+    }
+}

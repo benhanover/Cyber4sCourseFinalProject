@@ -20,13 +20,14 @@ $borderDetails: 0.6px solid rgba(0, 0, 0, 0.2);
     width: $roomWidth;
     background-color: $divBackgroundColor;
     border: 1px solid rgba($color: black, $alpha: 0.1);
-    border-top-left-radius : 5px;
-    border-top-right-radius : 5px;
+    border-top-left-radius : $smallBorderRadius;
+    border-top-right-radius : $smallBorderRadius;
     box-shadow: 0px 2px 5px 0px rgba($color: #000000, $alpha: 0.1);
     cursor: pointer;
     .title{
-    padding-left: 1.3rem;
-    text-align: left;
+        margin-bottom: 1rem;
+        padding-left: 1.3rem;
+        text-align: left;
         font-weight: bolder;
         font-size: 1.5rem;
     }
@@ -43,34 +44,32 @@ $borderDetails: 0.6px solid rgba(0, 0, 0, 0.2);
         }
     }
     .description{
-        // padding-top: 1rem;
         margin-top: 1rem;
         margin-bottom: 1rem;
         text-align: center;
 
     }
 
-  
-.limit{
-position: absolute;
-display: flex;
-align-items: center;
-bottom: 1rem;
-right: 2rem;
-font-size: 1rem;
-color: rgba($color: #000000, $alpha: 0.4);
-.people-icon{
-    font-size: 1.3rem;
-    color:rgba(0, 0, 0, 0.2)
-}
-}
-.isLocked{
-    position: absolute;
-    top: 0.4rem;
-    left: 0.6rem;
-    font-size: 0.7rem;
-    color: rgba($color: #000000, $alpha: 0.4);
-}
+    .limit{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        bottom: 1rem;
+        right: 2rem;
+        font-size: 1rem;
+        color: rgba($color: #000000, $alpha: 0.4);
+        .people-icon{
+            font-size: 1.3rem;
+            color:rgba(0, 0, 0, 0.2)
+        }
+    }
+    .isLocked{
+        position: absolute;
+        top: 0.4rem;
+        left: 0.6rem;
+        font-size: 0.7rem;
+        color: rgba($color: #000000, $alpha: 0.4);
+    }
 }
 .chosen-background{
     background-color: rgba($color: #000000, $alpha: 0.4);
@@ -89,8 +88,9 @@ color: rgba($color: #000000, $alpha: 0.4);
     // top: 10rem;
     // left: 10rem;
     width: 60%;
-    padding: 2rem;
+    padding: 2rem 0rem 2rem 1rem;
     background-color: rgba($color: $spicyColor, $alpha: 0.9);
+    
     border:$borderDetails;      //shold be changed
     .close-chosen-button{
         position: absolute;
@@ -98,6 +98,30 @@ color: rgba($color: #000000, $alpha: 0.4);
         right: 0.6rem;
         font-size: 0.7rem;
         color: rgba($color: #000000, $alpha: 0.4);
+    }
+   
+    .description{
+        position: relative;
+        align-self: flex-end;
+        margin-right: -1rem;
+        width: 85%;
+        background-image: linear-gradient(90deg, $backgroundColor 0%, #d4d4d4 90%, $backgroundColor 98%, #b6b6b6 100%);
+        padding: 2rem 1rem;
+        box-shadow: -8px 8px 16px 2px rgba($color: #000000, $alpha: 0.6);
+        border-top-right-radius: 15px;
+        border-top-left-radius: 100px;
+        border-bottom-left-radius: 100px;
+        div{
+            position: absolute;
+            right: 0rem;
+            bottom: -1rem;
+            background-color: #b6b6b6;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            height: 2rem;
+            width: 40%;
+            z-index: -1;
+        }
     }
     .limit{
         top: unset;
@@ -109,7 +133,6 @@ color: rgba($color: #000000, $alpha: 0.4);
         justify-content: space-around;
         flex-wrap: wrap;
         border: $borderDetails;
-        
     }
     .button {
         margin-top: 0.8rem;
