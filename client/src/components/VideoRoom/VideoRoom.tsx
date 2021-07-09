@@ -1,6 +1,6 @@
 //imports
 /*-------------------------------------------------------------------------------------*/
-import "./VideoRoom.css";
+//import "./VideoRoom.css";
 import { useEffect, useState, useRef } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Peer from "peerjs";
