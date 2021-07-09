@@ -1,5 +1,5 @@
 // import libraries
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useDispatch} from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -25,20 +25,24 @@ const Register: React.FC = () => {
   const dateRef = useRef<HTMLInputElement | null>(null);
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [errorDiv, setErrorDiv] = useState<any>(false);
 
   return (
-    <div className="register-container">
-
+    <div className="register-container"  onClick={() => setErrorDiv(false)}>
       <button className='login-btn button' onClick={() => history.push('/')}>Login</button>
-    <form className="register-form" onSubmit={handleSubmit}>
-      <input ref={usernameRef} placeholder="Username" required/>
-      <input ref={nameRef}  placeholder="First Name"/>
-      <input ref={lastNameRef} placeholder="Last Name"/>
-      <input type='date' ref={dateRef} placeholder="BirthDate"/>
-      <input type='email' ref={emailRef} placeholder="Email"/>
-      <input type='text' ref={passwordRef} placeholder="Password" />
-      <input type='submit' className="button" value="Register" />
-    </form>
+      <form className="register-form" onSubmit={handleSubmit}>
+        <input ref={usernameRef} placeholder="Username" required/>
+        <input ref={nameRef}  placeholder="First Name"/>
+        <input ref={lastNameRef} placeholder="Last Name"/>
+        <input type='date' ref={dateRef} placeholder="BirthDate"/>
+        <input type='email' ref={emailRef} placeholder="Email" required/>
+        <input type='text' ref={passwordRef} placeholder="Password" />
+        <input type='submit' className="button" value="Register" />
+        {
+          errorDiv&& 
+          <p>{errorDiv}</p>
+        }
+      </form>
 </div>
   );
 
@@ -57,7 +61,6 @@ function cleanup(): void {
 /*-----------------------------------------------------------------------------------------------------------------*/
   async function handleSubmit(e: React.SyntheticEvent): Promise<void> {
     e.preventDefault();
-    
     if(!(usernameRef?.current && nameRef?.current && lastNameRef?.current && dateRef?.current && emailRef?.current && passwordRef?.current)) return;
     const username: string | undefined = usernameRef.current?.value;
     const firstName: string | undefined = nameRef.current?.value;
@@ -74,7 +77,7 @@ function cleanup(): void {
       Cookies.set('refreshToken', response.refreshToken);
       setUser(response.user)
     } catch (e) {
-      console.log("couldn't register", e);
+      setErrorDiv(e.response.data.message);
     }
   };
 };
