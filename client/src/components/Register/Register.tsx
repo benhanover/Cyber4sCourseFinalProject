@@ -41,13 +41,13 @@ const Register: React.FC = () => {
 
       <button className='login-btn button' onClick={() => history.push('/')}>Login</button>
     <form className="register-form" onSubmit={handleSubmit}>
-      <input ref={usernameRef} placeholder="Username" />
-      <input ref={nameRef}  placeholder="First Name"/>
-      <input ref={lastNameRef} placeholder="Last Name"/>
-      <input type='date' ref={dateRef} placeholder="BirthDate"/>
-      <input type='email' ref={emailRef} placeholder="Email"/>
-      <input type='text' ref={passwordRef} placeholder="Password" />
-      <input type='submit' className="button" value="Register" />
+      <input ref={usernameRef} placeholder="Username" required />
+      <input ref={nameRef}  placeholder="First Name" required/>
+      <input ref={lastNameRef} placeholder="Last Name" required/>
+      <input type='date' ref={dateRef} placeholder="BirthDate" required/>
+      <input type='email' ref={emailRef} placeholder="Email" required/>
+      <input type='text' ref={passwordRef} placeholder="Password" required />
+      <input type='submit' className="button" value="Register" required />
       {/* <br />
       <br />
       <br />

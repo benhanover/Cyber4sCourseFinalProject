@@ -1,32 +1,46 @@
-.my-profile-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
+.personal-details {
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: 90%;
+  margin-left: 5rem;
+}
+.image-buttons {
+  display: flex;
+  justify-content:space-around;
+}
+.hidden {
+  display: none;
+}
+.hover:hover {
+  background-color: cadetblue;
+}
+.details-container {
+  display: flex;
+}
+.details-item-div {
+  display: flex;
+}
+.account-settings {
+  color: blue;
+}
+.credential-item {
+  display: flex;
+}
+.update {
+  color: red;
 }
 
-.my-profile-container .my-profile {
-  background-color: rgba(196, 223, 255, 0.8);
-  padding: 2rem;
+.information {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  border: red solid 1px;
 }
-
-.my-profile-container .my-profile .error {
-  background-color: rgba(228, 69, 69, 0.507);
+.information-item-div {
+  margin-bottom: 1rem;
+  border: black solid 1px;
+  display: flex;
+  justify-content: left;
 }
-
-.my-profile-container .my-profile .new-profile-image {
-  height: 8rem;
-  border-radius: 50%;
-}
-
-.my-profile-container .my-profile .profile-image {
-  height: 4rem;
-  border-radius: 50%;
-}
-/*# sourceMappingURL=Profile.css.map */
+/* .information-update-button {
+  margin-left: 1rem;
+  margin-right: 1rem;
+} */
