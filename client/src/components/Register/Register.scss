@@ -1,22 +1,63 @@
 .register-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   height: 100%;
   .register-form {
-    background-color: rgb(196, 223, 255);
-    border-radius: 20px;
-    height: 40%;
+    background-color: white;
+    border: 0.3rem solid rgb(8, 47, 95);
+    height: 55%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 20rem;
-    padding: 3rem;
+    width: 25rem;
+    align-items: center;
+    border-radius: 12px;
+
+    padding: 2rem;
+    position: absolute;
+    right: 7rem;
+    top: 5rem;
+    input {
+      border: 2px solid rgb(8, 47, 95);
+      outline: none;
+      height: 2rem;
+      font-size: 0.9rem;
+      padding: 1em;
+      margin: 0.5em;
+      color: black;
+      width: 12rem;
+      //border-radius: 4px;
+    }
+    .submit-btn {
+      padding: 0;
+      width: 7rem;
+      height: 10rem;
+      background-color: blueviolet;
+      border: none;
+      color: white;
+      // margin: 0rem auto;
+    }
   }
+  .rectangle-shape {
+    width: 650px;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.527);
+  }
+  .triangle-shape {
+    width: 0;
+    height: 0;
+    border-top: 100vh solid rgba(255, 0, 0, 0.562);
+    border-right: 400px solid transparent;
+    left: 650px;
+    position: absolute;
+    top: 0;
+  }
+  background-color: white;
 }
-.button {
-  padding: 0.5rem;
-}
+// .button {
+//   padding: 0.5rem;
+// }
 .login-btn {
   position: absolute;
   top: 0.5rem;

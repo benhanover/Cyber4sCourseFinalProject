@@ -1,20 +1,12 @@
 .register-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   height: 100%;
+  background-color: white;
 }
 
 .register-container .register-form {
-  background-color: #c4dfff;
-  border-radius: 20px;
-  height: 40%;
+  background-color: white;
+  border: 0.3rem solid #082f5f;
+  height: 55%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -24,17 +16,56 @@
           flex-direction: column;
   -ms-flex-pack: distribute;
       justify-content: space-around;
-  width: 20rem;
-  padding: 3rem;
+  width: 25rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 12px;
+  padding: 2rem;
+  position: absolute;
+  right: 7rem;
+  top: 5rem;
 }
 
-.button {
-  padding: 0.5rem;
+.register-container .register-form input {
+  border: 2px solid #082f5f;
+  outline: none;
+  height: 2rem;
+  font-size: 0.9rem;
+  padding: 1em;
+  margin: 0.5em;
+  color: black;
+  width: 12rem;
+}
+
+.register-container .register-form .submit-btn {
+  padding: 0;
+  width: 7rem;
+  height: 10rem;
+  background-color: blueviolet;
+  border: none;
+  color: white;
+}
+
+.register-container .rectangle-shape {
+  width: 650px;
+  height: 100%;
+  background-color: rgba(255, 0, 0, 0.527);
+}
+
+.register-container .triangle-shape {
+  width: 0;
+  height: 0;
+  border-top: 100vh solid rgba(255, 0, 0, 0.562);
+  border-right: 400px solid transparent;
+  left: 650px;
+  position: absolute;
+  top: 0;
 }
 
 .login-btn {
   position: absolute;
   top: 0.5rem;
-  left: 0.5rem;
+  right: 0.5rem;
 }
 /*# sourceMappingURL=Register.css.map */
