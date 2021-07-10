@@ -68,6 +68,10 @@ const Login: React.FC = () => {
         setUser(response.user);
       })
       .catch(e => {
+        if (!e.response?.data) {
+          setErrorDiv(enums.noConnection)
+          return;
+        }
         setErrorDiv(e.response.data.message)
       });
   }

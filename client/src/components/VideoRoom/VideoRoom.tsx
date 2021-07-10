@@ -35,6 +35,7 @@ import {
   leaveRoom,
   getVideos,
   closeRoom,
+  getStreamId,
 } from "./functions";
 /*-------------------------------------------------------------------------------------*/
 // import peer functions
@@ -57,7 +58,6 @@ function VideoRoom() {
   const [myStream, setMyStream] = useState<any>();
   const [myVideoIsOn, setMyVideoIsOn] = useState<any>(true);
   const roomId = location.search.slice(8);
-  console.log(roomId, "video room");
   const [noUserDevices, SetNoUserDevices] = useState<boolean>(false);
   const [chooseNewHost, SetchooseNewHost] = useState<any>(null);
 
@@ -79,6 +79,7 @@ function VideoRoom() {
       }
       setRoom({ ...currentRoom });
     };
+
     runAsyncFunction();
   }, [rooms]);
 
@@ -110,8 +111,8 @@ function VideoRoom() {
                 key={i}
                 muted={false}
                 stream={video.stream}
-                username="video.username"
-                userImage={getUserByStreamId(room, video.call._remoteStream.id)}
+                username={video.username}
+                userImage={getUserByStreamId(room, video.streamId)}
                 isVideoOn={video.isVideoOn}
               />
             );
@@ -121,7 +122,7 @@ function VideoRoom() {
               muted={true}
               stream={myStream}
               userImage={user.profile.img}
-              username="peerState"
+              username={user.username}
               isVideoOn={myVideoIsOn}
             />
           )}
@@ -174,8 +175,8 @@ function VideoRoom() {
                     >
                       <p> {participant.user.username}</p>
                       <img
-                        src={participant.user.profile.imageBlob}
-                        alt="user image"
+                        src={participant.user.profile.img}
+                        alt="user profile"
                       />
                     </div>
                   );
@@ -186,7 +187,7 @@ function VideoRoom() {
                   SetchooseNewHost(false);
                 }}
               >
-                cansel
+                cancel
               </button>
               <button
                 onClick={() => {
@@ -221,9 +222,7 @@ function VideoRoom() {
   //functions:
   /*-------------------------------------------------------------------------------------*/
   function handleLeaveBuuton() {
-    console.log(room.participants, ":users in room");
     if (user._id !== room.host.userId) {
-      console.log(1);
 
       leaveRoom(
         roomId,
@@ -282,10 +281,9 @@ function VideoRoom() {
       setUser({ ...user });
       const peerId = id;
       setPeerId(peerId);
-      let mediaStreamId = myMedia.id;
-      if (mediaStreamId.match(/^{.+}$/)) {
-        mediaStreamId = mediaStreamId.slice(1, -1);
-      }
+      let mediaStreamId = getStreamId(myMedia.id);
+
+     
       //tell the server to update room participant in db and at other clients
       serverSocket.send(
         JSON.stringify({
@@ -315,7 +313,9 @@ function VideoRoom() {
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {
             // participant create a call with this this one.
+            
             videos.push({
+              streamId: getStreamId(remoteStream.id),
               stream: remoteStream,
               call: call,
               isVideoOn: remoteStream.getVideoTracks()[0]?.enabled,
@@ -369,6 +369,7 @@ function VideoRoom() {
           ) {
             // participant answered this user's call with media.
             videos.push({
+              streamId: getStreamId(remoteStream.id),
               stream: remoteStream,
               call: call,
               isVideoOn: remoteStream.getVideoTracks()[0]?.enabled,

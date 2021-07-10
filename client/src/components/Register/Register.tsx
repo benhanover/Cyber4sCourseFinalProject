@@ -12,6 +12,7 @@ import { wsActionCreator } from '../../state';
 // import functions
 
 import {register} from './functions'
+import { enums } from '../../utils/enums';
 
 const Register: React.FC = () => {
   const dispatch = useDispatch();
@@ -77,6 +78,10 @@ function cleanup(): void {
       Cookies.set('refreshToken', response.refreshToken);
       setUser(response.user)
     } catch (e) {
+      if (!e.response?.data) {
+        setErrorDiv(enums.noConnection)
+        return;
+      }
       setErrorDiv(e.response.data.message);
     }
   };

@@ -13,6 +13,14 @@ export const getUserByStreamId = (room: any, streamId: any): any => {
 };
 
 /*-------------------------------------------------------------------------------------*/
+export function getStreamId(rawStreamId: string): string {
+  if (rawStreamId.match(/^{.+}$/)) {
+    return rawStreamId.slice(1, -1);
+  }
+  return rawStreamId;
+}
+
+/*-------------------------------------------------------------------------------------*/
 export const shareScreen = async (videos: any, myStream: any): Promise<any> => {
   if (!myStream.getVideoTracks()[0]) return;
 
@@ -54,7 +62,6 @@ export const selfVideoToggle = (myStream: any): any => {
   // }
 
   const newState = !myStream.getVideoTracks()[0].enabled;
-  console.log(myStream.getVideoTracks()[0]);
   myStream.getVideoTracks()[0].enabled = newState;
   // console.log(myStream.getVideoTracks()[0]);
   return myStream.getVideoTracks()[0].enabled;
@@ -67,6 +74,7 @@ export const getCleanedUser = (user: any) => {
     profile: user.profile,
     firstname: user.firstName,
     lastname: user.lastName,
+    img: user.profile.img,
     age: 22,
     _id: user._id,
     // age: user.birthDate
@@ -91,7 +99,7 @@ export const getUserMedia = async (): Promise<MediaStream | undefined> => {
       });
     } catch (e) {
       console.log("in the catch of the catch of usermedia", e.message);
-      console.log("return nothing!!");
+      // console.log("return nothing!!");
       return;
     }
   }
@@ -109,14 +117,12 @@ export const leaveRoom = async (
   room: any,
   newHostId: any = null
 ) => {
-  console.log("new host", newHostId, user, room);
   if (!newHostId || newHostId === enums.defaultHost) {
     newHostId = room.participants.filter((participant: any) => {
       return user._id !== participant.user._id;
     })[0].user._id;
   }
   if (newHostId === enums.dontChangeHost) newHostId = false;
-  console.log("new host", newHostId);
   //weird
   serverSocket.send(
     JSON.stringify({
@@ -174,7 +180,6 @@ export const closeRoom = (
   roomId: any,
   isClosed: boolean
 ) => {
-  console.log(isClosed);
   serverSocket.send(
     JSON.stringify({
       type: "close room",

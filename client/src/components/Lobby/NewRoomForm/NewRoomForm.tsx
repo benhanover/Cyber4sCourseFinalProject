@@ -162,7 +162,7 @@ function NewRoomForm() {
       roomPassword,
       host,
     }; //host participents
-    console.log(newRoom);
+    // console.log(newRoom);
 
     //  inputs cleanup
     cleanup();
@@ -180,7 +180,7 @@ function NewRoomForm() {
         await serverSocket.send(
           JSON.stringify({ type: "creating new room", message: newRoom })
         );
-        console.log(newRoom);
+        // console.log(newRoom);
       })
       .catch((e) => {
         console.log(e);

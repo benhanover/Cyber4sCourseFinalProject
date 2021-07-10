@@ -15,8 +15,9 @@ useEffect(() => {
         console.log("no videoRef");
         return;
     }
+    
     videoRef.current.srcObject =stream
-    }, [isVideoOn])
+    }, [])
 
     return (
         <div className="user-video-container" >
