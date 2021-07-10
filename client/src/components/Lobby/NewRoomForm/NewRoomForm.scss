@@ -1,21 +1,41 @@
+@import '../../Common/styles/themeColors.scss';
+
 .form-container {
   display: flex;
   justify-content: center;
+  // align-items: center;
+  position: fixed;
+  z-index: 3;
+  left:0;
+  bottom: 8rem;
+  box-shadow: $shadowBoxDetailsRight;
+  border-top-right-radius: $smallBorderRadius;
+  border-bottom-right-radius: $smallBorderRadius;
+  animation: rotate-in .4s;
+  //  iteration-count direction fill-mode;
 }
-
+.room-details{
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  .limit, .lock-room{
+    display: flex;
+    align-items: center;
+  }
+}
 .new-room-form {
-  margin-top: 1rem;
-  background-color: rgb(196, 223, 255);
+  border-top-right-radius: $smallBorderRadius;
+  border-bottom-right-radius: $smallBorderRadius;
+  padding: 1rem 3rem;
+  background-color: rgba($color: $spicyColor, $alpha: 0.75);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  // padding: 3rem 1rem 7rem 1rem;
   border: 1px black solid;
-  border-radius: 20px;
-  width: 40%;
-  height: 50vh;
-  padding: 1.5rem 0 1.5rem 0;
+  // width: 40%;
+  height: 60vh;
+  // padding: 1.5rem 0 1.5rem 0;
    
 }
 
@@ -46,4 +66,18 @@
 
 .button {
   padding: 0.5rem;
+}
+
+
+@keyframes rotate-in{
+  from{
+    
+      transform: rotate(-90deg);
+      left: -18rem;
+
+  }
+  to{
+      transform: rotate(0deg);
+
+  }
 }

@@ -1,8 +1,8 @@
 @import '../Common/styles/themeColors.scss';
  
 .lobby{
-    background-color: $backgroundColor;
-    min-height: 100%;
+    // background-color: $backgroundColor;
+    // min-height: 100%;
 }
 
 .rooms-container{
@@ -10,5 +10,16 @@
     justify-content: space-around;
     flex-wrap: wrap;
     padding: 1rem;
+    margin-top: 7rem;
+
+}
+.new-room-button{
+    position: fixed;
+    left: 2rem;
+    bottom: 2rem;
+    z-index: 2;
+    background-color: rgba( $color: $spicyColor, $alpha: 0.5);
+    border-radius: $smallBorderRadius;
+
 
 }

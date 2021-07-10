@@ -5,11 +5,44 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  bottom: 8rem;
+  -webkit-box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+          box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  -webkit-animation: rotate-in .4s;
+          animation: rotate-in .4s;
+}
+
+.room-details {
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.room-details .limit, .room-details .lock-room {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .new-room-form {
-  margin-top: 1rem;
-  background-color: #c4dfff;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: 1rem 3rem;
+  background-color: rgba(1, 148, 154, 0.75);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -23,10 +56,7 @@
   -ms-flex-pack: distribute;
       justify-content: space-around;
   border: 1px black solid;
-  border-radius: 20px;
-  width: 40%;
-  height: 50vh;
-  padding: 1.5rem 0 1.5rem 0;
+  height: 60vh;
 }
 
 .form-content {
@@ -66,5 +96,29 @@
 
 .button {
   padding: 0.5rem;
+}
+
+@-webkit-keyframes rotate-in {
+  from {
+    -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+    left: -18rem;
+  }
+  to {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+}
+
+@keyframes rotate-in {
+  from {
+    -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+    left: -18rem;
+  }
+  to {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
 }
 /*# sourceMappingURL=NewRoomForm.css.map */

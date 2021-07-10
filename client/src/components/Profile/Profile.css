@@ -1,63 +1,32 @@
-.my-profile {
-  font-size: 2rem;
-}
-.bold {
-  font-weight: 900;
-}
-.personal-details {
+.my-profile-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  margin-left: 5rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 90%;
 }
-.image-buttons {
-  display: flex;
-  justify-content:space-around;
+
+.my-profile-container .my-profile {
+  background-color: rgba(196, 223, 255, 0.8);
+  padding: 2rem;
 }
-.hidden {
-  display: none;
+
+.my-profile-container .my-profile .error {
+  background-color: rgba(228, 69, 69, 0.507);
 }
-.hover:hover {
-  background-color: cadetblue;
+
+.my-profile-container .my-profile .new-profile-image {
+  height: 8rem;
+  border-radius: 50%;
 }
-.details-container {
-  display: flex;
+
+.my-profile-container .my-profile .profile-image {
+  height: 4rem;
+  border-radius: 50%;
 }
-.details-item-div {
-  display: flex;
-}
-.account-settings {
-  color: blue;
-}
-.update {
-  color: red;
-}
-.details-item-div {
-  display: flex;
-  justify-content: space-between;
-}
-.information {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-}
-.information-item-div {
-  margin-bottom: 1rem;
-  display: flex;
-  align-items:flex-start;
-  flex-direction: column;
-}
-.new-profile-image {
-  height: 23rem;
-}
-.image-container {
-  position: relative;
-}
-.change-image {
-  height: 2.5rem;
-  position:absolute;
-  left: 0;
-  bottom: 0.7rem;
-  background-color: darkcyan;
-}
-.change-image:hover {
-  background-color:darkgoldenrod;
-}
+/*# sourceMappingURL=Profile.css.map */

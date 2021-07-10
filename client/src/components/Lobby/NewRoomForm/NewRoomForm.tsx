@@ -4,11 +4,16 @@ import { State } from "../../../state";
 import Network from "../../../utils/network";
 import { Iroom } from "../interfaces";
 import { useHistory } from "react-router-dom";
+import LockIcon from '@material-ui/icons/Lock';
+import NoEncryptionIcon from '@material-ui/icons/NoEncryption';
+
 // import enums
 import { enums } from "../../../utils/enums";
 
 // import css
 import "./NewRoomForm.css";
+import { Category, PeopleAlt } from "@material-ui/icons";
+import { Tooltip } from "@material-ui/core";
 
 function NewRoomForm() {
   //redux states
@@ -31,49 +36,54 @@ function NewRoomForm() {
           <input
             className="new-room-form-title-input"
             ref={titleRef}
-            placeholder="title"
+            placeholder="Title"
             required
             onFocus={() => setErrorDiv(false)}
           />
           <div>
+            <Tooltip title={"Room Subject"} placement="top-start">
+              <>
+            <Category className="category-icon icon" />
             <select ref={subjectRef} required>
               <option value="Math">Math</option>
               <option value="Programming">Programming</option>
-            </select>
-            <input ref={subSubjectRef} placeholder="subSubject" required />
+                </select>
+                </>
+          </Tooltip>
+            <input ref={subSubjectRef} placeholder="SubSubject" required />
           </div>
           <textarea
             className="new-room-form-description"
             ref={descriptionRef}
-            placeholder="description"
+            placeholder="Description"
             required
           />
-          <div>
+
+          <div className="room-details">
+            <div className="limit">
+
+          <PeopleAlt className="people-icon icon" />
             <input
               className="limit-input"
               type="number"
               ref={limitRef}
-              placeholder="limit"
+              placeholder="Limit"
               min="2"
               max="4"
               defaultValue="4"
               onFocus={() => setErrorDiv(false)}
               required
-            />
-            <label
-              onClick={() =>
-                !isLocked ? setIsLocked(true) : setIsLocked(false)
-              }
-            >
-              Private
-            </label>
-            {isLocked && (
-              <input
-                placeholder="Room Password"
-                ref={roomPasswordRef}
-                onFocus={() => setErrorDiv(false)}
               />
-            )}
+              </div>
+            {isLocked ? <div className="lock-room"><NoEncryptionIcon className="lock-icon" onClick={() =>
+                setIsLocked(!isLocked)
+              } /> <input
+              placeholder="Room Password"
+              ref={roomPasswordRef}
+              onFocus={() => setErrorDiv(false)}
+            /> </div>: <LockIcon className="lock-icon" onClick={() =>
+                setIsLocked(!isLocked)
+              } />}
           </div>
         </div>
         <button className="button" onClick={createNewRoom}>

@@ -313,6 +313,7 @@ function VideoRoom() {
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {
             // participant create a call with this this one.
+            console.log("got his call, its stream is:", remoteStream);
             
             videos.push({
               streamId: getStreamId(remoteStream.id),
@@ -368,6 +369,8 @@ function VideoRoom() {
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {
             // participant answered this user's call with media.
+            console.log("got his answered call, its stream is:", remoteStream);
+
             videos.push({
               streamId: getStreamId(remoteStream.id),
               stream: remoteStream,

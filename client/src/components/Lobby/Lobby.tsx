@@ -97,7 +97,7 @@ const Lobby: React.FC = () => {
         setJoinFormStateManager={setJoinFormStateManager}
       />
       {showCreateRoom && <NewRoomForm />}
-      <button onClick={() => setShowCreateRoom(!showCreateRoom)}>
+      <button className="new-room-button button" onClick={() => setShowCreateRoom(!showCreateRoom)}>
         Create Room
       </button>
       {chosenRoomDisplay(chosenRoom)}

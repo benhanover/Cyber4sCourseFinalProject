@@ -30,7 +30,7 @@
 
 .room .room-details {
   position: relative;
-  padding: 2rem 1rem 2rem 1rem;
+  padding: 2rem 1rem 1rem 1rem;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
@@ -76,8 +76,8 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  bottom: 1rem;
-  right: 2rem;
+  bottom: 0.2rem;
+  right: 1.5rem;
   font-size: 1rem;
   color: rgba(0, 0, 0, 0.4);
 }

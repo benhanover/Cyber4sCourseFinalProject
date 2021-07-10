@@ -1,0 +1,51 @@
+@import '../../Common/styles/themeColors.scss';
+
+.join-room-filter{
+    position: fixed;
+    background-color: $divBackgroundColor;
+    right:0;
+    top: 3rem;
+    padding: 1rem;
+    padding-left: 3rem;
+    z-index: 2;
+    border: $borderDetails;
+    border-top-left-radius: $smallBorderRadius;
+    border-bottom-left-radius: $smallBorderRadius;
+//     display: flex;
+//    flex-direction: column;
+//    align-items: center;
+//    justify-content: space-around;
+    
+
+.filter-form{
+margin-top: 1rem;
+    display: flex;
+    // flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    // height: rem;
+    .subjects-filter-container{
+        display: flex;
+        flex-direction: column;
+        .subject-input{
+            margin-bottom:0.5rem;
+        }
+    }
+}
+*{
+    margin-right: 1rem;
+}
+.room-details-filter{
+    display: flex;
+    flex-direction: column-reverse;
+    .locked-button{
+        margin-bottom: 0.3rem;
+        .lock-icon{
+            height: 1rem;
+        }
+    }
+}
+input[type="text"]{
+    width: 7rem;
+}
+}
