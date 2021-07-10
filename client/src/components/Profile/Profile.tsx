@@ -26,6 +26,7 @@ const Profile: React.FC = () => {
   const [displayImageButtons, setDisplayImageButtons] = useState<any>(false);
   const [error, setError] = useState<string | null>();
   const [imgFile, setImgFile] = useState<any>();
+  const [imageSourceButton, setImageSourceButton] = useState<any>('https://img.icons8.com/material-outlined/24/000000/edit--v1.png')
   
   // refs
   const profileUpdateRef = useRef<HTMLInputElement>(null);
@@ -54,88 +55,101 @@ const Profile: React.FC = () => {
 
         <div className="personal-details">
           <div className='image-related'>
-          <img className="new-profile-image" src={user.profile.img} alt="profile" />
-            <label onClick={() => setDisplayImageButtons(true)}>Edit Profile Image</label>
+            <div className='image-container'>
+              <img className="profile-image" src={user.profile.img} alt="profile" />
+              <img src={imageSourceButton} className='change-image' onClick={() => {
+                imageSourceButton === 'https://img.icons8.com/material-outlined/24/000000/edit--v1.png'
+                ? setImageSourceButton('https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png')
+                : setImageSourceButton('https://img.icons8.com/material-outlined/24/000000/edit--v1.png')
+                setDisplayImageButtons(!displayImageButtons)}}
+                />
+            </div>
             {
               displayImageButtons&&
-                <div className='image-buttons'>
-                  <label htmlFor='files' className='hover'>Choose File</label>
-               <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
-            if(e.target.files) {
-              setImgFile(e.target.files[0]);
-              const blobBeforeSave = await fileSelectedHandler(e);
-              console.log(blobBeforeSave);
-              user.profile.img = blobBeforeSave;
-              setUser({...user})
-            }
-          })} onClick={() => setError(null)}/>
-          {error && <p className="error">{error}</p>}
-          <button onClick={async () => {
-            const response: any = await saveImageToS3(imgFile, user.username);
-            await updateDetailsByField({place: 'profile', field: 'img'}, response.data.imageUrl);
-          }
-          }>save</button>
-                </div>
-            }
+              <div className='image-buttons'>
+                <label htmlFor='files' className='hover'>Choose File</label>
+                <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
+                  if(e.target.files) {
+                    setImgFile(e.target.files[0]);
+                    const blobBeforeSave = await fileSelectedHandler(e);
+                    user.profile.img = blobBeforeSave;
+                    setUser({...user})
+                  }
+                })} onClick={() => setError(null)}/>
+                {error && <p className="error">{error}</p>}
+                <label className='hover' onClick={async () => {
+                  const response: any = await saveImageToS3(imgFile, user.username);
+                  await updateDetailsByField({place: 'profile', field: 'img'}, response.data.imageUrl);
+                }
+                }>save</label>
+              </div>
+              }
           </div>
           <div className='details-container'>
 
             <div className='details'>
 
               <div className='details-item-div'>
-                <p>First Name: {user.firstName}</p>
+                <span className='bold'>First Name:</span>
+                <span>{user.firstName}</span>
                 <label onClick={() => setFieldToUpdate({place: 'user', field: 'firstName'})} className='hover update'>Update</label>
               </div>
 
               <div className='details-item-div'>
-                <p>Last Name: {user.lastName}</p>
+                <span className='bold'>Last Name: </span>
+                <span>{user.lastName}</span>
                 <label onClick={() => setFieldToUpdate({place: 'user', field: 'lastName'})} className='hover update'>Update</label>
               </div>
 
               <div className='details-item-div'>
-                <p>Address: {user.profile.address}</p>
+                <span className='bold'>Address: </span>
+                <span>{user.profile.address}</span>
                 <label onClick={() => setFieldToUpdate({place: 'profile', field:'address'})} className='hover update'>Update</label>
               </div>
 
               <div className='details-item-div'>
-                <p>Gender: {user.profile.gender}</p>
+                <span className='bold'>Gender: </span>
+                <span>{user.profile.gender}</span>
                 <label onClick={() => setFieldToUpdate({place: 'profile', field:'gender'})} className='hover update'>Update</label>
               </div>
 
               <div className='details-item-div'>
-                <p>Relationship Status: {user.profile.relationship}</p>
+                <span className='bold'>Relationship Status: </span>
+                <span>{user.profile.relationship}</span>
                 <label onClick={() => setFieldToUpdate({place: 'profile', field:'relationship'})} className='hover update'>Update</label>
               </div>
 
               <div className='details-item-div'>
-                <p>BirthDate{formatDate(user.birthDate)}</p>
+                <span className='bold'>BirthDate</span>
+                <span>{formatDate(user.birthDate)}</span>
                 <label onClick={() => setFieldToUpdate({place: 'user', field: 'birthDate'})} className='hover update'>Update</label>
               </div>
-              <label onClick={() => setDisplayCredentials(!displayCredentials)} className='hover account-settings'>Account Settings</label>
             </div>
-            {
-              displayCredentials&&
-              <div className='credentials'>
-                <div className='credential-item'>
-                  <label>Email: </label>
-                  <p>{user.email}</p>
-                  <label  onClick={() => setFieldToUpdate({place: 'user', field: 'email'})} className='hover update'>Update</label>
-                </div>
-                <div className='credential-item'>
-                  <label>Username: </label>
-                  <p>{user.username}</p>
-                  <label  onClick={() => setFieldToUpdate({place: 'user', field: 'username'})} className='hover update'>Update</label>
-                </div>
-                <div className='credential-item'>
-                  <label>Password:</label>
-                  <p>********</p>
-                  <label  onClick={() => setFieldToUpdate({place: 'user', field: 'password'})} className='hover update'>Update</label>
-                </div>
-              </div>
-            }
           </div>
         </div>
-
+        {/* <div className='credentials-container'>
+          <label onClick={() => setDisplayCredentials(!displayCredentials)} className='hover account-settings'>Account Settings</label>
+              {
+                displayCredentials&&
+                <div className='credentials'>
+                  <div className='credential-item'>
+                    <label>Email: </label>
+                    <p>{user.email}</p>
+                    <label  onClick={() => setFieldToUpdate({place: 'user', field: 'email'})} className='hover update'>Update</label>
+                  </div>
+                  <div className='credential-item'>
+                    <label>Username: </label>
+                    <p>{user.username}</p>
+                    <label  onClick={() => setFieldToUpdate({place: 'user', field: 'username'})} className='hover update'>Update</label>
+                  </div>
+                  <div className='credential-item'>
+                    <label>Password:</label>
+                    <p>********</p>
+                    <label  onClick={() => setFieldToUpdate({place: 'user', field: 'password'})} className='hover update'>Update</label>
+                  </div>
+                </div>
+              }
+        </div> */}
         <div className='information'>
 
           <div>
