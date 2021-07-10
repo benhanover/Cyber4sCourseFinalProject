@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 .register-container {
   height: 100%;
   background-color: white;
@@ -5,8 +6,8 @@
 
 .register-container .register-form {
   background-color: white;
-  border: 0.3rem solid #082f5f;
-  height: 55%;
+  border: 0.2rem solid #5e86b8;
+  height: 59%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -28,38 +29,36 @@
 }
 
 .register-container .register-form input {
-  border: 2px solid #082f5f;
-  outline: none;
   height: 2rem;
   font-size: 0.9rem;
   padding: 1em;
-  margin: 0.5em;
   color: black;
-  width: 12rem;
 }
 
 .register-container .register-form .submit-btn {
   padding: 0;
-  width: 7rem;
-  height: 10rem;
+  width: 6rem;
+  height: 30rem;
   background-color: blueviolet;
   border: none;
   color: white;
+  margin: 0rem auto;
 }
 
 .register-container .rectangle-shape {
   width: 650px;
   height: 100%;
-  background-color: rgba(255, 0, 0, 0.527);
+  background-image: url("./pattern (1).png");
 }
 
 .register-container .triangle-shape {
   width: 0;
   height: 0;
-  border-top: 100vh solid rgba(255, 0, 0, 0.562);
+  border-top: 100vh solid;
   border-right: 400px solid transparent;
   left: 650px;
   position: absolute;
+  border-image-source: url("./pattern (1).png");
   top: 0;
 }
 
@@ -67,5 +66,76 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
+}
+
+* {
+  font-family: "Roboto";
+}
+
+:root {
+  --omrs-color-ink-lowest-contrast: rgba(47, 60, 85, 0.18);
+  --omrs-color-ink-low-contrast: rgba(60, 60, 67, 0.3);
+  --omrs-color-ink-medium-contrast: rgba(19, 19, 21, 0.6);
+  --omrs-color-interaction: #1e4bd1;
+  --omrs-color-interaction-minus-two: rgba(73, 133, 224, 0.12);
+  --omrs-color-danger: #b50706;
+  --omrs-color-bg-low-contrast: #eff1f2;
+  --omrs-color-ink-high-contrast: #121212;
+  --omrs-color-bg-high-contrast: #ffffff;
+}
+
+/** END: Non Openmrs CSS **/
+div.omrs-input-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 20.4375rem;
+}
+
+/* Input*/
+.omrs-input-filled > input {
+  border: none;
+  border-bottom: 0.125rem solid var(--omrs-color-ink-medium-contrast);
+  width: 100%;
+  height: 2.2rem;
+  font-size: 1.0625rem;
+  padding-left: 0.875rem;
+  line-height: 147.6%;
+  padding-top: 0.825rem;
+  padding-bottom: 0.5rem;
+}
+
+.omrs-input-filled > input:focus {
+  outline: none;
+}
+
+.omrs-input-filled > .omrs-input-label {
+  position: absolute;
+  font-size: 1rem;
+  top: 0.3rem;
+  left: 0.7rem;
+  line-height: 135.6%;
+  color: #534b4b;
+  -webkit-transition: top 0.2s;
+  transition: top 0.2s;
+}
+
+.omrs-input-filled > input:hover {
+  background: var(--omrs-color-interaction-minus-two);
+  border-color: var(--omrs-color-ink-high-contrast);
+}
+
+.omrs-input-filled > input:focus + .omrs-input-label,
+.omrs-input-filled > input:valid + .omrs-input-label {
+  top: 0;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+.omrs-input-filled:not(.omrs-input-danger) > input:focus + .omrs-input-label {
+  color: var(--omrs-color-interaction);
+}
+
+.omrs-input-filled:not(.omrs-input-danger) > input:focus {
+  border-color: var(--omrs-color-interaction);
 }
 /*# sourceMappingURL=Register.css.map */

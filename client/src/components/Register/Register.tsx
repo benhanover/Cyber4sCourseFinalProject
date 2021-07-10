@@ -33,7 +33,13 @@ const Register: React.FC = () => {
   // const intrestsRef = useRef<HTMLTextAreaElement | null>(null);
   // const hobbysRef = useRef<HTMLTextAreaElement | null>(null);
   // const relationshipStatusRef = useRef<HTMLSelectElement | null>(null);
-
+//   <div class="omrs-input-group">
+//   <label class="omrs-input-filled">
+//     <input required>
+//     <span class="omrs-input-label">Normal</span>
+// 
+//   </label>
+// </div>
   return (
     <div className="register-container">
       <div className="rectangle-shape"></div>
@@ -42,13 +48,13 @@ const Register: React.FC = () => {
         Login
       </button>
       <form className="register-form" onSubmit={handleSubmit}>
-        <input ref={usernameRef} placeholder="Username" />
-        <input ref={nameRef} placeholder="First Name" />
-        <input ref={lastNameRef} placeholder="Last Name" />
-        <input type="date" ref={dateRef} placeholder="BirthDate" />
-        <input type="email" ref={emailRef} placeholder="Email" />
-        <input type="text" ref={passwordRef} placeholder="Password" />
-        <input type="submit" className="button submit-btn" value="Register" />
+       <div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={usernameRef}  /> <span className="omrs-input-label">Username</span> </label></div> 
+       <div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={nameRef}  /> <span className="omrs-input-label">First Name</span> </label></div> 
+       <div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={lastNameRef}  /> <span className="omrs-input-label">Last Name</span> </label></div> 
+       <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="date" ref={dateRef}  /> <span className="omrs-input-label">BirthDate</span> </label></div> 
+       <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="email" ref={emailRef} /> <span className="omrs-input-label">Email</span> </label></div> 
+       <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="text" ref={passwordRef} /> <span className="omrs-input-label">Password</span> </label></div> 
+      <input type="submit" className="button submit-btn" value="Register" /> 
         {/* <br />
       <br />
       <br />
@@ -139,3 +145,11 @@ const Register: React.FC = () => {
 };
 
 export default Register;
+
+
+{/* <div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={usernameRef} placeholder="Username" /> <span className="omrs-input-label">Username</span> </label></div> 
+<div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={nameRef} placeholder="First Name" /> <span className="omrs-input-label">First Name</span> </label></div> 
+<div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={lastNameRef} placeholder="Last Name" /> <span className="omrs-input-label">Last Name</span> </label></div> 
+<div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="date" ref={dateRef} placeholder="BirthDate" /> <span className="omrs-input-label">BirthDate</span> </label></div> 
+<div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="email" ref={emailRef} placeholder="Email" /> <span className="omrs-input-label">Email</span> </label></div> 
+<div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="text" ref={passwordRef} placeholder="Password" /> <span className="omrs-input-label">Password</span> </label></div>  */}
