@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
       <div className="options">
         <SearchUser />
         <div className="profile-menu-container" onMouseLeave={()=>setProfileMenu(false)}>
-          <img className="profile-menu-button" src={user.profile.imageBlob} onClick={toggleProfileMenu}/>
+          <img className="profile-menu-button" src={user.profile.img} onClick={toggleProfileMenu}/>
           
 
             {profileMenu &&

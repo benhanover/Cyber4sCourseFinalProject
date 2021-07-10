@@ -2,6 +2,9 @@
 import { Request, Response } from "express";
 import { hash, compare } from "bcrypt";
 const jwt = require("jsonwebtoken"); // types errors if imported and not required
+const fs = require('fs');
+const util = require('util');
+const unlinkFile = util.promisify(fs.unlink);
 
 // import interfaces
 import {
@@ -31,7 +34,9 @@ import {
 } from "../mongo/mongo-functions";
 
 // import aws functions
-import { uploadToS3 } from "../aws-sdk/index2";
+import { uploadImage } from '../aws-sdk/index';
+
+// import { uploadToS3 } from "../aws-sdk/index2";
 
 // import assistance functions
 import { generateTokens } from "../utils/functions";
@@ -355,3 +360,13 @@ export const getUserProfile = async (
   res.status(200).send(user);
   return;
 };
+
+/*---------------------------------------------------------------------------------------------------------- */
+export const saveImageToS3 = async (req: any, res: Response): Promise<void> => {
+  const username = req.headers['username'];
+  const img = req.file;
+  const result = await uploadImage(img, username, img.mimetype);
+  await unlinkFile(img.path)
+  res.send({imageUrl: result.Location}); 
+}
+

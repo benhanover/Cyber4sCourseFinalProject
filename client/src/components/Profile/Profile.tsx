@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { State, wsActionCreator } from '../../state';
 
 // import functions
-import { updateDetailsByField, fileSelectedHandler, formatDate } from './functions';
+import { updateDetailsByField, fileSelectedHandler, formatDate, saveImageToS3 } from './functions';
 import './Profile.css';
 
 // import interfaces
@@ -22,11 +22,11 @@ const Profile: React.FC = () => {
 
   // states
   const [fieldToUpdate, setFieldToUpdate] = useState<Ifield | boolean>(false);
-  const [imgBlob, setImgBlob] = useState<any>(user.profile.imageBlob);
   const [displayCredentials, setDisplayCredentials] = useState<any>(false);
   const [displayImageButtons, setDisplayImageButtons] = useState<any>(false);
-  // const [error, setError] = useState<string | null>();
-  {/* {error && <p className="error">{error}</p>} */}
+  const [error, setError] = useState<string | null>();
+  const [imgFile, setImgFile] = useState<any>();
+  
   // refs
   const profileUpdateRef = useRef<HTMLInputElement>(null);
   
@@ -54,34 +54,27 @@ const Profile: React.FC = () => {
 
         <div className="personal-details">
           <div className='image-related'>
-            <img className="new-profile-image" src={imgBlob} alt="profile" />
+          <img className="new-profile-image" src={user.profile.img} alt="profile" />
             <label onClick={() => setDisplayImageButtons(true)}>Edit Profile Image</label>
             {
               displayImageButtons&&
                 <div className='image-buttons'>
-                  <label
-                      className='hover'
-                      onClick={async () => {
-                        setDisplayImageButtons(false);
-                        const updated =  await updateDetailsByField({place: 'profile' , field: 'imageBlob'}, imgBlob);
-                        // if (typeof updated === 'string') {
-                        //   console.log('IM IN THE IFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF')
-                        //   setError(updated);
-                        //   return;
-                        // }
-                        setUser(updated);
-                      }}>
-                    Save
-                    </label>
-                    <label htmlFor='files' className='hover'>Choose File</label>
-                    <input 
-                      type='file'
-                      id='files'
-                      accept='image/*'
-                      onChange={async (e) => setImgBlob(await fileSelectedHandler(e))}
-                      className='hidden'
-                      // onClick={() => setError(null)}
-                    />
+                  <label htmlFor='files' className='hover'>Choose File</label>
+               <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
+            if(e.target.files) {
+              setImgFile(e.target.files[0]);
+              const blobBeforeSave = await fileSelectedHandler(e);
+              console.log(blobBeforeSave);
+              user.profile.img = blobBeforeSave;
+              setUser({...user})
+            }
+          })} onClick={() => setError(null)}/>
+          {error && <p className="error">{error}</p>}
+          <button onClick={async () => {
+            const response: any = await saveImageToS3(imgFile, user.username);
+            await updateDetailsByField({place: 'profile', field: 'img'}, response.data.imageUrl);
+          }
+          }>save</button>
                 </div>
             }
           </div>
@@ -189,6 +182,8 @@ const Profile: React.FC = () => {
         </div>
 
   );
+  // functions
+  
 }
 
 

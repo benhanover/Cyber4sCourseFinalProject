@@ -1,25 +1,9 @@
 import { Schema } from "mongoose";
+import userSchema from "./userSchema";
 
 const participantsSchema = new Schema({
   peerId: String,
   streamId: String,
-  user: {
-    firstName: String,
-    lastName: String,
-    age: Number,
-    birthDate: Date,
-    username: String,
-    profile: {
-      address: { type: String, default: "Change me:)" },
-      status: { type: String, default: "Change me:)" },
-      about: { type: String, default: "Change me:)" },
-      intrests: { type: String, default: "Change me:)" },
-      hobbys: { type: String, default: "Change me:)" },
-      relationship: { type: String, default: "Change me:)" },
-      activeTime: { type: String, default: "Change me:)" },
-      gender: { type: String, default: "We Accept Anyone Around Here:)" },
-      imageBlob: { type: String },
-    },
-  },
+  user: userSchema,
 });
 export default participantsSchema;

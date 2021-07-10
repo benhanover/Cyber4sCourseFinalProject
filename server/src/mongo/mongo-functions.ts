@@ -64,8 +64,8 @@ export const registerUser = async (user: Iuser): Promise<false | Iuser> => {
 export const saveRoom = async (room: Iroom): Promise<Iroom | false> => {
   try {
     // console.log("room.host:", room.host);
-    const hostRooms = await Room.find({ host: room.host }, ['title']);
-    if (hostRooms[0] && hostRooms.some(r => room.title === r.title )) {
+    const hostRooms = await Room.find({ host: room.host }, ["title"]);
+    if (hostRooms[0] && hostRooms.some((r) => room.title === r.title)) {
       console.log("Host already has a room with this title");
       return false;
     }
@@ -250,9 +250,10 @@ export const isAccessSaved = async (accessToken: string): Promise<Boolean> => {
   return Boolean(await AccessToken.findOne({ accessToken }));
 };
 /*---------------------------------------------------------------------------------------------------------- */
-export const removePartecipentfromRoom = async (
+export const removePartecipentfromRoomAndChangeHost = async (
   roomId: string,
-  participant: any
+  participant: any,
+  newHostId: any
 ): Promise<any> => {
   console.log("the room id", roomId);
 
@@ -266,8 +267,8 @@ export const removePartecipentfromRoom = async (
       return user.peerId !== participant.peerId;
     });
     room.participants = modifiedParticipants;
-    await room
-      .save();
+    if (newHostId) room.host = { userId: newHostId };
+    await room.save();
     return modifiedParticipants;
   } catch (e) {
     console.log(e, "cuoldnt find room");
@@ -303,7 +304,12 @@ export const updateUserByField = async (
   }
 };
 /*---------------------------------------------------------------------------------------------------------- */
-export const updateEmailOrUsername = async (email: string, place: string, field: string, update: string) => {
+export const updateEmailOrUsername = async (
+  email: string,
+  place: string,
+  field: string,
+  update: string
+) => {
   const users = await User.find();
   const userExist = users.find((user) => user[field] === update);
   if (userExist) return false;
@@ -322,7 +328,15 @@ export const getUsers = async () => {
     console.log(e);
   }
 };
-
+/*---------------------------------------------------------------------------------------------------------- */
+export const deleteRoom = async (roomId: String) => {
+  try {
+    const isDelete = await Room.deleteOne({ _id: roomId });
+    if (isDelete.deletedCount !== 1) throw new Error();
+  } catch (e) {
+    console.log("couldnt delet room ", e);
+  }
+};
 /*---------------------------------------------------------------------------------------------------------- */
 // used in userController getUserProfile | get spesific user from the DB
 export const getUser = async (username: any) => {

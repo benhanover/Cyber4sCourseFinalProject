@@ -9,8 +9,16 @@ export const getUserByStreamId = (room: any, streamId: any): any => {
   }
   const user = room.participants.find((u: any) => u.streamId === streamId);
   if (!user) return;
-  return user.user.profile.imageBlob;
+  return user.user.profile.img;
 };
+
+/*-------------------------------------------------------------------------------------*/
+export function getStreamId(rawStreamId: string): string {
+  if (rawStreamId.match(/^{.+}$/)) {
+    return rawStreamId.slice(1, -1);
+  }
+  return rawStreamId;
+}
 
 /*-------------------------------------------------------------------------------------*/
 export const shareScreen = async (videos: any, myStream: any): Promise<any> => {
@@ -54,7 +62,6 @@ export const selfVideoToggle = (myStream: any): any => {
   // }
 
   const newState = !myStream.getVideoTracks()[0].enabled;
-  console.log(myStream.getVideoTracks()[0]);
   myStream.getVideoTracks()[0].enabled = newState;
   // console.log(myStream.getVideoTracks()[0]);
   return myStream.getVideoTracks()[0].enabled;
@@ -72,6 +79,11 @@ export const getCleanedUser = (user: any) => {
     age: user.birthDate
       ? new Date().getFullYear() - new Date(user.birthDate).getFullYear()
       : 22,
+    img: user.profile.img,
+    _id: user._id,
+    // age: user.birthDate
+    //   ? new Date().getFullYear() - user.birthDate.getFullYear()
+    //   : 22,
   };
 };
 
@@ -91,12 +103,13 @@ export const getUserMedia = async (): Promise<MediaStream | undefined> => {
       });
     } catch (e) {
       console.log("in the catch of the catch of usermedia", e.message);
-      console.log("return nothing!!");
+      // console.log("return nothing!!");
       return;
     }
   }
 };
-
+/*-------------------------------------------------------------------------------------*/
+// const changehost = (room) => {};
 /*-------------------------------------------------------------------------------------*/
 export const leaveRoom = async (
   roomId: any,
@@ -105,14 +118,23 @@ export const leaveRoom = async (
   videos: any,
   user: any,
   myStream: any,
-  room: any
+  room: any,
+  newHostId: any = null
 ) => {
+  if (!newHostId || newHostId === enums.defaultHost) {
+    newHostId = room.participants.filter((participant: any) => {
+      return user._id !== participant.user._id;
+    })[0].user._id;
+  }
+  if (newHostId === enums.dontChangeHost) newHostId = false;
+  //weird
   serverSocket.send(
     JSON.stringify({
       type: "leave room",
       message: {
         participant: { roomId, peerId: user.peerId },
         participants: room.participants,
+        newHostId,
       },
     })
   );
@@ -127,12 +149,13 @@ export const leaveRoom = async (
 };
 
 /*-------------------------------------------------------------------------------------*/
-export async function getVideos(updatedVideos: any, myStream: any, roomId: string) {
+export async function getVideos(
+  updatedVideos: any,
+  myStream: any,
+  roomId: string
+) {
   try {
-    const roomFromDb = await Network(
-      "GET",
-      `${enums.baseUrl}/room/${roomId}`
-      );
+    const roomFromDb = await Network("GET", `${enums.baseUrl}/room/${roomId}`);
     const participantsStreams: any[] = [];
     roomFromDb?.participants.forEach((participant: any) => {
       if (myStream.id !== participant.streamId) {
@@ -156,8 +179,15 @@ export async function getVideos(updatedVideos: any, myStream: any, roomId: strin
 }
 /*-------------------------------------------------------------------------------------*/
 
-export const closeRoom = (serverSocket: any, roomId: any, isClosed: boolean) => {
-  console.log(isClosed)
-  serverSocket.send(JSON.stringify({type: 'close room', message: {roomId, value: !isClosed}}))
-}
-
+export const closeRoom = (
+  serverSocket: any,
+  roomId: any,
+  isClosed: boolean
+) => {
+  serverSocket.send(
+    JSON.stringify({
+      type: "close room",
+      message: { roomId, value: !isClosed },
+    })
+  );
+};

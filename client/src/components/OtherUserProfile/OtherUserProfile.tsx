@@ -18,7 +18,7 @@ const OtherUserProfile: React.FC<props> = ({user}) => {
   }, [userWithoutTypescriptProblems])
   return (
     <div>
-      <img src={userProfile?.profile.imageBlob} />
+      <img src={userProfile?.profile.img} />
       <p>Username: {userProfile?.username}</p>
       <p>Email: {userProfile?.email}</p>
       <p>First Name: {userProfile?.firstName}</p>
