@@ -49,3 +49,7 @@ export async function fileSelectedHandler(e: any): Promise<any> {
     reader.readAsDataURL(e.target.files[0]);
   });
 }
+
+export const formatDate = (date: string): string => {
+  return date.slice(0, 10);
+}

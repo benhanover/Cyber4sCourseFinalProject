@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { State, wsActionCreator } from '../../state';
 
 // import functions
-import { updateDetailsByField, fileSelectedHandler } from './functions';
+import { updateDetailsByField, fileSelectedHandler, formatDate } from './functions';
 import './Profile.css';
 
 // import interfaces
@@ -86,29 +86,36 @@ const Profile: React.FC = () => {
             }
           </div>
           <div className='details-container'>
+
             <div className='details'>
+
               <div className='details-item-div'>
-                <p>{user.firstName}</p>
+                <p>First Name: {user.firstName}</p>
                 <label onClick={() => setFieldToUpdate({place: 'user', field: 'firstName'})} className='hover update'>Update</label>
               </div>
+
               <div className='details-item-div'>
-                <p>{user.lastName}</p>
+                <p>Last Name: {user.lastName}</p>
                 <label onClick={() => setFieldToUpdate({place: 'user', field: 'lastName'})} className='hover update'>Update</label>
               </div>
+
               <div className='details-item-div'>
-                <p>{user.profile.address}</p>
+                <p>Address: {user.profile.address}</p>
                 <label onClick={() => setFieldToUpdate({place: 'profile', field:'address'})} className='hover update'>Update</label>
               </div>
+
               <div className='details-item-div'>
-                <p>{user.profile.gender}</p>
+                <p>Gender: {user.profile.gender}</p>
                 <label onClick={() => setFieldToUpdate({place: 'profile', field:'gender'})} className='hover update'>Update</label>
               </div>
+
               <div className='details-item-div'>
-                <p>{user.profile.relationship}</p>
+                <p>Relationship Status: {user.profile.relationship}</p>
                 <label onClick={() => setFieldToUpdate({place: 'profile', field:'relationship'})} className='hover update'>Update</label>
               </div>
+
               <div className='details-item-div'>
-                <p>{user.birthDate}</p>
+                <p>BirthDate{formatDate(user.birthDate)}</p>
                 <label onClick={() => setFieldToUpdate({place: 'user', field: 'birthDate'})} className='hover update'>Update</label>
               </div>
               <label onClick={() => setDisplayCredentials(!displayCredentials)} className='hover account-settings'>Account Settings</label>
@@ -141,40 +148,40 @@ const Profile: React.FC = () => {
           <div>
             <div className='information-item-div'>              
               <label className='information-title'>1Most Likely To Find Me Logged</label>
-              <label onClick={() => setFieldToUpdate({place: 'profile', field:'activeTime'})} className='information-update-button hover update' >Update</label>
               <p>{user.profile.activeTime}</p>
+              <label onClick={() => setFieldToUpdate({place: 'profile', field:'activeTime'})} className='information-update-button hover update' >Update</label>
             </div>
           </div>
 
           <div>
             <div className='information-item-div'>              
               <label className='information-title'>2About</label>
-              <label onClick={() => setFieldToUpdate({place: 'profile', field: 'about'})} className='information-update-button hover update' >Update</label> 
               <p>{user.profile.about}</p>
+              <label onClick={() => setFieldToUpdate({place: 'profile', field: 'about'})} className='information-update-button hover update' >Update</label> 
             </div>
           </div>
 
           <div>
             <div className='information-item-div'>              
               <label className='information-title'>3Status</label>
-              <label onClick={() => setFieldToUpdate({place: 'profile', field:'status'})} className='information-update-button hover update' >Update</label>
               <p>{user.profile.status}</p>
+              <label onClick={() => setFieldToUpdate({place: 'profile', field:'status'})} className='information-update-button hover update' >Update</label>
             </div>
           </div>
 
           <div>
             <div className='information-item-div'>              
               <label className='information-title'>4Hobbys</label>
-              <label onClick={() => setFieldToUpdate({place: 'profile', field:'hobbys'})} className='information-update-button hover update' >Update</label>
               <p>{user.profile.hobbys}</p>
+              <label onClick={() => setFieldToUpdate({place: 'profile', field:'hobbys'})} className='information-update-button hover update' >Update</label>
             </div>
           </div>
 
           <div>
             <div className='information-item-div'>
               <label className='information-title'>5Interests</label>
-              <label onClick={() => setFieldToUpdate({place: 'profile', field:'intrests'})} className='information-update-button hover update' >Update</label>
               <p>{user.profile.intrests}</p>
+              <label onClick={() => setFieldToUpdate({place: 'profile', field:'intrests'})} className='information-update-button hover update' >Update</label>
             </div>
           </div>
 
