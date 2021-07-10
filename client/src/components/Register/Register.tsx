@@ -42,8 +42,17 @@ const Register: React.FC = () => {
 // </div>
   return (
     <div className="register-container">
-      <div className="rectangle-shape"></div>
+      <div className="rectangle-shape">
+
+        <h1>Roomie</h1>
+        <div className="about-container">
+        <div className="p1">al fauna pas paucituberculatans[14] and sparassodonts[13][15][16] Large opossums like Didelphis show a pattern of gradually increasing in size over geologic time as sparassodont diversity declined.[15][16] Several groups of opossums, including Thylophorops, Thylatheridium, Hyperdidelphys, and sparassocynins developed carnivorous adaptations during the late Miocene-Pliocene, prior to the arrival of carnivorans in South America. Most of these groups with the exception of Lutreolina are now extinct.</div>
+        <div className="p2">al] Priums were occupied by other groups of metatherians such as paucituberculatans[14] and sparassodonts[13][15][16] Large opossums like Didelphis show a pattern of gradually increasing in size over geologic time as sparassodont diversity declined.[15][16] Several groups of opossums, including Thylophorops, Thylatheridium, Hyperdidelphys, and sparassocynins developed carnivorous adaptations during the late Miocene-Pliocene, prior to the arrival of carnivorans in South America. Most of these groups with the exception of Lutreolina are now extinct.</div>
+        <div className="p3">al   as paucituberculatans[14] and sparassodonts[13][15][16] Large opossums like Didelphis show a pattern of gradually increasing in size over geologic time as sparassodont diversity declined.[15][16] Several groups of opossums, including Thylophorops, Thylatheridium, Hyperdidelphys, and sparassocynins developed carnivorous adaptations during the late Miocene-Pliocene, prior to the arrival of carnivorans in South America. Most of these groups with the exception of Lutreolina are now extinct extinct.</div>
+        </div>
+      </div>
       <div className="triangle-shape"></div>
+      <div className="shadow-box-elem"></div>
       <button className="login-btn button" onClick={() => history.push("/")}>
         Login
       </button>
@@ -51,11 +60,12 @@ const Register: React.FC = () => {
        <div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={usernameRef}  /> <span className="omrs-input-label">Username</span> </label></div> 
        <div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={nameRef}  /> <span className="omrs-input-label">First Name</span> </label></div> 
        <div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={lastNameRef}  /> <span className="omrs-input-label">Last Name</span> </label></div> 
-       <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="date" ref={dateRef}  /> <span className="omrs-input-label">BirthDate</span> </label></div> 
+       <div className="omrs-input-group"><label className="omrs-input-filled"><input className="date-holder"  required type="date" ref={dateRef}  /> <span className="omrs-input-label">BirthDate</span> </label></div> 
        <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="email" ref={emailRef} /> <span className="omrs-input-label">Email</span> </label></div> 
        <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="text" ref={passwordRef} /> <span className="omrs-input-label">Password</span> </label></div> 
       <input type="submit" className="button submit-btn" value="Register" /> 
-        {/* <br />
+      {/* <img className= "form-logo" src='/assets/logo3.png'></img> */}
+        {/* <br 
       <br />
       <br />
       <input type='file' ref={profileImageRef} accept="image/*" />
