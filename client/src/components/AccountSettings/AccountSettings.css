@@ -1,0 +1,12 @@
+.account-settings-container {
+  position:fixed;
+  top: 30%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.account-settings {
+  width: 80%;
+  background-color: rgba(184, 135, 11, 0.404);
+}

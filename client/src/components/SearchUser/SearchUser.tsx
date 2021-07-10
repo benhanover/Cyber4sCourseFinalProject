@@ -33,14 +33,12 @@ const SearchUser: React.FC = () => {
 
   return (
     <div className="search-user"
-      // onMouseLeave={() => setTimeout(() => { setFilteredUsers([]) }, 300)}
+      onMouseLeave={() => {
+        searchRef.current.value = "";
+        setFilteredUsers([]);
+      }}
     >
       <input ref={searchRef}
-        onBlur={(e) => {
-          e.target.value = "";
-          setFilteredUsers([]);
-      }} 
-      // onChange={(e) => filterTable(e)} placeholder='Search For A User..' />
       onChange={(e) =>  setFilteredUsers(filterSearchedList(allUserRef.current, e.target.value))} placeholder='Search For A User..' />
       {
         filteredUsers &&
@@ -48,9 +46,9 @@ const SearchUser: React.FC = () => {
             {
             filteredUsers.map((user: any, i: number) => {
               return (<li key={i} onClick={() => {
+                console.log('clicked')
                 searchRef.current.value = ""; 
                 setFilteredUsers([]);
-                // history.push(`/profile?username=${user.username}`)    
                 history.push(`/profile/${user.username}`)    
               }
               }>{user.username}</li>);

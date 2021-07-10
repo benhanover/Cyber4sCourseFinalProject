@@ -1,17 +1,18 @@
 // import libraries
-import React, { useRef } from "react";
-import Cookies from "js-cookie";
-import { useDispatch } from "react-redux";
-import { bindActionCreators } from "redux";
-import { useHistory } from "react-router-dom";
-import "./Register.css";
+import React, { useRef, useState } from 'react';
+import Cookies from 'js-cookie';
+import { useDispatch} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { useHistory } from 'react-router-dom';
+import './Register.css';
 
 // react shit
 import { wsActionCreator } from "../../state";
 
 // import functions
 
-import { register } from "./functions";
+import {register} from './functions'
+import { enums } from '../../utils/enums';
 
 const Register: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,21 +26,8 @@ const Register: React.FC = () => {
   const dateRef = useRef<HTMLInputElement | null>(null);
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
-  // const profileImageRef = useRef<HTMLInputElement | null>(null);
-  // const addressRef = useRef<HTMLInputElement | null>(null);
-  // const statusRef = useRef<HTMLTextAreaElement | null>(null);
-  // const aboutRef = useRef<HTMLTextAreaElement | null>(null);
-  // const intrestsRef = useRef<HTMLTextAreaElement | null>(null);
-  // const hobbysRef = useRef<HTMLTextAreaElement | null>(null);
-  // const relationshipStatusRef = useRef<HTMLSelectElement | null>(null);
-//   <div class="omrs-input-group">
-//   <label class="omrs-input-filled">
-//     <input required>
-//     <span class="omrs-input-label">Normal</span>
-// 
-//   </label>
-// </div>
+  const [errorDiv, setErrorDiv] = useState<any>(false);
+ 
   return (
     <div className="register-container">
       <div className="rectangle-shape">
@@ -47,7 +35,7 @@ const Register: React.FC = () => {
         <h1>Roomie</h1>
         <div className="about-container">
         <div className="p1">al fauna pas paucituberculatans[14] and sparassodonts[13][15][16] Large opossums like Didelphis show a pattern of gradually increasing in size over geologic time as sparassodont diversity declined.[15][16] Several groups of opossums, including Thylophorops, Thylatheridium, Hyperdidelphys, and sparassocynins developed carnivorous adaptations during the late Miocene-Pliocene, prior to the arrival of carnivorans in South America. Most of these groups with the exception of Lutreolina are now extinct.</div>
-        <div className="p2">al] Priums were occupied by other groups of metatherians such as paucituberculatans[14] and sparassodonts[13][15][16] Large opossums like Didelphis show a pattern of gradually increasing in size over geologic time as sparassodont diversity declined.[15][16] Several groups of opossums, including Thylophorops, Thylatheridium, Hyperdidelphys, and sparassocynins developed carnivorous adaptations during the late Miocene-Pliocene, prior to the arrival of carnivorans in South America. Most of these groups with the exception of Lutreolina are now extinct.</div>
+        <div className="p2">al Priums were occupied by other groups of metatherians such as paucituberculatans[14] and sparassodonts[13][15][16] Large opossums like Didelphis show a pattern of gradually increasing in size over geologic time as sparassodont diversity declined.[15][16] Several groups of opossums, including Thylophorops, Thylatheridium, Hyperdidelphys, and sparassocynins developed carnivorous adaptations during the late Miocene-Pliocene, prior to the arrival of carnivorans in South America. Most of these groups with the exception of Lutreolina are now extinct.</div>
         <div className="p3">al   as paucituberculatans[14] and sparassodonts[13][15][16] Large opossums like Didelphis show a pattern of gradually increasing in size over geologic time as sparassodont diversity declined.[15][16] Several groups of opossums, including Thylophorops, Thylatheridium, Hyperdidelphys, and sparassocynins developed carnivorous adaptations during the late Miocene-Pliocene, prior to the arrival of carnivorans in South America. Most of these groups with the exception of Lutreolina are now extinct extinct.</div>
         </div>
       </div>
@@ -64,28 +52,11 @@ const Register: React.FC = () => {
        <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="email" ref={emailRef} /> <span className="omrs-input-label">Email</span> </label></div> 
        <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="text" ref={passwordRef} /> <span className="omrs-input-label">Password</span> </label></div> 
       <input type="submit" className="button submit-btn" value="Register" /> 
-      {/* <img className= "form-logo" src='/assets/logo3.png'></img> */}
-        {/* <br 
-      <br />
-      <br />
-      <input type='file' ref={profileImageRef} accept="image/*" />
-      <input type='text' ref={addressRef} placeholder="address" />
-      <textarea ref={statusRef} placeholder='Status' />
-      <textarea ref={aboutRef} placeholder='About' />
-      <textarea ref={intrestsRef} placeholder='intrests' />
-      <textarea ref={hobbysRef} placeholder='hobbys' />
-      <select ref={relationshipStatusRef}>
-      <option value='single'>Single</option>
-      <option value='married'>Married</option>
-      <option value='relationship'>In A Relationship</option>
-      </select>
-      <h4>Best hours to catch me inside?</h4>
-      <label>08:00-16:00</label>
-      <input type='checkbox' value='08:00-16:00' id='morning' />
-      <label>16:00-00:00</label>
-      <input type='checkbox' value='16:00-00:00' id='evening' />
-      <label>00:00-08:00</label>
-    <input type='checkbox' value='00:00-08:00' id='night' /> */}
+      
+      {
+          errorDiv&& 
+          <p>{errorDiv}</p>
+        }
       </form>
     </div>
   );
@@ -115,18 +86,7 @@ const Register: React.FC = () => {
   /*-----------------------------------------------------------------------------------------------------------------*/
   async function handleSubmit(e: React.SyntheticEvent): Promise<void> {
     e.preventDefault();
-
-    if (
-      !(
-        usernameRef?.current &&
-        nameRef?.current &&
-        lastNameRef?.current &&
-        dateRef?.current &&
-        emailRef?.current &&
-        passwordRef?.current
-      )
-    )
-      return;
+    if(!(usernameRef?.current && nameRef?.current && lastNameRef?.current && dateRef?.current && emailRef?.current && passwordRef?.current)) return;
     const username: string | undefined = usernameRef.current?.value;
     const firstName: string | undefined = nameRef.current?.value;
     const lastName: string | undefined = lastNameRef.current?.value;
@@ -149,7 +109,11 @@ const Register: React.FC = () => {
       Cookies.set("refreshToken", response.refreshToken);
       setUser(response.user);
     } catch (e) {
-      console.log("couldn't register", e);
+      if (!e.response?.data) {
+        setErrorDiv(enums.noConnection)
+        return;
+      }
+      setErrorDiv(e.response.data.message);
     }
   }
 };
@@ -157,9 +121,3 @@ const Register: React.FC = () => {
 export default Register;
 
 
-{/* <div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={usernameRef} placeholder="Username" /> <span className="omrs-input-label">Username</span> </label></div> 
-<div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={nameRef} placeholder="First Name" /> <span className="omrs-input-label">First Name</span> </label></div> 
-<div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={lastNameRef} placeholder="Last Name" /> <span className="omrs-input-label">Last Name</span> </label></div> 
-<div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="date" ref={dateRef} placeholder="BirthDate" /> <span className="omrs-input-label">BirthDate</span> </label></div> 
-<div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="email" ref={emailRef} placeholder="Email" /> <span className="omrs-input-label">Email</span> </label></div> 
-<div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="text" ref={passwordRef} placeholder="Password" /> <span className="omrs-input-label">Password</span> </label></div>  */}

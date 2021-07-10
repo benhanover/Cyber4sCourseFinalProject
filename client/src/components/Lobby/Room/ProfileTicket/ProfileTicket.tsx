@@ -5,6 +5,8 @@ import { useHistory } from "react-router";
 import './ProfileTicket.css';
 const ProfileTicket: React.FC<IprofileTicket> = ({ participants }) => {
   const history = useHistory();
+  console.log(participants);
+  
   return (
     <div className="profile-ticket-container">
       {participants.map((item: any, i: number) => {
@@ -12,26 +14,31 @@ const ProfileTicket: React.FC<IprofileTicket> = ({ participants }) => {
         
         return (
           <li className="profile-ticket" key={i}>
-            <div className="profile-ticket-general">
+            <div className="profile-ticket-top">
+              <div className="profile-display">
+
             <p className="profile-username">{item.user.username}</p>
-              <p className="profile-status">{item.user.profile.status}</p>
+              <img className="profile-image"
+                src={item.user.profile.imageBlob}
+                alt={item.user.username + "profile"}
+                />
+                </div>
               <div className="profile-ticket-buttons">
               <button className="add-friend-button button">Add As Friend</button>
-              <button className="show-contact-button button">Go To Contact</button>
-              </div>
-            <img className="profile-image"
-              onClick={(e) => {
+              <button className="show-contact-button button" onClick={(e) => {
                 e.preventDefault();
-                history.push(`/profile?username=${item.user.username}`);
-              }}
-              src={item.user.profile.imageBlob}
-              alt={item.user.username + "profile"}
-            />
+                history.push(`/profile/${item.user.username}`);
+              }}>Go To Contact</button>
+              </div>
             </div>
-            <div className="profile-ticket-about">
-              <p className="profile-about">{item.user.profile.about}</p>
+            <div className="profile-ticket-bottom">
+
+            <div className="profile-age">
+              <p className="age">{item.user.age}</p><p  className="years-old" >years old</p>
             </div>
-            <div className="profile-ticket-friends">{item.friendList?.map((friend: any) => { return <img src={friend} alt="friend-profile" /> })}
+            <div className="profile-ticket-status">
+              <p className="profile-status">{item.user.profile.status}</p>
+            </div>
             </div>
           </li>
         );

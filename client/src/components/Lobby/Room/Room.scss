@@ -1,4 +1,5 @@
 @import '../../Common/styles/themeColors.scss';
+
 $roomWidth: 20rem;
 $borderDetails: 0.6px solid rgba(0, 0, 0, 0.2);
 .room{
@@ -87,7 +88,14 @@ $borderDetails: 0.6px solid rgba(0, 0, 0, 0.2);
     // z-index: 1;
     // top: 10rem;
     // left: 10rem;
-    width: 60%;
+    // margin-top: 20rem;
+    input, button{
+        width: 10rem;
+        text-align: center;
+        margin-left: 40%;
+    }
+
+    width: 70%;
     padding: 2rem 0rem 2rem 1rem;
     background-color: rgba($color: $spicyColor, $alpha: 0.9);
     
@@ -103,10 +111,10 @@ $borderDetails: 0.6px solid rgba(0, 0, 0, 0.2);
     .description{
         position: relative;
         align-self: flex-end;
-        margin-right: -1rem;
-        width: 85%;
-        background-image: linear-gradient(90deg, $backgroundColor 0%, #d4d4d4 90%, $backgroundColor 98%, #b6b6b6 100%);
-        padding: 2rem 1rem;
+        margin: -0.5rem -1rem 1rem 0;
+        width: 95%;
+        background-image: linear-gradient(90deg, $backgroundColor 0%, #d4d4d4 90%, $backgroundColor 98%, #838383 100%);
+        padding: 1rem 1rem;
         box-shadow: -8px 8px 16px 2px rgba($color: #000000, $alpha: 0.6);
         border-top-right-radius: 15px;
         border-top-left-radius: 100px;
@@ -115,7 +123,7 @@ $borderDetails: 0.6px solid rgba(0, 0, 0, 0.2);
             position: absolute;
             right: 0rem;
             bottom: -1rem;
-            background-color: #b6b6b6;
+            background-color: #a7a7a7;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
             height: 2rem;

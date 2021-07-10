@@ -1,7 +1,7 @@
 // import libraries
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './Login.css'
 
@@ -17,6 +17,7 @@ const Login: React.FC = () => {
   const history = useHistory();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const [errorDiv, setErrorDiv] = useState<any>(false);
 
   const dispatch = useDispatch();
   const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
@@ -40,7 +41,8 @@ const Login: React.FC = () => {
       >
         Register
       </button>
-    <div className="login-form-container">
+    <div className="login-form-container" onClick={() => setErrorDiv(false)}>
+    
       
     <div className="omrs-input-group"><label className="omrs-input-filled"><input required ref={emailRef} ></input><span className="omrs-input-label">Email</span></label></div>
     <div className="omrs-input-group"><label className="omrs-input-filled"><input required ref={passwordRef} ></input><span className="omrs-input-label">Password</span></label></div>
@@ -48,7 +50,12 @@ const Login: React.FC = () => {
           Login
         </button>
       
-    </div>
+    
+        {
+          errorDiv&&
+          <div>{errorDiv}</div>
+        }
+      </div>
     </div>
   );
 //<div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="text" ref={passwordRef} /> <span className="omrs-input-label">Password</span> </label></div>
@@ -75,7 +82,13 @@ const Login: React.FC = () => {
         Cookies.set("refreshToken", response.refreshToken);
         setUser(response.user);
       })
-      .catch(console.log);
+      .catch(e => {
+        if (!e.response?.data) {
+          setErrorDiv(enums.noConnection)
+          return;
+        }
+        setErrorDiv(e.response.data.message)
+      });
   }
 };
 export default Login;
