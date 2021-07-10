@@ -1,56 +1,90 @@
+/*  */
 .my-profile {
-  font-size: 2rem;
+  font-size: 1.5rem;
+  background-color: #f3f3f3
 }
-.bold {
-  font-weight: 900;
+/*  */
+.change-input-div {
+  position: fixed;
+  height: 30vh;
+  width: 60%;
+  background-color: rgba(0, 206, 209, 0.418);
+  bottom: 35%;
+  left: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+/*  */
+.change-input {
+  height: 2rem;
+  width: 100%;
+}
+/*  */
+.personal-details-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+}
+/*  */
 .personal-details {
   display: flex;
   margin-left: 5rem;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  background-color:rgb(233, 220, 35)
 }
+/*  */
+.image-container {
+  position: relative;
+}
+/*  */
+.profile-image {
+  height: 19rem;
+}
+/*  */
 .image-buttons {
   display: flex;
   justify-content:space-around;
 }
+/*  */
 .hidden {
   display: none;
 }
-.hover:hover {
-  background-color: cadetblue;
-}
-.details-container {
-  display: flex;
-}
-.details-item-div {
-  display: flex;
-}
-.account-settings {
-  color: blue;
-}
-.update {
-  color: red;
-}
+/*  */
 .details-item-div {
   display: flex;
   justify-content: space-between;
 }
+
+.account-settings {
+  color: blue;
+}
+/*  */
+.update {
+  color: rgb(54, 119, 83);
+}
+/*  */
 .information {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
+  border: 1px solid black;
+  background-color: rgb(152, 47, 238);
 }
+/*  */
+.information-2item-div-container {
+  display: flex;
+  justify-content: space-around;
+}
+/*  */
 .information-item-div {
   margin-bottom: 1rem;
   display: flex;
   align-items:flex-start;
   flex-direction: column;
 }
-.new-profile-image {
-  height: 23rem;
-}
-.image-container {
-  position: relative;
-}
+/*  */
 .change-image {
   height: 2.5rem;
   position:absolute;
@@ -58,6 +92,17 @@
   bottom: 0.7rem;
   background-color: darkcyan;
 }
+/*  */
 .change-image:hover {
   background-color:darkgoldenrod;
 }
+/*  */
+.bold {
+  font-weight: 900;
+}
+/*  */
+.hover:hover {
+  background-color: cadetblue;
+}
+
+

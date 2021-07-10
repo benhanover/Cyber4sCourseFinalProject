@@ -48,4 +48,7 @@
 .navbar .options .profile-menu-container .profile-menu li {
   border-top: 1px solid black;
 }
+.cursor {
+  cursor: pointer;
+}
 /*# sourceMappingURL=Navbar.css.map */
