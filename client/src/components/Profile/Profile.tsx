@@ -19,6 +19,7 @@ const Profile: React.FC = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: State) => state.ws);
   const { setUser } = bindActionCreators({...wsActionCreator}, dispatch);
+
   // states
   const [fieldToUpdate, setFieldToUpdate] = useState<Ifield | boolean>(false);
   const [displayImageButtons, setDisplayImageButtons] = useState<any>(true)  ;

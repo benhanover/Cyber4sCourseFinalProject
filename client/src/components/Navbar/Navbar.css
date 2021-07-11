@@ -47,6 +47,7 @@
 }
 
 .navbar .options .profile-menu-container .profile-menu {
+  margin-top: -0.5rem;
   width: 8rem;
   right: 0;
   top: 3.5rem;
