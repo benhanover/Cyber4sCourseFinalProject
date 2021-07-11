@@ -188,7 +188,7 @@
 div.omrs-input-group {
   margin-bottom: 1.5rem;
   position: relative;
-  width: 20.4375rem;
+  width: 25.4375rem;
 }
 
 /* Input*/
@@ -212,7 +212,7 @@ div.omrs-input-group {
   position: absolute;
   font-size: 1.2rem;
   top: 0.3rem;
-  left: 0.7rem;
+  left: 6rem;
   line-height: 135.6%;
   color: #534b4b;
   -webkit-transition: top 0.2s;
