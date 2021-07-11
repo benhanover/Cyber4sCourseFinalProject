@@ -1,9 +1,25 @@
-.lobby {
-  background-color: #f3f3f3;
-  min-height: 100%;
+.button {
+  background-color: #861ae4;
+  font-size: 1.15em;
+  padding: 0.8rem;
+  border: none;
+  color: white;
+  border-radius: 5px;
 }
 
-.rooms-container {
+.button:hover {
+  font-size: 1.1rem;
+  color: white;
+  background-color: #6591c7;
+}
+
+.form-div {
+  border: 2px solid #5e86b8;
+  background-color: white;
+  border-radius: none;
+}
+
+.lobby .rooms-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -14,23 +30,20 @@
   padding-top: 7rem;
 }
 
-.new-room-button {
+.lobby .button {
+  width: 10rem;
+}
+
+.lobby .new-room-button {
   position: fixed;
   left: 0;
   top: 5rem;
   z-index: 2;
-  background-color: rgba(1, 148, 154, 0.5);
-  border-top-right-radius: 7px;
-  border-bottom-right-radius: 7px;
-  border: 0.6px solid rgba(0, 0, 0, 0.2);
+  background-color: #861ae4;
   cursor: pointer;
 }
 
-.new-room-button:hover {
-  background-color: rgba(1, 148, 154, 0.7);
-}
-
-.next-button {
+.lobby .next-button {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -40,7 +53,7 @@
   bottom: 1rem;
 }
 
-.back-button {
+.lobby .back-button {
   position: absolute;
   width: -webkit-fit-content;
   width: -moz-fit-content;

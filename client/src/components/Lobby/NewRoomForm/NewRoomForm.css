@@ -1,3 +1,24 @@
+.button {
+  background-color: #861ae4;
+  font-size: 1.15em;
+  padding: 0.8rem;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.button:hover {
+  font-size: 1.1rem;
+  color: white;
+  background-color: #6591c7;
+}
+
+.form-div {
+  border: 2px solid #5e86b8;
+  background-color: white;
+  border-radius: none;
+}
+
 .form-container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -11,10 +32,9 @@
   bottom: 8rem;
   -webkit-box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
           box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
-  border-top-right-radius: 7px;
-  border-bottom-right-radius: 7px;
-  -webkit-animation: rotate-in .2s;
-          animation: rotate-in .2s;
+  border: 2px solid #5e86b8;
+  -webkit-animation: rotate-in 0.2s;
+          animation: rotate-in 0.2s;
 }
 
 .form-container .room-details {
@@ -67,10 +87,8 @@
 }
 
 .form-container .new-room-form {
-  border-top-right-radius: 7px;
-  border-bottom-right-radius: 7px;
   padding: 1rem 3rem 1rem 4.5rem;
-  background-color: rgba(1, 148, 154, 0.75);
+  background-color: white;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -83,8 +101,7 @@
           align-items: center;
   -ms-flex-pack: distribute;
       justify-content: space-around;
-  border: 0.6px solid rgba(0, 0, 0, 0.2);
-  width: 20rem;
+  width: 30rem;
   height: 60vh;
 }
 
@@ -158,9 +175,22 @@
 
 .form-container .button {
   padding: 0.5rem;
+  width: 10rem;
 }
 
 @-webkit-keyframes rotate-in {
+  from {
+    -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+    left: -18rem;
+  }
+  to {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+}
+
+@keyframes rotate-in {
   from {
     -webkit-transform: rotate(-90deg);
             transform: rotate(-90deg);
