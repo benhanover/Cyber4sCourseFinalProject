@@ -1,10 +1,9 @@
 .video-room {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
   background-color: white;
-
   height: 100%;
   overflow: hidden;
   .leave-button {
@@ -19,27 +18,48 @@
     left: 2rem;
     padding: 0.5rem;
   }
-  .self-video-box {
-    .svg-container {
-      // background-color: rgba(255, 255, 255, 0.664);
-      border-radius: 3px;
-    }
+  .others-video {
+    height: 50vh;
+    border-radius: 15px;
     padding: 0.3rem;
+    padding-left: 0.3rem;
+    // width: 480px;
+    //padding-bottom: 2.9rem;
+    background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  }
+  .self-video-box {
+    display: flex;
+
+    padding: 0.1rem;
+    // padding-left: 2.9rem;
     //border: 3px white solid;
     border-radius: 15px;
     //background-color: #130b3df8;
     background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
-    //position: relative;
+    position: relative;
+    .option-div {
+      position: absolute;
+      bottom: 0.7rem;
+      left: 1rem;
+      font-size: 1rem;
+    }
+    height: 50vh;
+    .svg-container {
+      // background-color: rgba(255, 255, 255, 0.664);
+      border-radius: 3px;
+    }
     .video-buttons-div {
       // position: absolute;
       //bottom: 0.3rem;
-      margin-top: 0.3rem;
+      margin-top: 0.011rem;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: space-around;
       p {
-        font-size: 0.7rem;
-        color: white;
+        padding: 0;
+        margin: 0;
+        font-size: 0.76rem;
+        // color: white;
       }
 
       div {
