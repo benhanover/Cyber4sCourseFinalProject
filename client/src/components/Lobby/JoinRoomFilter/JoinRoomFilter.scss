@@ -1,0 +1,83 @@
+@import '../../Common/styles/themeColors.scss';
+
+.join-room-filter{
+    position: fixed;
+    background-color: $divBackgroundColor;
+    right:0;
+    top: 4rem;
+    padding: 1rem;
+    padding-left: 4rem;
+    z-index: 1;
+    border: $borderDetails;
+    border-top-left-radius: $smallBorderRadius;
+    border-bottom-left-radius: $smallBorderRadius;
+//     display: flex;
+//    flex-direction: column;
+//    align-items: center;
+//    justify-content: space-around;
+    
+
+.filter-form{
+    margin-top: 0.3rem;
+    display: flex;
+    // flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    // height: rem;
+    .subjects-filter-container{
+        display: flex;
+        align-items: center;
+        margin-right: 3rem;
+
+        .icon{
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+        .subjects{
+            display: flex;
+            flex-direction: column;
+            .subject-input{
+                margin-bottom:0.2rem;
+            }
+        }
+    }
+    
+}
+.room-filter-right{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 4rem;
+    
+.search{
+    margin-bottom: 0.2rem;
+}
+// *{
+//     margin-right: 1rem;
+// }
+
+.room-details-filter{
+    display: flex;
+    align-items: center;
+    .limit{
+        // margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        input{
+            width: 2rem;
+        }
+    }
+    .lock-icon{
+        margin: 0;
+    }
+    .icon{
+        margin: 0 0.5rem;
+        height: 1rem;
+        
+    }
+}
+input[type="text"]{
+    width: 7rem;
+}
+}
+}

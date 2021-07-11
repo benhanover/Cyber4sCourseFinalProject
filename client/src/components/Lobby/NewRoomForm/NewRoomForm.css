@@ -5,11 +5,72 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: fixed;
+  z-index: 3;
+  left: -2rem;
+  bottom: 8rem;
+  -webkit-box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+          box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  -webkit-animation: rotate-in .2s;
+          animation: rotate-in .2s;
 }
 
-.new-room-form {
+.form-container .room-details {
+  margin-left: 1rem;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.form-container .room-details .limit {
   margin-top: 1rem;
-  background-color: #c4dfff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.form-container .room-details .limit input {
+  width: 2rem;
+}
+
+.form-container .room-details .icon {
+  margin: 0 0.5rem;
+}
+
+.form-container .room-details .lock-room {
+  margin-top: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.form-container .room-details .lock-room input {
+  width: 100%;
+}
+
+.form-container .new-room-form {
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: 1rem 3rem 1rem 4.5rem;
+  background-color: rgba(1, 148, 154, 0.75);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -22,17 +83,48 @@
           align-items: center;
   -ms-flex-pack: distribute;
       justify-content: space-around;
-  border: 1px black solid;
-  border-radius: 20px;
-  width: 40%;
-  height: 50vh;
-  padding: 1.5rem 0 1.5rem 0;
+  border: 0.6px solid rgba(0, 0, 0, 0.2);
+  width: 20rem;
+  height: 60vh;
 }
 
-.form-content {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
+.form-container .new-room-form input {
+  width: 100%;
+}
+
+.form-container .new-room-form .subjects-container {
+  margin: 0.5rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.form-container .new-room-form .category-icon {
+  font-size: 1.6rem;
+  margin: 0 0.5rem;
+}
+
+.form-container .new-room-form .subjects {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.form-container .new-room-form .subjects .subject {
+  margin-bottom: 0.3rem;
+}
+
+.form-container .form-content {
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -49,22 +141,46 @@
   height: 55%;
 }
 
-.new-room-form-title-input {
+.form-container .new-room-form-title-input {
   width: 100%;
 }
 
-.new-room-form-description {
+.form-container .new-room-form-description {
   width: 100%;
   height: 4rem;
   resize: none;
 }
 
-.limit-input {
+.form-container .limit-input {
   width: 2rem;
   margin-right: 1rem;
 }
 
-.button {
+.form-container .button {
   padding: 0.5rem;
+}
+
+@-webkit-keyframes rotate-in {
+  from {
+    -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+    left: -18rem;
+  }
+  to {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+}
+
+@keyframes rotate-in {
+  from {
+    -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+    left: -18rem;
+  }
+  to {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
 }
 /*# sourceMappingURL=NewRoomForm.css.map */

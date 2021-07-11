@@ -12,12 +12,9 @@
   height: 3.5rem;
 }
 
-.logo {
-  font-size: 2rem;
-}
-
 .navbar .logo {
   margin-left: 1rem;
+  font-size: 2rem;
 }
 
 .navbar .options {
@@ -33,16 +30,26 @@
 }
 
 .navbar .options .profile-menu-button {
-  margin-top: 0.2rem;
   height: 3rem;
-  margin-right: 1rem;
   border-radius: 50%;
 }
 
+.navbar .options .profile-menu-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-right: 1rem;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  cursor: pointer;
+  z-index: 2;
+}
+
 .navbar .options .profile-menu-container .profile-menu {
-  margin-top: -0.5rem;
   width: 8rem;
   right: 0;
+  top: 3.5rem;
   list-style-type: none;
   background-color: white;
   position: absolute;
@@ -51,8 +58,5 @@
 
 .navbar .options .profile-menu-container .profile-menu li {
   border-top: 1px solid black;
-}
-.cursor {
-  cursor: pointer;
 }
 /*# sourceMappingURL=Navbar.css.map */

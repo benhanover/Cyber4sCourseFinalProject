@@ -4,17 +4,23 @@ import { State } from "../../../state";
 import Network from "../../../utils/network";
 import { Iroom } from "../interfaces";
 import { useHistory } from "react-router-dom";
+import LockIcon from '@material-ui/icons/Lock';
+import NoEncryptionIcon from '@material-ui/icons/NoEncryption';
+
 // import enums
 import { enums } from "../../../utils/enums";
 
 // import css
 import "./NewRoomForm.css";
+import { Category, PeopleAlt } from "@material-ui/icons";
+import { Tooltip } from "@material-ui/core";
 
 function NewRoomForm() {
   //redux states
   const { serverSocket, user } = useSelector((state: State) => state.ws);
+
   //  creates all refs for the form's inputs
-  const subjectRef = useRef<HTMLSelectElement | null>(null);
+  const subjectRef = useRef<HTMLInputElement | null>(null);
   const subSubjectRef = useRef<HTMLInputElement | null>(null);
   const titleRef = useRef<HTMLInputElement | null>(null);
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
@@ -22,8 +28,8 @@ function NewRoomForm() {
   const [isLocked, setIsLocked] = useState<any>(false);
   const roomPasswordRef = useRef<HTMLInputElement | null>(null);
   const [errorDiv, setErrorDiv] = useState<any>(false);
-  const history = useHistory();
   return (
+
     <div className="form-container">
       <form className="new-room-form">
         <h3>Create New Room</h3>
@@ -31,49 +37,55 @@ function NewRoomForm() {
           <input
             className="new-room-form-title-input"
             ref={titleRef}
-            placeholder="title"
+            placeholder="Title"
             required
             onFocus={() => setErrorDiv(false)}
-          />
-          <div>
-            <select ref={subjectRef} required>
-              <option value="Math">Math</option>
-              <option value="Programming">Programming</option>
-            </select>
-            <input ref={subSubjectRef} placeholder="subSubject" required />
+            />
+            <Tooltip title="Room Subject" placement="top">
+          <div className="subjects-container">
+            <Category className="category-icon icon" />
+              <div className="subjects">
+            <input className="subject" ref={subjectRef}  placeholder="Subject" required />
+            <input ref={subSubjectRef} placeholder="SubSubject" required />
+                </div>
           </div>
+          </Tooltip>
           <textarea
             className="new-room-form-description"
             ref={descriptionRef}
-            placeholder="description"
+            placeholder="Description"
             required
-          />
-          <div>
+            />
+
+          <div className="room-details">
+          <Tooltip title={"Participants Limit"} placement="top">
+            <div className="limit">
+
+          <PeopleAlt className="people-icon icon" />
             <input
               className="limit-input"
               type="number"
               ref={limitRef}
-              placeholder="limit"
+              placeholder="Limit"
               min="2"
               max="4"
               defaultValue="4"
               onFocus={() => setErrorDiv(false)}
               required
-            />
-            <label
-              onClick={() =>
-                !isLocked ? setIsLocked(true) : setIsLocked(false)
-              }
-            >
-              Private
-            </label>
-            {isLocked && (
-              <input
-                placeholder="Room Password"
-                ref={roomPasswordRef}
-                onFocus={() => setErrorDiv(false)}
               />
-            )}
+              </div>
+            </Tooltip>
+              <Tooltip title={isLocked?"Click To Remove Password": "Click To Add Password"} placement="top">
+            <div className="lock-room">
+              {isLocked
+                ?
+                <>
+              <NoEncryptionIcon className="lock-icon icon" onClick={() => setIsLocked(!isLocked)} /> <input placeholder="Room Password" ref={roomPasswordRef} onFocus={() => setErrorDiv(false)}
+                  />
+                  </>: <LockIcon className="lock-icon icon" onClick={() => setIsLocked(!isLocked)
+              } />}
+              </div>
+              </Tooltip>
           </div>
         </div>
         <button className="button" onClick={createNewRoom}>
