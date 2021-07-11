@@ -3,32 +3,59 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  // background-color: black;
-  min-height: 90%;
+  background-color: white;
+
+  height: 100%;
   overflow: hidden;
   .leave-button {
-    position: fixed;
-    bottom: 0.7rem;
+    position: absolute;
+    top: 0;
     left: 0.7rem;
     padding: 0.5rem;
   }
-  .self-mute-button {
-    position: fixed;
-    bottom: 4.7rem;
-    left: 0.7rem;
+  .close-room-btn {
+    position: absolute;
+    top: 0;
+    left: 2rem;
     padding: 0.5rem;
   }
-  .stop-self-video-button {
-    position: fixed;
-    bottom: 6.7rem;
-    left: 0.7rem;
-    padding: 0.5rem;
-  }
-  .share-screen-button {
-    position: fixed;
-    bottom: 2.7rem;
-    left: 0.7rem;
-    padding: 0.5rem;
+  .self-video-box {
+    .svg-container {
+      // background-color: rgba(255, 255, 255, 0.664);
+      border-radius: 3px;
+    }
+    padding: 0.3rem;
+    //border: 3px white solid;
+    border-radius: 15px;
+    //background-color: #130b3df8;
+    background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+    //position: relative;
+    .video-buttons-div {
+      // position: absolute;
+      //bottom: 0.3rem;
+      margin-top: 0.3rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      p {
+        font-size: 0.7rem;
+        color: white;
+      }
+
+      div {
+        width: 73.275px;
+      }
+    }
+    button {
+      //margin: 1rem;
+      //margin-bottom: 3rem;
+    }
+    .self-mute-button {
+    }
+    .stop-self-video-button {
+    }
+    .share-screen-button {
+    }
   }
 }
 ::-webkit-scrollbar {
