@@ -91,7 +91,7 @@ const Lobby: React.FC = () => {
     }
   }
   return (
-    <>
+    <div className="lobby">
       <JoinRoomFilter
         joinFormStateManager={joinFormStateManager}
         setJoinFormStateManager={setJoinFormStateManager}
@@ -121,7 +121,7 @@ const Lobby: React.FC = () => {
           return <Room key={i} room={room} chosen={false} />;
         })}
       </div>
-    </>
+    </div>
   );
 
   function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null {

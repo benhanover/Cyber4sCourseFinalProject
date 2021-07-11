@@ -1,14 +1,19 @@
 // import libraries
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+// import css
 import './Navbar.css'
+
+// import interfaces
+import {Iprops} from './interfaces';
+
 // import components
 import SearchUser from '../SearchUser/SearchUser';
 import LogoutButton from '../Common/LogoutButton/LougoutButton'
 import { useSelector } from 'react-redux';
 import { State } from '../../state';
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<Iprops> = ({setDisplayAccountSettings, displayAccountSettings}) => {
   const {user} = useSelector((state: State )  => state.ws)
   const [profileMenu, setProfileMenu] = useState(false)
   function toggleProfileMenu() {
@@ -27,17 +32,19 @@ const Navbar: React.FC = () => {
         <SearchUser />
         <div className="profile-menu-container" onMouseLeave={()=>setProfileMenu(false)}>
           <img className="profile-menu-button" src={user.profile.img} onClick={toggleProfileMenu}/>
-          
-
             {profileMenu &&
           
-          <ul className="profile-menu" >
-            <li>
-            <Link to='/my-profile'>My Profile</Link>
-            </li>
-            <li>
-              <LogoutButton />
-            </li>
+            <ul className="profile-menu" >
+              <li>
+                <Link to='/my-profile'>My Profile</Link>
+              </li>
+              <li>
+                <span onClick={() => setDisplayAccountSettings(!displayAccountSettings)}>Account Settings</span>
+              </li>
+              <li>
+                <LogoutButton />
+              </li>
+              
             </ul>
           }
         </div>

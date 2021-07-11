@@ -1,0 +1,143 @@
+.profile-ticket-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-line-pack: justify;
+      align-content: space-between;
+}
+
+.profile-ticket-container .profile-ticket {
+  width: 20rem;
+  margin-right: 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  -webkit-box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+          box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+  list-style-type: none;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-top {
+  position: relative;
+  padding: 2rem 0rem 0rem 1rem;
+  padding-bottom: 3rem;
+  border-bottom: 4px solid black;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-top .profile-status {
+  position: absolute;
+  bottom: 0.7rem;
+  left: 9rem;
+  font-size: 0.8rem;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-top .profile-age {
+  position: absolute;
+  bottom: 2rem;
+  left: 9.5rem;
+  font-size: 0.7rem;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-top .profile-display {
+  position: relative;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-top .profile-display .profile-username {
+  position: absolute;
+  bottom: -3rem;
+  left: 4.5rem;
+  text-align: left;
+  font-size: 1.4rem;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-top .profile-display img {
+  position: absolute;
+  bottom: -4.1rem;
+  left: 0rem;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+  border: 4px solid black;
+  background-color: white;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-top .profile-ticket-buttons {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  top: 0rem;
+  right: -1.5rem;
+  margin-top: 0.5rem;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-top .profile-ticket-buttons .button {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-top: 0;
+  margin-left: 0;
+  -webkit-transform: scale(0.8);
+          transform: scale(0.8);
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-bottom .profile-ticket-status {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 1rem;
+  border-bottom-right-radius: 10px;
+  width: 70%;
+  background-image: linear-gradient(130deg, #01949A, white 230%);
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-bottom .profile-age {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding-top: 1rem;
+  padding-bottom: .5rem;
+  border-bottom-left-radius: 10px;
+  width: 30%;
+  background-color: white;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-bottom .profile-age .age {
+  font-size: 1.2rem;
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-bottom .profile-age .years-old {
+  font-size: 0.8rem;
+}
+/*# sourceMappingURL=ProfileTicket.css.map */

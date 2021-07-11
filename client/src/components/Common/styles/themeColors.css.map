@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "themeColors.scss"
+    ],
+    "names": [],
+    "file": "themeColors.css"
+}

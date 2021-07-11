@@ -1,6 +1,6 @@
 // import libraries
 import { Switch, Route, Redirect } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // import components
 import Login from "./components/Login/Login";
@@ -10,6 +10,8 @@ import VideoRoom from "./components/VideoRoom/VideoRoom";
 import Profile from "./components/Profile/Profile";
 import Navbar from "./components/Navbar/Navbar";
 import OtherUserProfile from "./components/OtherUserProfile/OtherUserProfile";
+import AccountSettings from './components/AccountSettings/AccountSettings';
+
 
 // redux shit
 import { bindActionCreators } from "redux";
@@ -28,6 +30,7 @@ const App: React.FunctionComponent<{}> = () => {
   const { user } = useSelector((state: State) => state.ws);
   const dispatch = useDispatch();
   const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
+  const [displayAccountSettings, setDisplayAccountSettings] = useState<any>(false);
   
   useEffect(() => {
     Network("GET", `${enums.baseUrl}/user/validator`)
@@ -51,7 +54,11 @@ const App: React.FunctionComponent<{}> = () => {
         </Switch>
       ) : (
         <>
-          <Navbar />
+          <Navbar setDisplayAccountSettings={setDisplayAccountSettings} displayAccountSettings={displayAccountSettings}/>
+          {
+            displayAccountSettings&&
+             <AccountSettings user={user} setUser={setUser} displayAccountSettings={displayAccountSettings} setDisplayAccountSettings={setDisplayAccountSettings} />
+          }
           <Switch>
             <Route path="/lobby" component={Lobby} />
             <Route path="/room" component={VideoRoom} />

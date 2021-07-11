@@ -50,6 +50,9 @@ export async function fileSelectedHandler(e: any): Promise<any> {
   });
 }
 
+export const formatDate = (date: string): string => {
+  return date.slice(0, 10);
+}
 export const saveImageToS3 = async (imgFile: any, username: any) => {
   const formData = new FormData();
   formData.append('image', imgFile);

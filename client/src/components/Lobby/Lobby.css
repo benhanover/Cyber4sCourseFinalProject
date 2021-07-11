@@ -1,10 +1,14 @@
+.lobby {
+  background-color: #f3f3f3;
+  min-height: 100%;
+}
+
 .rooms-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   padding: 1rem;

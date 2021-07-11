@@ -1,8 +1,9 @@
+@import '../Common/styles/themeColors.scss';
 .navbar{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(196, 223, 255);
+    background-color: $mainColor;
     height: 2rem;
     .logo{
         margin-left: 1rem;

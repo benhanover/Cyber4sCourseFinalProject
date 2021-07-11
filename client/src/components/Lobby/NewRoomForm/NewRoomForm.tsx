@@ -172,6 +172,7 @@ function NewRoomForm() {
       .then(async (response) => {
         if (response === "Room Title Is Taken") {
           setErrorDiv(response);
+          return;
         }
         const newRoom: Iroom = response.newRoom;
 

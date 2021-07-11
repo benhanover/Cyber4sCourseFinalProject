@@ -1,6 +1,14 @@
+@import '../Common/styles/themeColors.scss';
+ 
+.lobby{
+    background-color: $backgroundColor;
+    min-height: 100%;
+}
+
 .rooms-container{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     flex-wrap: wrap;
     padding: 1rem;
+
 }
