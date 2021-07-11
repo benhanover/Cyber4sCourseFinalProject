@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from 'react'
 
 // import functions 
-import { getUserProfile } from './function';
+import { getUserProfile, formatDate } from './function';
 
 // import interfaces
 import {props} from './interfaces/interfaces';
+
+// import css
+import './OtherUserProfile.css';
 
 const OtherUserProfile: React.FC<props> = ({user}) => {
   const [userProfile, setUserProfile] = useState<any>();
@@ -17,20 +20,68 @@ const OtherUserProfile: React.FC<props> = ({user}) => {
       })
   }, [userWithoutTypescriptProblems])
   return (
-    <div>
-      <img src={userProfile?.profile.img} />
-      <p>Username: {userProfile?.username}</p>
-      <p>Email: {userProfile?.email}</p>
-      <p>First Name: {userProfile?.firstName}</p>
-      <p>Last Name: {userProfile?.lastName}</p>
-      <p>About: {userProfile?.profile.about}</p>
-      <p>activeTime: {userProfile?.profile.activeTime}</p>
-      <p>Address: {userProfile?.profile.address}</p>
-      <p>Gender: {userProfile?.profile.gender}</p>
-      <p>Hobbys: {userProfile?.profile.hobbys}</p>
-      <p>Intrests: {userProfile?.profile.intrests}</p>
-      <p>Relationship Status: {userProfile?.profile.relationship}</p>
-      <p>Status: {userProfile?.profile.status}</p>
+    <div className='user-profile'>
+
+      <div className='personal-details'>
+        <div className='image-container'>
+          <img src={userProfile?.profile.img} className="other-profile-image" />
+          <p>{userProfile?.username}</p>
+        </div>
+        <div className='details-items-container'>
+          <div className='details-item-div'>
+            <span className='bold'>First Name: </span>
+            <span>{userProfile?.firstName}</span>
+          </div>
+          <div className='details-item-div'>
+            <span className='bold'>Last Name: </span>
+            <span>{userProfile?.lastName}</span>
+          </div>
+          <div className='details-item-div'>
+            <span className='bold'>Address: </span>
+            <span>{userProfile?.profile.address}</span>
+          </div>
+          <div className='details-item-div'>
+            <span className='bold'>Gender: </span>
+            <span>{userProfile?.profile.gender}</span>
+          </div>
+          <div className='details-item-div'>
+            <span className='bold'>Relationship Status: </span>
+            <span>{userProfile?.profile.relationship}</span>
+          </div>
+          <div className='details-item-div'>
+            <span className='bold'>Birth Date: </span>
+            <span>{userProfile?.birthDate ? formatDate(userProfile?.birthDate) : userProfile?.birthDate}</span>
+          </div>
+          <div className='details-item-div'>
+            <span className='bold'>activeTime: </span>
+            <span>{userProfile?.profile.activeTime}</span>
+          </div>
+
+        </div>  
+      </div>
+
+        <div className='information'>
+          <div className='information-items-container'>
+            <div className='information-item-div'> 
+              <label className='bold'>About: </label>
+              <p className='information-p'>{userProfile?.profile.about}</p>
+            </div>
+            <div className='information-item-div'> 
+              <label className='bold'>Hobbys: </label>
+              <p className='information-p'>{userProfile?.profile.hobbys}</p>
+            </div>
+            <div className='information-item-div'> 
+              <label className='bold'>Intrests: </label>
+              <p className='information-p'>{userProfile?.profile.intrests}</p>
+            </div>
+            <div className='information-item-div'> 
+              <label className='bold'>Status: </label>
+              <p className='information-p'>{userProfile?.profile.status}</p>
+            </div>
+          </div>
+       
+      </div>
+
     </div>
   )
 }

@@ -11,6 +11,41 @@
       justify-content: space-around;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  padding: 1rem;
+  padding-top: 7rem;
+}
+
+.new-room-button {
+  position: fixed;
+  left: 0;
+  top: 5rem;
+  z-index: 2;
+  background-color: rgba(1, 148, 154, 0.5);
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  border: 0.6px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.new-room-button:hover {
+  background-color: rgba(1, 148, 154, 0.7);
+}
+
+.next-button {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  cursor: pointer;
+  position: absolute;
+  right: 0rem;
+  bottom: 1rem;
+}
+
+.back-button {
+  position: absolute;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  left: 0;
+  bottom: 1rem;
 }
 /*# sourceMappingURL=Lobby.css.map */
