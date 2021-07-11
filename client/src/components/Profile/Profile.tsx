@@ -22,17 +22,19 @@ const Profile: React.FC = () => {
 
   // states
   const [fieldToUpdate, setFieldToUpdate] = useState<Ifield | boolean>(false);
-  const [displayImageButtons, setDisplayImageButtons] = useState<any>(false);
-  const [error, setError] = useState<string | null>();
+  const [displayImageButtons, setDisplayImageButtons] = useState<any>(true);
   const [imgFile, setImgFile] = useState<any>();
-  const [imageSourceButton, setImageSourceButton] = useState<any>('https://img.icons8.com/material-outlined/24/000000/edit--v1.png')
+  const [displayLoader, setDisplayLoader] = useState<any>(false);
   
   // refs
   const profileUpdateRef = useRef<HTMLInputElement>(null);
   
   return (
       <div className="my-profile">
-
+        {
+          displayLoader&&
+          <div className="loader"/>
+        }
         {fieldToUpdate&& 
           <div className='change-input-div'>
             <div>
@@ -50,47 +52,40 @@ const Profile: React.FC = () => {
           </div>
         }
 
-        <div className='personal-details-container'>
-          <div className="personal-details">
-            <div>
+        <div className='personal-details'>
               <div className='image-container'>
-                <img className="profile-image" src={user.profile.img} alt="profile" />
-                <img src={imageSourceButton} className='change-image' onClick={() => {
-                  imageSourceButton === 'https://img.icons8.com/material-outlined/24/000000/edit--v1.png'
-                  ? setImageSourceButton('https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png')
-                  : setImageSourceButton('https://img.icons8.com/material-outlined/24/000000/edit--v1.png')
-                  setDisplayImageButtons(!displayImageButtons)}}
-                  />
-              </div>
-              {
-                displayImageButtons&&
-                <div className='image-buttons'>
-                  <label htmlFor='files' className='hover'>Choose File</label>
-                  <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
-                    if(e.target.files) {
-                      setImgFile(e.target.files[0]);
-                      const blobBeforeSave = await fileSelectedHandler(e);
-                      user.profile.img = blobBeforeSave;
-                      setUser({...user})
+                {/* <img className="profile-image" src={user.profile.img} alt="profile" onMouseOver={() => setDisplayImageButtons(!displayImageButtons)} onMouseLeave={() => setDisplayImageButtons(!displayImageButtons)}/> */}
+                <img onClick={() => console.log(user.profile.img)} className="profile-image" src={user.profile.img} alt="profile"/>
+                <span className='bold username'>{user.username}</span>
+              
+                {
+                  displayImageButtons&&
+                  <div className='image-buttons'>
+                    <label htmlFor='files' className='hover'>
+                      <img src="https://img.icons8.com/material-outlined/24/000000/camera--v1.png" className='icon' />
+                    </label>
+                    <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
+                      if(e.target.files) {
+                        setImgFile(e.target.files[0]);
+                        const blobBeforeSave = await fileSelectedHandler(e);
+                        user.profile.img = blobBeforeSave;
+                        setUser({...user})
+                      }
+                    })}/>
+                    <img src='https://img.icons8.com/ios-glyphs/30/000000/save--v1.png' className='hover icon' onClick={async () => {
+                      setDisplayLoader(true);
+                      const response: any = await saveImageToS3(imgFile, user.username);
+                      await updateDetailsByField({place: 'profile', field: 'img'}, response.data.imageUrl);
+                      setDisplayLoader(false);
                     }
-                  })} onClick={() => setError(null)}/>
-                  <label className='hover' onClick={async () => {
-                    const response: any = await saveImageToS3(imgFile, user.username);
-                    await updateDetailsByField({place: 'profile', field: 'img'}, response.data.imageUrl);
+                    }/>
+                  </div>
                   }
-                  }>save</label>
                 </div>
-                }
-            </div>
-
-            <div>
-
-          </div>
-
-              <div>
+              <div className='details-items-container'>
 
                 <div className='details-item-div'>
-                  <span className='bold'>First Name:</span>
+                  <span className='bold'>First Name: </span>
                   <span>{user.firstName}</span>
                   <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'user', field: 'firstName'})} className='hover update'/>
                 </div>
@@ -120,67 +115,50 @@ const Profile: React.FC = () => {
                 </div>
 
                 <div className='details-item-div'>
-                  <span className='bold'>BirthDate</span>
+                  <span className='bold'>BirthDate: </span>
                   <span>{formatDate(user.birthDate)}</span>
                   <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'user', field: 'birthDate'})} className='hover update'/>
                 </div>
 
                 <div className='details-item-div'>
-                  <span className='bold'>Active Times:</span>
+                  <span className='bold'>Active Times: </span>
                   <span>{user.profile.activeTime}</span>
                   <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'activeTime'})} className='hover update'/>
                 </div>
-
               </div>
-          </div>
+
         </div>
        
         <div className='information'>
-          
-          <div className='information-2item-div-container'>
-            <div>
-              <div className='information-item-div'>              
-                <label className='bold'>About</label>
-                <p>{user.profile.about}</p>
-                <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field: 'about'})} className='hover update' /> 
-              </div>
-            </div>
+          <div className='information-items-container'>
+            <div className='information-item-div'>              
+                  <label className='bold'>About</label>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field: 'about'})} className='hover update' />   
+                  <p className='information-p'>{user.profile.about}</p>
+                </div>
 
-            <div>
-              <div className='information-item-div'>              
-                <label className='bold'>Status</label>
-                <p>{user.profile.status}</p>
-                <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'status'})} className='hover update' />
-              </div>
+                <div className='information-item-div'>              
+                  <label className='bold'>Status</label>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'status'})} className='hover update' />  
+                  <p className='information-p'>{user.profile.status}</p>
+                </div>
+
+                <div className='information-item-div'>              
+                  <label className='bold'>Hobbys</label>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'hobbys'})} className='hover update' />
+                  <p className='information-p'>{user.profile.hobbys}</p>
+                </div>
+
+                <div className='information-item-div'>
+                  <label className='bold'>Interests</label>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'intrests'})} className='hover update'/>
+                  <p className='information-p'>{user.profile.intrests}</p>
+                </div>
             </div>
           </div>
-          
-          <div className='information-2item-div-container'>
-            <div>
-              <div className='information-item-div'>              
-                <label className='bold'>Hobbys</label>
-                <p>{user.profile.hobbys}</p>
-                <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'hobbys'})} className='hover update' />
-              </div>
-            </div>
-
-            <div>
-              <div className='information-item-div'>
-                <label className='bold'>Interests</label>
-                <p>{user.profile.intrests}</p>
-                <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'intrests'})} className='hover update'/>
-              </div>
-            </div>
-          </div>  
-         
-
-          
-
-        </div>
         </div>
 
   );
-  // functions
   
 }
 
