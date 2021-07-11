@@ -52,15 +52,15 @@ export const shareScreen = async (videos: any, myStream: any): Promise<any> => {
 /*-------------------------------------------------------------------------------------*/
 export const selfMuteToggle = (myStream: any): any => {
   if (!myStream.getTracks()[0]) return;
-  myStream.getTracks()[0].enabled = !myStream.getTracks()[0].enabled;
+  const newState = !myStream.getTracks()[0].enabled
+ // myStream.getTracks()[0].enabled = !myStream.getTracks()[0].enabled;
+ myStream.getTracks()[0].enabled = newState
+ return myStream.getTracks()[0].enabled 
 };
 
 /*-------------------------------------------------------------------------------------*/
 export const selfVideoToggle = (myStream: any): any => {
   if (!myStream) return;
-  // if (myStream.getVideoTracks()[0].enabled) {
-  // }
-
   const newState = !myStream.getVideoTracks()[0].enabled;
   myStream.getVideoTracks()[0].enabled = newState;
   // console.log(myStream.getVideoTracks()[0]);

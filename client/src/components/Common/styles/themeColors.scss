@@ -1,13 +1,21 @@
-
 // colors
 $mainColor: #016367;
 $secondaryColor: #578384;
 $backgroundColor: #f3f3f3;
 $divBackgroundColor: white;
-// $backgroundColor: #CFE0EA;
-$spicyColor: #01949A;
 
+// $backgroundColor: #CFE0EA;
+$spicyColor: #01949a;
+//butons colors
+$buttonBackround: rgb(134, 26, 228);
+$buttonHover: rgb(101, 145, 199);
+//form border color
+$borderColor: rgb(94, 134, 184);
 // sizes
 $borderDetails: 0.6px solid rgba(0, 0, 0, 0.2);
 $smallBorderRadius: 7px;
-$shadowBoxDetails: -8px 8px 16px 2px rgba($color: #000000, $alpha: 0.6);
+$shadowBoxDetails: -8px 8px 16px 2px
+  rgba(
+    $color: #000000,
+    $alpha: 0.6,
+  );

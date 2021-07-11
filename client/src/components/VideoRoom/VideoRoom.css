@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 .video-room {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -10,39 +11,121 @@
           align-items: center;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  min-height: 90%;
+  background-color: white;
+  height: 100%;
   overflow: hidden;
 }
 
+.video-room .choose-host-box {
+  border-radius: 15px;
+  position: absolute;
+  top: 5rem;
+  right: 9rem;
+  background-color: rgba(35, 195, 235, 0.89);
+  padding: 1rem;
+  z-index: 1;
+}
+
+.video-room .choose-host-box .x {
+  position: absolute;
+  top: 0.6rem;
+  right: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.video-room .choose-host-box button {
+  padding: 0.3rem;
+  margin: 1rem;
+  background-color: #f8bf56;
+}
+
+.video-room .choose-host-box p {
+  margin-top: 1.5rem;
+  color: white;
+  font-size: 1.3rem;
+}
+
+.video-room .choose-host-box .host-choise img {
+  border-radius: 50%;
+  height: 3rem;
+}
+
 .video-room .leave-button {
-  position: fixed;
-  bottom: 0.7rem;
-  left: 0.7rem;
-  padding: 0.5rem;
+  position: absolute;
+  top: 5rem;
+  right: 1rem;
+  padding: 1rem 2.4rem;
 }
 
-.video-room .self-mute-button {
-  position: fixed;
-  bottom: 4.7rem;
-  left: 0.7rem;
-  padding: 0.5rem;
+.video-room button:hover {
+  background-color: #6591c7;
 }
 
-.video-room .stop-self-video-button {
-  position: fixed;
-  bottom: 6.7rem;
-  left: 0.7rem;
-  padding: 0.5rem;
+.video-room button {
+  font-size: 1em;
+  background-color: blueviolet;
+  border: none;
+  color: white;
+  border-radius: 5px;
 }
 
-.video-room .share-screen-button {
-  position: fixed;
-  bottom: 2.7rem;
-  left: 0.7rem;
-  padding: 0.5rem;
+.video-room .close-room-btn {
+  position: absolute;
+  top: 10rem;
+  right: 1rem;
+  padding: 1rem;
+}
+
+.video-room .others-video {
+  height: 50vh;
+  border-radius: 15px;
+  padding-right: 4rem;
+  margin: 0 4rem;
+  background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+}
+
+.video-room .self-video-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 50vh;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.918);
+  background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  position: relative;
+}
+
+.video-room .self-video-box .video-buttons-div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  padding: 0;
+  margin: 0;
+  height: 250px;
+}
+
+.video-room .self-video-box .video-buttons-div p {
+  padding: 0;
+  margin: 0;
+  font-size: 0.76rem;
+  padding-bottom: 0;
+}
+
+.video-room .self-video-box .video-buttons-div div {
+  width: 73.275px;
 }
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+* {
+  font-family: "Roboto";
 }
 /*# sourceMappingURL=VideoRoom.css.map */
