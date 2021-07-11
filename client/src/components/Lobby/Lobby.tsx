@@ -32,6 +32,11 @@ const Lobby: React.FC = () => {
     dispatch
   );
   const [showCreateRoom, setShowCreateRoom] = useState<any>(false);
+  const numberOfRoomsInPage = (Math.floor(window.outerWidth) / (22 * 16)) * (window.outerHeight > 870 ? 3 : 2);
+  const [page, setPage] = useState<any>({
+    start: 0,
+    end: numberOfRoomsInPage
+  })
   const history = useHistory();
   const [joinFormStateManager, setJoinFormStateManager] = useState<any>({
     subject: "Math",
@@ -52,10 +57,6 @@ const Lobby: React.FC = () => {
     newWS.onmessage = messageHandler;
     setWS(newWS);
   }, []);
-
-  // useEffect(() => {
-  //   console.log(joinFormStateManager);
-  // }, [joinFormStateManager])
 
   // Functions
   /*------------------------------------------------------------------------------------------------------*/
@@ -116,11 +117,27 @@ const Lobby: React.FC = () => {
           ) 
             return true
         })
+        .slice(page.start, page.end)
         .map((room: Iroom | null, i: number) => {
           if (!room) return;
           return <Room key={i} room={room} chosen={false} />;
         })}
       </div>
+
+        <button onClick={() => {
+          if(page.start === 0) return;
+          page.start -= numberOfRoomsInPage;
+          page.end -= numberOfRoomsInPage;
+          setPage({...page})
+        }}>back</button>
+
+        <button onClick={() => {
+          if(page.end === ((Math.floor(rooms.length / numberOfRoomsInPage)) * numberOfRoomsInPage) + numberOfRoomsInPage)return;
+          page.start += numberOfRoomsInPage;
+          page.end += numberOfRoomsInPage;
+          setPage({...page})
+        }}>next</button>
+
     </div>
   );
 

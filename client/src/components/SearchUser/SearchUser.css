@@ -14,4 +14,12 @@
 .search-user .results li {
   border-top: 1px solid black;
 }
+
+.search-input {
+  font-size: 1.5rem;
+}
+
+.results {
+  font-size: 1.5rem;
+}
 /*# sourceMappingURL=SearchUser.css.map */
