@@ -1,25 +1,4 @@
-// .my-profile-container{
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     height: 90%;
-//     .my-profile{
-//         // background-color: rgba(196, 223, 255, 0.5);
-//         background-color: rgba($color: rgb(196, 223, 255), $alpha: 0.8);
-//         padding: 2rem;
-//         .error {
-//             background-color: rgba(228, 69, 69, 0.507)
-//         }
-//         .new-profile-image{
-//             height: 8rem;
-//             border-radius: 50%;
-//         }
-//         .profile-image{
-//             height: 4rem;
-//             border-radius: 50%;
-//         }
-//     }
-// }
+@import "../Common/styles/themeColors.scss";
 .change-input-div {
     position: fixed;
     height: 30vh;
@@ -32,10 +11,6 @@
     align-items: center;
   }
   
-  .hover:hover {
-    background-color: cadetblue;
-  }
-  
   .hidden {
     display: none;
   }
@@ -46,15 +21,18 @@
   /*  */
   .my-profile {
     display: flex;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     height: 95%;
   }
   /*  */
   .personal-details {
     width: 30%;
-    background-color:rgba(224, 203, 148, 0.609);
+    background-color:$divBackgroundColor;
+    border-right: $formBorder;
+    box-shadow: $shadowBoxDetails;
     display: flex;
     flex-direction: column;
+    z-index: 1;
   }
   
   .image-container {
@@ -73,7 +51,7 @@
   }
   
   .profile-image {
-    width: 50%;
+    width: 40%;
     border-radius: 50%;
     margin-bottom: 0.5rem;
   }
@@ -98,15 +76,30 @@
   }
   
   .details-item-div {
+    position: relative;
     text-align: left;
     margin-left: 3rem;
     margin-bottom: 1rem;
+    .hover{
+      position: absolute;
+      top:-0.2rem;
+      opacity: 0;
+    }
+    &:hover{
+      .hover{
+        opacity: 0.6;
+        height: 1.3rem;
+        &:hover{
+          opacity: 1;
+        }
+      }
+    }
   }
   
   /*  */
   .information {
     width: 70%;
-    background-color: rgba(199, 113, 98, 0.534);
+    background-color: $backgroundColor;
   }
   
   .information-items-container {
@@ -117,14 +110,29 @@
   }
   
   .information-item-div {
+    position: relative;
     text-align: left;
     height: 16vh;
     margin-bottom: 2rem;
+    .hover{
+      position: absolute;
+      top:-0.2rem;
+      opacity: 0;
+    }
+    &:hover{
+      .hover{
+        opacity: 0.6;
+        height: 1.3rem;
+        &:hover{
+          opacity: 1;
+        }
+      }
+    }
   }
   
   .information-p {
     text-align: left;
-    margin-left: 4rem;
+    margin-left: 1rem;
   }
   
   .loader {
