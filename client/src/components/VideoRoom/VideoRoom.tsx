@@ -107,10 +107,10 @@ function VideoRoom() {
           
           {noUserDevices && (
             <div className="media-premision-err-div">
-              <h1 style={{ color: "white" }}>
-                you must give premition to media devices, at list audio
+              <h1 className="h1-permission" style={{ color: "white" }}>
+                you must give permission to media devices <br></br>at list audio
               </h1>
-              <button
+              <button className="button"
                 onClick={(e) => {
                   createConnection(room);
                 }}

@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 .video-room {
-  //background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,6 +9,24 @@
   background-color: white;
   height: 100%;
   overflow: hidden;
+  .media-premision-err-div {
+    padding: 0 4rem;
+    button {
+      margin: 3rem;
+      padding: 1rem;
+      font-size: 1.2rem;
+    }
+    button:hover {
+      margin: 3rem;
+      padding: 1rem;
+      font-size: 1.2rem;
+      background-color: rgb(212, 14, 90);
+    }
+    .h1-permission {
+      font-size: 4.2rem;
+      align-self: center;
+    }
+  }
   .choose-host-box {
     border-radius: 15px;
     position: absolute;
@@ -30,6 +49,7 @@
     }
     button:hover {
       //border: black solid;
+      background-color: rgb(212, 14, 90);
     }
     p {
       margin-top: 1.5rem;
@@ -52,7 +72,8 @@
     padding: 1rem 2.4rem;
   }
   button:hover {
-    background-color: rgb(101, 145, 199);
+    background-color: rgb(212, 14, 90);
+    //background-color: rgb(101, 145, 199);
   }
   button {
     font-size: 1em;
@@ -76,16 +97,17 @@
     border-radius: 15px;
     padding-right: 4rem;
     margin: 0 4rem;
+    background-color: white;
 
-    background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+    //background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
   }
   .self-video-box {
     display: flex;
     height: 50vh;
 
     border-radius: 15px;
-    background-color: rgba(255, 255, 255, 0.918);
-    background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+    background-color: rgba(239, 239, 239, 0.76);
+    //background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
     position: relative;
 
     .video-buttons-div {
@@ -98,7 +120,7 @@
       p {
         padding: 0;
         margin: 0;
-        font-size: 0.76rem;
+        font-size: 1rem;
         padding-bottom: 0;
       }
       height: 250px;

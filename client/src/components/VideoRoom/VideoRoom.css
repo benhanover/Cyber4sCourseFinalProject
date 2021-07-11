@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 .video-room {
+  background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  background-size: cover;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -14,6 +16,30 @@
   background-color: white;
   height: 100%;
   overflow: hidden;
+}
+
+.video-room .media-premision-err-div {
+  padding: 0 4rem;
+}
+
+.video-room .media-premision-err-div button {
+  margin: 3rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+}
+
+.video-room .media-premision-err-div button:hover {
+  margin: 3rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: #d40e5a;
+}
+
+.video-room .media-premision-err-div .h1-permission {
+  font-size: 4.2rem;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
 }
 
 .video-room .choose-host-box {
@@ -39,6 +65,10 @@
   background-color: #f8bf56;
 }
 
+.video-room .choose-host-box button:hover {
+  background-color: #d40e5a;
+}
+
 .video-room .choose-host-box p {
   margin-top: 1.5rem;
   color: white;
@@ -58,7 +88,7 @@
 }
 
 .video-room button:hover {
-  background-color: #6591c7;
+  background-color: #d40e5a;
 }
 
 .video-room button {
@@ -81,7 +111,7 @@
   border-radius: 15px;
   padding-right: 4rem;
   margin: 0 4rem;
-  background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  background-color: white;
 }
 
 .video-room .self-video-box {
@@ -90,8 +120,7 @@
   display: flex;
   height: 50vh;
   border-radius: 15px;
-  background-color: rgba(255, 255, 255, 0.918);
-  background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  background-color: rgba(239, 239, 239, 0.76);
   position: relative;
 }
 
@@ -113,7 +142,7 @@
 .video-room .self-video-box .video-buttons-div p {
   padding: 0;
   margin: 0;
-  font-size: 0.76rem;
+  font-size: 1rem;
   padding-bottom: 0;
 }
 
