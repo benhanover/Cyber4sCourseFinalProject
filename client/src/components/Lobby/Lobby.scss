@@ -10,16 +10,20 @@
     justify-content: space-around;
     flex-wrap: wrap;
     padding: 1rem;
-    margin-top: 7rem;
+    padding-top: 8rem;
 
 }
 .new-room-button{
     position: fixed;
-    left: 2rem;
-    bottom: 2rem;
+    left: 0;
+    top: 3rem;
     z-index: 2;
     background-color: rgba( $color: $spicyColor, $alpha: 0.5);
-    border-radius: $smallBorderRadius;
-
-
+    border-top-right-radius: $smallBorderRadius;
+    border-bottom-right-radius: $smallBorderRadius;
+    border: $borderDetails;
+    cursor: pointer;
+&:hover{
+    background-color: rgba( $color: $spicyColor, $alpha: 0.7);;
+}
 }

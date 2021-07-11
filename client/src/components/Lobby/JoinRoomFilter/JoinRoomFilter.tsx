@@ -6,6 +6,8 @@ import './JoinRoomFilter.css'
 import LockIcon from '@material-ui/icons/Lock';
 import NoEncryptionIcon from '@material-ui/icons/NoEncryption';
 import { getStreamId } from '../../VideoRoom/functions';
+import { Tooltip } from '@material-ui/core';
+import { Category, PeopleAlt } from '@material-ui/icons';
 const JoinRoomForm: React.FC<newRoomFormProps> = ({joinFormStateManager, setJoinFormStateManager}) => {
 
   return (
@@ -13,20 +15,31 @@ const JoinRoomForm: React.FC<newRoomFormProps> = ({joinFormStateManager, setJoin
       <h4>Find The Most Relevant Room For You:</h4>
       <div className="filter-form">
 
+      <Tooltip title="Filter Room Subject" placement="top">
       <div className="subjects-filter-container">
+            <Category className="category-icon icon" />
+            <div className="subjects">
 
-      <select className="subject-input" onChange={(e) => setJoinFormStateManager({...joinFormStateManager, subject: e.target.value})}>
-        <option value="Math">Math</option>
-        <option value="Programming">Programming</option>
-      </select>
+      <input className="subject-input" placeholder="Subject"  onChange={(e) => setJoinFormStateManager({...joinFormStateManager, subject: e.target.value})}/>
           <input
             className="subSubject-input"
-        placeholder="subSubject" 
-        onChange={(e) => setJoinFormStateManager({...joinFormStateManager, subSubject: e.target.value})}
-        />
-        </div>
+            placeholder="SubSubject" 
+            onChange={(e) => setJoinFormStateManager({...joinFormStateManager, subSubject: e.target.value})}
+            />
+            </div>
+          </div>
+        </Tooltip>
+        <div className="room-filter-right">
+        <Tooltip title="Filter By Title Or Description" placement="top">
+          <input 
+          placeholder="Search" className="search"
+              onChange={(e) => setJoinFormStateManager({ ...joinFormStateManager, search: e.target.value })} />
+            </Tooltip>
         <div className="room-details-filter">
-
+          <Tooltip title={"Participants Limit"} placement="top">
+            <div className="limit">
+          <PeopleAlt className="people-icon icon" />
+            
       <input
               className="limit-input"
               type="number"
@@ -35,15 +48,16 @@ const JoinRoomForm: React.FC<newRoomFormProps> = ({joinFormStateManager, setJoin
               min="2"
               max="4"
               
-          />
-          <div className="locked-button" onClick={(e) => setJoinFormStateManager({...joinFormStateManager, isLocked: !joinFormStateManager.isLocked})}>
-            {joinFormStateManager.isLocked ? <LockIcon className="lock-icon" /> : <NoEncryptionIcon className="lock-icon" />}
-          </div>
+              />
+              </div>
+          </Tooltip>
+          <Tooltip title={joinFormStateManager.isLocked?"Show Opened Rooms": "Show Locked Rooms"} placement="top">
+            {joinFormStateManager.isLocked ? <LockIcon className="lock-icon icon" onClick={(e) => setJoinFormStateManager({ ...joinFormStateManager, isLocked: !joinFormStateManager.isLocked })} /> : <NoEncryptionIcon className="lock-icon icon" onClick={(e) => setJoinFormStateManager({ ...joinFormStateManager, isLocked: !joinFormStateManager.isLocked })}/>}
+            </Tooltip>
             </div>
-       <input 
-        placeholder="Search"
-        onChange={(e) => setJoinFormStateManager({...joinFormStateManager, search: e.target.value})} />
-        </div>
+      
+      </div>
+      </div>
     </div>
   )
 }

@@ -7,17 +7,18 @@
           justify-content: center;
   position: fixed;
   z-index: 3;
-  left: 0;
+  left: -2rem;
   bottom: 8rem;
   -webkit-box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
           box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
   border-top-right-radius: 7px;
   border-bottom-right-radius: 7px;
-  -webkit-animation: rotate-in .4s;
-          animation: rotate-in .4s;
+  -webkit-animation: rotate-in .2s;
+          animation: rotate-in .2s;
 }
 
 .room-details {
+  margin-left: 1rem;
   -ms-flex-item-align: start;
       align-self: flex-start;
   display: -webkit-box;
@@ -29,7 +30,8 @@
           flex-direction: column;
 }
 
-.room-details .limit, .room-details .lock-room {
+.room-details .limit {
+  margin-top: 1rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -38,10 +40,36 @@
           align-items: center;
 }
 
+.room-details .limit input {
+  width: 2rem;
+}
+
+.room-details .icon {
+  margin: 0 0.5rem;
+}
+
+.room-details .lock-room {
+  margin-top: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.room-details .lock-room input {
+  width: 100%;
+}
+
 .new-room-form {
   border-top-right-radius: 7px;
   border-bottom-right-radius: 7px;
-  padding: 1rem 3rem;
+  padding: 1rem 3rem 1rem 4.5rem;
   background-color: rgba(1, 148, 154, 0.75);
   display: -webkit-box;
   display: -ms-flexbox;
@@ -55,14 +83,48 @@
           align-items: center;
   -ms-flex-pack: distribute;
       justify-content: space-around;
-  border: 1px black solid;
+  border: 0.6px solid rgba(0, 0, 0, 0.2);
+  width: 20rem;
   height: 60vh;
 }
 
+.new-room-form input {
+  width: 100%;
+}
+
+.new-room-form .subjects-container {
+  margin: 0.5rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.new-room-form .category-icon {
+  font-size: 1.6rem;
+  margin: 0 0.5rem;
+}
+
+.new-room-form .subjects {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.new-room-form .subjects .subject {
+  margin-bottom: 0.3rem;
+}
+
 .form-content {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

@@ -23,10 +23,7 @@ const Lobby: React.FC = () => {
   const dispatch = useDispatch();
   const { ws, rooms } = useSelector((state: State) => state);
   const { user, chosenRoom, serverSocket } = ws;
-  const { setWS, setUser } = bindActionCreators(
-    { ...wsActionCreator },
-    dispatch
-  );
+  const { setWS, setUser, setChosenRoom } = bindActionCreators({ ...wsActionCreator }, dispatch);
   const { setRooms, addRoom, removeRoom } = bindActionCreators(
     { ...roomsActionCreator },
     dispatch
@@ -121,13 +118,19 @@ const Lobby: React.FC = () => {
           return <Room key={i} room={room} chosen={false} />;
         })}
       </div>
+     
     </div>
   );
 
   function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null {
     if (chosenRoom === null) return null;
+    console.log("chosen");
+    
     const roomChosed: Iroom = chosenRoom;
-    return <Room room={roomChosed} chosen={true} />;
+    return <>
+      <Room room={roomChosed} chosen={true} />
+      {/* <div className="under-div"></div> */}
+      </>
   }
 };
 
