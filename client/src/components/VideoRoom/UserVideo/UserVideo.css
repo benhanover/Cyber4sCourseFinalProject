@@ -1,14 +1,12 @@
 .user-video-container {
   height: 49vh;
-  padding: 0.1rem;
   position: relative;
-  border-radius: 15px;
 }
 
 .user-video-container .user-video {
   left: 0;
   height: 100%;
-  border-radius: 12px;
+  border-radius: 11px;
 }
 
 .user-video-container .user-image {

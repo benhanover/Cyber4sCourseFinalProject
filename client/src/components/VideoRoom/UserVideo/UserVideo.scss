@@ -1,18 +1,14 @@
 .user-video-container {
   height: 49vh;
-  padding: 0.1rem;
+  //  padding: 0.1rem;
   position: relative;
 
-  //border: 1px white solid;
-  // background-color: rgba(255, 255, 255, 0.884);
-  border-radius: 15px;
+  //border-radius: 15px;
 
   .user-video {
     left: 0;
     height: 100%;
-    border-radius: 12px;
-    // cursor: pointer;
-    //width: 460px;
+    border-radius: 11px;
   }
   .user-image {
     left: 0.5rem;

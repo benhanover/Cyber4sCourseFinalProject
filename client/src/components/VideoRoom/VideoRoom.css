@@ -1,9 +1,11 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 .video-room {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -14,25 +16,71 @@
   overflow: hidden;
 }
 
+.video-room .choose-host-box {
+  border-radius: 15px;
+  position: absolute;
+  top: 5rem;
+  right: 9rem;
+  background-color: rgba(35, 195, 235, 0.89);
+  padding: 1rem;
+  z-index: 1;
+}
+
+.video-room .choose-host-box .x {
+  position: absolute;
+  top: 0.6rem;
+  right: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.video-room .choose-host-box button {
+  padding: 0.3rem;
+  margin: 1rem;
+  background-color: #f8bf56;
+}
+
+.video-room .choose-host-box p {
+  margin-top: 1.5rem;
+  color: white;
+  font-size: 1.3rem;
+}
+
+.video-room .choose-host-box .host-choise img {
+  border-radius: 50%;
+  height: 3rem;
+}
+
 .video-room .leave-button {
   position: absolute;
-  top: 0;
-  left: 0.7rem;
-  padding: 0.5rem;
+  top: 5rem;
+  right: 1rem;
+  padding: 1rem 2.4rem;
+}
+
+.video-room button:hover {
+  background-color: #6591c7;
+}
+
+.video-room button {
+  font-size: 1em;
+  background-color: blueviolet;
+  border: none;
+  color: white;
+  border-radius: 5px;
 }
 
 .video-room .close-room-btn {
   position: absolute;
-  top: 0;
-  left: 2rem;
-  padding: 0.5rem;
+  top: 10rem;
+  right: 1rem;
+  padding: 1rem;
 }
 
 .video-room .others-video {
   height: 50vh;
   border-radius: 15px;
-  padding: 0.3rem;
-  padding-left: 0.3rem;
+  padding-right: 4rem;
+  margin: 0 4rem;
   background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
 }
 
@@ -40,26 +88,14 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 0.1rem;
+  height: 50vh;
   border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.918);
   background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
   position: relative;
-  height: 50vh;
-}
-
-.video-room .self-video-box .option-div {
-  position: absolute;
-  bottom: 0.7rem;
-  left: 1rem;
-  font-size: 1rem;
-}
-
-.video-room .self-video-box .svg-container {
-  border-radius: 3px;
 }
 
 .video-room .self-video-box .video-buttons-div {
-  margin-top: 0.011rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -69,12 +105,16 @@
           flex-direction: column;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+  padding: 0;
+  margin: 0;
+  height: 250px;
 }
 
 .video-room .self-video-box .video-buttons-div p {
   padding: 0;
   margin: 0;
   font-size: 0.76rem;
+  padding-bottom: 0;
 }
 
 .video-room .self-video-box .video-buttons-div div {
@@ -83,5 +123,9 @@
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+* {
+  font-family: "Roboto";
 }
 /*# sourceMappingURL=VideoRoom.css.map */
