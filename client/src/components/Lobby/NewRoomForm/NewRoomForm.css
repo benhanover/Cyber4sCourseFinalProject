@@ -17,7 +17,7 @@
           animation: rotate-in .2s;
 }
 
-.room-details {
+.form-container .room-details {
   margin-left: 1rem;
   -ms-flex-item-align: start;
       align-self: flex-start;
@@ -30,7 +30,7 @@
           flex-direction: column;
 }
 
-.room-details .limit {
+.form-container .room-details .limit {
   margin-top: 1rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -40,15 +40,15 @@
           align-items: center;
 }
 
-.room-details .limit input {
+.form-container .room-details .limit input {
   width: 2rem;
 }
 
-.room-details .icon {
+.form-container .room-details .icon {
   margin: 0 0.5rem;
 }
 
-.room-details .lock-room {
+.form-container .room-details .lock-room {
   margin-top: 1rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -62,11 +62,11 @@
           align-items: center;
 }
 
-.room-details .lock-room input {
+.form-container .room-details .lock-room input {
   width: 100%;
 }
 
-.new-room-form {
+.form-container .new-room-form {
   border-top-right-radius: 7px;
   border-bottom-right-radius: 7px;
   padding: 1rem 3rem 1rem 4.5rem;
@@ -88,11 +88,11 @@
   height: 60vh;
 }
 
-.new-room-form input {
+.form-container .new-room-form input {
   width: 100%;
 }
 
-.new-room-form .subjects-container {
+.form-container .new-room-form .subjects-container {
   margin: 0.5rem 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -103,12 +103,12 @@
   width: 100%;
 }
 
-.new-room-form .category-icon {
+.form-container .new-room-form .category-icon {
   font-size: 1.6rem;
   margin: 0 0.5rem;
 }
 
-.new-room-form .subjects {
+.form-container .new-room-form .subjects {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -119,11 +119,11 @@
           flex-direction: column;
 }
 
-.new-room-form .subjects .subject {
+.form-container .new-room-form .subjects .subject {
   margin-bottom: 0.3rem;
 }
 
-.form-content {
+.form-container .form-content {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -141,22 +141,22 @@
   height: 55%;
 }
 
-.new-room-form-title-input {
+.form-container .new-room-form-title-input {
   width: 100%;
 }
 
-.new-room-form-description {
+.form-container .new-room-form-description {
   width: 100%;
   height: 4rem;
   resize: none;
 }
 
-.limit-input {
+.form-container .limit-input {
   width: 2rem;
   margin-right: 1rem;
 }
 
-.button {
+.form-container .button {
   padding: 0.5rem;
 }
 

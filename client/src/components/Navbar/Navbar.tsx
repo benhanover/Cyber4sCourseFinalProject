@@ -27,7 +27,7 @@ const Navbar: React.FC<Iprops> = ({setDisplayAccountSettings, displayAccountSett
   
   return (
     <nav className="navbar" >
-      <Link className="logo" to='/lobby'>Together</Link>
+      <Link className="logo bold" to='/lobby'>Zone-In</Link>
       <div className="options">
         <SearchUser />
         <div className="profile-menu-container" onMouseLeave={()=>setProfileMenu(false)}>
@@ -35,13 +35,13 @@ const Navbar: React.FC<Iprops> = ({setDisplayAccountSettings, displayAccountSett
             {profileMenu &&
           
             <ul className="profile-menu" >
-              <li>
+              <li className='cursor'>
                 <Link to='/my-profile'>My Profile</Link>
               </li>
-              <li>
+              <li className='cursor'>
                 <span onClick={() => setDisplayAccountSettings(!displayAccountSettings)}>Account Settings</span>
               </li>
-              <li>
+              <li className='cursor'>
                 <LogoutButton />
               </li>
               

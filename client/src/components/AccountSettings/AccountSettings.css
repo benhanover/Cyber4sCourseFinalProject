@@ -4,9 +4,46 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  font-size: 2rem;
 }
 
 .account-settings {
-  width: 80%;
+  width: 40%;
   background-color: rgba(184, 135, 11, 0.404);
+  position: relative;
+  padding: 4rem;
+  border-radius: 7px;
+  box-shadow: -6px 6px 12px;
 }
+
+.exit-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height: 3rem;
+}
+
+.credentials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.keys {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.values {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 4rem;
+}
+
+.credentials-update-div {
+  margin-top: 2rem;
+}
+
+

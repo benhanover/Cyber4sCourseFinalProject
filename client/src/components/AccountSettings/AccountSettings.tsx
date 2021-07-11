@@ -22,46 +22,46 @@ export const AccountSettings: React.FC<Iprops> = ({user, setUser, setDisplayAcco
   return (
     <div className='account-settings-container'>
       <div className='account-settings'>
-            <img onClick={() => setDisplayAccountSettings(!displayAccountSettings)} src="https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png"/>
-                {
-                    fieldToUpdate&& 
-                      <div>
-                        <input ref={profileUpdateRef} />
-                        <button onClick={async () => {
-                          if (!profileUpdateRef.current?.value) {
-                            setFieldToUpdate(false);
-                          }
-                          const updated = await updateDetailsByField(fieldToUpdate, profileUpdateRef.current?.value)
-                          if(typeof updated === 'string') {
-                            // setError(updated);
-                          } else {
-                            setUser(updated);
-                          }
-                          setFieldToUpdate(false);
-                        }}>Update
-                        </button>
-                      </div>
-                }  
-                {
-                  displayAccountSettings&&
-                  <div className='credentials'>
-                    <div className='credential-item'>
-                      <label>Email: </label>
-                      <p>{user.email}</p>
-                      <label  onClick={() => setFieldToUpdate({place: 'user', field: 'email'})} className='hover update'>Update</label>
-                    </div>
-                    <div className='credential-item'>
-                      <label>Username: </label>
-                      <p>{user.username}</p>
-                      <label  onClick={() => setFieldToUpdate({place: 'user', field: 'username'})} className='hover update'>Update</label>
-                    </div>
-                    <div className='credential-item'>
-                      <label>Password:</label>
-                      <p>********</p>
-                      <label  onClick={() => setFieldToUpdate({place: 'user', field: 'password'})} className='hover update'>Update</label>
-                    </div>
-                  </div>
+        <img className='exit-button hover' onClick={() => setDisplayAccountSettings(!displayAccountSettings)} src="https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png"/>  
+        {
+          displayAccountSettings&&
+          <div className='credentials'>
+            <div className='keys'>
+              <span className='bold'>Email:</span>
+              <span className='bold'>Username:</span>
+              <span className='bold'>Password:</span>
+            </div>
+            <div className='values'>
+              <div>
+                <span>{user.email}</span>
+                <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  onClick={() => setFieldToUpdate({place: 'user', field: 'email'})}/>
+              </div>
+              <div>
+                <span>{user.username}</span>
+                <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  onClick={() => setFieldToUpdate({place: 'user', field: 'username'})} />
+              </div>
+              <div>
+                <span>********</span>
+                <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  onClick={() => setFieldToUpdate({place: 'user', field: 'password'})} />
+              </div>
+            </div>
+          </div>
+        }
+        {
+          fieldToUpdate&& 
+            <div className='credentials-update-div'>
+              <input className='input' ref={profileUpdateRef} />
+              <button className='button' onClick={async () => {
+                if (!profileUpdateRef.current?.value) {
+                setFieldToUpdate(false);
                 }
+                const updated = await updateDetailsByField(fieldToUpdate, profileUpdateRef.current?.value);
+                setUser(updated);
+                setFieldToUpdate(false);
+              }}>Update
+              </button>
+            </div>
+        }
           </div>
         </div>
   )

@@ -4,9 +4,10 @@
     justify-content: space-between;
     align-items: center;
     background-color: $mainColor;
-    height: 2rem;
+    height: 3.5rem;
     .logo{
         margin-left: 1rem;
+        font-size: 2rem;
 
     }
     .options{
@@ -14,17 +15,23 @@
         align-items: center;
         justify-content: center;
         .profile-menu-button{
-            margin-top: 0.2rem;
-            height: 1.8rem;
-            margin-right: 1rem;
+            // margin-bottom: 0.2rem;
+            height: 3rem;
+            // width: 2.2rem;
             border-radius: 50%;
             
         }
         .profile-menu-container{
+            display: flex;
+            margin-right: 1rem;
+            height: fit-content;
             // position: relative;
+            cursor: pointer;
+            z-index: 2;
             .profile-menu{
                 width: 8rem;
                 right: 0;
+                top: 3.5rem;
                 list-style-type: none;
                 background-color: rgb(255, 255, 255);
                 position: absolute;

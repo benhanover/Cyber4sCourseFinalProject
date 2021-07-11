@@ -38,15 +38,16 @@ const SearchUser: React.FC = () => {
         setFilteredUsers([]);
       }}
     >
-      <input ref={searchRef}
+      <input className='search-input' ref={searchRef}
       onChange={(e) =>  setFilteredUsers(filterSearchedList(allUserRef.current, e.target.value))} placeholder='Search For A User..' />
       {
-        filteredUsers &&
+        filteredUsers && filteredUsers.length > 0 &&
         <ul className="results">
             {
-            filteredUsers.map((user: any, i: number) => {
+            filteredUsers
+            .slice(0, 10)
+            .map((user: any, i: number) => {
               return (<li key={i} onClick={() => {
-                console.log('clicked')
                 searchRef.current.value = ""; 
                 setFilteredUsers([]);
                 history.push(`/profile/${user.username}`)    

@@ -13,7 +13,7 @@
   border-bottom-right-radius: $smallBorderRadius;
   animation: rotate-in .2s;
   //  iteration-count direction fill-mode;
-}
+
 .room-details{
   margin-left: 1rem;
   align-self: flex-start;
@@ -121,4 +121,5 @@
       transform: rotate(0deg);
 
   }
+}
 }

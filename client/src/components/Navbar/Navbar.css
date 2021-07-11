@@ -9,11 +9,12 @@
       -ms-flex-align: center;
           align-items: center;
   background-color: #016367;
-  height: 2rem;
+  height: 3.5rem;
 }
 
 .navbar .logo {
   margin-left: 1rem;
+  font-size: 2rem;
 }
 
 .navbar .options {
@@ -29,15 +30,26 @@
 }
 
 .navbar .options .profile-menu-button {
-  margin-top: 0.2rem;
-  height: 1.8rem;
-  margin-right: 1rem;
+  height: 3rem;
   border-radius: 50%;
+}
+
+.navbar .options .profile-menu-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-right: 1rem;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  cursor: pointer;
+  z-index: 2;
 }
 
 .navbar .options .profile-menu-container .profile-menu {
   width: 8rem;
   right: 0;
+  top: 3.5rem;
   list-style-type: none;
   background-color: white;
   position: absolute;

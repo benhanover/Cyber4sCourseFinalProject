@@ -1,5 +1,5 @@
 .room {
-  margin: 1rem;
+  margin: 0.6rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -14,7 +14,7 @@
   height: -moz-fit-content;
   height: fit-content;
   position: relative;
-  width: 20rem;
+  width: 400px;
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-top-left-radius: 7px;
@@ -30,7 +30,7 @@
 
 .room .room-details {
   position: relative;
-  padding: 2rem 1rem 1rem 1rem;
+  padding: 1.2rem 1rem 0.3rem 1rem;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;

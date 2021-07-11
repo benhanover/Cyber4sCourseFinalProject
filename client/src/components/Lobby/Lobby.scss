@@ -9,14 +9,13 @@
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    padding: 1rem;
-    padding-top: 8rem;
+    padding-top: 7rem;
 
 }
 .new-room-button{
     position: fixed;
     left: 0;
-    top: 3rem;
+    top: 5rem;
     z-index: 2;
     background-color: rgba( $color: $spicyColor, $alpha: 0.5);
     border-top-right-radius: $smallBorderRadius;
@@ -27,3 +26,20 @@
     background-color: rgba( $color: $spicyColor, $alpha: 0.7);;
 }
 }
+.next-button{
+    width: fit-content;
+    // position: relative;
+    cursor: pointer;
+    // width: 3rem;
+        position: absolute;
+        right: 0rem;
+            bottom: 1rem;
+}
+.back-button{
+    position: absolute;
+    width: fit-content;
+    left: 0;
+    bottom: 1rem;
+}
+// }
+
