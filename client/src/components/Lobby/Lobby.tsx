@@ -29,7 +29,7 @@ const Lobby: React.FC = () => {
     dispatch
   );
   const [showCreateRoom, setShowCreateRoom] = useState<any>(false);
-  const numberOfRoomsInPage = (Math.floor(window.outerWidth / 400) * ((window.outerHeight > 870) ? 3 : 2));
+  const numberOfRoomsInPage = (Math.floor(window.outerWidth / 400) * ((window.outerHeight > 870) ? 4 : 3));
   const [page, setPage] = useState<any>({
     start: 0,
     end: numberOfRoomsInPage

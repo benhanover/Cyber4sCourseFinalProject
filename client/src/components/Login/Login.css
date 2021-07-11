@@ -1,19 +1,57 @@
-.login-form-container {
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+.login-component {
+  height: 100%;
+  background-color: white;
+}
+
+.login-component .rectangle-shape {
+  width: 1050px;
+  height: 100%;
+  position: relative;
+  background-color: #fc2234;
+}
+
+.login-component .rectangle-shape h1 {
+  color: white;
+  position: absolute;
+  left: 4rem;
+  font-size: 6rem;
+  top: 2rem;
+}
+
+.login-component .rectangle-shape .about-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-size: 1rem;
+  position: absolute;
+  left: 3rem;
+  top: 10rem;
+  width: 800px;
+  height: 70vh;
+  color: #fbfcf8;
 }
 
-.login-form-container .login-container {
-  background-color: #c4dfff;
-  border-radius: 20px;
+.login-component .rectangle-shape .about-container div {
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.login-component .rectangle-shape .about-container .p2 {
+  width: 720px;
+}
+
+.login-component .rectangle-shape .about-container .p3 {
+  width: 620px;
+}
+
+.login-form-container {
+  background-color: white;
+  border: 0.16rem solid #5e86b8;
   height: 40%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -24,17 +62,180 @@
           flex-direction: column;
   -ms-flex-pack: distribute;
       justify-content: space-around;
-  width: 20rem;
-  padding: 3rem;
-}
-
-.register-button {
+  width: 25rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 2px;
+  padding: 5rem 4rem;
   position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
+  right: 6rem;
+  top: 10rem;
 }
 
-.button {
-  padding: 0.5rem;
+.login-form-container input :not(.submit-btn) {
+  height: 2rem;
+  font-size: 0.9rem;
+  padding: 1em;
+  color: black;
+}
+
+.login-form-container .submit-btn:hover {
+  font-size: 1.1rem;
+  color: white;
+  background-color: #6591c7;
+}
+
+.login-form-container .submit-btn {
+  padding: 0.8rem;
+  background-color: #861ae4;
+  margin-top: 2rem;
+  border: none;
+  height: 40%;
+  color: white;
+  font-size: 1.05rem;
+  border-radius: 3px;
+}
+
+.rectangle-shape {
+  width: 1050px;
+  height: 100%;
+  position: relative;
+  background-color: #fc2234;
+}
+
+.rectangle-shape h1 {
+  color: white;
+  position: absolute;
+  left: 4rem;
+  font-size: 6rem;
+  top: 2rem;
+}
+
+.rectangle-shape .about-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-size: 1rem;
+  position: absolute;
+  left: 3rem;
+  top: 10rem;
+  width: 800px;
+  height: 70vh;
+  color: #fbfcf8;
+}
+
+.rectangle-shape .about-container div {
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.rectangle-shape .about-container .p2 {
+  width: 720px;
+}
+
+.rectangle-shape .about-container .p3 {
+  width: 620px;
+}
+
+.triangle-shape {
+  width: 0;
+  height: 0;
+  border-bottom: 100vh white solid;
+  border-left: 400px solid transparent;
+  left: 650px;
+  position: absolute;
+  top: 0;
+}
+
+.register-btn {
+  position: absolute;
+  top: 3rem;
+  right: 5rem;
+  width: 5.7rem;
+  font-size: 1.15em;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  background-color: #861ae4;
+}
+
+.register-btn:hover {
+  width: 5.9rem;
+  height: 3rem;
+  background-color: #6591c7;
+}
+
+* {
+  font-family: "Roboto";
+}
+
+:root {
+  --omrs-color-ink-lowest-contrast: rgba(47, 60, 85, 0.18);
+  --omrs-color-ink-low-contrast: rgba(60, 60, 67, 0.3);
+  --omrs-color-ink-medium-contrast: rgba(19, 19, 21, 0.6);
+  --omrs-color-interaction: #1e4bd1;
+  --omrs-color-interaction-minus-two: rgba(73, 133, 224, 0.12);
+  --omrs-color-ink-high-contrast: #121212;
+  --omrs-color-bg-high-contrast: #ffffff;
+}
+
+/** END: Non Openmrs CSS **/
+div.omrs-input-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 25.4375rem;
+}
+
+/* Input*/
+.omrs-input-filled > input {
+  border: none;
+  border-bottom: 0.125rem solid var(--omrs-color-ink-medium-contrast);
+  height: 2.2rem;
+  margin: auto;
+  font-size: 1.0625rem;
+  padding-left: 0.875rem;
+  line-height: 147.6%;
+  padding-top: 0.825rem;
+  padding-bottom: 0.5rem;
+}
+
+.omrs-input-filled > input:focus {
+  outline: none;
+}
+
+.omrs-input-filled > .omrs-input-label {
+  position: absolute;
+  font-size: 1.2rem;
+  top: 0.3rem;
+  left: 6rem;
+  line-height: 135.6%;
+  color: #534b4b;
+  -webkit-transition: top 0.2s;
+  transition: top 0.2s;
+}
+
+.omrs-input-filled > input:hover {
+  background: var(--omrs-color-interaction-minus-two);
+  border-color: var(--omrs-color-ink-high-contrast);
+}
+
+.omrs-input-filled > input:focus + .omrs-input-label,
+.omrs-input-filled > input:valid + .omrs-input-label {
+  top: 0;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+}
+
+.omrs-input-filled:not(.omrs-input-danger) > input:focus + .omrs-input-label {
+  color: var(--omrs-color-interaction);
+}
+
+.omrs-input-filled:not(.omrs-input-danger) > input:focus {
+  border-color: var(--omrs-color-interaction);
 }
 /*# sourceMappingURL=Login.css.map */
