@@ -19,10 +19,9 @@ const Profile: React.FC = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: State) => state.ws);
   const { setUser } = bindActionCreators({...wsActionCreator}, dispatch);
-
   // states
   const [fieldToUpdate, setFieldToUpdate] = useState<Ifield | boolean>(false);
-  const [displayImageButtons, setDisplayImageButtons] = useState<any>(true);
+  const [displayImageButtons, setDisplayImageButtons] = useState<any>(true)  ;
   const [imgFile, setImgFile] = useState<any>();
   const [displayLoader, setDisplayLoader] = useState<any>(false);
   
@@ -37,7 +36,6 @@ const Profile: React.FC = () => {
         }
         {fieldToUpdate&& 
           <div className='change-input-div'>
-            <div>
               <input ref={profileUpdateRef} className='change-input'/>
               <img src='https://img.icons8.com/ios/50/000000/circled-v.png' className='hover' onClick={async () => {
                 if (!profileUpdateRef.current?.value) {
@@ -48,22 +46,20 @@ const Profile: React.FC = () => {
                 setFieldToUpdate(false);
               }} />
               <img src='https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png' onClick={() => setFieldToUpdate(false)} className='hover'/>
-            </div>
           </div>
         }
 
         <div className='personal-details'>
               <div className='image-container'>
-                {/* <img className="profile-image" src={user.profile.img} alt="profile" onMouseOver={() => setDisplayImageButtons(!displayImageButtons)} onMouseLeave={() => setDisplayImageButtons(!displayImageButtons)}/> */}
-                <img onClick={() => console.log(user.profile.img)} className="profile-image" src={user.profile.img} alt="profile"/>
+                <img className="profile-image" src={user.profile.img} alt="profile" onMouseOver={() => setDisplayImageButtons(true)} onMouseLeave={() => setDisplayImageButtons(false)}/>
                 <span className='bold username'>{user.username}</span>
-              
                 {
                   displayImageButtons&&
                   <div className='image-buttons'>
+
                     <label htmlFor='files' className='hover'>
                       <img src="https://img.icons8.com/material-outlined/24/000000/camera--v1.png" className='icon' />
-                    </label>
+
                     <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
                       if(e.target.files) {
                         setImgFile(e.target.files[0]);
@@ -72,6 +68,8 @@ const Profile: React.FC = () => {
                         setUser({...user})
                       }
                     })}/>
+                    </label>
+
                     <img src='https://img.icons8.com/ios-glyphs/30/000000/save--v1.png' className='hover icon' onClick={async () => {
                       setDisplayLoader(true);
                       const response: any = await saveImageToS3(imgFile, user.username);
@@ -79,6 +77,7 @@ const Profile: React.FC = () => {
                       setDisplayLoader(false);
                     }
                     }/>
+                    
                   </div>
                   }
                 </div>

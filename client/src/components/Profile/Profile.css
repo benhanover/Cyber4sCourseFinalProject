@@ -25,12 +25,12 @@
 .my-profile {
   display: flex;
   font-size: 1.5rem;
+  height: 95%;
 }
 /*  */
 .personal-details {
   width: 30%;
-  height: 100vh;
-  background-color:goldenrod;
+  background-color:rgba(224, 203, 148, 0.609);
   display: flex;
   flex-direction: column;
 }
@@ -46,12 +46,12 @@
 
 .image-buttons {
   position: absolute;
-  top: 45%;
-  left: 45%;
+  top: 65%;
+  left: 40%;
 }
 
 .profile-image {
-  width: 60%;
+  width: 50%;
   border-radius: 50%;
   margin-bottom: 0.5rem;
 }
@@ -84,8 +84,7 @@
 /*  */
 .information {
   width: 70%;
-  height: 100vh;
-  background-color: hotpink;
+  background-color: rgba(199, 113, 98, 0.534);
 }
 
 .information-items-container {
@@ -97,7 +96,7 @@
 
 .information-item-div {
   text-align: left;
-  height: 20vh;
+  height: 16vh;
   margin-bottom: 2rem;
 }
 

@@ -9,7 +9,11 @@
       -ms-flex-align: center;
           align-items: center;
   background-color: #016367;
-  height: 2rem;
+  height: 3.5rem;
+}
+
+.logo {
+  font-size: 2rem;
 }
 
 .navbar .logo {
@@ -30,7 +34,7 @@
 
 .navbar .options .profile-menu-button {
   margin-top: 0.2rem;
-  height: 1.8rem;
+  height: 3rem;
   margin-right: 1rem;
   border-radius: 50%;
 }

@@ -27,7 +27,7 @@ const Navbar: React.FC<Iprops> = ({setDisplayAccountSettings, displayAccountSett
   
   return (
     <nav className="navbar" >
-      <Link className="logo" to='/lobby'>Together</Link>
+      <Link className="logo bold" to='/lobby'>Zone-In</Link>
       <div className="options">
         <SearchUser />
         <div className="profile-menu-container" onMouseLeave={()=>setProfileMenu(false)}>
