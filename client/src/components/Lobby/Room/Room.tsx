@@ -44,7 +44,7 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
     return (
       <div className="chosen-background" onClick={(e) => setChosenRoom(null)}>
 
-        <div key={42} className="chosen room" onClick={(e) => e.stopPropagation()}>
+        <div key={42} className="chosen room form-div" onClick={(e) => e.stopPropagation()}>
           <span key={1} className="close-chosen-button" onClick={() => setChosenRoom(null)}>X</span>
           <Tooltip title={"Room Subject"} placement="top-start">
             <p key={3} className="subject"><Category className="category-icon icon" />{`${chosenRoom.subject} > ${chosenRoom.subSubject}`}

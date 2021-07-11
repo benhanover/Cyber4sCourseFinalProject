@@ -1,3 +1,24 @@
+.button {
+  background-color: #861ae4;
+  font-size: 1.15em;
+  padding: 0.8rem;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.button:hover {
+  font-size: 1.1rem;
+  color: white;
+  background-color: #6591c7;
+}
+
+.form-div {
+  border: 2px solid #5e86b8;
+  background-color: white;
+  border-radius: none;
+}
+
 .navbar {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -8,13 +29,17 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: #016367;
+  background-color: #fc2234;
   height: 3.5rem;
+}
+
+.navbar h1 {
+  color: black;
+  font-size: 2rem;
 }
 
 .navbar .logo {
   margin-left: 1rem;
-  font-size: 2rem;
 }
 
 .navbar .options {
@@ -47,7 +72,6 @@
 }
 
 .navbar .options .profile-menu-container .profile-menu {
-  margin-top: -0.5rem;
   width: 8rem;
   right: 0;
   top: 3.5rem;

@@ -1,110 +1,113 @@
-@import '../../../Common/styles/themeColors.scss';
-.profile-ticket-container{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: space-between;
+@import "../../../Common/styles/themeColors.scss";
+.profile-ticket-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
 
-    // width: 60%;
-    .profile-ticket{
-        width: 20rem;
-        margin-right: 1.5rem;
-        margin-bottom: 1.5rem;
-        background-color: rgba($color: black, $alpha: 0.6);
-        border-radius: 10px;
-        box-shadow: $shadowBoxDetails;
-        list-style-type: none;
-        .profile-ticket-top{
-            position: relative;
-            padding: 2rem 0rem 0rem 1rem;
-            // height: 50%;
-            
-            padding-bottom: 3rem;
-            border-bottom: 4px solid black;
-            .profile-status{
-                position: absolute;
-                bottom: 0.7rem;
-                left: 9rem;
-                font-size: 0.8rem;
-            }
-            .profile-age{
-                position: absolute;
-                bottom: 2rem;
-                left: 9.5rem;
-                font-size: 0.7rem;
+  // width: 60%;
+  .profile-ticket {
+    width: 20rem;
+    margin-right: 1.5rem;
+    margin-bottom: 1.5rem;
+    background-color: rgba($color: #050e33, $alpha: 0.6);
+    border-radius: 10px;
+    box-shadow: $shadowBoxDetails;
+    list-style-type: none;
+    .profile-ticket-top {
+      position: relative;
+      padding: 2rem 0rem 0rem 1rem;
+      // height: 50%;
 
-            }
-            .profile-display{
-                position: relative;
-                // display: flex;
-                // flex-direction: column;
-                .profile-username{
-                    position: absolute;
-                    bottom: -3rem;
-                    left: 4.5rem;
-                    text-align: left;
-                    font-size: 1.4rem;
-                    // margin-bottom: 0.5rem;
-                }
-                img{
-                    position: absolute;
-                    bottom: -4.1rem;
-                    left: 0rem;
-                    height: 4rem;
-                    width: 4rem;
-                    border-radius: 50%;
-                    border: 4px solid black;
-                    background-color: $divBackgroundColor;
-                }
-            }
-                .profile-ticket-buttons{
-                position: absolute;
-                display: flex;
-                flex-direction: column;
-                top: 0rem;
-                right:-1.5rem;
-                margin-top: 0.5rem;
-                .button{
-                    width: fit-content;
-                    // font-size: 0.8rem;
-                    margin-top: 0;
-                    margin-left: 0;
-                    transform: scale(0.8);
-                }
-            }
+      padding-bottom: 3rem;
+      border-bottom: 4px solid black;
+      .profile-status {
+        position: absolute;
+        bottom: 0.7rem;
+        left: 9rem;
+        font-size: 0.8rem;
+      }
+      .profile-age {
+        position: absolute;
+        bottom: 2rem;
+        left: 9.5rem;
+        font-size: 0.7rem;
+      }
+      .profile-display {
+        position: relative;
+        // display: flex;
+        // flex-direction: column;
+        .profile-username {
+          position: absolute;
+          bottom: -3rem;
+          left: 4.5rem;
+          text-align: left;
+          font-size: 1.4rem;
+          // margin-bottom: 0.5rem;
         }
-        .profile-ticket-bottom{
-            // height: 50%;
-            
-            display: flex;
-            // width: 100%;
-            .profile-ticket-status{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 1rem;
-                border-bottom-right-radius: 10px;
-                width: 70%;
-                background-image: linear-gradient(130deg, $spicyColor, $divBackgroundColor 230%);
+        img {
+          position: absolute;
+          bottom: -4.1rem;
+          left: 0rem;
+          height: 4rem;
+          width: 4rem;
+          border-radius: 50%;
+          border: 4px solid black;
+          background-color: $divBackgroundColor;
         }
-        .profile-age{
-            // padding: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            padding-top: 1rem;
-            padding-bottom: .5rem;
-                border-bottom-left-radius: 10px;
-                width: 30%;
-                background-color: $divBackgroundColor;
-                .age{
-                    font-size: 1.2rem;
-                }
-                .years-old{
-                    font-size: 0.8rem;
-                }
-            }
+      }
+      .profile-ticket-buttons {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        top: 0rem;
+        right: -1.5rem;
+        margin-top: 0.5rem;
+        .button {
+          width: fit-content;
+          // font-size: 0.8rem;
+          margin-top: 0;
+          margin-left: 0;
+          transform: scale(0.8);
         }
+      }
     }
+    .profile-ticket-bottom {
+      // height: 50%;
+
+      display: flex;
+      // width: 100%;
+      .profile-ticket-status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        border-bottom-right-radius: 10px;
+        width: 70%;
+        background-image: linear-gradient(
+          130deg,
+          $spicyColor,
+          $divBackgroundColor 230%
+        );
+      }
+      .profile-age {
+        // padding: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom-left-radius: 10px;
+        width: 30%;
+        background-color: $divBackgroundColor;
+        .age {
+          font-size: 1.2rem;
+        }
+        .years-old {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
 }

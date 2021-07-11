@@ -1,4 +1,4 @@
-@import '../../Common/styles/themeColors.scss';
+@import "../../Common/styles/themeColors.scss";
 
 .form-container {
   display: flex;
@@ -6,120 +6,112 @@
   // align-items: center;
   position: fixed;
   z-index: 3;
-  left:-2rem;
+  left: -2rem;
   bottom: 8rem;
   box-shadow: $shadowBoxDetailsRight;
-  border-top-right-radius: $smallBorderRadius;
-  border-bottom-right-radius: $smallBorderRadius;
-  animation: rotate-in .2s;
+
+  border: 2px solid rgb(94, 134, 184);
+  animation: rotate-in 0.2s;
   //  iteration-count direction fill-mode;
 
-.room-details{
-  margin-left: 1rem;
-  align-self: flex-start;
-  display: flex;
-  flex-direction: column;
-  .limit{
-    margin-top: 1rem;
+  .room-details {
+    margin-left: 1rem;
+    align-self: flex-start;
     display: flex;
-    align-items: center;
-    input{
-      width: 2rem;
+    flex-direction: column;
+    .limit {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      input {
+        width: 2rem;
+      }
+    }
+    .icon {
+      margin: 0 0.5rem;
+    }
+    .lock-room {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      input {
+        width: 100%;
+      }
     }
   }
-  .icon{
-    margin: 0 0.5rem;
-
-  }
-  .lock-room{
-  margin-top: 1rem;
+  .new-room-form {
+    padding: 1rem 3rem 1rem 4.5rem;
+    background-color: white;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    input{
+    justify-content: space-around;
+
+    width: 30rem;
+    height: 60vh;
+    input {
       width: 100%;
+    }
+    // padding: 1.5rem 0 1.5rem 0;
+    .subjects-container {
+      margin: 0.5rem 0;
 
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .category-icon {
+      font-size: 1.6rem;
+      margin: 0 0.5rem;
+    }
+    .subjects {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      .subject {
+        margin-bottom: 0.3rem;
+      }
     }
   }
-}
-.new-room-form {
-  border-top-right-radius: $smallBorderRadius;
-  border-bottom-right-radius: $smallBorderRadius;
-  padding: 1rem 3rem 1rem 4.5rem;
-  background-color: rgba($color: $spicyColor, $alpha: 0.75);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  border: $borderDetails;
-  width: 20rem;
-  height: 60vh;
-  input{
-    width: 100%;
-  }
-  // padding: 1.5rem 0 1.5rem 0;
-  .subjects-container{
-  margin: 0.5rem 0;
 
-    display: flex; 
-    align-items: center;
-    width: 100%;
-  }
-  .category-icon{
-    font-size: 1.6rem;
-    margin: 0 0.5rem;
-  }
-  .subjects{
+  .form-content {
     width: 100%;
     display: flex;
     flex-direction: column;
-    .subject{
-      margin-bottom: 0.3rem;
-    }
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+    height: 55%;
   }
-   
-}
 
-.form-content {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  position: relative;
-  height: 55%;
-}
+  .new-room-form-title-input {
+    width: 100%;
+  }
 
-.new-room-form-title-input {
-  width: 100%;
-}
+  .new-room-form-description {
+    width: 100%;
+    height: 4rem;
+    resize: none;
+  }
 
-.new-room-form-description {
-  width: 100%;
-  height: 4rem;
-  resize: none;
-}
+  .limit-input {
+    width: 2rem;
+    margin-right: 1rem;
+  }
 
-.limit-input {
-  width: 2rem;
-  margin-right: 1rem;
-}
+  .button {
+    padding: 0.5rem;
+    width: 10rem;
+  }
 
-.button {
-  padding: 0.5rem;
-}
-
-
-@keyframes rotate-in{
-  from{
-    
+  @keyframes rotate-in {
+    from {
       transform: rotate(-90deg);
       left: -18rem;
-
-  }
-  to{
+    }
+    to {
       transform: rotate(0deg);
-
+    }
   }
-}
 }
