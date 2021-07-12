@@ -134,7 +134,7 @@ function VideoRoom() {
           )}
 
           {videos?.map((video: any, i: number) => {
-            console.log(video.username, video);
+            console.log(getUserByStreamId(room, video.streamId));
             
             return (
               <div className="others-video">
@@ -142,8 +142,8 @@ function VideoRoom() {
                 key={i}
                 muted={false}
                 stream={video.stream}
-                username={video.username}
-                userImage={getUserByStreamId(room, video.streamId)}
+                username={getUserByStreamId(room, video.streamId).username}
+                userImage={getUserByStreamId(room, video.streamId).userImg}
                 isVideoOn={video.isVideoOn}
               />
               </div>
@@ -331,14 +331,18 @@ function VideoRoom() {
   }
   /*---------------------------------------------------------------------------------------------*/
   async function createConnection(room: any) {
-    let myMedia: MediaStream | undefined = await getUserMedia();
+    let myMedia: MediaStream | undefined |any= await getUserMedia();
     if (!myMedia) {
       console.log("no myMedia", myMedia);
       SetNoUserDevices(true);
       return;
     }
     SetNoUserDevices(false);
+    console.log(user , "user");
+    
+   
     setMyStream(myMedia);
+    
 
     //creating new peer
     const mypeer = new Peer();
@@ -387,6 +391,7 @@ function VideoRoom() {
             console.log("got his call, its stream is:", remoteStream);
             
             videos.push({
+              
               streamId: getStreamId(remoteStream.id),
               stream: remoteStream,
               call: call,
@@ -443,6 +448,7 @@ function VideoRoom() {
             console.log("got his answered call, its stream is:", remoteStream);
 
             videos.push({
+              
               streamId: getStreamId(remoteStream.id),
               stream: remoteStream,
               call: call,
