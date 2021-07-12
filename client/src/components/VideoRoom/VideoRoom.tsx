@@ -42,8 +42,10 @@ import {
 // import { getPeerId } from './peer'
 
 function VideoRoom() {
-  const { serverSocket, user } = useSelector((state: State) => state.ws);
+  const { serverSocket, user , chosenRoom} = useSelector((state: State) => state.ws);
   const { rooms } = useSelector((state: State) => state);
+  console.log(chosenRoom, "choosen");
+  
   const dispatch = useDispatch();
   const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
 
@@ -93,24 +95,37 @@ function VideoRoom() {
       {videos && room && (
         
         <div className="video-room">
-         
-          
+         <div className="room-state">
+         {isClosedButtonName==="Open Room" ?
+         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="35" fill="currentColor" className="bi bi-lock" viewBox="0 0 16 16">
+         <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+       </svg>
+          :
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="35" fill="currentColor" className="bi bi-unlock" viewBox="0 0 16 16">
+        <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2zM3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H3z"/>
+      </svg>
+        }
+        </div>
           <button className="close-room-btn"
-            onClick={() => closeRoom(serverSocket, roomId, room.isClosed)}
-          >
-          {isClosedButtonName}
+            onClick={() => closeRoom(serverSocket, roomId, room.isClosed)}>
+             
+          {[isClosedButtonName.split(" ")[0],<br></br>,isClosedButtonName.split(" ")[1]]}
           </button>
           <button className="leave-button" onClick={handleLeaveBuuton}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-door-open" viewBox="0 0 16 16">
+  <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+  <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
+</svg>
             Leave
           </button>
           
           
           {noUserDevices && (
             <div className="media-premision-err-div">
-              <h1 style={{ color: "white" }}>
-                you must give premition to media devices, at list audio
+              <h1 className="h1-permission" style={{ color: "white" }}>
+               we need permissions to access your microphone  and camera 
               </h1>
-              <button
+              <button className="button"
                 onClick={(e) => {
                   createConnection(room);
                 }}
@@ -121,14 +136,16 @@ function VideoRoom() {
           )}
 
           {videos?.map((video: any, i: number) => {
+            console.log(getUserByStreamId(room, video.streamId));
+            
             return (
               <div className="others-video">
               <UserVideo
                 key={i}
                 muted={false}
                 stream={video.stream}
-                username={video.username}
-                userImage={getUserByStreamId(room, video.streamId)}
+                username={getUserByStreamId(room, video.streamId).username}
+                userImage={getUserByStreamId(room, video.streamId).userImg}
                 isVideoOn={video.isVideoOn}
               />
               </div>
@@ -146,7 +163,8 @@ function VideoRoom() {
          
             
             <div className="video-buttons-div">
-            {  myAudioIsOn? 
+              
+            {  myAudioIsOn ? 
             <div onClick={() => setMyAudioIsOn(selfMuteToggle(myStream))} className="svg-container svg-mute-container">
             <svg className="self-mute-button bi bi-mic-fill"
                xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor"  viewBox="0 0 16 16">
@@ -165,23 +183,26 @@ function VideoRoom() {
             <p>un-mute</p>
             </div>
           }
-           { myVideoIsOn? 
-          <div onClick={() => setMyVideoIsOn(selfVideoToggle(myStream))} className=" svg-container svg-video-container">
-           <svg  className="video-svg bi bi-camera-video-fill"xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"/>
-           </svg>
-            <p>stop video</p>
-          </div>
-            :
-            <div onClick={() => setMyVideoIsOn(selfVideoToggle(myStream))} className=" svg-container svg-video-container">
-           <svg className="video-svg bi bi-camera-video-off-fill" xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor"  viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M10.961 12.365a1.99 1.99 0 0 0 .522-1.103l3.11 1.382A1 1 0 0 0 16 11.731V4.269a1 1 0 0 0-1.406-.913l-3.111 1.382A2 2 0 0 0 9.5 3H4.272l6.69 9.365zm-10.114-9A2.001 2.001 0 0 0 0 5v6a2 2 0 0 0 2 2h5.728L.847 3.366zm9.746 11.925-10-14 .814-.58 10 14-.814.58z"/>
-           </svg>
-            <p>start video</p>
-            </div>
-          }
+        
+           
          
             {myStream?.getVideoTracks()[0] && (
+              <>
+              { myVideoIsOn? 
+                <div onClick={() => setMyVideoIsOn(selfVideoToggle(myStream))} className=" svg-container svg-video-container">
+                 <svg  className="video-svg bi bi-camera-video-fill"xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"/>
+                 </svg>
+                  <p>stop video</p>
+                </div>
+                  :
+                  <div onClick={() => setMyVideoIsOn(selfVideoToggle(myStream))} className=" svg-container svg-video-container">
+                 <svg className="video-svg bi bi-camera-video-off-fill" xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor"  viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M10.961 12.365a1.99 1.99 0 0 0 .522-1.103l3.11 1.382A1 1 0 0 0 16 11.731V4.269a1 1 0 0 0-1.406-.913l-3.111 1.382A2 2 0 0 0 9.5 3H4.272l6.69 9.365zm-10.114-9A2.001 2.001 0 0 0 0 5v6a2 2 0 0 0 2 2h5.728L.847 3.366zm9.746 11.925-10-14 .814-.58 10 14-.814.58z"/>
+                 </svg>
+                  <p>start video</p>
+                  </div>
+                }
               
               <div onClick={async () => await shareScreen(videos, myStream)} className="svg-container svg-sharescreen-container">
               <svg className="svg-sharescreen bi bi-upload " xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor"  viewBox="0 0 16 16">
@@ -190,6 +211,7 @@ function VideoRoom() {
               </svg>
               <p>share-screen</p>
             </div>
+            </>
             )}
             </div>
             
@@ -200,7 +222,7 @@ function VideoRoom() {
          
           
           {chooseNewHost && room.participants.length > 1 && (
-            <div className="choose-host-box form-div" >
+            <div className="form-div choose-host-box " >
               <div className="x" onClick={() => {
                   SetchooseNewHost(false);
                 }}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
@@ -273,7 +295,9 @@ function VideoRoom() {
   //functions:
   /*-------------------------------------------------------------------------------------*/
   function handleLeaveBuuton() {
-    if (user._id !== room.host.userId) {
+    if(noUserDevices){
+      history.push("/lobby");
+    }else if (user._id !== room.host.userId) {
 
       leaveRoom(
         roomId,
@@ -311,14 +335,18 @@ function VideoRoom() {
   }
   /*---------------------------------------------------------------------------------------------*/
   async function createConnection(room: any) {
-    let myMedia: MediaStream | undefined = await getUserMedia();
+    let myMedia: MediaStream | undefined |any= await getUserMedia();
     if (!myMedia) {
       console.log("no myMedia", myMedia);
       SetNoUserDevices(true);
       return;
     }
     SetNoUserDevices(false);
+    console.log(user , "user");
+    
+   
     setMyStream(myMedia);
+    
 
     //creating new peer
     const mypeer = new Peer();
@@ -367,6 +395,7 @@ function VideoRoom() {
             console.log("got his call, its stream is:", remoteStream);
             
             videos.push({
+              
               streamId: getStreamId(remoteStream.id),
               stream: remoteStream,
               call: call,
@@ -423,6 +452,7 @@ function VideoRoom() {
             console.log("got his answered call, its stream is:", remoteStream);
 
             videos.push({
+              
               streamId: getStreamId(remoteStream.id),
               stream: remoteStream,
               call: call,

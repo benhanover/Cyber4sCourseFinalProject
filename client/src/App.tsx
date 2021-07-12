@@ -54,19 +54,35 @@ const App: React.FunctionComponent<{}> = () => {
         </Switch>
       ) : (
         <>
-          <Navbar setDisplayAccountSettings={setDisplayAccountSettings} displayAccountSettings={displayAccountSettings}/>
+         
           {
             displayAccountSettings&&
              <AccountSettings user={user} setUser={setUser} displayAccountSettings={displayAccountSettings} setDisplayAccountSettings={setDisplayAccountSettings} />
           }
           <Switch>
-            <Route path="/lobby" component={Lobby} />
+            <Route path="/lobby" >
+              <>
+              <Navbar setDisplayAccountSettings={setDisplayAccountSettings} displayAccountSettings={displayAccountSettings}/>
+              <Lobby />
+              </>
+            </Route>
             <Route path="/room" component={VideoRoom} />
-            <Route path="/my-profile" component={Profile} />
+            <Route path="/my-profile"  >
+            <>
+            <Navbar setDisplayAccountSettings={setDisplayAccountSettings} displayAccountSettings={displayAccountSettings}/>
+            <Profile />
+            </>
+            </Route>
             <Route
               exact
               path="/profile/:user"
-              render={(props: any) => <OtherUserProfile user={props} />}
+              render={(props: any) => {
+             return( 
+               <>
+              <Navbar setDisplayAccountSettings={setDisplayAccountSettings} displayAccountSettings={displayAccountSettings}/>
+             <OtherUserProfile user={props} />
+             </>)
+            }}
             />
             <Route path="*">
               <Redirect to="/lobby" />
@@ -79,3 +95,26 @@ const App: React.FunctionComponent<{}> = () => {
 };
 
 export default App;
+
+
+
+{/* <>
+<Navbar setDisplayAccountSettings={setDisplayAccountSettings} displayAccountSettings={displayAccountSettings}/>
+{
+  displayAccountSettings&&
+   <AccountSettings user={user} setUser={setUser} displayAccountSettings={displayAccountSettings} setDisplayAccountSettings={setDisplayAccountSettings} />
+}
+<Switch>
+  <Route path="/lobby" component={Lobby} />
+  <Route path="/room" component={VideoRoom} />
+  <Route path="/my-profile" component={Profile} />
+  <Route
+    exact
+    path="/profile/:user"
+    render={(props: any) => <OtherUserProfile user={props} />}
+  />
+  <Route path="*">
+    <Redirect to="/lobby" />
+  </Route>
+</Switch>
+</> */}

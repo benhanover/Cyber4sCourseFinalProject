@@ -8,8 +8,10 @@ export const getUserByStreamId = (room: any, streamId: any): any => {
     return;
   }
   const user = room.participants.find((u: any) => u.streamId === streamId);
+  console.log(user , "user func");
+  
   if (!user) return;
-  return user.user.profile.img;
+  return{userImg: user.user.profile.img , username:user.user.username } ;
 };
 
 /*-------------------------------------------------------------------------------------*/
