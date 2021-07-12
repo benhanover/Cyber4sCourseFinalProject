@@ -21,7 +21,9 @@ const LougoutButton: React.FC = () => {
     const refreshToken = Cookies.get("refreshToken");
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
+    
     serverSocket.close();
+    
     setUser(false);
     axios
       .delete(`${enums.baseUrl}/user/logout`, {
