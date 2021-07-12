@@ -42,8 +42,10 @@ import {
 // import { getPeerId } from './peer'
 
 function VideoRoom() {
-  const { serverSocket, user } = useSelector((state: State) => state.ws);
+  const { serverSocket, user , chosenRoom} = useSelector((state: State) => state.ws);
   const { rooms } = useSelector((state: State) => state);
+  console.log(chosenRoom, "choosen");
+  
   const dispatch = useDispatch();
   const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
 
@@ -121,7 +123,7 @@ function VideoRoom() {
           {noUserDevices && (
             <div className="media-premision-err-div">
               <h1 className="h1-permission" style={{ color: "white" }}>
-                You must give permission<br></br> to your camera and microphone
+               we need permissions to access your microphone  and camera 
               </h1>
               <button className="button"
                 onClick={(e) => {
@@ -293,7 +295,9 @@ function VideoRoom() {
   //functions:
   /*-------------------------------------------------------------------------------------*/
   function handleLeaveBuuton() {
-    if (user._id !== room.host.userId) {
+    if(noUserDevices){
+      history.push("/lobby");
+    }else if (user._id !== room.host.userId) {
 
       leaveRoom(
         roomId,
