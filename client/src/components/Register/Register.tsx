@@ -34,18 +34,17 @@ const Register: React.FC = () => {
 
         <h1>Room-in</h1>
         <div className="about-container">
+        
         <div className="p1">Welcome To Room-in!
-The place where you can find study partners in a click of a button, and study within the most ideal environment that was designed for an optimal learning experience.
-
-</div>
-      <div className="p2">Room-in provides you the environment you need in order to maximize productivity.
+The place where you can find study partners in a click of a button, and study with in the most ideal environment.</div>
+      <div className="p2">Room-in provides you the environment you need in order to maximize you productivity.
 We offer video chat rooms that you can either create or join by prefrences such as subject and room capacity.
-Create your own uniqe profile to let other users know you better.
 
        </div>
-      <div className="p3"> Overcome the difficulty of studying alone by meeting new people that share your interests.
-We encourge you to travel rooms, expand and share youre knowledge, and most of all have fun doing that!
-</div>
+      <div className="p3"> Create your own uniqe profile to let users to know you better.
+Over come the difficulty of studying alone and meet new people!
+We encourge you to travel room's expand and share youre knowledge and most of all have fun doing that!</div>
+
         </div>
       </div>
       <div className="triangle-shape"></div>

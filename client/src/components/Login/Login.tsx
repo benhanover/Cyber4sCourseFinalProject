@@ -28,11 +28,15 @@ const Login: React.FC = () => {
 
       <h1>Room-in</h1>
       <div className="about-container">
-      <div className="p1">hi there and welcome, where ever you are just room in! </div>
-      <div className="p2">if you looking for a study evnironment , a place to learn and concentrate you arived.  we offer you a Pleasant atmosphere that encourages you to enter into  optimal state of learning. Overcome the difficulty together with other people like you who gather for the purpose of learning.you can use the help of other students , see them on video, communicate ,  consult, share your screen with them and more.
+      <div className="p1">Welcome To Room-in!
+The place where you can find study partners in a click of a button, and study with in the most ideal environment.</div>
+      <div className="p2">Room-in provides you the environment you need in order to maximize you productivity.
+We offer video chat rooms that you can either create or join by prefrences such as subject and room capacity.
+
        </div>
-      <div className="p3"> all you need to do is just connect, find a room that matches your theme, or follow your curiosity and join a room on a new subject , get to know people who familiar with it. OR open your one room with  a subject of your choice. You can control the number of participants in the room, decide who has access to it, and make it private.
-To know a little more   about the students in the room you can view their profile.  so lets get started: register, edit your profile and room in</div>
+      <div className="p3"> Create your own uniqe profile to let users to know you better.
+Over come the difficulty of studying alone and meet new people!
+We encourge you to travel room's expand and share youre knowledge and most of all have fun doing that!</div>
       </div>
       </div>
     <div className="triangle-shape"></div>

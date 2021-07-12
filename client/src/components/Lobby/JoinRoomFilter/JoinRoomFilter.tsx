@@ -32,7 +32,7 @@ const JoinRoomForm: React.FC<newRoomFormProps> = ({joinFormStateManager, setJoin
         <div className="room-filter-right">
         <Tooltip title="Filter By Title Or Description" placement="top">
           <input 
-          placeholder="Search" className="search"
+          placeholder="Title" className="search"
               onChange={(e) => setJoinFormStateManager({ ...joinFormStateManager, search: e.target.value })} />
             </Tooltip>
         <div className="room-details-filter">
