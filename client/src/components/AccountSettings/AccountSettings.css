@@ -1,49 +1,140 @@
-.account-settings-container {
-  position:fixed;
-  top: 30%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-size: 2rem;
+.button {
+  background-color: #861ae4;
+  font-size: 1.15em;
+  padding: 0.8rem;
+  border: none;
+  color: white;
+  border-radius: 5px;
 }
 
-.account-settings {
-  width: 40%;
-  background-color: rgba(184, 135, 11, 0.404);
-  position: relative;
-  padding: 4rem;
-  border-radius: 7px;
-  box-shadow: -6px 6px 12px;
+.button:hover {
+  font-size: 1.1rem;
+  color: white;
+  background-color: #6591c7;
+}
+
+.form-div {
+  border: 2px solid #5e86b8;
+  background-color: white;
+  border-radius: none;
+}
+
+.account-settings-container {
+  position: absolute;
+  top: 10rem;
+  right: 34%;
+  padding: 3rem;
+  padding-bottom: 1rem;
+  -webkit-box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+          box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-size: 1.2rem;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  z-index: 1;
+}
+
+.keys {
+  text-align: left;
+  margin: 0 1rem;
+}
+
+.values {
+  text-align: left;
 }
 
 .exit-button {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  height: 3rem;
+  top: 0.53rem;
+  right: 0.53rem;
 }
 
 .credentials {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.edit {
+  position: relative;
+  padding: 0.5rem;
+}
+
+.edit .hover {
+  position: absolute;
+  top: -0.2rem;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.edit:hover .hover {
+  opacity: 0.6;
+  height: 1.3rem;
+}
+
+.edit:hover .hover:hover {
+  opacity: 1;
 }
 
 .keys {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.values {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 4rem;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .credentials-update-div {
-  margin-top: 2rem;
+  margin: 1.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
 }
 
+.credentials-update-div input {
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: #5e86b8 solid;
+  -webkit-box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+          box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+}
 
+.credentials-update-div .update-button {
+  margin: 1.5rem 38%;
+  margin-bottom: 00.5rem;
+  width: 5rem;
+  padding: 0.5rem;
+  background-color: blueviolet;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-size: 1rem;
+}
+/*# sourceMappingURL=accountSettings.css.map */
