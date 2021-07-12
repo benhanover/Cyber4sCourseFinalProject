@@ -19,7 +19,7 @@ const ProfileTicket: React.FC<IprofileTicket> = ({ participants }) => {
 
             <p className="profile-username">{item.user.username}</p>
               <img className="profile-image"
-                src={item.user.profile.imageBlob}
+                src={item.user.profile.img}
                 alt={item.user.username + "profile"}
                 />
                 </div>
@@ -37,7 +37,7 @@ const ProfileTicket: React.FC<IprofileTicket> = ({ participants }) => {
               <p className="age">{item.user.age}</p><p  className="years-old" >years old</p>
             </div>
             <div className="profile-ticket-status">
-              <p className="profile-status">{item.user.profile.status}</p>
+              <p className="profile-status">{item.user.profile.status === "Change me:)"? "- No Status -" : item.user.profile.status}</p>
             </div>
             </div>
           </li>
