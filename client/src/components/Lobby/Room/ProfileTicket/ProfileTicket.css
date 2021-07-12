@@ -25,18 +25,17 @@
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -ms-flex-line-pack: justify;
-      align-content: space-between;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -ms-flex-line-pack: distribute;
+      align-content: space-around;
 }
 
 .profile-ticket-container .profile-ticket {
   width: 20rem;
   margin-right: 1.5rem;
   margin-bottom: 1.5rem;
-  background-color: rgba(5, 14, 51, 0.6);
+  background-color: rgba(1, 148, 154, 0.6);
   border-radius: 10px;
   -webkit-box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
           box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
@@ -46,6 +45,9 @@
 .profile-ticket-container .profile-ticket .profile-ticket-top {
   position: relative;
   padding: 2rem 0rem 0rem 1rem;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
   padding-bottom: 3rem;
   border-bottom: 4px solid black;
 }
@@ -96,7 +98,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  top: 0rem;
+  top: -0.2rem;
   right: -1.5rem;
   margin-top: 0.5rem;
 }
@@ -109,6 +111,10 @@
   margin-left: 0;
   -webkit-transform: scale(0.8);
           transform: scale(0.8);
+}
+
+.profile-ticket-container .profile-ticket .profile-ticket-top .profile-ticket-buttons .button:hover {
+  font-size: 1.15em;
 }
 
 .profile-ticket-container .profile-ticket .profile-ticket-bottom {

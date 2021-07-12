@@ -2,22 +2,25 @@
 .profile-ticket-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-content: space-between;
+  justify-content: space-around;
+  align-content: space-around;
 
   // width: 60%;
   .profile-ticket {
     width: 20rem;
     margin-right: 1.5rem;
     margin-bottom: 1.5rem;
-    background-color: rgba($color: #050e33, $alpha: 0.6);
+    background-color: rgba($color: $spicyColor, $alpha: 0.6);
     border-radius: 10px;
     box-shadow: $shadowBoxDetails;
     list-style-type: none;
     .profile-ticket-top {
       position: relative;
       padding: 2rem 0rem 0rem 1rem;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
       // height: 50%;
+      background-color: rgba($color: #000000, $alpha: 0.4);
 
       padding-bottom: 3rem;
       border-bottom: 4px solid black;
@@ -60,7 +63,7 @@
         position: absolute;
         display: flex;
         flex-direction: column;
-        top: 0rem;
+        top: -0.2rem;
         right: -1.5rem;
         margin-top: 0.5rem;
         .button {
@@ -69,6 +72,9 @@
           margin-top: 0;
           margin-left: 0;
           transform: scale(0.8);
+          &:hover{
+            font-size: 1.15em;
+          }
         }
       }
     }
