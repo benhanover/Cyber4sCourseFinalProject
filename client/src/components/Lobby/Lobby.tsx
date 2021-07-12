@@ -95,7 +95,7 @@ const Lobby: React.FC = () => {
         setJoinFormStateManager={setJoinFormStateManager}
       />
       {showCreateRoom && <NewRoomForm />}
-      <button className="button new-room-button " onClick={() => setShowCreateRoom(!showCreateRoom)}>
+      <button className="new-room-button button" onClick={() => setShowCreateRoom(!showCreateRoom)}>
         Create Room
       </button>
       {chosenRoomDisplay(chosenRoom)}
@@ -146,7 +146,7 @@ const Lobby: React.FC = () => {
     
     const roomChosed: Iroom = chosenRoom;
     return <>
-      <Room  room={roomChosed} chosen={true} />
+      <Room room={roomChosed} chosen={true} />
       {/* <div className="under-div"></div> */}
       </>
   }

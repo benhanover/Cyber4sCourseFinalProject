@@ -1,10 +1,6 @@
 @import "../Common/styles/themeColors.scss";
 
 .lobby {
-  // background-color: $backgroundColor;
-  // min-height: 100%;
-}
-
 .rooms-container {
   display: flex;
   justify-content: space-around;
@@ -39,4 +35,5 @@
   left: 0;
   bottom: 1rem;
 }
-// }
+}
+

@@ -1,10 +1,30 @@
+.button {
+  background-color: #861ae4;
+  font-size: 1.15em;
+  padding: 0.8rem;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.button:hover {
+  font-size: 1.1rem;
+  color: white;
+  background-color: #6591c7;
+}
+
+.form-div {
+  border: 2px solid #5e86b8;
+  background-color: white;
+  border-radius: none;
+}
+
 .search-user {
-  margin-right: 1rem;
+  margin-right: 2rem;
   position: relative;
 }
 
 .search-user .search-input {
-  margin-right: 1rem;
   padding: 0.4rem;
   border-radius: 2rem;
   border: none;
@@ -21,10 +41,31 @@
   background-color: white;
   position: absolute;
   width: 100%;
-  border: 1px solid black;
+  margin-top: 1rem;
+  border-radius: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: -2px 2px 5px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: -2px 2px 5px 0px rgba(0, 0, 0, 0.1);
 }
 
 .search-user .results li {
   border-top: 1px solid black;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+}
+
+.search-user .results li:hover {
+  background-color: #f3f3f3;
+}
+
+.search-user .results li:first-child {
+  border-top: unset;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+.search-user .results li:last-child {
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
 }
 /*# sourceMappingURL=SearchUser.css.map */

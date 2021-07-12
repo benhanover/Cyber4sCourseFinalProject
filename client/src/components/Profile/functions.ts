@@ -63,3 +63,9 @@ export const saveImageToS3 = async (imgFile: any, username: any) => {
   }
 }
 
+export const getFieldToUpdate = (field: Ifield | boolean) => {
+  if (typeof field !== 'boolean' && typeof field.field !== 'boolean') {
+    return field.field[0].toLocaleUpperCase() + field.field.slice(1)+' ';
+  }
+}
+

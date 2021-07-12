@@ -1,39 +1,47 @@
-// .my-profile-container{
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     height: 90%;
-//     .my-profile{
-//         // background-color: rgba(196, 223, 255, 0.5);
-//         background-color: rgba($color: rgb(196, 223, 255), $alpha: 0.8);
-//         padding: 2rem;
-//         .error {
-//             background-color: rgba(228, 69, 69, 0.507)
-//         }
-//         .new-profile-image{
-//             height: 8rem;
-//             border-radius: 50%;
-//         }
-//         .profile-image{
-//             height: 4rem;
-//             border-radius: 50%;
-//         }
-//     }
-// }
+@import "../Common/styles/themeColors.scss";
 .change-input-div {
     position: fixed;
-    height: 30vh;
-    width: 60%;
+    padding: 2rem 8%;
+    height: 50vh;
+    width: 50%;
     background-color: rgba(0, 206, 209, 0.418);
-    bottom: 35%;
-    left: 20%;
+    bottom: 20%;
+    left: 25%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
-  }
-  
-  .hover:hover {
-    background-color: cadetblue;
+    box-shadow: $shadowBoxDetails;
+    z-index: 2;
+    opacity: 0.95;
+    textarea{
+      width: 100%;
+      height: 40%;
+      text-align: left;
+      resize: none;
+    }
+    h2{
+      align-self: flex-start;
+      margin-left: -3rem;
+    }
+    .update-button{
+      &:hover{
+        // background-color: $buttonBackround;
+        font-size: 1.15em;
+      }
+    }
+    .close-button{
+      position: absolute;
+      right: 0.5rem;
+      top:0.5rem;
+      height: 1.5rem;
+      cursor: pointer;
+      opacity: 0.5;
+      &:hover{
+        opacity: 1;
+        
+      }
+    }
   }
   
   .hidden {
@@ -43,18 +51,20 @@
   .bold {
     font-weight: 900;
   }
-  /*  */
-  .my-profile {
-    display: flex;
-    font-size: 1.5rem;
-    height: 95%;
-  }
+/*  */
+.profile {
+  display: flex;
+  font-size: 1.3rem;
+  height: 95%;
   /*  */
   .personal-details {
     width: 30%;
-    background-color:rgba(224, 203, 148, 0.609);
+    background-color:$divBackgroundColor;
+    border-right: $formBorder;
+    box-shadow: $shadowBoxDetails;
     display: flex;
     flex-direction: column;
+    z-index: 1;
   }
   
   .image-container {
@@ -63,32 +73,61 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 2rem 0 1rem 0;
+    margin: 2rem 0 3rem 0;
   }
   
-  .image-buttons {
-    position: absolute;
-    top: 65%;
-    left: 40%;
-  }
+  // .image-buttons {
+  //   position: absolute;
+  //   display: flex;
+  //   flex-direction: column;
+  //   top: 16%;
+  //   left: 60%;
+    
+    .icon {
+      height: 1.9rem;
+      margin: 0;
+      background-color: rgba($color: #ffffff, $alpha: 0.3);
+      border-radius: 50%;
+      padding: 0.2rem;
+      cursor: pointer;
+    }
+    .upload-file, .save-file{
+      position: absolute;
+      &:hover{
+      background-color: rgba($color: #ffffff, $alpha: 0.6);
+        height: 2.5rem;
+      }
+    }
+    .upload-file{
+      top: 12%;
+      left: 58%;
+      &:hover{
+        top: 10%;
+        left: 56%;
+      }
+    }
+    .save-file{
+      top: 25%;
+      left: 62%;
+      &:hover{
+        left: 60%;
+      }
+    }
+  // }
   
   .profile-image {
-    width: 50%;
+    width: 40%;
     border-radius: 50%;
     margin-bottom: 0.5rem;
   }
-  .profile-image:hover {
+  .profile-image-hover {
     opacity: 50%;
   }
   .username {
     font-size: 2rem;
   }
   
-  .icon {
-    height: 2.5rem;
-    margin: 0;
-    padding: 0;
-  }
+  
   
   .details-items-container {
     display: flex;
@@ -98,15 +137,31 @@
   }
   
   .details-item-div {
+    position: relative;
     text-align: left;
     margin-left: 3rem;
     margin-bottom: 1rem;
+    .hover{
+      position: absolute;
+      top:-0.2rem;
+      opacity: 0;
+      cursor: pointer;
+    }
+    &:hover{
+      .hover{
+        opacity: 0.6;
+        height: 1.3rem;
+        &:hover{
+          opacity: 1;
+        }
+      }
+    }
   }
   
   /*  */
   .information {
     width: 70%;
-    background-color: rgba(199, 113, 98, 0.534);
+    background-color: $backgroundColor;
   }
   
   .information-items-container {
@@ -117,14 +172,30 @@
   }
   
   .information-item-div {
+    position: relative;
     text-align: left;
     height: 16vh;
     margin-bottom: 2rem;
+    .hover{
+      position: absolute;
+      top:-0.2rem;
+      opacity: 0;
+      cursor: pointer;
+    }
+    &:hover{
+      .hover{
+        opacity: 0.6;
+        height: 1.3rem;
+        &:hover{
+          opacity: 1;
+        }
+      }
+    }
   }
   
   .information-p {
     text-align: left;
-    margin-left: 4rem;
+    margin-left: 1rem;
   }
   
   .loader {
@@ -143,4 +214,5 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+}  
   

@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { State, wsActionCreator } from '../../state';
 
 // import functions
-import { updateDetailsByField, fileSelectedHandler, formatDate, saveImageToS3 } from './functions';
+import { updateDetailsByField, fileSelectedHandler, formatDate, saveImageToS3, getFieldToUpdate } from './functions';
 import './Profile.css';
 
 // import interfaces
@@ -22,62 +22,70 @@ const Profile: React.FC = () => {
 
   // states
   const [fieldToUpdate, setFieldToUpdate] = useState<Ifield | boolean>(false);
-  const [displayImageButtons, setDisplayImageButtons] = useState<any>(true)  ;
+  const [displayImageButtons, setDisplayImageButtons] = useState<any>(false)  ;
   const [imgFile, setImgFile] = useState<any>();
   const [displayLoader, setDisplayLoader] = useState<any>(false);
   
   // refs
-  const profileUpdateRef = useRef<HTMLInputElement>(null);
+  const profileUpdateRef = useRef<HTMLTextAreaElement>(null);
   
   return (
-      <div className="my-profile">
+      <div className="profile">
         {
           displayLoader&&
           <div className="loader"/>
         }
         {fieldToUpdate&& 
-          <div className='change-input-div'>
-              <input ref={profileUpdateRef} className='change-input'/>
-              <img src='https://img.icons8.com/ios/50/000000/circled-v.png' className='hover' onClick={async () => {
+          <div className='change-input-div form-div'>
+        <h2>Enter your new {getFieldToUpdate(fieldToUpdate)}content here:</h2>
+        <textarea ref={profileUpdateRef} autoFocus value={typeof fieldToUpdate !== 'boolean' && typeof fieldToUpdate?.place !== 'boolean'? user[fieldToUpdate.place][fieldToUpdate.field] : "someValue" } placeholder={typeof fieldToUpdate !== 'boolean' && typeof fieldToUpdate.field !== 'boolean' ? fieldToUpdate.field[0].toLocaleUpperCase() + fieldToUpdate.field.slice(1) : ''} className='change-input'  />
+        <button className='hover update-button button' onClick={async () => {
                 if (!profileUpdateRef.current?.value) {
                   setFieldToUpdate(false);
                 }
                 const updated = await updateDetailsByField(fieldToUpdate, profileUpdateRef.current?.value)
                 setUser(updated);
                 setFieldToUpdate(false);
-              }} />
-              <img src='https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png' onClick={() => setFieldToUpdate(false)} className='hover'/>
+              }} >Update</button>
+        <img src='https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png' onClick={() => setFieldToUpdate(false)} className='hover close-button'/>
           </div>
         }
 
         <div className='personal-details'>
               <div className='image-container'>
-                <img className="profile-image" src={user.profile.img} alt="profile" onMouseOver={() => setDisplayImageButtons(true)} onMouseLeave={() => setDisplayImageButtons(false)}/>
-                <span className='bold username'>{user.username}</span>
-                {
-                  displayImageButtons&&
-                  <div className='image-buttons'>
+          <img className={`profile-image ${displayImageButtons && "profile-image-hover"}`} src={user.profile.img} alt="profile" onMouseOver={() => setDisplayImageButtons(true)} onMouseLeave={(e) => {
+            if(e.relatedTarget === e.currentTarget.parentElement?.children[2].firstChild?.firstChild || e.relatedTarget === e.currentTarget.parentElement?.children[2].lastChild) return;
+            
+            setDisplayImageButtons(false);
+          }
+          }/>
+                <h2 className='bold username'>{user.username}</h2>
+          {
+            displayImageButtons &&
+            <div className='image-buttons'>
 
-                    <label htmlFor='files' className='hover'>
-                      <img src="https://img.icons8.com/material-outlined/24/000000/camera--v1.png" className='icon' />
+              <label htmlFor='files' className='hover'>
+                <img src="https://img.icons8.com/material-outlined/24/000000/camera--v1.png" className='icon upload-file' />
 
-                    <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
-                      if(e.target.files) {
-                        setImgFile(e.target.files[0]);
-                        const blobBeforeSave = await fileSelectedHandler(e);
-                        user.profile.img = blobBeforeSave;
-                        setUser({...user})
-                      }
-                    })}/>
-                    </label>
-
-                    <img src='https://img.icons8.com/ios-glyphs/30/000000/save--v1.png' className='hover icon' onClick={async () => {
-                      setDisplayLoader(true);
-                      const response: any = await saveImageToS3(imgFile, user.username);
-                      await updateDetailsByField({place: 'profile', field: 'img'}, response.data.imageUrl);
-                      setDisplayLoader(false);
-                    }
-                    }/>
+                <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
+                  if (e.target.files) {
+                    setImgFile(e.target.files[0]);
+                    
+                    const blobBeforeSave = await fileSelectedHandler(e);
+                    user.profile.img = blobBeforeSave;
+                    setUser({ ...user })
+                  }
+                })} />
+              </label>
+              {imgFile &&
+                <img src='https://img.icons8.com/ios-glyphs/30/000000/save--v1.png' className='hover icon save-file' onClick={async () => {
+                  setDisplayLoader(true);
+                  const response: any = await saveImageToS3(imgFile, user.username);
+                  await updateDetailsByField({ place: 'profile', field: 'img' }, response.data.imageUrl);
+                  setDisplayLoader(false);
+                  setDisplayImageButtons(false);
+                }
+                } />}
                     
                   </div>
                   }

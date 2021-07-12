@@ -115,3 +115,17 @@
     }
   }
 }
+
+
+@keyframes rotate-in{
+  from{
+    
+      transform: rotate(-90deg);
+      left: -18rem;
+
+  }
+  to{
+      transform: rotate(0deg);
+
+  }
+}
