@@ -22,7 +22,7 @@ const Profile: React.FC = () => {
 
   // states
   const [fieldToUpdate, setFieldToUpdate] = useState<Ifield | boolean>(false);
-  const [displayImageButtons, setDisplayImageButtons] = useState<any>(true)  ;
+  const [displayImageButtons, setDisplayImageButtons] = useState<any>(false)  ;
   const [imgFile, setImgFile] = useState<any>();
   const [displayLoader, setDisplayLoader] = useState<any>(false);
   
@@ -30,7 +30,7 @@ const Profile: React.FC = () => {
   const profileUpdateRef = useRef<HTMLInputElement>(null);
   
   return (
-      <div className="my-profile">
+      <div className="profile">
         {
           displayLoader&&
           <div className="loader"/>
@@ -52,32 +52,39 @@ const Profile: React.FC = () => {
 
         <div className='personal-details'>
               <div className='image-container'>
-                <img className="profile-image" src={user.profile.img} alt="profile" onMouseOver={() => setDisplayImageButtons(true)} onMouseLeave={() => setDisplayImageButtons(false)}/>
-                <span className='bold username'>{user.username}</span>
-                {
-                  displayImageButtons&&
-                  <div className='image-buttons'>
+          <img className={`profile-image ${displayImageButtons && "profile-image-hover"}`} src={user.profile.img} alt="profile" onMouseOver={() => setDisplayImageButtons(true)} onMouseLeave={(e) => {
+            if(e.relatedTarget === e.currentTarget.parentElement?.children[2].firstChild?.firstChild || e.relatedTarget === e.currentTarget.parentElement?.children[2].lastChild) return;
+            
+            setDisplayImageButtons(false);
+          }
+          }/>
+                <h2 className='bold username'>{user.username}</h2>
+          {
+            displayImageButtons &&
+            <div className='image-buttons'>
 
-                    <label htmlFor='files' className='hover'>
-                      <img src="https://img.icons8.com/material-outlined/24/000000/camera--v1.png" className='icon' />
+              <label htmlFor='files' className='hover'>
+                <img src="https://img.icons8.com/material-outlined/24/000000/camera--v1.png" className='icon upload-file' />
 
-                    <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
-                      if(e.target.files) {
-                        setImgFile(e.target.files[0]);
-                        const blobBeforeSave = await fileSelectedHandler(e);
-                        user.profile.img = blobBeforeSave;
-                        setUser({...user})
-                      }
-                    })}/>
-                    </label>
-
-                    <img src='https://img.icons8.com/ios-glyphs/30/000000/save--v1.png' className='hover icon' onClick={async () => {
-                      setDisplayLoader(true);
-                      const response: any = await saveImageToS3(imgFile, user.username);
-                      await updateDetailsByField({place: 'profile', field: 'img'}, response.data.imageUrl);
-                      setDisplayLoader(false);
-                    }
-                    }/>
+                <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
+                  if (e.target.files) {
+                    setImgFile(e.target.files[0]);
+                    
+                    const blobBeforeSave = await fileSelectedHandler(e);
+                    user.profile.img = blobBeforeSave;
+                    setUser({ ...user })
+                  }
+                })} />
+              </label>
+              {imgFile &&
+                <img src='https://img.icons8.com/ios-glyphs/30/000000/save--v1.png' className='hover icon save-file' onClick={async () => {
+                  setDisplayLoader(true);
+                  const response: any = await saveImageToS3(imgFile, user.username);
+                  await updateDetailsByField({ place: 'profile', field: 'img' }, response.data.imageUrl);
+                  setDisplayLoader(false);
+                  setDisplayImageButtons(false);
+                }
+                } />}
                     
                   </div>
                   }
