@@ -3,7 +3,20 @@
   position: relative;
 }
 
+.search-user .search-input {
+  margin-right: 1rem;
+  padding: 0.4rem;
+  border-radius: 2rem;
+  border: none;
+}
+
+.search-user .search-input:focus {
+  border: none;
+  outline: none;
+}
+
 .search-user .results {
+  z-index: 2;
   list-style-type: none;
   background-color: white;
   position: absolute;
@@ -13,13 +26,5 @@
 
 .search-user .results li {
   border-top: 1px solid black;
-}
-
-.search-input {
-  font-size: 1.5rem;
-}
-
-.results {
-  font-size: 1.5rem;
 }
 /*# sourceMappingURL=SearchUser.css.map */

@@ -41,7 +41,7 @@ const SearchUser: React.FC = () => {
       <input className='search-input' ref={searchRef}
       onChange={(e) =>  setFilteredUsers(filterSearchedList(allUserRef.current, e.target.value))} placeholder='Search For A User..' />
       {
-        filteredUsers &&
+        filteredUsers && filteredUsers.length > 0 &&
         <ul className="results">
             {
             filteredUsers

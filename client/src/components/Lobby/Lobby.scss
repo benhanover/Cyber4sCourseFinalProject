@@ -1,14 +1,39 @@
-@import '../Common/styles/themeColors.scss';
- 
-.lobby{
-    background-color: $backgroundColor;
-    min-height: 100%;
+@import "../Common/styles/themeColors.scss";
+
+.lobby {
+.rooms-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding-top: 7rem;
+}
+.button {
+  width: 10rem;
+}
+.new-room-button {
+  position: fixed;
+  left: 0;
+  top: 5rem;
+  z-index: 2;
+  background-color: $buttonBackround;
+
+  cursor: pointer;
 }
 
-.rooms-container{
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    padding: 1rem;
-
+.next-button {
+  width: fit-content;
+  // position: relative;
+  cursor: pointer;
+  // width: 3rem;
+  position: absolute;
+  right: 0rem;
+  bottom: 1rem;
 }
+.back-button {
+  position: absolute;
+  width: fit-content;
+  left: 0;
+  bottom: 1rem;
+}
+}
+

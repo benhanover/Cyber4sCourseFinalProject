@@ -200,7 +200,7 @@ function VideoRoom() {
          
           
           {chooseNewHost && room.participants.length > 1 && (
-            <div className="choose-host-box">
+            <div className="choose-host-box form-div" >
               <div className="x" onClick={() => {
                   SetchooseNewHost(false);
                 }}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
@@ -364,6 +364,7 @@ function VideoRoom() {
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {
             // participant create a call with this this one.
+            console.log("got his call, its stream is:", remoteStream);
             
             videos.push({
               streamId: getStreamId(remoteStream.id),
@@ -419,6 +420,8 @@ function VideoRoom() {
             !videos.some((video: any) => video.stream.id === remoteStream.id)
           ) {
             // participant answered this user's call with media.
+            console.log("got his answered call, its stream is:", remoteStream);
+
             videos.push({
               streamId: getStreamId(remoteStream.id),
               stream: remoteStream,

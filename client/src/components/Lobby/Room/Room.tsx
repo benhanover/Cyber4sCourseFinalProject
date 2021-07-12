@@ -24,11 +24,9 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
   const [errorDiv, setErrorDiv] = useState<any>(false);
   const [showParticipants, setShowParticipants] = useState<string>('');
   const rooms = useSelector((state: State) => state.rooms);
-  const { setChosenRoom } = bindActionCreators(
-    { ...wsActionCreator },
-    dispatch
-  );
-  const roomPasswordRef = useRef<HTMLInputElement | null >(null);
+  const roomPasswordRef = useRef<HTMLInputElement | null>(null);
+  const { setChosenRoom } = bindActionCreators({ ...wsActionCreator }, dispatch);
+  
   const history = useHistory();
   useEffect(() => {
     return () => {
@@ -44,23 +42,20 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
 
   if (chosen) {
     return (
-      <div className="chosen-background" onClick={(e)=> setChosenRoom(null)}>
-        <div key={42} className="chosen room" onClick={(e) => e.stopPropagation()}>
+      <div className="chosen-background" onClick={(e) => setChosenRoom(null)}>
+
+        <div key={42} className="chosen room form-div" onClick={(e) => e.stopPropagation()}>
           <span key={1} className="close-chosen-button" onClick={() => setChosenRoom(null)}>X</span>
           <Tooltip title={"Room Subject"} placement="top-start">
             <p key={3} className="subject"><Category className="category-icon icon" />{`${chosenRoom.subject} > ${chosenRoom.subSubject}`}
             </p>
           </Tooltip>
           <p key={2} className="title">{chosenRoom.title}</p>
-          <p key={5} className="description">{chosenRoom.description}<div></div></p>
+        <p key={5} className="description">{chosenRoom.description}<div className="under-div"></div></p>
+        
+        
           <div className="room-participants">
           <ProfileTicket participants={chosenRoom.participants}/>
-          {/* {chosenRoom.participants.length > 0
-            ?
-              {/* <p key={6} className="limit">{ chosenRoom.participants.length}/{chosenRoom.limit}</p> */}
-              {/* {chosenRoom.participants.map((profile: any, i: number) => <p key={i} className="username">{profile.username}</p>)} 
-            : null
-          */}
           </div>
           {room.isLocked && 
             <input placeholder='Room Password' ref={roomPasswordRef}/>
@@ -80,13 +75,12 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
               </div>
             }
         </div>
-      </div>
+        </div>
     );
   }
   return (
-    <div className="room">
-
-    <div className="room-details" onClick={() => chosenRoom !== room ? setChosenRoom(room) : setChosenRoom(null)}>
+    <div className="room" onClick={() => chosenRoom !== room ? setChosenRoom(room) : setChosenRoom(null)}>
+    <div className="room-details" >
       <Tooltip title={"Room Subject" } placement="top-start">
         <p className="subject"><Category className="category-icon icon" />{`${room.subject} > ${room.subSubject}`}</p>
         </Tooltip>
@@ -111,7 +105,10 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
           </div>
         })}
           </div>
-    <div className="show-participants-button" onClick={()=>setShowParticipants(showParticipants===''?'active': '' )}>Show Participants</div>
+      <div className="show-participants-button" onClick={(e) => {
+        e.stopPropagation();
+        setShowParticipants(showParticipants === '' ? 'active' : '');
+      }}>Show Participants</div>
     </div>
   );
   async function goToRoom(roomId: string | undefined, password?: any) {

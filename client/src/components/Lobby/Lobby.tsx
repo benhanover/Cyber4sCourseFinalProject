@@ -23,23 +23,20 @@ const Lobby: React.FC = () => {
   const dispatch = useDispatch();
   const { ws, rooms } = useSelector((state: State) => state);
   const { user, chosenRoom, serverSocket } = ws;
-  const { setWS, setUser } = bindActionCreators(
-    { ...wsActionCreator },
-    dispatch
-  );
+  const { setWS, setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
   const { setRooms, addRoom, removeRoom } = bindActionCreators(
     { ...roomsActionCreator },
     dispatch
   );
   const [showCreateRoom, setShowCreateRoom] = useState<any>(false);
-  const numberOfRoomsInPage = (Math.floor(window.outerWidth) / (22 * 16)) * (window.outerHeight > 870 ? 3 : 2);
+  const numberOfRoomsInPage = (Math.floor(window.outerWidth / 400) * ((window.outerHeight > 870) ? 4 : 3));
   const [page, setPage] = useState<any>({
     start: 0,
     end: numberOfRoomsInPage
   })
   const history = useHistory();
   const [joinFormStateManager, setJoinFormStateManager] = useState<any>({
-    subject: "Math",
+    subject: "",
     subSubject: "",
     search: "",
     limit: "",
@@ -98,7 +95,7 @@ const Lobby: React.FC = () => {
         setJoinFormStateManager={setJoinFormStateManager}
       />
       {showCreateRoom && <NewRoomForm />}
-      <button onClick={() => setShowCreateRoom(!showCreateRoom)}>
+      <button className="new-room-button button" onClick={() => setShowCreateRoom(!showCreateRoom)}>
         Create Room
       </button>
       {chosenRoomDisplay(chosenRoom)}
@@ -107,13 +104,16 @@ const Lobby: React.FC = () => {
         {rooms.length > 0 &&
         rooms
         ?.filter((room: any) => room?.isClosed === false && room.participants.length < room.limit)
-        .filter((room: any) => {
+          .filter((room: any) => {
+          const searchRegex = new RegExp(joinFormStateManager.search, 'gi')
+          const subjectRegex = new RegExp(joinFormStateManager.subject, 'gi')
+          const subSubjectRegex = new RegExp(joinFormStateManager.subSubject, 'gi')
           if (
-            (room.subject === joinFormStateManager.subject || joinFormStateManager.subject === "") &&
-            (room.subSubject.match(joinFormStateManager.subSubject) || joinFormStateManager.subSubject === "") &&
+            (room.subject.match(subjectRegex) || joinFormStateManager.subject === "") &&
+            (room.subSubject.match(subSubjectRegex) || joinFormStateManager.subSubject === "") &&
             (room.limit === Number(joinFormStateManager.limit) || joinFormStateManager.limit === "") &&
             (room.isLocked === joinFormStateManager.isLocked) &&
-            (room.title.match(joinFormStateManager.search)  || joinFormStateManager.search === "" || room.description.match(joinFormStateManager.search))
+            (room.title.match(searchRegex)  || joinFormStateManager.search === "" || room.description.match(searchRegex))
           ) 
             return true
         })
@@ -123,28 +123,32 @@ const Lobby: React.FC = () => {
           return <Room key={i} room={room} chosen={false} />;
         })}
       </div>
-
-        <button onClick={() => {
+        
+        <button className="back-button button" onClick={() => {
           if(page.start === 0) return;
           page.start -= numberOfRoomsInPage;
           page.end -= numberOfRoomsInPage;
           setPage({...page})
         }}>back</button>
 
-        <button onClick={() => {
+        <button className="next-button button" onClick={() => {
           if(page.end === ((Math.floor(rooms.length / numberOfRoomsInPage)) * numberOfRoomsInPage) + numberOfRoomsInPage)return;
           page.start += numberOfRoomsInPage;
           page.end += numberOfRoomsInPage;
           setPage({...page})
-        }}>next</button>
-
+        }}>Next</button>
     </div>
   );
 
   function chosenRoomDisplay(chosenRoom: Iroom | null): ReactElement | null {
     if (chosenRoom === null) return null;
+    console.log("chosen");
+    
     const roomChosed: Iroom = chosenRoom;
-    return <Room room={roomChosed} chosen={true} />;
+    return <>
+      <Room room={roomChosed} chosen={true} />
+      {/* <div className="under-div"></div> */}
+      </>
   }
 };
 

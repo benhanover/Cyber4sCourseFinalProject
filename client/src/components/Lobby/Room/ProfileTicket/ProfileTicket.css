@@ -1,3 +1,24 @@
+.button {
+  background-color: #861ae4;
+  font-size: 1.15em;
+  padding: 0.8rem;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.button:hover {
+  font-size: 1.1rem;
+  color: white;
+  background-color: #6591c7;
+}
+
+.form-div {
+  border: 2px solid #5e86b8;
+  background-color: white;
+  border-radius: none;
+}
+
 .profile-ticket-container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -15,7 +36,7 @@
   width: 20rem;
   margin-right: 1.5rem;
   margin-bottom: 1.5rem;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(5, 14, 51, 0.6);
   border-radius: 10px;
   -webkit-box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
           box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
@@ -109,7 +130,7 @@
   padding: 1rem;
   border-bottom-right-radius: 10px;
   width: 70%;
-  background-image: linear-gradient(130deg, #01949A, white 230%);
+  background-image: linear-gradient(130deg, #01949a, white 230%);
 }
 
 .profile-ticket-container .profile-ticket .profile-ticket-bottom .profile-age {
@@ -127,7 +148,7 @@
       -ms-flex-direction: column;
           flex-direction: column;
   padding-top: 1rem;
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
   border-bottom-left-radius: 10px;
   width: 30%;
   background-color: white;
