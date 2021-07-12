@@ -30,6 +30,8 @@
       -ms-flex-align: center;
           align-items: center;
   background-color: #fc2234;
+  -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+          box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
   height: 3.5rem;
 }
 
