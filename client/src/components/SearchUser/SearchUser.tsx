@@ -33,16 +33,16 @@ const SearchUser: React.FC = () => {
 
   return (
     <div className="search-user"
-      onMouseLeave={() => {
-        searchRef.current.value = "";
-        setFilteredUsers([]);
-      }}
+      
     >
       <input className='search-input' ref={searchRef}
       onChange={(e) =>  setFilteredUsers(filterSearchedList(allUserRef.current, e.target.value))} placeholder='Search For A User..' />
       {
         filteredUsers && filteredUsers.length > 0 &&
-        <ul className="results">
+        <ul className="results" onMouseLeave={() => {
+          searchRef.current.value = "";
+          setFilteredUsers([]);
+        }}>
             {
             filteredUsers
             .slice(0, 10)

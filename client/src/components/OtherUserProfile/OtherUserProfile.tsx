@@ -20,12 +20,12 @@ const OtherUserProfile: React.FC<props> = ({user}) => {
       })
   }, [userWithoutTypescriptProblems])
   return (
-    <div className='user-profile'>
+    <div className='user-profile profile'>
 
       <div className='personal-details'>
         <div className='image-container'>
           <img src={userProfile?.profile.img} className="other-profile-image" />
-          <p>{userProfile?.username}</p>
+          <h2>{userProfile?.username}</h2>
         </div>
         <div className='details-items-container'>
           <div className='details-item-div'>
