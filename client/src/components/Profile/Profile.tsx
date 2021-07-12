@@ -38,7 +38,7 @@ const Profile: React.FC = () => {
         {fieldToUpdate&& 
           <div className='change-input-div form-div'>
         <h2>Enter your new {getFieldToUpdate(fieldToUpdate)}content here:</h2>
-        <textarea ref={profileUpdateRef} autoFocus placeholder={typeof fieldToUpdate !== 'boolean' && typeof fieldToUpdate.field !== 'boolean' ? fieldToUpdate.field[0].toLocaleUpperCase() + fieldToUpdate.field.slice(1) : ''} className='change-input'  >{typeof fieldToUpdate !== 'boolean' && typeof fieldToUpdate.place !== 'boolean' && fieldToUpdate.field !== 'boolean' && user[fieldToUpdate.place][fieldToUpdate.field]}</textarea>
+        <textarea ref={profileUpdateRef} autoFocus placeholder={typeof fieldToUpdate !== 'boolean' && typeof fieldToUpdate.field !== 'boolean' ? fieldToUpdate.field[0].toLocaleUpperCase() + fieldToUpdate.field.slice(1) : ''} className='change-input'  >{typeof fieldToUpdate !== 'boolean' && typeof fieldToUpdate.place !== 'boolean' && fieldToUpdate.field !== 'boolean' && fieldToUpdate.place === 'user' ? user[fieldToUpdate.field] : typeof fieldToUpdate !== 'boolean' && typeof fieldToUpdate.place !== 'boolean' && fieldToUpdate.field !== 'boolean' && user[fieldToUpdate.place][fieldToUpdate.field]}</textarea>
         <button className='hover update-button button' onClick={async () => {
                 if (!profileUpdateRef.current?.value) {
                   setFieldToUpdate(false);
