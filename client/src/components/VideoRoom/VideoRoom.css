@@ -1,4 +1,25 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+.button {
+  background-color: #861ae4;
+  font-size: 1.15em;
+  padding: 0.8rem;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.button:hover {
+  font-size: 1.1rem;
+  color: white;
+  background-color: #6591c7;
+}
+
+.form-div {
+  border: 2px solid #5e86b8;
+  background-color: white;
+  border-radius: none;
+}
+
 .video-room {
   background-image: url("https://images.unsplash.com/photo-1625993254667-a6b8dc27e531?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
   background-size: cover;
@@ -16,6 +37,20 @@
   background-color: white;
   height: 100%;
   overflow: hidden;
+}
+
+.video-room nav.navbar {
+  display: none;
+}
+
+.video-room .room-state {
+  position: absolute;
+  top: 2rem;
+  left: 4rem;
+  border-radius: 50%;
+  padding: 1rem;
+  svg-fill: #110322;
+  background-color: rgba(239, 239, 239, 0.76);
 }
 
 .video-room .media-premision-err-div {
@@ -43,11 +78,11 @@
 }
 
 .video-room .choose-host-box {
-  border-radius: 15px;
+  -webkit-box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+          box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 5rem;
   right: 9rem;
-  background-color: rgba(35, 195, 235, 0.89);
   padding: 1rem;
   z-index: 1;
 }
@@ -62,16 +97,17 @@
 .video-room .choose-host-box button {
   padding: 0.3rem;
   margin: 1rem;
-  background-color: #f8bf56;
+  background-color: #d40e5a;
+  background-color: blueviolet;
 }
 
 .video-room .choose-host-box button:hover {
+  background-color: blueviolet;
   background-color: #d40e5a;
 }
 
 .video-room .choose-host-box p {
   margin-top: 1.5rem;
-  color: white;
   font-size: 1.3rem;
 }
 
@@ -82,9 +118,16 @@
 
 .video-room .leave-button {
   position: absolute;
-  top: 5rem;
+  top: 2.4rem;
   right: 1rem;
-  padding: 1rem 2.4rem;
+  color: black;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid black;
+  background-color: rgba(239, 239, 239, 0.76);
+}
+
+.video-room .leave-button svg {
+  fill: black;
 }
 
 .video-room button:hover {
@@ -101,9 +144,16 @@
 
 .video-room .close-room-btn {
   position: absolute;
-  top: 10rem;
+  top: 6.4rem;
   right: 1rem;
-  padding: 1rem;
+  color: black;
+  border: 1px solid black;
+  background-color: rgba(239, 239, 239, 0.76);
+  padding: 0.13rem 1.3rem;
+}
+
+.video-room .close-room-btn svg {
+  fill: black;
 }
 
 .video-room .others-video {
@@ -111,7 +161,7 @@
   border-radius: 15px;
   padding-right: 4rem;
   margin: 0 4rem;
-  background-color: white;
+  background-color: rgba(239, 239, 239, 0.76);
 }
 
 .video-room .self-video-box {
