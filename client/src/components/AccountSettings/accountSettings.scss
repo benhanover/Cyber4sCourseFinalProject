@@ -1,0 +1,95 @@
+@import "../Common/styles/themeColors.scss";
+.account-settings-container {
+  position: absolute;
+  top: 10rem;
+  right: 34%;
+  padding: 3rem;
+  padding-bottom: 1rem;
+  box-shadow: $shadowBoxDetailsRight;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1;
+}
+.keys {
+  //   height: 15rem;
+  text-align: left;
+  margin: 0 1rem;
+}
+.values {
+  //   height: 15rem;
+  text-align: left;
+}
+
+.exit-button {
+  position: absolute;
+  top: 0.53rem;
+  right: 0.53rem;
+  //height: 3rem;
+}
+
+.credentials {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.edit {
+  position: relative;
+  padding: 0.5rem;
+  .hover {
+    position: absolute;
+    top: -0.2rem;
+    opacity: 0;
+    cursor: pointer;
+  }
+  &:hover {
+    .hover {
+      opacity: 0.6;
+      height: 1.3rem;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.keys {
+  display: flex;
+  flex-direction: column;
+
+  //align-items: flex-start;
+}
+
+// .values {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-start;
+//   margin-left: 4rem;
+// }
+
+.credentials-update-div {
+  margin: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  input {
+    padding: 1rem;
+    font-size: 1.6rem;
+    border: $borderColor solid;
+    box-shadow: $shadowBoxDetails;
+  }
+  .update-button {
+    margin: 1.5rem 38%;
+    margin-bottom: 00.5rem;
+    width: 5rem;
+    padding: 0.5rem;
+    background-color: blueviolet;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    font-size: 1rem;
+  }
+}
