@@ -1,9 +1,9 @@
+@import '../Common/styles/themeColors.scss';
 .search-user {
-  margin-right: 1rem;
-
+  margin-right: 2rem;
+  // width: 100%;
   position: relative;
   .search-input {
-    margin-right: 1rem;
     padding: 0.4rem;
     border-radius: 2rem;
     border: none;
@@ -18,9 +18,27 @@
     background-color: rgb(255, 255, 255);
     position: absolute;
     width: 100%;
-    border: 1px solid black;
-    li {
-      border-top: 1px solid black;
-    }
+    margin-top: 1rem;
+      border-radius: $smallBorderRadius;
+      border: 1px solid rgba($color: black, $alpha: 0.3);
+      box-shadow: -2px 2px 5px 0px rgba($color: #000000, $alpha: 0.1);;
+        li {
+          border-top: 1px solid black;
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+
+          &:hover{
+            background-color: $backgroundColor;
+          }
+          &:first-child{
+            border-top: unset;
+            border-top-left-radius: $smallBorderRadius;
+            border-top-right-radius: $smallBorderRadius;
+        }
+        &:last-child{
+          border-bottom-left-radius: $smallBorderRadius;
+          border-bottom-right-radius: $smallBorderRadius;
+        }
+      }
   }
 }

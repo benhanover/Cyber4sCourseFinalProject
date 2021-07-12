@@ -34,9 +34,9 @@ const LougoutButton: React.FC = () => {
   };
 
   return (
-    <button className="logout-button" onClick={logout}>
+    <p className="logout-button" onClick={logout}>
       Logout
-    </button>
+    </p>
   );
 };
 export default LougoutButton;
