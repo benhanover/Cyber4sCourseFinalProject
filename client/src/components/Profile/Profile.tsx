@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { State, wsActionCreator } from '../../state';
 
 // import functions
-import { updateDetailsByField, fileSelectedHandler, formatDate, saveImageToS3 } from './functions';
+import { updateDetailsByField, fileSelectedHandler, formatDate, saveImageToS3, getFieldToUpdate } from './functions';
 import './Profile.css';
 
 // import interfaces
@@ -27,7 +27,7 @@ const Profile: React.FC = () => {
   const [displayLoader, setDisplayLoader] = useState<any>(false);
   
   // refs
-  const profileUpdateRef = useRef<HTMLInputElement>(null);
+  const profileUpdateRef = useRef<HTMLTextAreaElement>(null);
   
   return (
       <div className="profile">
@@ -36,17 +36,18 @@ const Profile: React.FC = () => {
           <div className="loader"/>
         }
         {fieldToUpdate&& 
-          <div className='change-input-div'>
-              <input ref={profileUpdateRef} className='change-input'/>
-              <img src='https://img.icons8.com/ios/50/000000/circled-v.png' className='hover' onClick={async () => {
+          <div className='change-input-div form-div'>
+        <h2>Enter your new {getFieldToUpdate(fieldToUpdate)}content here:</h2>
+        <textarea ref={profileUpdateRef} autoFocus value={typeof fieldToUpdate !== 'boolean' && typeof fieldToUpdate?.place !== 'boolean'? user[fieldToUpdate.place][fieldToUpdate.field] : "someValue" } placeholder={typeof fieldToUpdate !== 'boolean' && typeof fieldToUpdate.field !== 'boolean' ? fieldToUpdate.field[0].toLocaleUpperCase() + fieldToUpdate.field.slice(1) : ''} className='change-input'  />
+        <button className='hover update-button button' onClick={async () => {
                 if (!profileUpdateRef.current?.value) {
                   setFieldToUpdate(false);
                 }
                 const updated = await updateDetailsByField(fieldToUpdate, profileUpdateRef.current?.value)
                 setUser(updated);
                 setFieldToUpdate(false);
-              }} />
-              <img src='https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png' onClick={() => setFieldToUpdate(false)} className='hover'/>
+              }} >Update</button>
+        <img src='https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png' onClick={() => setFieldToUpdate(false)} className='hover close-button'/>
           </div>
         }
 
