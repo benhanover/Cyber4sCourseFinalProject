@@ -13,14 +13,14 @@ const userSchema = new Schema<Iuser>({
   friendList: [String],
   blackList: [String],
   profile: {
-    address: { type: String, default: 'Change me:)' },
-    status: { type: String, default: 'Change me:)' },
-    about: { type: String, default: 'Change me:)' },
-    intrests: { type: String, default: 'Change me:)' },
-    hobbys: { type: String, default: 'Change me:)' },
-    relationship: { type: String, default: 'Change me:)' },
-    activeTime: { type: String, default: 'Change me:)' },
-    gender: { type: String, default: 'We Accept Anyone Around Here:)'},
+    address: { type: String, default: '' },
+    status: { type: String, default: '' },
+    about: { type: String, default: '' },
+    intrests: { type: String, default: '' },
+    hobbys: { type: String, default: '' },
+    relationship: { type: String, default: '' },
+    activeTime: { type: String, default: '' },
+    gender: { type: String, default: ''},
     img: {type: String, default: 'https://roomie-profile-images.s3.amazonaws.com/default'}
   }
 });
