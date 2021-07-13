@@ -9,7 +9,7 @@ import {Ifield} from '../Profile/interfaces'
 import {Iprops} from './interfaces';
 
 // import css
-import './accountSettings.css'
+import './AccountSettings.css'
 
 
 
