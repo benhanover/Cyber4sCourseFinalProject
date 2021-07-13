@@ -44,7 +44,7 @@ import {
 function VideoRoom() {
   const { serverSocket, user , chosenRoom} = useSelector((state: State) => state.ws);
   const { rooms } = useSelector((state: State) => state);
-  console.log(chosenRoom, "choosen");
+  // console.log(chosenRoom, "choosen");
   
   const dispatch = useDispatch();
   const { setUser } = bindActionCreators({ ...wsActionCreator }, dispatch);
@@ -88,7 +88,7 @@ function VideoRoom() {
   }, [rooms]);
 
   useEffect(() => {
-    console.log("videos", videos);
+    // console.log("videos", videos);
     
   }, [videos])
   //component renders:
@@ -376,6 +376,7 @@ function VideoRoom() {
               peerId: peerId,
               streamId: mediaStreamId,
               user: getCleanedUser(user),
+              age: getCleanedUser(user).age
             }, // username will be changed to profile.
             roomId: room._id,
             username: user.username,

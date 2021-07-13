@@ -33,7 +33,7 @@ const ProfileTicket: React.FC<IprofileTicket> = ({ participants }) => {
             <div className="profile-ticket-bottom">
 
             <div className="profile-age">
-              <p className="age">{participant.user.age}</p><p  className="years-old" >years old</p>
+              <p className="age">{participant.age}</p><p  className="years-old" >years old</p>
             </div>
             <div className="profile-ticket-status">
               <p className="profile-status">{participant.user.profile.status === "Change me:)"? "- No Status -" : participant.user.profile.status}</p>

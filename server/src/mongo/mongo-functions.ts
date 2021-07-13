@@ -139,6 +139,7 @@ export const updateDocument = async (
   }
   try {
     console.log("before updating");
+console.log("in update", fieldToUpdateContent);
 
     const updatedDocument: any = await model.updateOne(
       {
