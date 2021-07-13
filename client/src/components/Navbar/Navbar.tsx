@@ -40,12 +40,12 @@ const Navbar: React.FC<Iprops> = ({setDisplayAccountSettings, displayAccountSett
             {/* <img className="profile-menu-button" src={user.profile.img}/> */}
             Profile
               </li>
-              <li className='cursor'>
-                <span onClick={() => setDisplayAccountSettings(!displayAccountSettings)}>Account Settings</span>
+              <li className='cursor'  onClick={() => setDisplayAccountSettings(!displayAccountSettings)}>
+                <span>Account Settings</span>
               </li>
             <li className='cursor' >
                 <LogoutButton />
-              </li>
+            </li>
               
             </ul>
           }
