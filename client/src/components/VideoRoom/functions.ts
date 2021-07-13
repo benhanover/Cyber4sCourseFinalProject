@@ -144,7 +144,9 @@ export const leaveRoom = async (
   videos.forEach((video: any) => {
     video.call.close();
   });
-  user.peer.destroy();
+  if (user.peer) {
+    user.peer.destroy();
+  }
   myStream?.getTracks().forEach((track: any) => {
     track.stop();
   });
