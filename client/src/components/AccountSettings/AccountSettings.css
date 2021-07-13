@@ -21,25 +21,25 @@
 
 .account-settings-container {
   position: absolute;
-  top: 10rem;
+  top: 17rem;
   right: 34%;
   padding: 3rem;
   padding-bottom: 1rem;
   -webkit-box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
-          box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+  box-shadow: 8px 8px 16px 2px rgba(0, 0, 0, 0.6);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   font-size: 1.2rem;
   -ms-flex-pack: distribute;
-      justify-content: space-around;
+  justify-content: space-around;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   z-index: 1;
 }
 
@@ -64,14 +64,14 @@
   display: flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .edit {
@@ -101,8 +101,8 @@
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .credentials-update-div {
@@ -112,10 +112,10 @@
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -ms-flex-pack: distribute;
-      justify-content: space-around;
+  justify-content: space-around;
 }
 
 .credentials-update-div input {
@@ -123,7 +123,7 @@
   font-size: 1.6rem;
   border: #5e86b8 solid;
   -webkit-box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
-          box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
+  box-shadow: -8px 8px 16px 2px rgba(0, 0, 0, 0.6);
 }
 
 .credentials-update-div .update-button {
@@ -137,4 +137,4 @@
   color: white;
   font-size: 1rem;
 }
-/*# sourceMappingURL=accountSettings.css.map */
+/*# sourceMappingURL=AccountSettings.css.map */

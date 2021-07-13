@@ -105,9 +105,6 @@ wsServer.on("connection", async (clientSocket: any) => {
         break;
 
       case "join room":
-        console.log(
-          `profile: ${messageData.message.participant.user}  `
-        );
         // console.log(
         //   messageData.message.participant,
         //   "participent !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"

@@ -113,7 +113,9 @@ const Lobby: React.FC = () => {
             (room.subSubject.match(subSubjectRegex) || joinFormStateManager.subSubject === "") &&
             (room.limit === Number(joinFormStateManager.limit) || joinFormStateManager.limit === "") &&
             (room.isLocked === joinFormStateManager.isLocked) &&
-            (room.title.match(searchRegex)  || joinFormStateManager.search === "" || room.description.match(searchRegex))
+            (room.title.match(searchRegex) || joinFormStateManager.search === ""
+              // || room.description.match(searchRegex)
+            )
           ) 
             return true
         })
