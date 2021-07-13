@@ -59,7 +59,7 @@ We encourge you to travel rooms, expand and share youre knowledge, and most of a
        <div className="omrs-input-group"><label className="omrs-input-filled"><input  required ref={lastNameRef}  /> <span className="omrs-input-label">Last Name</span> </label></div> 
        <div className="omrs-input-group"><label className="omrs-input-filled"><input className="date-holder"  required type="date" ref={dateRef}  /> <span className="omrs-input-label">BirthDate</span> </label></div> 
        <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="email" ref={emailRef} /> <span className="omrs-input-label">Email</span> </label></div> 
-       <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="text" ref={passwordRef} /> <span className="omrs-input-label">Password</span> </label></div> 
+       <div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="password" ref={passwordRef} /> <span className="omrs-input-label">Password</span> </label></div> 
       <input type="submit" className="button submit-btn" value="Register" /> 
       
       {

@@ -5,5 +5,6 @@ const participantsSchema = new Schema({
   peerId: String,
   streamId: String,
   user: userSchema,
+  age: Number
 });
 export default participantsSchema;

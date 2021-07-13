@@ -87,6 +87,10 @@ function VideoRoom() {
     runAsyncFunction();
   }, [rooms]);
 
+  useEffect(() => {
+    console.log("videos", videos);
+    
+  }, [videos])
   //component renders:
   /*-------------------------------------------------------------------------------------*/
 
@@ -382,6 +386,10 @@ function VideoRoom() {
       ///peer handler for receiving calls
       mypeer.on("call", (call: any) => {
         //handle err
+        call.on("close", () => {
+          console.log("user's peer closed. his call is:", call);
+          
+        })
         call.on("error", (err: any) => {
           console.log("error in the call", err);
         });

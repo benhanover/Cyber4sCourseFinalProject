@@ -21,7 +21,7 @@ useEffect(() => {
 
     return (
         <div className="user-video-container" >
-                <video ref={videoRef} poster={userImage} className="user-video" muted={muted} autoPlay ></video> 
+                <video ref={videoRef} poster={userImage} controls className="user-video" muted={muted} autoPlay ></video> 
                 <img className='user-image' src={userImage} alt="user-video" />
                 <div className="username-div">{username}</div>
         </div >

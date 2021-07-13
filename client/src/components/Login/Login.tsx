@@ -54,7 +54,7 @@ We encourge you to travel rooms, expand and share youre knowledge, and most of a
     
       
     <div className="omrs-input-group"><label className="omrs-input-filled"><input required ref={emailRef} ></input><span className="omrs-input-label">Email</span></label></div>
-    <div className="omrs-input-group"><label className="omrs-input-filled"><input required ref={passwordRef} ></input><span className="omrs-input-label">Password</span></label></div>
+    <div className="omrs-input-group"><label className="omrs-input-filled"><input required ref={passwordRef} type="password"></input><span className="omrs-input-label">Password</span></label></div>
         <button className="submit-btn" onClick={submitLogin}>
           Login
         </button>

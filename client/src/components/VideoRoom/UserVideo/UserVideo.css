@@ -16,7 +16,8 @@
   z-index: 1;
   background-color: #c4dfff;
   border-radius: 50%;
-  height: 20%;
+  height: 4.2rem;
+  width: 4.2rem;
 }
 
 .user-video-container .username-div {

@@ -43,9 +43,8 @@ const Navbar: React.FC<Iprops> = ({setDisplayAccountSettings, displayAccountSett
               <li className='cursor'  onClick={() => setDisplayAccountSettings(!displayAccountSettings)}>
                 <span>Account Settings</span>
               </li>
-            <li className='cursor' >
-                <LogoutButton />
-            </li>
+              <LogoutButton />
+            
               
             </ul>
           }

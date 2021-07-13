@@ -175,7 +175,7 @@
   .information-item-div {
     position: relative;
     text-align: left;
-    height: 16vh;
+    // height: 16vh;
     margin-bottom: 2rem;
     .hover{
       position: absolute;
@@ -197,6 +197,7 @@
   .information-p {
     text-align: left;
     margin-left: 1rem;
+    height: 16vh;
   }
   
   .loader {
