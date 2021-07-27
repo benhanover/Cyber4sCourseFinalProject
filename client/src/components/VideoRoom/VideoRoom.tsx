@@ -87,10 +87,6 @@ function VideoRoom() {
     runAsyncFunction();
   }, [rooms]);
 
-  useEffect(() => {
-    // console.log("videos", videos);
-    
-  }, [videos])
   //component renders:
   /*-------------------------------------------------------------------------------------*/
 
@@ -148,8 +144,8 @@ function VideoRoom() {
                 key={i}
                 muted={false}
                 stream={video.stream}
-                username={getUserByStreamId(room, video.streamId).username}
-                userImage={getUserByStreamId(room, video.streamId).userImg}
+                username={getUserByStreamId(room, video.streamId)?.username}
+                userImage={getUserByStreamId(room, video.streamId)?.userImg}
                 isVideoOn={video.isVideoOn}
               />
               </div>
