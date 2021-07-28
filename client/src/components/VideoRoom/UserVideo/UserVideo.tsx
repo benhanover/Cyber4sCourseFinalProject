@@ -17,7 +17,7 @@ useEffect(() => {
     }
     
     videoRef.current.srcObject =stream
-    }, [])
+    }, [stream])
 
     return (
         <div className="user-video-container" >
