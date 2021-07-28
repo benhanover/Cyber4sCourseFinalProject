@@ -63,19 +63,19 @@ const OtherUserProfile: React.FC<props> = ({user}) => {
         <div className='information'>
           <div className='information-items-container'>
             <div className='information-item-div'> 
-              <label className='bold'>About: </label>
+              <label className='bold'>About</label>
               <p className='information-p'>{userProfile?.profile.about}</p>
             </div>
             <div className='information-item-div'> 
-              <label className='bold'>Hobbys: </label>
+              <label className='bold'>Hobbys</label>
               <p className='information-p'>{userProfile?.profile.hobbys}</p>
             </div>
             <div className='information-item-div'> 
-              <label className='bold'>Intrests: </label>
+              <label className='bold'>Intrests</label>
               <p className='information-p'>{userProfile?.profile.intrests}</p>
             </div>
             <div className='information-item-div'> 
-              <label className='bold'>Status: </label>
+              <label className='bold'>Status</label>
               <p className='information-p'>{userProfile?.profile.status}</p>
             </div>
           </div>
