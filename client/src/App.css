@@ -11,3 +11,7 @@
 *:visited{
   color: black;
 }
+p {
+  white-space: break-spaces;
+  overflow: scroll;
+}

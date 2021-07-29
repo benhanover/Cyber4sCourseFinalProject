@@ -37,7 +37,8 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
   //  keeps chosenRoom updated.
   useEffect(() => {
   if (!chosenRoom || chosenRoom._id !== room?._id) return;
-    setChosenRoom({ ...room })
+    setChosenRoom({ ...room }) 
+    console.log('TSA DUDE', room.participants)
 }, [rooms])
 
   if (chosen) {
@@ -98,10 +99,10 @@ const Room: FC<IroomProps> = ({ room, chosen }) => {
           return <div key={i} className="small-participant">
             <div className="profile-left">
 
-            <img className="profile-image" src={participant.user.profile.imageBlob} alt="" />
+            <img className="profile-image" src={participant.user.profile.img} alt="" />
             <p className="profile-username">{participant.user.username}</p>
             </div>
-            <div className="profile-age-container"><p className="profile-age">{participant.user.age}</p> <p className="profile-years-old">years old</p></div>
+            <div className="profile-age-container"><p className="profile-age">{participant.age}</p> <p className="profile-years-old">years old</p></div>
           </div>
         })}
           </div>

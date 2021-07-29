@@ -44,9 +44,9 @@ const Lobby: React.FC = () => {
   });
 
   useEffect(() => {
-    if (serverSocket) return;
+    if (serverSocket && serverSocket.readyState !== 3) return;
     // create connection to the websocket server
-    const newWS = new WebSocket(`ws://${enums.wsUrl}`);
+    const newWS = new WebSocket(`wss://${enums.wsUrl}`);
     newWS.onopen = () => {
       console.log("connected to server");
     };
@@ -113,7 +113,9 @@ const Lobby: React.FC = () => {
             (room.subSubject.match(subSubjectRegex) || joinFormStateManager.subSubject === "") &&
             (room.limit === Number(joinFormStateManager.limit) || joinFormStateManager.limit === "") &&
             (room.isLocked === joinFormStateManager.isLocked) &&
-            (room.title.match(searchRegex)  || joinFormStateManager.search === "" || room.description.match(searchRegex))
+            (room.title.match(searchRegex) || joinFormStateManager.search === ""
+              // || room.description.match(searchRegex)
+            )
           ) 
             return true
         })

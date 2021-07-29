@@ -164,7 +164,8 @@
 }
 
 .profile .profile-image {
-  width: 40%;
+  width: 10vw;
+  height: 10vw;
   border-radius: 50%;
   margin-bottom: 0.5rem;
 }
@@ -236,7 +237,6 @@
 .profile .information-item-div {
   position: relative;
   text-align: left;
-  height: 16vh;
   margin-bottom: 2rem;
 }
 
@@ -259,6 +259,7 @@
 .profile .information-p {
   text-align: left;
   margin-left: 1rem;
+  height: 16vh;
 }
 
 .profile .loader {

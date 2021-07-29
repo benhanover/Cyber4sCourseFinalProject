@@ -139,6 +139,7 @@ export const updateDocument = async (
   }
   try {
     console.log("before updating");
+console.log("in update", fieldToUpdateContent);
 
     const updatedDocument: any = await model.updateOne(
       {
@@ -148,7 +149,6 @@ export const updateDocument = async (
       { new: true }
     );
 
-    console.log("updatedDocument:", updatedDocument);
 
     return updatedDocument
       ? updatedDocument

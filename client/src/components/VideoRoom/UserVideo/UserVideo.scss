@@ -18,6 +18,21 @@
     background-color: rgba($color: rgb(196, 223, 255), $alpha: 1);
 
     border-radius: 50%;
-    height: 20%;
+    height: 4.2rem;
+    width: 4.2rem;
+  }
+  .username-div {
+    left: 4rem;
+    top: 1.1rem;
+    position: absolute;
+    color: white;
+    padding: 0.15rem;
+    font-size: 0.9rem;
+    padding-left: 1.1rem;
+    padding-right: 0.3rem;
+    border-radius: 4px;
+    background-color: rgb(219, 42, 71);
+    background-color: blueviolet;
+    // z-index: 1;
   }
 }

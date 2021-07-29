@@ -16,6 +16,21 @@
   z-index: 1;
   background-color: #c4dfff;
   border-radius: 50%;
-  height: 20%;
+  height: 4.2rem;
+  width: 4.2rem;
+}
+
+.user-video-container .username-div {
+  left: 4rem;
+  top: 1.1rem;
+  position: absolute;
+  color: white;
+  padding: 0.15rem;
+  font-size: 0.9rem;
+  padding-left: 1.1rem;
+  padding-right: 0.3rem;
+  border-radius: 4px;
+  background-color: #db2a47;
+  background-color: blueviolet;
 }
 /*# sourceMappingURL=UserVideo.css.map */

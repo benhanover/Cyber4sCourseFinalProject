@@ -23,9 +23,6 @@ console.log(DB, "from the server");
 // middlewares
 app.use(express.json());
 app.use(cors());
-app.get("/test", (req, res) => {
-  res.send("IM ALIVE");
-});
 app.use("/user", users);
 app.use("/room", rooms);
 app.use(fallbacks);
@@ -105,11 +102,8 @@ wsServer.on("connection", async (clientSocket: any) => {
         break;
 
       case "join room":
-        console.log(
-          `profile: ${messageData.message.participant.user}  `
-        );
-        // console.log(
-        //   messageData.message.participant,
+        // console.log("participant in server!!", 
+          // messageData.message.participant)
         //   "participent !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         // );
 

@@ -80,7 +80,7 @@ function NewRoomForm() {
               {isLocked
                 ?
                 <>
-              <NoEncryptionIcon className="lock-icon icon" onClick={() => setIsLocked(!isLocked)} /> <input placeholder="Room Password" ref={roomPasswordRef} onFocus={() => setErrorDiv(false)}
+              <NoEncryptionIcon className="lock-icon icon" onClick={() => setIsLocked(!isLocked)} /> <input type='password' placeholder="Room Password" ref={roomPasswordRef} onFocus={() => setErrorDiv(false)}
                   />
                   </>: <LockIcon className="lock-icon icon" onClick={() => setIsLocked(!isLocked)
               } />}

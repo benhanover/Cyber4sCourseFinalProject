@@ -21,7 +21,9 @@ const LougoutButton: React.FC = () => {
     const refreshToken = Cookies.get("refreshToken");
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
+    
     serverSocket.close();
+    
     setUser(false);
     axios
       .delete(`${enums.baseUrl}/user/logout`, {
@@ -34,9 +36,9 @@ const LougoutButton: React.FC = () => {
   };
 
   return (
-    <p className="logout-button" onClick={logout}>
+    <li className="logout-button cursor" onClick={logout}>
       Logout
-    </p>
+    </li>
   );
 };
 export default LougoutButton;

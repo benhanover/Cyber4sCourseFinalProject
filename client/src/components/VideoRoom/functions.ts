@@ -9,7 +9,7 @@ export const getUserByStreamId = (room: any, streamId: any): any => {
   }
   const user = room.participants.find((u: any) => u.streamId === streamId);
   if (!user) return;
-  return user.user.profile.img;
+  return{userImg: user.user.profile.img , username:user.user.username } ;
 };
 
 /*-------------------------------------------------------------------------------------*/
@@ -142,7 +142,9 @@ export const leaveRoom = async (
   videos.forEach((video: any) => {
     video.call.close();
   });
-  user.peer.destroy();
+  if (user.peer) {
+    user.peer.destroy();
+  }
   myStream?.getTracks().forEach((track: any) => {
     track.stop();
   });
