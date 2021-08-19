@@ -1,5 +1,12 @@
 # [Roomin](https://roomin.dankner.be/)
 
+This is our Cyber4s Full-Stack Bootcamp Final Project:
+
+ - [@Amit Mor](https://github.com/amit751)
+ - [@Ben Hanover](https://github.com/benhanover)
+ - [@Gil Dankner](https://github.com/DGorgula)
+
+
 ## Links:
 
 [Roomin repository](https://github.com/benhanover/Cyber4sCourseFinalProject)
