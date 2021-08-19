@@ -5,8 +5,7 @@ const users = require('./mockUsers.json');
 const rooms = require('./mockRooms.json');
 const { User, Room } = require('../dist/js/mongo/models');
 mongoose
-    // .connect(`mongodb://${MONGO_SERVER}:27017/${DB}`, {
-    .connect(`mongodb://localhost:27017/${DB}`, {
+    .connect(`mongodb://${MONGO_SERVER}:27017/${DB}`, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
