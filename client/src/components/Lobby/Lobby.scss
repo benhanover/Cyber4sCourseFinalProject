@@ -16,16 +16,17 @@
   top: 5rem;
   z-index: 2;
   background-color: $buttonBackround;
-
+  border-top-left-radius: unset;
+  border-bottom-left-radius: unset;
   cursor: pointer;
 }
 
 .next-button {
   width: fit-content;
-  // position: relative;
   cursor: pointer;
-  // width: 3rem;
   position: absolute;
+  border-top-right-radius: unset;
+  border-bottom-right-radius: unset;
   right: 0rem;
   bottom: 1rem;
 }
@@ -34,6 +35,8 @@
   width: fit-content;
   left: 0;
   bottom: 1rem;
+  border-top-left-radius: unset;
+  border-bottom-left-radius: unset;
 }
 }
 
