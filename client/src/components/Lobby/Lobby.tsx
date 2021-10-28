@@ -46,7 +46,7 @@ const Lobby: React.FC = () => {
   useEffect(() => {
     if (serverSocket && serverSocket.readyState !== 3) return;
     // create connection to the websocket server
-    const newWS = new WebSocket(`wss://${enums.wsUrl}`);
+    const newWS = new WebSocket(`ws://${enums.wsUrl}`);
     newWS.onopen = () => {
       console.log("connected to server");
     };

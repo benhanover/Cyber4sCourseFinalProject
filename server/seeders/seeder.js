@@ -10,6 +10,6 @@ mongoose
         useUnifiedTopology: true,
         useFindAndModify: false,
     })
-User.create(users).then(() => console.log("users seeded successfully"))
+// User.create(users).then(() => console.log("users seeded successfully"))
 Room.create(rooms).then(() => console.log("rooms seeded successfully"))
 setTimeout(() => { mongoose.disconnect() }, 2000);

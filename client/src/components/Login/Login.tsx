@@ -50,21 +50,18 @@ We encourge you to travel rooms, expand and share youre knowledge, and most of a
       >
         Register
       </button>
-    <div className="login-form-container" onClick={() => setErrorDiv(false)}>
+    <form className="login-form-container" onSubmit={submitLogin} onClick={() => setErrorDiv(false)}>
     
       
-    <div className="omrs-input-group"><label className="omrs-input-filled"><input required ref={emailRef} ></input><span className="omrs-input-label">Email</span></label></div>
+        <div className="omrs-input-group"><label className="omrs-input-filled"><input required ref={emailRef} ></input><span className="omrs-input-label">Email</span></label></div>
     <div className="omrs-input-group"><label className="omrs-input-filled"><input required ref={passwordRef} type="password"></input><span className="omrs-input-label">Password</span></label></div>
-        <button className="submit-btn" onClick={submitLogin}>
-          Login
-        </button>
-      
+        <input type="submit" className="submit-btn"  value="Login" />
     
         {
           errorDiv&&
           <div>{errorDiv}</div>
         }
-      </div>
+      </form>
     </div>
   );
 //<div className="omrs-input-group"><label className="omrs-input-filled"><input  required type="text" ref={passwordRef} /> <span className="omrs-input-label">Password</span> </label></div>
@@ -79,7 +76,8 @@ We encourge you to travel rooms, expand and share youre knowledge, and most of a
   }
 
   // logs in
-  function submitLogin(): void {
+  function submitLogin(e: React.SyntheticEvent): void {
+    e.preventDefault();
     if (!(emailRef?.current && passwordRef?.current)) return;
     const email = emailRef?.current?.value;
     const password = passwordRef?.current?.value;
