@@ -9,7 +9,3 @@ export const getUserProfile = (username: any) => {
     return res
   });
 };
-
-export const formatDate = (date: string): string => {
-  return date.slice(0, 10);
-}

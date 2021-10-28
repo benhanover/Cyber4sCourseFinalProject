@@ -28,3 +28,8 @@ export const recreateAccessToken = async (
     return "error in recreateaccess:" + e.message;
   }
 };
+
+export const formatDate = (date: string): string => {
+  const initArray: Array<String> = date.slice(0, 10).split('-')
+  return initArray.sort((a,b)=> initArray.indexOf(b)- initArray.indexOf(a)).join("/");
+}

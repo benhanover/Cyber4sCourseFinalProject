@@ -13,5 +13,7 @@
 }
 p {
   white-space: break-spaces;
+}
+.information-p{
   overflow: scroll;
 }

@@ -7,7 +7,8 @@ import { bindActionCreators } from 'redux';
 import { State, wsActionCreator } from '../../state';
 
 // import functions
-import { updateDetailsByField, fileSelectedHandler, formatDate, saveImageToS3, getFieldToUpdate } from './functions';
+import { updateDetailsByField, fileSelectedHandler, saveImageToS3, getFieldToUpdate } from './functions';
+import { formatDate } from '../../utils/functions';
 import './Profile.css';
 
 // import interfaces
@@ -47,7 +48,7 @@ const Profile: React.FC = () => {
                 setUser(updated);
                 setFieldToUpdate(false);
               }} >Update</button>
-        <img src='https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png' onClick={() => setFieldToUpdate(false)} className='hover close-button'/>
+        <img src='https://img.icons8.com/fluent-systems-regular/48/000000/xbox-x.png' alt='exit' onClick={() => setFieldToUpdate(false)} className='hover close-button'/>
           </div>
         }
 
@@ -65,7 +66,7 @@ const Profile: React.FC = () => {
             <div className='image-buttons'>
 
               <label htmlFor='files' className='hover'>
-                <img src="https://img.icons8.com/material-outlined/24/000000/camera--v1.png" className='icon upload-file' />
+                <img src="https://img.icons8.com/material-outlined/24/000000/camera--v1.png"  alt='switch' className='icon upload-file' />
 
                 <input id="files" type='file' className="hidden" accept='image/*' onChange={(async e => {
                   if (e.target.files) {
@@ -78,7 +79,7 @@ const Profile: React.FC = () => {
                 })} />
               </label>
               {imgFile &&
-                <img src='https://img.icons8.com/ios-glyphs/30/000000/save--v1.png' className='hover icon save-file' onClick={async () => {
+                <img src='https://img.icons8.com/ios-glyphs/30/000000/save--v1.png' alt='save' className='hover icon save-file' onClick={async () => {
                   setDisplayLoader(true);
                   const response: any = await saveImageToS3(imgFile, user.username);
                   await updateDetailsByField({ place: 'profile', field: 'img' }, response.data.imageUrl);
@@ -95,43 +96,43 @@ const Profile: React.FC = () => {
                 <div className='details-item-div'>
                   <span className='bold'>First Name: </span>
                   <span>{user.firstName}</span>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'user', field: 'firstName'})} className='hover update'/>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' alt='edit' onClick={() => setFieldToUpdate({place: 'user', field: 'firstName'})} className='hover update'/>
                 </div>
 
                 <div className='details-item-div'>
                   <span className='bold'>Last Name: </span>
                   <span>{user.lastName}</span>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'user', field: 'lastName'})} className='hover update'/>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' alt='edit' onClick={() => setFieldToUpdate({place: 'user', field: 'lastName'})} className='hover update'/>
                 </div>
 
                 <div className='details-item-div'>
                   <span className='bold'>Address: </span>
                   <span>{user.profile.address}</span>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'address'})} className='hover update'/>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  alt='edit' onClick={() => setFieldToUpdate({place: 'profile', field:'address'})} className='hover update'/>
                 </div>
 
                 <div className='details-item-div'>
                   <span className='bold'>Gender: </span>
                   <span>{user.profile.gender}</span>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'gender'})} className='hover update'/>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  alt='edit' onClick={() => setFieldToUpdate({place: 'profile', field:'gender'})} className='hover update'/>
                 </div>
 
                 <div className='details-item-div'>
                   <span className='bold'>Relationship Status: </span>
                   <span>{user.profile.relationship}</span>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'relationship'})} className='hover update'/>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  alt='edit' onClick={() => setFieldToUpdate({place: 'profile', field:'relationship'})} className='hover update'/>
                 </div>
 
                 <div className='details-item-div'>
                   <span className='bold'>BirthDate: </span>
                   <span>{formatDate(user.birthDate)}</span>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'user', field: 'birthDate'})} className='hover update'/>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  alt='edit' onClick={() => setFieldToUpdate({place: 'user', field: 'birthDate'})} className='hover update'/>
                 </div>
 
                 <div className='details-item-div'>
                   <span className='bold'>Active Times: </span>
                   <span>{user.profile.activeTime}</span>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'activeTime'})} className='hover update'/>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  alt='edit' onClick={() => setFieldToUpdate({place: 'profile', field:'activeTime'})} className='hover update'/>
                 </div>
               </div>
 
@@ -141,25 +142,25 @@ const Profile: React.FC = () => {
           <div className='information-items-container'>
             <div className='information-item-div'>              
                   <label className='bold'>About</label>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field: 'about'})} className='hover update' />   
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  alt='edit' onClick={() => setFieldToUpdate({place: 'profile', field: 'about'})} className='hover update' />   
                   <p className='information-p'>{user.profile.about}</p>
                 </div>
 
                 <div className='information-item-div'>              
                   <label className='bold'>Status</label>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'status'})} className='hover update' />  
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  alt='edit' onClick={() => setFieldToUpdate({place: 'profile', field:'status'})} className='hover update' />  
                   <p className='information-p'>{user.profile.status}</p>
                 </div>
 
                 <div className='information-item-div'>              
                   <label className='bold'>Hobbys</label>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'hobbys'})} className='hover update' />
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  alt='edit' onClick={() => setFieldToUpdate({place: 'profile', field:'hobbys'})} className='hover update' />
                   <p className='information-p'>{user.profile.hobbys}</p>
                 </div>
 
                 <div className='information-item-div'>
                   <label className='bold'>Interests</label>
-                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png' onClick={() => setFieldToUpdate({place: 'profile', field:'intrests'})} className='hover update'/>
+                  <img src='https://img.icons8.com/material-outlined/24/000000/edit--v1.png'  alt='edit' onClick={() => setFieldToUpdate({place: 'profile', field:'intrests'})} className='hover update'/>
                   <p className='information-p'>{user.profile.intrests}</p>
                 </div>
             </div>

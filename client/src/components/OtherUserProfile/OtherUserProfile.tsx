@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react'
 
 // import functions 
-import { getUserProfile, formatDate } from './function';
+import { getUserProfile } from './function';
+import { formatDate } from '../../utils/functions';
 
 // import interfaces
 import {props} from './interfaces/interfaces';
