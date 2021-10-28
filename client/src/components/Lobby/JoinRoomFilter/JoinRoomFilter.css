@@ -113,6 +113,10 @@
   width: 2rem;
 }
 
+.join-room-filter .room-filter-right .room-details-filter .people-icon, .join-room-filter .room-filter-right .room-details-filter .lock-icon {
+  cursor: pointer;
+}
+
 .join-room-filter .room-filter-right .room-details-filter .lock-icon {
   margin: 0;
 }

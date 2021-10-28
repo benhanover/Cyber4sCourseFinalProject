@@ -67,6 +67,9 @@
             width: 2rem;
         }
     }
+    .people-icon, .lock-icon{
+        cursor: pointer;
+    }
     .lock-icon{
         margin: 0;
     }

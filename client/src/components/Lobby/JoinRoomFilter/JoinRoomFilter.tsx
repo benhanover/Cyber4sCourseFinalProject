@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { LegacyRef, useRef, useState } from 'react'
 
 // import types
 import { newRoomFormProps } from './interfaces';
@@ -7,9 +7,10 @@ import LockIcon from '@material-ui/icons/Lock';
 import NoEncryptionIcon from '@material-ui/icons/NoEncryption';
 import { getStreamId } from '../../VideoRoom/functions';
 import { Tooltip } from '@material-ui/core';
-import { Category, PeopleAlt } from '@material-ui/icons';
+import { Category, PeopleAlt, PeopleAltOutlined } from '@material-ui/icons';
 const JoinRoomForm: React.FC<newRoomFormProps> = ({joinFormStateManager, setJoinFormStateManager}) => {
-
+  const [shouldFilterByLimit, setShouldFilterByLimit] = useState(false);
+  const limitRef = useRef<HTMLInputElement|null>(null);
   return (
     <div className='join-room-filter'>
       <h4>Find The Most Relevant Room For You:</h4>
@@ -36,19 +37,23 @@ const JoinRoomForm: React.FC<newRoomFormProps> = ({joinFormStateManager, setJoin
               onChange={(e) => setJoinFormStateManager({ ...joinFormStateManager, search: e.target.value })} />
             </Tooltip>
         <div className="room-details-filter">
-          <Tooltip title={"Participants Limit"} placement="top">
-            <div className="limit">
-          <PeopleAlt className="people-icon icon" />
+          <Tooltip title={`${shouldFilterByLimit ? 'Unfilter ': 'Filter '} Participants Limit`} placement="top">
+              <div className="limit">
+                {shouldFilterByLimit ?
+                  (<PeopleAlt className="people-icon icon" onClick={() => { setShouldFilterByLimit(false); setJoinFormStateManager({ ...joinFormStateManager, limit: '' }); limitRef?.current && (limitRef.current.value = ''); }}/>)
+                  : (<PeopleAltOutlined className="people-icon icon" onClick={() => { setShouldFilterByLimit(true) }}/>)}
+                {shouldFilterByLimit &&
             
-      <input
-              className="limit-input"
-              type="number"
-              onChange={(e) => setJoinFormStateManager({...joinFormStateManager, limit: e.target.value})}
-              placeholder="limit"
-              min="2"
-              max="4"
+                  <input
+                    className="limit-input"
+                  type="number"
+                  ref={limitRef}
+                    onChange={(e) => setJoinFormStateManager({ ...joinFormStateManager, limit: limitRef?.current?.value })}
+                    placeholder="limit"
+                    min="2"
+                    max="4"
               
-              />
+                  />}
               </div>
           </Tooltip>
           <Tooltip title={joinFormStateManager.isLocked?"Show Opened Rooms": "Show Locked Rooms"} placement="top">
